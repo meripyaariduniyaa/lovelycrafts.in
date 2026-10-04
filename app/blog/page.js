@@ -5,14 +5,14 @@ import { SITE_URL, SITE_NAME } from '@/lib/seo';
 export const revalidate = 60; // ISR revalidate every minute
 
 export const metadata = {
-  title: 'Blog & Surprises Guide — LovelyCrafts',
-  description: 'Explore creative digital surprise ideas, relationship advice, birthday celebration tips, and emotional gifting guides by LovelyCrafts.',
+  title: 'Blog & Surprises Guide — LovelyCrafts | Janamdin, Anniversary & Love Letters',
+  description: 'Explore creative digital surprises, virtual birthday ideas, anniversary gifts, emotional apology maafi letters, and romantic shayari guides in Hindi & English by LovelyCrafts.',
   alternates: {
     canonical: `${SITE_URL}/blog`,
   },
   openGraph: {
-    title: 'LovelyCrafts Blog — Creative Digital Surprises & Relationship Guides',
-    description: 'Explore creative digital surprise ideas, relationship advice, birthday celebration tips, and emotional gifting guides by LovelyCrafts.',
+    title: 'LovelyCrafts Blog — Creative Digital Surprises & Relationship Guides (Hindi/English)',
+    description: 'Explore creative digital surprises, virtual birthday ideas, anniversary gifts, emotional apology maafi letters, and romantic shayari guides in Hindi & English by LovelyCrafts.',
     url: `${SITE_URL}/blog`,
     siteName: SITE_NAME,
     type: 'website',
@@ -24,32 +24,82 @@ const SEED_POSTS = [
   {
     id: 'seed-1',
     slug: '10-creative-virtual-birthday-surprises',
-    title: '10 Creative Virtual Birthday Surprises for Long-Distance Relationships',
-    excerpt: 'Distance shouldn’t stop you from creating an unforgettable midnight celebration. Here is how to create interactive digital surprises they will cherish forever.',
+    title: '10 Creative Virtual Birthday Surprises: Janamdin Wishes & Midnight Gift Ideas',
+    excerpt: 'Distance shouldn’t stop you from creating an unforgettable 12 AM celebration. Janamdin wishes, interactive photo puzzles aur romantic music letters se banayein unka birthday super special.',
     coverImage: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80',
-    tags: ['birthday', 'long distance', 'guides'],
+    tags: ['birthday', 'janamdin', 'long distance', 'virtual surprise', 'hinglish wishes'],
     author: 'LovelyCrafts Editorial',
-    publishedAt: '2026-09-01T00:00:00.000Z',
+    publishedAt: '2026-09-15T00:00:00.000Z',
   },
   {
     id: 'seed-2',
     slug: 'how-to-write-an-emotional-apology-letter',
-    title: 'How to Write a Sincere Apology Letter When Words Fail You in Person',
-    excerpt: 'Saying sorry is tough, but a thoughtful, private digital letter with shared memories and gentle music gives both of you space to heal.',
+    title: 'How to Write a Sincere Apology Letter: Dil Se Maafi Mangne Ka Sahi Tarika',
+    excerpt: 'Saying sorry is tough, but jab words fail ho jayein to ek thoughtful apology letter with shared memories aur gentle music gives both of you space to heal. Dil se maafi mangne ke best ideas.',
     coverImage: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80',
-    tags: ['apology', 'relationships', 'emotions'],
+    tags: ['apology', 'maafi', 'relationships', 'dil se', 'sorry letter'],
+    author: 'LovelyCrafts Editorial',
+    publishedAt: '2026-09-10T00:00:00.000Z',
+  },
+  {
+    id: 'seed-3',
+    slug: 'romantic-anniversary-surprises-couples-salgirah',
+    title: 'Romantic Anniversary Surprises: Salgirah Mubarak Wishes & Custom Couple Timeline',
+    excerpt: 'Pehli date se lekar shaadi tak ki sweet memories ko ek interactive digital timeline mein celebrate karein. Unique anniversary surprises and heartfelt prem sandesh for couples.',
+    coverImage: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1200&q=80',
+    tags: ['anniversary', 'salgirah', 'couples', 'romance', 'pyar'],
+    author: 'LovelyCrafts Editorial',
+    publishedAt: '2026-09-05T00:00:00.000Z',
+  },
+  {
+    id: 'seed-4',
+    slug: 'modern-proposal-ideas-interactive-story',
+    title: 'The Modern Digital Proposal: Dil Ka Izhaar with an Interactive Story',
+    excerpt: 'Take your partner on a nostalgic photo-by-photo journey of your relationship before revealing the ultimate question. Izhaar-e-ishq with custom romantic melodies and confetti surprises.',
+    coverImage: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=80',
+    tags: ['proposal', 'izhaar', 'romance', 'love story', 'guides'],
     author: 'LovelyCrafts Editorial',
     publishedAt: '2026-08-28T00:00:00.000Z',
   },
   {
-    id: 'seed-3',
-    slug: 'modern-proposal-ideas-interactive-story',
-    title: 'The Modern Digital Proposal: How to Pop the Question Interactively',
-    excerpt: 'Take your partner on a nostalgic photo-by-photo interactive journey of your relationship before revealing the ultimate question.',
-    coverImage: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1200&q=80',
-    tags: ['proposal', 'romance', 'guides'],
+    id: 'seed-5',
+    slug: 'valentines-day-pyaar-bhare-sandesh-love-letters',
+    title: 'Valentine’s Day Surprise Ideas: Pyaar Bhare Sandesh & Digital Love Letters',
+    excerpt: 'Is Valentine par normal chocolates ke bajaye bhejiye ek musical digital love letter jismein ho aapki favorite photos, romantic shayari aur cute voice notes. Perfect gift for your girlfriend or boyfriend.',
+    coverImage: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=1200&q=80',
+    tags: ['valentines', 'pyaar', 'love letters', 'shayari', 'romantic gifts'],
     author: 'LovelyCrafts Editorial',
-    publishedAt: '2026-08-20T00:00:00.000Z',
+    publishedAt: '2026-08-22T00:00:00.000Z',
+  },
+  {
+    id: 'seed-6',
+    slug: 'long-distance-relationship-door-hokar-bhi-paas',
+    title: 'Long Distance Relationship Hacks: Door Hokar Bhi Paas Feel Karane Ke Digital Surprises',
+    excerpt: 'LDR mein physical distance ko mitayein smart virtual surprises se. "Open When" virtual envelopes, shared playlist memory roadmaps aur surprise WhatsApp links jo dil jeet lein.',
+    coverImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80',
+    tags: ['long distance', 'ldr', 'dooriyan', 'virtual gifts', 'couples'],
+    author: 'LovelyCrafts Editorial',
+    publishedAt: '2026-08-15T00:00:00.000Z',
+  },
+  {
+    id: 'seed-7',
+    slug: 'best-friend-birthday-dosti-yaari-scraps',
+    title: 'Bestie Birthday Surprises: Yaari & Dosti Ke Liye Funny Memes + Memory Scrapbook',
+    excerpt: 'Apne jigri dost ya best friend ke birthday par bhejiye ek epic digital roast & memory card. Bachpan ki goofy photos, funny friendship tags aur emotional yaari quotes.',
+    coverImage: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80',
+    tags: ['friendship', 'dosti', 'bestie birthday', 'yaari', 'funny gifts'],
+    author: 'LovelyCrafts Editorial',
+    publishedAt: '2026-08-08T00:00:00.000Z',
+  },
+  {
+    id: 'seed-8',
+    slug: 'digital-greeting-card-trends-whatsapp-wishes',
+    title: 'Paper Cards vs Digital Surprises: WhatsApp Par Shubhkaamnaye Bhejne Ka Naya Trend',
+    excerpt: 'Simple forwarded message bhejna ab boring ho gaya hai. Interactive digital greeting cards with custom music, hidden reveals aur photo puzzles banate hain har occasion ko yaadgaar.',
+    coverImage: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?auto=format&fit=crop&w=1200&q=80',
+    tags: ['whatsapp wishes', 'digital cards', 'shubhkaamnaye', 'gifting trends', 'tech'],
+    author: 'LovelyCrafts Editorial',
+    publishedAt: '2026-08-01T00:00:00.000Z',
   },
 ];
 
@@ -131,7 +181,7 @@ export default async function BlogPage() {
 
         {/* POPULAR TOPICS PILLS */}
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {['🎂 Birthday Ideas', '💍 Proposals', '💌 Apology & Healing', '💖 Long Distance', '✨ DIY Digital Gifts'].map((topic) => (
+          {['🎂 Birthday & Janamdin', '💌 Sorry & Maafi Dil Se', '💍 Dil Ka Izhaar (Proposals)', '💖 Dooriyan & LDR Surprises', '✨ Salgirah & Anniversary', '🎁 Pyaar Bhare Sandesh'].map((topic) => (
             <span
               key={topic}
               style={{
