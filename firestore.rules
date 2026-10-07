@@ -53,6 +53,18 @@ service cloud.firestore {
     match /crm/{id} { allow read, write: if false; }
     match /analytics/{id} { allow read, write: if false; }
 
+    // ── Corporate Business Ecosystem (Server / Firebase Admin SDK Only) ──
+    match /business_applications/{id} { allow read, write: if false; }
+    match /businesses/{id} { allow read, write: if false; }
+    match /business_users/{id} { allow read, write: if false; }
+    match /business_invitations/{id} { allow read, write: if false; }
+    match /business_employees/{id} { allow read, write: if false; }
+    match /business_occasion_tasks/{id} { allow read, write: if false; }
+    match /business_experiences/{id} { allow read, write: if false; }
+    match /business_recipient_links/{id} { allow read, write: if false; }
+    match /business_usage_ledger/{id} { allow read, write: if false; }
+    match /business_audit_logs/{id} { allow read, write: if false; }
+
     // ── 5. Default Catch-All Block ──
     // Blocks unauthorized access to any unlisted collection
     match /{document=**} {

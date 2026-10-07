@@ -90,6 +90,13 @@ export default function Header() {
             </Link>
 
             <Link
+              href="/business"
+              className={`nav-link ${pathname === '/business' ? 'active' : ''}`}
+            >
+              💼 For Business
+            </Link>
+
+            <Link
               href="/contact"
               className={`nav-link ${pathname === '/contact' ? 'active' : ''}`}
             >
@@ -184,6 +191,18 @@ export default function Header() {
             <div>
               <strong>Couple &amp; Bestie Arcade</strong>
               <small>Play 30s mini-games &amp; send duels</small>
+            </div>
+          </Link>
+
+          <Link
+            href="/business"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <span className="mobile-nav-icon">💼</span>
+            <div>
+              <strong>LovelyCrafts for Business</strong>
+              <small>Automate employee birthdays &amp; milestones</small>
             </div>
           </Link>
 
