@@ -446,6 +446,109 @@ export default function BusinessLandingClient() {
         </div>
       </section>
 
+      {/* ── CORPORATE PRICING & PLAN CATEGORIES ── */}
+      <section id="pricing-section" className="b2b-section pricing-section py-16 bg-slate-950/60 border-y border-slate-800/80">
+        <div className="b2b-container max-w-6xl mx-auto px-4">
+          <div className="section-header text-center mb-12">
+            <span className="inline-block px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold uppercase tracking-wider mb-3">
+              Corporate Credit Plans
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">4 Simple Business Plan Tiers</h2>
+            <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+              Transparent credit-based pricing at ₹199 per credit + 18% GST. Pay only for what you celebrate. Bonus credits included in all volume plans.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Plan 1 */}
+            <div className="relative flex flex-col p-6 rounded-3xl bg-slate-900/80 border border-slate-800 text-white shadow-xl hover:border-slate-700 transition-all">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Starter Pack</span>
+              <h3 className="text-2xl font-black text-white mb-1">10 Credits</h3>
+              <p className="text-slate-400 text-xs mb-4">Ideal for small teams & instant celebrations.</p>
+              <div className="my-4 pt-4 border-t border-slate-800">
+                <span className="text-3xl font-black text-white">₹1,990</span>
+                <span className="text-slate-400 text-[11px] block font-semibold mt-1">+ 18% GST (₹358) • Total ₹2,348</span>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 10 Experience Credits</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Standard Corporate Templates</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Instant WhatsApp & Email Links</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 1-Year Credit Validity</li>
+              </ul>
+              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all">
+                Select Starter Plan
+              </a>
+            </div>
+
+            {/* Plan 2 */}
+            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-rose-950/70 via-slate-900 to-slate-900 border-2 border-rose-500/60 text-white shadow-2xl hover:border-rose-400 transition-all scale-[1.02]">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-rose-500 to-pink-600 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-md whitespace-nowrap">
+                ⭐ Most Popular
+              </div>
+              <span className="text-xs font-bold text-rose-400 uppercase tracking-widest mb-2">Growth Pack</span>
+              <h3 className="text-2xl font-black text-white mb-1">28 Credits <span className="text-xs text-rose-400 font-bold">(25 + 3 Bonus)</span></h3>
+              <p className="text-slate-400 text-xs mb-4">10% Bonus Credits Free! Great for active teams.</p>
+              <div className="my-4 pt-4 border-t border-slate-800">
+                <span className="text-3xl font-black text-white">₹4,477</span>
+                <span className="text-slate-400 text-[11px] block font-semibold mt-1">+ 18% GST (₹806) • Total ₹5,283</span>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 25 + 3 Free Bonus Credits</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> All Corporate Templates</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Company Logo & Custom Branding</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Employee Roster CSV Upload</li>
+              </ul>
+              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-xs shadow-lg shadow-rose-500/30 transition-all">
+                Select Growth Plan
+              </a>
+            </div>
+
+            {/* Plan 3 */}
+            <div className="relative flex flex-col p-6 rounded-3xl bg-slate-900/80 border border-amber-500/40 text-white shadow-xl hover:border-amber-400 transition-all">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-[10px] font-black uppercase tracking-wider text-slate-950 shadow-md whitespace-nowrap">
+                🔥 Best Value
+              </div>
+              <span className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">Enterprise Pack</span>
+              <h3 className="text-2xl font-black text-white mb-1">60 Credits <span className="text-xs text-amber-400 font-bold">(50 + 10 Bonus)</span></h3>
+              <p className="text-slate-400 text-xs mb-4">20% Bonus Credits Free! Complete annual coverage.</p>
+              <div className="my-4 pt-4 border-t border-slate-800">
+                <span className="text-3xl font-black text-white">₹7,960</span>
+                <span className="text-slate-400 text-[11px] block font-semibold mt-1">+ 18% GST (₹1,433) • Total ₹9,393</span>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 50 + 10 Free Bonus Credits</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Employee Onboarding & Kudos</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Automated Occasion Engine</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Priority HR Support</li>
+              </ul>
+              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs transition-all">
+                Select Enterprise Plan
+              </a>
+            </div>
+
+            {/* Plan 4 */}
+            <div className="relative flex flex-col p-6 rounded-3xl bg-slate-900/80 border border-purple-500/40 text-white shadow-xl hover:border-purple-400 transition-all">
+              <span className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-2">Custom Scale</span>
+              <h3 className="text-2xl font-black text-white mb-1">100+ Credits</h3>
+              <p className="text-slate-400 text-xs mb-4">25% Bonus Credits Free! Custom bulk corporate scale.</p>
+              <div className="my-4 pt-4 border-t border-slate-800">
+                <span className="text-3xl font-black text-white">Custom</span>
+                <span className="text-slate-400 text-[11px] block font-semibold mt-1">₹199 / credit + 25% Extra Free</span>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 100+ Credits + 25% Free Bonus</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Dedicated Subdomain & Branding</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Multi-HR Admin Accounts</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Dedicated Account Manager</li>
+              </ul>
+              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-all">
+                Request Custom Quote
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── APPLICATION & ONBOARDING FORM ── */}
       <section id="apply-section" className="b2b-section form-section">
         <div className="b2b-container max-w-form">
