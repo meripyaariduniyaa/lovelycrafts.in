@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 
 const RECENT_ACTIVITIES = [
-  { name: 'Ananya S.', city: 'Mumbai', template: 'Virtual Birthday Bash', emoji: '🎂', time: '3 mins ago' },
-  { name: 'Rahul M.', city: 'Bengaluru', template: 'The Perfect Proposal', emoji: '💍', time: '7 mins ago' },
-  { name: 'Priya K.', city: 'Delhi', template: 'Things I Never Said', emoji: '💌', time: '12 mins ago' },
-  { name: 'Siddharth V.', city: 'Pune', template: 'Surprise Reveal Box', emoji: '🎁', time: '18 mins ago' },
-  { name: 'Megha D.', city: 'Hyderabad', template: "You're My Person", emoji: '💖', time: '24 mins ago' },
-  { name: 'Aditya T.', city: 'Kolkata', template: 'Photo Puzzle Reveal', emoji: '🧩', time: '31 mins ago' },
+  { name: 'Ananya S.', city: 'Mumbai', template: 'Virtual Birthday Bash', emoji: '🎂', time: '2 mins ago' },
+  { name: 'Rahul & Tanya', city: 'Bengaluru', template: 'The Perfect Proposal', emoji: '💍', time: '5 mins ago' },
+  { name: 'Siddharth & Priya', city: 'Delhi', template: 'Anniversary Special', emoji: '🥂', time: '9 mins ago' },
+  { name: 'Kavya M.', city: 'Pune', template: 'I Miss You across miles', emoji: '🌌', time: '14 mins ago' },
+  { name: 'Vikram D.', city: 'Hyderabad', template: "I'm Sorry", emoji: '🥺', time: '19 mins ago' },
+  { name: 'Megha & Rohan', city: 'Kolkata', template: 'The Perfect Proposal', emoji: '💖', time: '26 mins ago' },
 ];
 
 export default function LiveActivityTicker() {

@@ -25,6 +25,14 @@ export default function TemplatesCatalog({ templates }) {
     return matchesCategory && (!normalizedQuery || searchableText.includes(normalizedQuery));
   }), [activeCategory, normalizedQuery, templates]);
 
+  const categoryIcons = {
+    'All experiences': '✨',
+    'Romance': '💖',
+    'Celebration': '🎂',
+    'Heartfelt': '🥺',
+    'Long Distance': '🌌',
+  };
+
   return (
     <div className="templates-catalog">
       <div className="templates-toolbar" aria-label="Find a template">
@@ -38,6 +46,7 @@ export default function TemplatesCatalog({ templates }) {
               className={`template-filter ${activeCategory === category ? 'template-filter--active' : ''}`}
               onClick={() => setActiveCategory(category)}
             >
+              <span style={{ marginRight: '4px' }}>{categoryIcons[category] || '🎁'}</span>
               {category}
             </button>
           ))}
@@ -48,7 +57,7 @@ export default function TemplatesCatalog({ templates }) {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Birthday, apology, romance..."
+            placeholder="Birthday, apology, romance, miles..."
           />
         </label>
       </div>
@@ -76,16 +85,26 @@ export default function TemplatesCatalog({ templates }) {
                   {template.features.map((feature) => <li key={feature}>{feature}</li>)}
                 </ul>
                 <div className="template-card-footer">
-                  <div className="template-card-actions" style={{ width: '100%', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>₹{template.price}</span>
+                    <span style={{ fontSize: '0.78rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                      ₹{template.basePrice}
+                    </span>
+                  </div>
+                  <div className="template-card-actions" style={{ justifyContent: 'flex-end', gap: '0.5rem' }}>
                     <PreviewDemoButton
                       templateId={template.id}
                       className="btn-secondary"
-                      style={{ padding: '0.55rem 0.8rem', fontSize: '0.78rem' }}
+                      style={{ padding: '0.55rem 0.85rem', fontSize: '0.8rem', borderRadius: '999px' }}
                     >
-                      Preview
+                      👁️ Preview
                     </PreviewDemoButton>
-                    <Link href={`/create?template=${template.id}`} className="btn-primary template-create-link">
-                      Create
+                    <Link
+                      href={`/create?template=${template.id}`}
+                      className="btn-primary template-create-link"
+                      style={{ padding: '0.55rem 1rem', fontSize: '0.82rem', borderRadius: '999px', fontWeight: 800 }}
+                    >
+                      ✨ Craft This
                     </Link>
                   </div>
                 </div>

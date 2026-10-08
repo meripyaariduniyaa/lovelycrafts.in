@@ -45,7 +45,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="footer-col-brand">
             <div style={{ marginBottom: '14px' }}>
-              <LovelyCraftsLogo size={40} textColor="#ffffff" accentColor="#fda4af" />
+              <LovelyCraftsLogo size={40} textColor="#0f172a" accentColor="#e11d48" />
             </div>
             <p className="footer-tagline">
               Turning the feelings that are hard to say into private, interactive digital surprises they can open anywhere on WhatsApp.
