@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { emotionChoices, recommendEmotionalTemplates } from '@/lib/emotionalTemplates';
-import { trackUserSignal } from '@/lib/personalization';
 
 export default function EmotionFinder() {
   const [emotion, setEmotion] = useState('loved');
@@ -11,7 +10,6 @@ export default function EmotionFinder() {
 
   function handleEmotionChange(id) {
     setEmotion(id);
-    trackUserSignal('chosenEmotion', id);
   }
 
   return (

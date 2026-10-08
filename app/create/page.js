@@ -221,7 +221,6 @@ function CreatePageContent() {
           sender_name: form.senderName.trim(),
           turning_age: form.turningAge.trim(),
           birthday_date: form.birthdayDate.trim(),
-          cake_type: form.cakeType,
           balloon_messages: form.balloonMessages.filter((m) => m.trim()),
           letter: form.letter.trim(),
         };

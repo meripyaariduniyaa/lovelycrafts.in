@@ -59,10 +59,11 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
           return;
         }
 
-        // Otherwise offer standard organic retention discount if eligible
+        // Otherwise offer standard organic retention discount if eligible & auto-apply
         if (autoOfferRetention && data.ok && data.eligible && data.coupon) {
           setRetentionCoupon(data.coupon);
           setRetentionSeconds(data.coupon.remaining_seconds || 900);
+          applyCoupon(data.coupon.code);
         }
       } catch (err) {
         console.error('Failed to load retention/referral offer:', err);
@@ -345,31 +346,34 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
         )}
 
         {/* Organic Retention 10% Special Offer Banner */}
-        {retentionCoupon && !resolvedOrder && !retentionDismissed && retentionSeconds > 0 && (
+        {retentionCoupon && !retentionDismissed && retentionSeconds > 0 && (
           <div style={{
-            background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(244, 63, 94, 0.15))',
-            border: '1px solid rgba(244, 63, 94, 0.35)',
-            borderRadius: '14px',
-            padding: '12px 14px',
+            background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.16) 0%, rgba(245, 158, 11, 0.14) 100%)',
+            border: '1.5px solid rgba(244, 63, 94, 0.4)',
+            borderRadius: '16px',
+            padding: '14px 16px',
             display: 'flex',
             flexDirection: 'column',
             gap: '8px',
-            boxShadow: '0 4px 14px rgba(244, 63, 94, 0.12)',
+            boxShadow: '0 8px 24px rgba(244, 63, 94, 0.15)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ fontSize: '1.05rem' }}>🎁</span>
-                <span style={{ fontSize: '0.84rem', fontWeight: 700, color: '#f43f5e' }}>
-                  Special 10% Discount Available!
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.2rem' }}>🎁</span>
+                <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#ffffff' }}>
+                  {resolvedOrder && couponCode === retentionCoupon.code
+                    ? '🎉 Instant 10% Extra OFF Applied!'
+                    : 'Special 10% Instant Discount Available!'}
                 </span>
               </div>
               <span style={{
                 fontSize: '0.75rem',
                 fontWeight: 800,
-                color: '#e11d48',
-                background: 'rgba(244,63,94,0.18)',
-                padding: '3px 8px',
-                borderRadius: '6px',
+                color: '#fde68a',
+                background: 'rgba(0, 0, 0, 0.4)',
+                border: '1px solid rgba(251, 191, 36, 0.3)',
+                padding: '4px 10px',
+                borderRadius: '8px',
                 fontVariantNumeric: 'tabular-nums',
                 letterSpacing: '0.02em',
               }}>
@@ -378,29 +382,31 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
-                Code: <strong style={{ color: '#fff', letterSpacing: '0.05em', fontFamily: 'monospace', background: 'rgba(0,0,0,0.3)', padding: '2px 6px', borderRadius: '4px' }}>{retentionCoupon.code}</strong> (Save 10% instantly)
+              <span style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
+                Code: <strong style={{ color: '#fff', letterSpacing: '0.06em', fontFamily: 'monospace', background: 'rgba(0,0,0,0.4)', padding: '2px 8px', borderRadius: '6px' }}>{retentionCoupon.code}</strong> (Save 10% extra)
               </span>
               <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                <button
-                  type="button"
-                  onClick={() => applyCoupon(retentionCoupon.code)}
-                  disabled={busy}
-                  style={{
-                    background: 'linear-gradient(135deg, #f43f5e, #e11d48)',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '6px 14px',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    boxShadow: '0 2px 8px rgba(244, 63, 94, 0.3)',
-                  }}
-                >
-                  {busy ? 'Applying…' : 'Claim 10% OFF'}
-                </button>
+                {(!resolvedOrder || couponCode !== retentionCoupon.code) && (
+                  <button
+                    type="button"
+                    onClick={() => applyCoupon(retentionCoupon.code)}
+                    disabled={busy}
+                    style={{
+                      background: 'linear-gradient(135deg, #f43f5e, #e11d48)',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '6px 14px',
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      boxShadow: '0 2px 8px rgba(244, 63, 94, 0.4)',
+                    }}
+                  >
+                    {busy ? 'Applying…' : 'Claim 10% OFF'}
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={handleDismissRetention}
@@ -408,8 +414,8 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: '#64748b',
-                    fontSize: '0.8rem',
+                    color: '#94a3b8',
+                    fontSize: '0.85rem',
                     cursor: 'pointer',
                     padding: '2px 6px',
                   }}

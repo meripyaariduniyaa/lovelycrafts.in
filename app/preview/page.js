@@ -289,13 +289,38 @@ function PreviewContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           style={{
-            borderRadius: '24px',
+            position: 'relative',
+            borderRadius: '28px',
             overflow: 'hidden',
-            border: `1px solid ${accent.color}22`,
-            boxShadow: `0 24px 60px rgba(0,0,0,0.6), 0 0 40px ${accent.glow}`,
+            border: `1.5px solid ${accent.color}35`,
+            boxShadow: `0 28px 70px rgba(0,0,0,0.8), 0 0 50px ${accent.glow}`,
             marginBottom: '2rem',
+            background: '#080810',
           }}
         >
+          {/* Subtle phone frame top header pill */}
+          <div style={{
+            background: 'rgba(0,0,0,0.4)',
+            backdropFilter: 'blur(8px)',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            padding: '8px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            justify: 'space-between',
+            fontSize: '0.72rem',
+            color: '#94a3b8',
+            fontWeight: 600,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} />
+              <span>Live Recipient View</span>
+            </div>
+            <div style={{ display: 'flex', gap: '4px', opacity: 0.7 }}>
+              <span>📶</span>
+              <span>🔋</span>
+            </div>
+          </div>
+
           <TemplateRenderer note={note} isPreview={true} />
         </motion.div>
 
@@ -343,8 +368,11 @@ function PreviewContent() {
           >
             <div style={{ maxWidth: '480px', margin: '0 auto' }}>
               {/* Social proof micro-copy */}
-              <div style={{ textAlign: 'center', marginBottom: '0.6rem', fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
-                🔥 <strong style={{ color: '#94a3b8' }}>1,420+</strong> experiences unlocked this week
+              <div style={{ textAlign: 'center', marginBottom: '0.6rem', fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <span>🔥 <strong>1,420+</strong> unlocked this week</span>
+                <span style={{ color: '#4ade80', background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.25)', padding: '2px 8px', borderRadius: '50px', fontSize: '0.7rem', fontWeight: 800 }}>
+                  🎁 Save 10% Extra Today
+                </span>
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -373,7 +401,7 @@ function PreviewContent() {
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
                 {note.recipient_name ? `Unlock ${note.recipient_name}'s Moment` : 'Unlock & Send'}
-                <span style={{ fontSize: '0.88rem', opacity: 0.85, fontWeight: 600 }}>• ₹{totalAmount}</span>
+                <span style={{ fontSize: '0.88rem', opacity: 0.9, fontWeight: 700 }}>• ₹{totalAmount}</span>
               </motion.button>
             </div>
           </motion.div>
@@ -507,95 +535,103 @@ function LockedPanel({ note, accent, totalAmount, selectedTemplate, onPaid }) {
 
   return (
     <motion.div
-
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
+      className="locked-panel-root"
       style={{
         background: 'rgba(255,255,255,0.03)',
         border: '1px solid rgba(255,255,255,0.08)',
         borderRadius: '24px',
-        padding: '1.75rem',
+        padding: '1.25rem 1.25rem 1rem',
       }}
     >
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .locked-panel-root {
+            padding: 0.85rem 0.85rem 0.75rem !important;
+            border-radius: 20px !important;
+          }
+          .comparison-grid {
+            display: none !important;
+          }
+          .headline-sub {
+            display: none !important;
+          }
+          .lock-header {
+            margin-bottom: 0.65rem !important;
+          }
+          .value-card {
+            padding: 0.75rem 0.85rem !important;
+            margin-bottom: 0.75rem !important;
+            border-radius: 14px !important;
+          }
+        }
+      `}</style>
+
       {/* Lock Icon + Emotional Headline */}
-      <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-        <motion.div
-          animate={{ y: [0, -6, 0], scale: [1, 1.05, 1] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ display: 'inline-flex', padding: '14px', background: 'rgba(244,63,94,0.12)', border: '1px solid rgba(244,63,94,0.25)', borderRadius: '50%', marginBottom: '0.75rem' }}
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-        </motion.div>
-        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#fbbf24', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+      <div className="lock-header" style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+        <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#fbbf24', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
           Don&apos;t Let This Moment Stay Hidden
         </div>
-        <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', margin: '0 0 0.45rem', lineHeight: 1.25 }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.25 }}>
           Give {recipient} a moment they&apos;ll cherish forever 💕
         </h2>
-        <p style={{ color: '#94a3b8', fontSize: '0.86rem', margin: 0, lineHeight: 1.6 }}>
-          A plain text gets lost in minutes. You spent time crafting this experience—don&apos;t let it go unsent.
+        <p className="headline-sub" style={{ color: '#94a3b8', fontSize: '0.82rem', margin: '0.35rem 0 0', lineHeight: 1.5 }}>
+          You spent time crafting this experience—don&apos;t let it go unsent.
         </p>
       </div>
 
-      {/* Value Comparison Card */}
-      <div style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '18px', padding: '1.25rem', marginBottom: '1.25rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '1rem' }}>
-          <div style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: '12px', padding: '0.75rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '1.2rem', marginBottom: '4px' }}>💬</div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#f87171' }}>Plain Text Message</div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>Forgotten in 10 mins</div>
+      {/* Value Card */}
+      <div className="value-card" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '18px', padding: '1rem 1.15rem', marginBottom: '1rem' }}>
+        {/* Value Comparison Card (Desktop/Tablet) */}
+        <div className="comparison-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '0.85rem' }}>
+          <div style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: '12px', padding: '0.65rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '1.1rem', marginBottom: '2px' }}>💬</div>
+            <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#f87171' }}>Plain Text Message</div>
+            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>Forgotten in 10 mins</div>
           </div>
-          <div style={{ background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.25)', borderRadius: '12px', padding: '0.75rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '1.2rem', marginBottom: '4px' }}>✨</div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#4ade80' }}>LovelyCrafts Experience</div>
-            <div style={{ fontSize: '0.7rem', color: '#a7f3d0', marginTop: '2px' }}>Kept forever 💕</div>
+          <div style={{ background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.25)', borderRadius: '12px', padding: '0.65rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '1.1rem', marginBottom: '2px' }}>✨</div>
+            <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#4ade80' }}>LovelyCrafts Experience</div>
+            <div style={{ fontSize: '0.68rem', color: '#a7f3d0', marginTop: '2px' }}>Kept forever 💕</div>
           </div>
         </div>
 
-        {/* Feature List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+        {/* Compact Feature List */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           {[
             `Private shareable link & HD QR card for ${recipient}`,
             'Interactive music, custom memories & photos',
             'Live read receipt & reaction notification',
-            'Forever cloud hosting & digital keepsake',
           ].map((f, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: 16, height: 16, borderRadius: '50%', background: 'rgba(74,222,128,0.15)', color: '#4ade80', fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, flexShrink: 0 }}>✓</div>
-              <span style={{ color: '#cbd5e1', fontSize: '0.8rem', fontWeight: 500 }}>{f}</span>
+              <div style={{ width: 15, height: 15, borderRadius: '50%', background: 'rgba(74,222,128,0.18)', color: '#4ade80', fontSize: '0.62rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, flexShrink: 0 }}>✓</div>
+              <span style={{ color: '#cbd5e1', fontSize: '0.78rem', fontWeight: 500 }}>{f}</span>
             </div>
           ))}
         </div>
 
         {/* Price Anchoring */}
-        <div style={{ marginTop: '1rem', paddingTop: '0.85rem', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Special Price</div>
-            <div style={{ fontSize: '0.78rem', color: '#4ade80', fontWeight: 700 }}>Save 60% Today</div>
+            <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Special Price</div>
+            <div style={{ fontSize: '0.75rem', color: '#4ade80', fontWeight: 700 }}>Save 60% Today</div>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <span style={{ fontSize: '0.9rem', color: '#64748b', textDecoration: 'line-through', marginRight: '6px' }}>₹499</span>
-            <span style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff' }}>₹{totalAmount}</span>
+            <span style={{ fontSize: '0.85rem', color: '#64748b', textDecoration: 'line-through', marginRight: '6px' }}>₹499</span>
+            <span style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff' }}>₹{totalAmount}</span>
           </div>
         </div>
       </div>
 
-      {/* Social Proof Ticker */}
-      <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '8px 12px', textAlign: 'center', marginBottom: '1.25rem', fontSize: '0.78rem', color: '#94a3b8', fontWeight: 600 }}>
-        🔥 Over <strong style={{ color: '#fff' }}>1,420+ experiences</strong> delivered this week • 99.4% happy reactions
-      </div>
-
       <PayButton apologyId={note.id} onPaid={onPaid} displayAmount={totalAmount} recipientName={note.recipient_name} />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center', marginTop: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center', marginTop: '0.75rem' }}>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round">
           <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
-        <span style={{ color: '#475569', fontSize: '0.78rem' }}>100% Secure payment via Razorpay</span>
+        <span style={{ color: '#475569', fontSize: '0.75rem' }}>100% Secure payment via Razorpay</span>
       </div>
     </motion.div>
   );
