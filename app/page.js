@@ -46,14 +46,17 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="max-w-6xl mx-auto w-full px-4 py-8">
+    <main className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center">
       {/* Hero Banner */}
-      <section style={{
-        background: 'linear-gradient(135deg, rgba(255,245,248,0.9) 0%, rgba(253,230,238,0.85) 50%, rgba(243,232,255,0.9) 100%)',
-        border: '1.5px solid rgba(244,63,94,0.18)',
-        boxShadow: '0 20px 40px -15px rgba(225,29,72,0.12)'
-      }} className="text-center py-12 px-6 relative overflow-hidden rounded-3xl mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 text-xs font-bold uppercase tracking-wider mb-6">
+      <section
+        style={{
+          background: 'linear-gradient(135deg, rgba(255, 241, 242, 0.95) 0%, rgba(255, 245, 248, 0.9) 50%, rgba(245, 243, 255, 0.95) 100%)',
+          border: '1.5px solid rgba(244, 63, 94, 0.16)',
+          boxShadow: '0 20px 45px -15px rgba(225, 29, 72, 0.10)',
+        }}
+        className="w-full text-center py-12 px-6 sm:px-10 relative overflow-hidden rounded-3xl mb-8"
+      >
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 text-xs font-extrabold uppercase tracking-wider mb-5">
           <span>✨ Crafted With Love</span>
         </div>
 
@@ -77,7 +80,7 @@ export default function Home() {
           </Link>
           <Link
             href="/business"
-            className="px-6 py-4 rounded-full bg-white/80 text-rose-700 border border-rose-200 font-bold text-sm shadow-sm hover:bg-white hover:shadow transition-all duration-200"
+            className="px-6 py-4 rounded-full bg-white text-rose-700 border border-rose-200 font-bold text-sm shadow-sm hover:bg-rose-50 hover:shadow transition-all duration-200"
           >
             💼 For Corporate & Teams
           </Link>
@@ -92,18 +95,22 @@ export default function Home() {
         </div>
       </section>
 
-      <LiveActivityTicker />
-
-      {/* Emotion Finder */}
-      <div className="my-8">
-        <EmotionFinder />
+      {/* Centered Live Activity Ticker */}
+      <div className="w-full flex justify-center mb-10">
+        <LiveActivityTicker />
       </div>
 
+      {/* Emotion Finder */}
+      <section className="w-full mb-12">
+        <EmotionFinder />
+      </section>
+
       {/* Templates Catalog */}
-      <section className="my-12">
+      <section className="w-full my-6">
         <div className="text-center mb-8">
           <span className="text-xs font-extrabold text-rose-600 uppercase tracking-widest block mb-2">Curated Catalog</span>
           <h2 className="text-2xl sm:text-4xl font-black text-slate-900">Choose a Template Experience</h2>
+          <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-lg mx-auto">Browse interactive surprises designed to spark real emotions and unforgettable smiles.</p>
         </div>
         <TemplatesCatalog templates={templates} />
       </section>

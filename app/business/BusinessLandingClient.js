@@ -447,79 +447,80 @@ export default function BusinessLandingClient() {
       </section>
 
       {/* ── CORPORATE PRICING & PLAN CATEGORIES ── */}
-      <section id="pricing-section" className="b2b-section pricing-section py-16 bg-slate-950/60 border-y border-slate-800/80">
+      {/* ── CORPORATE PRICING & PLAN CATEGORIES ── */}
+      <section id="pricing-section" className="b2b-section pricing-section py-16 bg-slate-50/80 border-y border-slate-200/80">
         <div className="b2b-container max-w-6xl mx-auto px-4">
           <div className="section-header text-center mb-12">
-            <span className="inline-block px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold uppercase tracking-wider mb-3">
+            <span className="inline-block px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs font-bold uppercase tracking-wider mb-3">
               Corporate Credit Plans
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">4 Simple Business Plan Tiers</h2>
-            <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">4 Simple Business Plan Tiers</h2>
+            <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">
               Transparent credit-based pricing at ₹199 per credit + 18% GST. Pay only for what you celebrate. Bonus credits included in all volume plans.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Plan 1 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-slate-900/80 border border-slate-800 text-white shadow-xl hover:border-slate-700 transition-all">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Starter Pack</span>
-              <h3 className="text-2xl font-black text-white mb-1">10 Credits</h3>
-              <p className="text-slate-400 text-xs mb-4">Ideal for small teams & instant celebrations.</p>
-              <div className="my-4 pt-4 border-t border-slate-800">
-                <span className="text-3xl font-black text-white">₹1,990</span>
-                <span className="text-slate-400 text-[11px] block font-semibold mt-1">+ 18% GST (₹358) • Total ₹2,348</span>
+            <div className="relative flex flex-col p-6 rounded-3xl bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-md hover:border-slate-300 transition-all">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Starter Pack</span>
+              <h3 className="text-2xl font-black text-slate-900 mb-1">10 Credits</h3>
+              <p className="text-slate-500 text-xs mb-4">Ideal for small teams & instant celebrations.</p>
+              <div className="my-4 pt-4 border-t border-slate-100">
+                <span className="text-3xl font-black text-slate-900">₹1,990</span>
+                <span className="text-slate-500 text-[11px] block font-semibold mt-1">+ 18% GST (₹358) • Total ₹2,348</span>
               </div>
-              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 10 Experience Credits</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Standard Corporate Templates</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Instant WhatsApp & Email Links</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 1-Year Credit Validity</li>
+              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 10 Experience Credits</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Standard Corporate Templates</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Instant WhatsApp & Email Links</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 1-Year Credit Validity</li>
               </ul>
-              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all">
+              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all">
                 Select Starter Plan
               </a>
             </div>
 
             {/* Plan 2 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-rose-950/70 via-slate-900 to-slate-900 border-2 border-rose-500/60 text-white shadow-2xl hover:border-rose-400 transition-all scale-[1.02]">
+            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-rose-50/60 via-white to-white border-2 border-rose-500 text-slate-900 shadow-xl hover:border-rose-600 transition-all scale-[1.02]">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-rose-500 to-pink-600 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-md whitespace-nowrap">
                 ⭐ Most Popular
               </div>
-              <span className="text-xs font-bold text-rose-400 uppercase tracking-widest mb-2">Growth Pack</span>
-              <h3 className="text-2xl font-black text-white mb-1">28 Credits <span className="text-xs text-rose-400 font-bold">(25 + 3 Bonus)</span></h3>
-              <p className="text-slate-400 text-xs mb-4">10% Bonus Credits Free! Great for active teams.</p>
-              <div className="my-4 pt-4 border-t border-slate-800">
-                <span className="text-3xl font-black text-white">₹4,477</span>
-                <span className="text-slate-400 text-[11px] block font-semibold mt-1">+ 18% GST (₹806) • Total ₹5,283</span>
+              <span className="text-xs font-bold text-rose-600 uppercase tracking-widest mb-2">Growth Pack</span>
+              <h3 className="text-2xl font-black text-slate-900 mb-1">28 Credits <span className="text-xs text-rose-600 font-bold">(25 + 3 Bonus)</span></h3>
+              <p className="text-slate-500 text-xs mb-4">10% Bonus Credits Free! Great for active teams.</p>
+              <div className="my-4 pt-4 border-t border-rose-100">
+                <span className="text-3xl font-black text-slate-900">₹4,477</span>
+                <span className="text-slate-500 text-[11px] block font-semibold mt-1">+ 18% GST (₹806) • Total ₹5,283</span>
               </div>
-              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 25 + 3 Free Bonus Credits</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> All Corporate Templates</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Company Logo & Custom Branding</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Employee Roster CSV Upload</li>
+              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 25 + 3 Free Bonus Credits</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> All Corporate Templates</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Company Logo & Custom Branding</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Employee Roster CSV Upload</li>
               </ul>
-              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-xs shadow-lg shadow-rose-500/30 transition-all">
+              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-xs shadow-lg shadow-rose-500/25 transition-all">
                 Select Growth Plan
               </a>
             </div>
 
             {/* Plan 3 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-slate-900/80 border border-amber-500/40 text-white shadow-xl hover:border-amber-400 transition-all">
+            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-amber-50/50 via-white to-white border border-amber-300 text-slate-900 shadow-md hover:border-amber-400 transition-all">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-[10px] font-black uppercase tracking-wider text-slate-950 shadow-md whitespace-nowrap">
                 🔥 Best Value
               </div>
-              <span className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">Enterprise Pack</span>
-              <h3 className="text-2xl font-black text-white mb-1">60 Credits <span className="text-xs text-amber-400 font-bold">(50 + 10 Bonus)</span></h3>
-              <p className="text-slate-400 text-xs mb-4">20% Bonus Credits Free! Complete annual coverage.</p>
-              <div className="my-4 pt-4 border-t border-slate-800">
-                <span className="text-3xl font-black text-white">₹7,960</span>
-                <span className="text-slate-400 text-[11px] block font-semibold mt-1">+ 18% GST (₹1,433) • Total ₹9,393</span>
+              <span className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Enterprise Pack</span>
+              <h3 className="text-2xl font-black text-slate-900 mb-1">60 Credits <span className="text-xs text-amber-700 font-bold">(50 + 10 Bonus)</span></h3>
+              <p className="text-slate-500 text-xs mb-4">20% Bonus Credits Free! Complete annual coverage.</p>
+              <div className="my-4 pt-4 border-t border-amber-100">
+                <span className="text-3xl font-black text-slate-900">₹7,960</span>
+                <span className="text-slate-500 text-[11px] block font-semibold mt-1">+ 18% GST (₹1,433) • Total ₹9,393</span>
               </div>
-              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 50 + 10 Free Bonus Credits</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Employee Onboarding & Kudos</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Automated Occasion Engine</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Priority HR Support</li>
+              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 50 + 10 Free Bonus Credits</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Employee Onboarding & Kudos</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Automated Occasion Engine</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Priority HR Support</li>
               </ul>
               <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs transition-all">
                 Select Enterprise Plan
@@ -527,19 +528,19 @@ export default function BusinessLandingClient() {
             </div>
 
             {/* Plan 4 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-slate-900/80 border border-purple-500/40 text-white shadow-xl hover:border-purple-400 transition-all">
-              <span className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-2">Custom Scale</span>
-              <h3 className="text-2xl font-black text-white mb-1">100+ Credits</h3>
-              <p className="text-slate-400 text-xs mb-4">25% Bonus Credits Free! Custom bulk corporate scale.</p>
-              <div className="my-4 pt-4 border-t border-slate-800">
-                <span className="text-3xl font-black text-white">Custom</span>
-                <span className="text-slate-400 text-[11px] block font-semibold mt-1">₹199 / credit + 25% Extra Free</span>
+            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-purple-50/50 via-white to-white border border-purple-200 text-slate-900 shadow-md hover:border-purple-300 transition-all">
+              <span className="text-xs font-bold text-purple-700 uppercase tracking-widest mb-2">Custom Scale</span>
+              <h3 className="text-2xl font-black text-slate-900 mb-1">100+ Credits</h3>
+              <p className="text-slate-500 text-xs mb-4">25% Bonus Credits Free! Custom bulk corporate scale.</p>
+              <div className="my-4 pt-4 border-t border-purple-100">
+                <span className="text-3xl font-black text-slate-900">Custom</span>
+                <span className="text-slate-500 text-[11px] block font-semibold mt-1">₹199 / credit + 25% Extra Free</span>
               </div>
-              <ul className="text-xs text-slate-300 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 100+ Credits + 25% Free Bonus</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Dedicated Subdomain & Branding</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Multi-HR Admin Accounts</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Dedicated Account Manager</li>
+              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 100+ Credits + 25% Free Bonus</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Dedicated Subdomain & Branding</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Multi-HR Admin Accounts</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Dedicated Account Manager</li>
               </ul>
               <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-all">
                 Request Custom Quote
@@ -819,8 +820,12 @@ export default function BusinessLandingClient() {
       <style jsx>{`
         .b2b-wrapper {
           min-height: 100vh;
-          background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 60%, #090d16 100%);
-          color: #f8fafc;
+          background: #ffffff;
+          background-image:
+            radial-gradient(circle at 10% 10%, rgba(244, 63, 94, 0.04) 0%, transparent 40%),
+            radial-gradient(circle at 90% 20%, rgba(37, 99, 235, 0.04) 0%, transparent 40%),
+            linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+          color: #0f172a;
           font-family: inherit;
           padding-bottom: 80px;
         }
@@ -836,7 +841,7 @@ export default function BusinessLandingClient() {
         }
 
         .b2b-hero {
-          padding: 90px 0 60px;
+          padding: 70px 0 50px;
           text-align: center;
         }
 
@@ -846,32 +851,32 @@ export default function BusinessLandingClient() {
           gap: 8px;
           padding: 6px 16px;
           border-radius: 999px;
-          background: rgba(99, 102, 241, 0.15);
-          border: 1px solid rgba(99, 102, 241, 0.35);
-          color: #a5b4fc;
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
+          color: #1d4ed8;
           font-size: 0.85rem;
-          font-weight: 600;
+          font-weight: 700;
           margin-bottom: 24px;
         }
 
         .b2b-hero-title {
           font-size: 3.2rem;
-          font-weight: 800;
+          font-weight: 900;
           line-height: 1.15;
           letter-spacing: -0.02em;
           margin-bottom: 20px;
-          color: #ffffff;
+          color: #0f172a;
         }
 
         .gradient-text {
-          background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #a855f7 100%);
+          background: linear-gradient(135deg, #e11d48 0%, #be185d 50%, #7c3aed 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
 
         .b2b-hero-subtitle {
-          font-size: 1.2rem;
-          color: #94a3b8;
+          font-size: 1.15rem;
+          color: #475569;
           max-width: 720px;
           margin: 0 auto 36px;
           line-height: 1.6;
@@ -899,13 +904,13 @@ export default function BusinessLandingClient() {
           text-decoration: none;
           border: none;
           cursor: pointer;
-          box-shadow: 0 4px 20px rgba(244, 63, 94, 0.35);
+          box-shadow: 0 4px 20px rgba(244, 63, 94, 0.25);
           transition: all 0.2s ease;
         }
 
         .b2b-btn-primary:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(244, 63, 94, 0.5);
+          box-shadow: 0 8px 30px rgba(244, 63, 94, 0.4);
         }
 
         .b2b-btn-secondary {
@@ -914,17 +919,19 @@ export default function BusinessLandingClient() {
           gap: 8px;
           padding: 14px 24px;
           border-radius: 12px;
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: #ffffff;
-          font-weight: 600;
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
+          color: #1e293b;
+          font-weight: 700;
           font-size: 1rem;
           cursor: pointer;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
           transition: all 0.2s ease;
         }
 
         .b2b-btn-secondary:hover {
-          background: rgba(255, 255, 255, 0.15);
+          background: #f8fafc;
+          border-color: #94a3b8;
         }
 
         .value-strip {
@@ -934,7 +941,7 @@ export default function BusinessLandingClient() {
           gap: 24px;
           flex-wrap: wrap;
           padding-top: 24px;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          border-top: 1px solid #e2e8f0;
         }
 
         .value-item {
@@ -942,7 +949,7 @@ export default function BusinessLandingClient() {
           align-items: center;
           gap: 8px;
           font-size: 0.9rem;
-          color: #cbd5e1;
+          color: #475569;
         }
 
         .b2b-section {
@@ -958,7 +965,7 @@ export default function BusinessLandingClient() {
           font-weight: 800;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: #f43f5e;
+          color: #e11d48;
           display: block;
           margin-bottom: 8px;
         }
@@ -966,21 +973,21 @@ export default function BusinessLandingClient() {
         .section-heading {
           font-size: 2.2rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
           margin-bottom: 12px;
         }
 
         .section-desc {
-          color: #94a3b8;
+          color: #64748b;
           font-size: 1.05rem;
           max-width: 600px;
           margin: 0 auto;
         }
 
         .glass-panel {
-          background: rgba(30, 41, 59, 0.6);
-          backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);
           border-radius: 20px;
         }
 
@@ -1000,19 +1007,21 @@ export default function BusinessLandingClient() {
           gap: 8px;
           padding: 10px 18px;
           border-radius: 12px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: #94a3b8;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          color: #64748b;
           font-weight: 600;
           font-size: 0.9rem;
           cursor: pointer;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.02);
           transition: all 0.2s ease;
         }
 
         .showcase-tab.active {
-          background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(225, 29, 72, 0.1) 100%);
+          background: #fff1f2;
           border-color: #f43f5e;
-          color: #ffffff;
+          color: #be185d;
+          font-weight: 700;
         }
 
         .showcase-card {
@@ -1030,8 +1039,8 @@ export default function BusinessLandingClient() {
           display: inline-block;
           font-size: 0.75rem;
           font-weight: 700;
-          color: #38bdf8;
-          background: rgba(56, 189, 248, 0.15);
+          color: #0284c7;
+          background: #e0f2fe;
           padding: 4px 10px;
           border-radius: 6px;
           margin-bottom: 12px;
@@ -1040,13 +1049,13 @@ export default function BusinessLandingClient() {
         .showcase-title {
           font-size: 1.8rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
           margin-bottom: 14px;
           line-height: 1.25;
         }
 
         .showcase-text {
-          color: #94a3b8;
+          color: #475569;
           font-size: 1rem;
           line-height: 1.6;
           margin-bottom: 24px;
@@ -1063,12 +1072,12 @@ export default function BusinessLandingClient() {
           display: flex;
           align-items: center;
           gap: 8px;
-          color: #e2e8f0;
+          color: #334155;
           font-size: 0.95rem;
         }
 
         .check-icon {
-          color: #10b981;
+          color: #059669;
           font-weight: 800;
         }
 
@@ -1076,9 +1085,9 @@ export default function BusinessLandingClient() {
           display: inline-flex;
           padding: 10px 18px;
           border-radius: 8px;
-          background: rgba(244, 63, 94, 0.15);
-          border: 1px solid rgba(244, 63, 94, 0.4);
-          color: #f43f5e;
+          background: #fff1f2;
+          border: 1px solid #fecdd3;
+          color: #e11d48;
           font-weight: 700;
           font-size: 0.9rem;
           text-decoration: none;
@@ -1092,11 +1101,11 @@ export default function BusinessLandingClient() {
 
         .preview-phone-frame {
           width: 320px;
-          background: #020617;
+          background: #0f172a;
           border-radius: 36px;
           padding: 12px;
           border: 4px solid #334155;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+          box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.25);
         }
 
         .phone-screen {
@@ -1215,17 +1224,18 @@ export default function BusinessLandingClient() {
         }
 
         .step-card {
-          background: rgba(30, 41, 59, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
           border-radius: 16px;
-          padding: 28px 20px;
+          padding: 26px 20px;
+          box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.04);
           position: relative;
         }
 
         .step-number {
           font-size: 0.75rem;
           font-weight: 800;
-          color: #64748b;
+          color: #94a3b8;
           margin-bottom: 12px;
         }
 
@@ -1237,13 +1247,13 @@ export default function BusinessLandingClient() {
         .step-title {
           font-size: 1.15rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
           margin-bottom: 8px;
         }
 
         .step-desc {
-          font-size: 0.85rem;
-          color: #94a3b8;
+          font-size: 0.88rem;
+          color: #64748b;
           line-height: 1.5;
         }
 
@@ -1253,12 +1263,12 @@ export default function BusinessLandingClient() {
         }
 
         .mockup-header-bar {
-          background: #0b0f19;
+          background: #f8fafc;
           padding: 12px 20px;
           display: flex;
           align-items: center;
           gap: 16px;
-          border-bottom: 1px solid #1e293b;
+          border-bottom: 1px solid #e2e8f0;
         }
 
         .mockup-dots {
@@ -1279,7 +1289,7 @@ export default function BusinessLandingClient() {
         .mockup-address {
           font-size: 0.75rem;
           color: #64748b;
-          background: #1e293b;
+          background: #e2e8f0;
           padding: 3px 12px;
           border-radius: 6px;
         }
@@ -1291,9 +1301,9 @@ export default function BusinessLandingClient() {
         }
 
         .mockup-sidebar {
-          background: #090d16;
+          background: #f8fafc;
           padding: 20px 16px;
-          border-right: 1px solid #1e293b;
+          border-right: 1px solid #e2e8f0;
           display: flex;
           flex-direction: column;
           gap: 8px;
@@ -1302,24 +1312,25 @@ export default function BusinessLandingClient() {
         .mockup-brand {
           font-size: 0.85rem;
           font-weight: 800;
-          color: #38bdf8;
+          color: #2563eb;
           margin-bottom: 16px;
         }
 
         .mockup-nav-item {
           font-size: 0.8rem;
-          color: #94a3b8;
+          color: #64748b;
           padding: 8px 12px;
           border-radius: 6px;
         }
 
         .mockup-nav-item.active {
-          background: #1e293b;
-          color: #ffffff;
+          background: #eff6ff;
+          color: #1d4ed8;
           font-weight: 700;
         }
 
         .mockup-main {
+          background: #ffffff;
           padding: 24px;
         }
 
@@ -1331,8 +1342,8 @@ export default function BusinessLandingClient() {
         }
 
         .stat-box {
-          background: #131c2e;
-          border: 1px solid #1e293b;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
           padding: 14px;
           border-radius: 10px;
           display: flex;
@@ -1342,7 +1353,7 @@ export default function BusinessLandingClient() {
 
         .stat-box.highlighted {
           border-color: rgba(244, 63, 94, 0.4);
-          background: rgba(244, 63, 94, 0.08);
+          background: rgba(244, 63, 94, 0.05);
         }
 
         .stat-label {
@@ -1354,12 +1365,12 @@ export default function BusinessLandingClient() {
         .stat-val {
           font-size: 1.2rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
         }
 
         .mockup-queue-card {
-          background: #131c2e;
-          border: 1px solid #1e293b;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
           border-radius: 12px;
           padding: 16px;
         }
@@ -1374,15 +1385,15 @@ export default function BusinessLandingClient() {
         .queue-header h4 {
           font-size: 0.95rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
           margin: 0;
         }
 
         .queue-badge {
           font-size: 0.7rem;
           font-weight: 700;
-          color: #f43f5e;
-          background: rgba(244, 63, 94, 0.15);
+          color: #e11d48;
+          background: #fff1f2;
           padding: 2px 8px;
           border-radius: 999px;
         }
@@ -1392,7 +1403,8 @@ export default function BusinessLandingClient() {
           align-items: center;
           gap: 12px;
           padding: 10px;
-          background: #0d1322;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
           border-radius: 8px;
           margin-bottom: 8px;
         }
@@ -1409,11 +1421,11 @@ export default function BusinessLandingClient() {
         }
 
         .queue-info strong {
-          color: #f8fafc;
+          color: #0f172a;
         }
 
         .queue-info span {
-          color: #94a3b8;
+          color: #64748b;
           font-size: 0.72rem;
         }
 
@@ -1435,10 +1447,11 @@ export default function BusinessLandingClient() {
         }
 
         .benefit-card {
-          background: rgba(30, 41, 59, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
           border-radius: 16px;
           padding: 24px;
+          box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.04);
         }
 
         .benefit-icon {
@@ -1449,13 +1462,13 @@ export default function BusinessLandingClient() {
         .benefit-title {
           font-size: 1.1rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
           margin-bottom: 8px;
         }
 
         .benefit-desc {
-          font-size: 0.85rem;
-          color: #94a3b8;
+          font-size: 0.88rem;
+          color: #64748b;
           line-height: 1.5;
         }
 
@@ -1485,27 +1498,28 @@ export default function BusinessLandingClient() {
         .form-group label {
           font-size: 0.85rem;
           font-weight: 700;
-          color: #cbd5e1;
+          color: #334155;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
-          background: #0f172a;
-          border: 1px solid #334155;
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
           border-radius: 10px;
           padding: 10px 14px;
-          color: #ffffff;
+          color: #0f172a;
           font-size: 0.95rem;
           font-family: inherit;
           outline: none;
-          transition: border-color 0.2s ease;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-          border-color: #f43f5e;
+          border-color: #2563eb;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
 
         .checkbox-grid {
@@ -1519,11 +1533,12 @@ export default function BusinessLandingClient() {
           align-items: center;
           gap: 8px;
           font-size: 0.82rem;
-          background: #0f172a;
-          border: 1px solid #334155;
+          background: #f8fafc;
+          border: 1px solid #cbd5e1;
           padding: 8px 12px;
           border-radius: 8px;
           cursor: pointer;
+          color: #334155;
         }
 
         .checkbox-inline {
@@ -1531,12 +1546,12 @@ export default function BusinessLandingClient() {
           align-items: center;
           gap: 10px;
           font-size: 0.82rem;
-          color: #94a3b8;
+          color: #64748b;
           cursor: pointer;
         }
 
         .checkbox-inline a {
-          color: #f43f5e;
+          color: #e11d48;
           text-decoration: underline;
         }
 
@@ -1546,9 +1561,9 @@ export default function BusinessLandingClient() {
         }
 
         .form-alert.error {
-          background: rgba(239, 68, 68, 0.15);
-          border: 1px solid rgba(239, 68, 68, 0.4);
-          color: #fca5a5;
+          background: #fef2f2;
+          border: 1px solid #fecaca;
+          color: #b91c1c;
           padding: 12px;
           border-radius: 8px;
           font-size: 0.9rem;
@@ -1562,8 +1577,8 @@ export default function BusinessLandingClient() {
           width: 64px;
           height: 64px;
           border-radius: 50%;
-          background: rgba(16, 185, 129, 0.15);
-          border: 1px solid rgba(16, 185, 129, 0.4);
+          background: #ecfdf5;
+          border: 1px solid #a7f3d0;
           font-size: 2rem;
           display: flex;
           align-items: center;
@@ -1574,12 +1589,12 @@ export default function BusinessLandingClient() {
         .success-title {
           font-size: 1.6rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
           margin-bottom: 12px;
         }
 
         .success-desc {
-          color: #94a3b8;
+          color: #64748b;
           font-size: 1rem;
           line-height: 1.6;
           max-width: 500px;
@@ -1605,7 +1620,7 @@ export default function BusinessLandingClient() {
           padding: 18px 24px;
           background: transparent;
           border: none;
-          color: #f8fafc;
+          color: #0f172a;
           font-weight: 700;
           font-size: 1rem;
           text-align: left;
@@ -1614,12 +1629,12 @@ export default function BusinessLandingClient() {
 
         .faq-toggle-icon {
           font-size: 1.3rem;
-          color: #f43f5e;
+          color: #e11d48;
         }
 
         .faq-answer {
           padding: 0 24px 20px;
-          color: #94a3b8;
+          color: #475569;
           font-size: 0.95rem;
           line-height: 1.6;
         }
@@ -1631,7 +1646,7 @@ export default function BusinessLandingClient() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.75);
+          background: rgba(15, 23, 42, 0.6);
           backdrop-filter: blur(8px);
           z-index: 1000;
           display: flex;
@@ -1644,6 +1659,10 @@ export default function BusinessLandingClient() {
           width: 100%;
           max-width: 480px;
           padding: 30px;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 24px;
+          box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.25);
         }
 
         .modal-header {
@@ -1656,7 +1675,7 @@ export default function BusinessLandingClient() {
         .modal-header h3 {
           font-size: 1.3rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #0f172a;
           margin: 0;
         }
 
@@ -1670,7 +1689,7 @@ export default function BusinessLandingClient() {
 
         .modal-desc {
           font-size: 0.9rem;
-          color: #94a3b8;
+          color: #64748b;
           margin-bottom: 20px;
         }
 
