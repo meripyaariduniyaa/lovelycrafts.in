@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import PreviewDemoButton from '@/components/PreviewDemoButton';
 
@@ -9,9 +9,23 @@ const ALL_CATEGORY = 'All experiences';
 export default function TemplatesCatalog({ templates }) {
   const [activeCategory, setActiveCategory] = useState(ALL_CATEGORY);
   const [query, setQuery] = useState('');
+  const [dynamicPricing, setDynamicPricing] = useState({});
+
+  // Fetch live pricing from API
+  useEffect(() => {
+    fetch('/api/pricing')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data.pricing) {
+          setDynamicPricing(data.pricing);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const categories = [ALL_CATEGORY, ...new Set(templates.map((template) => template.category).filter(Boolean))];
   const normalizedQuery = query.trim().toLowerCase();
+  
   const visibleTemplates = useMemo(() => templates.filter((template) => {
     const matchesCategory = activeCategory === ALL_CATEGORY || template.category === activeCategory;
     const searchableText = [
@@ -64,53 +78,60 @@ export default function TemplatesCatalog({ templates }) {
 
       {visibleTemplates.length > 0 ? (
         <div className="templates-grid">
-          {visibleTemplates.map((template) => (
-            <article key={template.id} className="template-card template-card--catalog">
-              <div className="template-card-art" style={{ background: template.gradient }}>
-                <span className="template-card-art-icon" aria-hidden="true">{template.emoji}</span>
-                <span className="template-card-badge">{template.badge}</span>
-                <span className="template-card-art-label">Interactive digital experience</span>
-              </div>
+          {visibleTemplates.map((template) => {
+            const pricing = dynamicPricing[template.id] || {};
+            const activePrice = pricing.price || template.price || 199;
+            const activeBasePrice = pricing.basePrice || template.basePrice || 499;
+            const activeBadge = pricing.badge || template.badge;
 
-              <div className="template-card-body">
-                <div className="template-card-heading">
-                  <div>
-                    <p className="template-card-category">{template.category} · {template.audience}</p>
-                    <h2>{template.title}</h2>
-                  </div>
-                  <span className="template-card-time">{template.time}</span>
+            return (
+              <article key={template.id} className="template-card template-card--catalog">
+                <div className="template-card-art" style={{ background: template.gradient }}>
+                  <span className="template-card-art-icon" aria-hidden="true">{template.emoji}</span>
+                  <span className="template-card-badge">{activeBadge}</span>
+                  <span className="template-card-art-label">Interactive digital experience</span>
                 </div>
-                <p className="template-desc">{template.description}</p>
-                <ul className="template-feature-list">
-                  {template.features.map((feature) => <li key={feature}>{feature}</li>)}
-                </ul>
-                <div className="template-card-footer">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>₹{template.price}</span>
-                    <span style={{ fontSize: '0.78rem', color: '#94a3b8', textDecoration: 'line-through' }}>
-                      ₹{template.basePrice}
-                    </span>
+
+                <div className="template-card-body">
+                  <div className="template-card-heading">
+                    <div>
+                      <p className="template-card-category">{template.category} · {template.audience}</p>
+                      <h2>{template.title}</h2>
+                    </div>
+                    <span className="template-card-time">{template.time}</span>
                   </div>
-                  <div className="template-card-actions" style={{ justifyContent: 'flex-end', gap: '0.5rem' }}>
-                    <PreviewDemoButton
-                      templateId={template.id}
-                      className="btn-secondary"
-                      style={{ padding: '0.55rem 0.85rem', fontSize: '0.8rem', borderRadius: '999px' }}
-                    >
-                      👁️ Preview
-                    </PreviewDemoButton>
-                    <Link
-                      href={`/create?template=${template.id}`}
-                      className="btn-primary template-create-link"
-                      style={{ padding: '0.55rem 1rem', fontSize: '0.82rem', borderRadius: '999px', fontWeight: 800 }}
-                    >
-                      ✨ Craft This
-                    </Link>
+                  <p className="template-desc">{template.description}</p>
+                  <ul className="template-feature-list">
+                    {template.features.map((feature) => <li key={feature}>{feature}</li>)}
+                  </ul>
+                  <div className="template-card-footer">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>₹{activePrice}</span>
+                      <span style={{ fontSize: '0.78rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                        ₹{activeBasePrice}
+                      </span>
+                    </div>
+                    <div className="template-card-actions" style={{ justifyContent: 'flex-end', gap: '0.5rem' }}>
+                      <PreviewDemoButton
+                        templateId={template.id}
+                        className="btn-secondary"
+                        style={{ padding: '0.55rem 0.85rem', fontSize: '0.8rem', borderRadius: '999px' }}
+                      >
+                        👁️ Preview
+                      </PreviewDemoButton>
+                      <Link
+                        href={`/create?template=${template.id}`}
+                        className="btn-primary template-create-link"
+                        style={{ padding: '0.55rem 1rem', fontSize: '0.82rem', borderRadius: '999px', fontWeight: 800 }}
+                      >
+                        ✨ Craft This
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       ) : (
         <div className="templates-empty-state">

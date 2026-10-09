@@ -48,12 +48,10 @@ export default function Header() {
     <>
       <nav className="topbar" id="site-header">
         <div className="topbar-inner">
-          <LovelyCraftsLogo size={40} />
+          <LovelyCraftsLogo size={38} />
 
-          {/* Desktop Navigation */}
+          {/* Clean 4-Link Desktop Navigation */}
           <div className="nav-links desktop-nav">
-
-
             <Link
               href="/templates"
               className={`nav-link ${pathname === '/templates' ? 'active' : ''}`}
@@ -69,38 +67,10 @@ export default function Header() {
             </Link>
 
             <Link
-              href="/about"
-              className={`nav-link ${pathname === '/about' ? 'active' : ''}`}
-            >
-              💡 About
-            </Link>
-
-            <Link
-              href="/faq"
-              className={`nav-link ${pathname === '/faq' ? 'active' : ''}`}
-            >
-              ❓ FAQ
-            </Link>
-
-            <Link
-              href="/blog"
-              className={`nav-link ${pathname?.startsWith('/blog') ? 'active' : ''}`}
-            >
-              📝 Blog
-            </Link>
-
-            <Link
               href="/business"
               className={`nav-link ${pathname === '/business' ? 'active' : ''}`}
             >
               💼 For Business
-            </Link>
-
-            <Link
-              href="/contact"
-              className={`nav-link ${pathname === '/contact' ? 'active' : ''}`}
-            >
-              💌 Contact
             </Link>
 
             <Link
@@ -155,7 +125,7 @@ export default function Header() {
       <div className={`mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-drawer-header">
           <div onClick={() => setMobileMenuOpen(false)}>
-            <LovelyCraftsLogo size={36} />
+            <LovelyCraftsLogo size={34} />
           </div>
           <button
             type="button"
@@ -168,8 +138,6 @@ export default function Header() {
         </div>
 
         <div className="mobile-drawer-links">
-
-
           <Link
             href="/templates"
             className="mobile-nav-item"
@@ -207,62 +175,14 @@ export default function Header() {
           </Link>
 
           <Link
-            href="/creators"
-            className="mobile-nav-item"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <span className="mobile-nav-icon">👑</span>
-            <div>
-              <strong>LovelyCrafts Creator Club</strong>
-              <small>Earn up to 18% commission &amp; custom coupons</small>
-            </div>
-          </Link>
-
-          <Link
-            href="/blog"
-            className="mobile-nav-item"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <span className="mobile-nav-icon">📝</span>
-            <div>
-              <strong>Blog &amp; Guides</strong>
-              <small>Surprise ideas, relationship stories &amp; tips</small>
-            </div>
-          </Link>
-
-          <Link
-            href="/about"
-            className="mobile-nav-item"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <span className="mobile-nav-icon">💡</span>
-            <div>
-              <strong>About Us</strong>
-              <small>Our story, mission &amp; digital gift platform</small>
-            </div>
-          </Link>
-
-          <Link
             href="/faq"
             className="mobile-nav-item"
             onClick={() => setMobileMenuOpen(false)}
           >
             <span className="mobile-nav-icon">❓</span>
             <div>
-              <strong>Frequently Asked Questions</strong>
-              <small>Help desk, photo privacy &amp; link guide</small>
-            </div>
-          </Link>
-
-          <Link
-            href="/contact"
-            className="mobile-nav-item"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <span className="mobile-nav-icon">💌</span>
-            <div>
-              <strong>Contact &amp; Support Desk</strong>
-              <small>Send a message or reach support team</small>
+              <strong>Help &amp; FAQ</strong>
+              <small>Common questions, photo privacy &amp; guide</small>
             </div>
           </Link>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { templates } from '@/lib/templates';
 
@@ -44,6 +44,18 @@ const MOODS = [
 
 export default function EmotionFinder() {
   const [selectedMoodId, setSelectedMoodId] = useState('loved');
+  const [dynamicPricing, setDynamicPricing] = useState({});
+
+  useEffect(() => {
+    fetch('/api/pricing')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data.pricing) {
+          setDynamicPricing(data.pricing);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const activeMood = MOODS.find((m) => m.id === selectedMoodId) || MOODS[0];
   const recommendedTemplates = templates.filter((t) => activeMood.templateIds.includes(t.id));
@@ -189,9 +201,11 @@ export default function EmotionFinder() {
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
               <div>
-                <span style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a' }}>₹{template.price}</span>
+                <span style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a' }}>
+                  ₹{dynamicPricing[template.id]?.price || template.price || 199}
+                </span>
                 <span style={{ fontSize: '0.75rem', color: '#94a3b8', textDecoration: 'line-through', marginLeft: '6px' }}>
-                  ₹{template.basePrice}
+                  ₹{dynamicPricing[template.id]?.basePrice || template.basePrice || 499}
                 </span>
               </div>
 

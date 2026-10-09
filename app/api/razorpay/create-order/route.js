@@ -3,6 +3,7 @@ import Razorpay from 'razorpay';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { resolveCoupon } from '@/lib/coupons';
 import { verifyReferral } from '@/lib/referral-crypto';
+import { getTemplatePrice } from '@/lib/pricing';
 
 export async function POST(request) {
   try {
@@ -13,9 +14,10 @@ export async function POST(request) {
     if (!snap.exists) return NextResponse.json({ error: 'Note not found.' }, { status: 404 });
 
     const raw = snap.data();
-    const baseAmount = 19900; // ₹199 base note price
+    const templateId = raw.template || 'proposal';
+    const priceInfo = await getTemplatePrice(templateId);
+    const baseAmount = priceInfo.pricePaise || 19900;
     const totalAmount = baseAmount;
-    const templateId = raw.template || null;
 
     // Check referral cookie from request
     const refCookie = request.cookies.get('lc_ref')?.value;

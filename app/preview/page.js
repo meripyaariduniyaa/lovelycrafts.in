@@ -59,6 +59,16 @@ function PreviewContent() {
   const [copied, setCopied] = useState(false);
   const [showPleaseModal, setShowPleaseModal] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [dynamicPricing, setDynamicPricing] = useState({});
+
+  useEffect(() => {
+    fetch('/api/pricing')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data.pricing) setDynamicPricing(data.pricing);
+      })
+      .catch(() => {});
+  }, []);
 
   // Listen to Firestore
   useEffect(() => {
@@ -157,7 +167,7 @@ function PreviewContent() {
 
   const accent = ACCENT_MAP[note?.template] || ACCENT_MAP.proposal;
   const selectedTemplate = templates.find((t) => t.id === note?.template);
-  const totalAmount = selectedTemplate?.price || 199;
+  const totalAmount = dynamicPricing[note?.template]?.price || selectedTemplate?.price || 199;
 
   // ── LOADING ──
   if (loading) {

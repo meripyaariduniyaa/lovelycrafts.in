@@ -47,385 +47,771 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex flex-col items-center">
-      {/* ========================================================================= */}
-      {/* 1. PLAYFUL EMOTIONAL HERO BANNER */}
-      {/* ========================================================================= */}
-      <section
-        style={{
-          background: 'linear-gradient(135deg, rgba(255, 241, 242, 0.98) 0%, rgba(255, 245, 248, 0.92) 50%, rgba(245, 243, 255, 0.98) 100%)',
-          border: '1.5px solid rgba(244, 63, 94, 0.2)',
-          boxShadow: '0 20px 50px -15px rgba(225, 29, 72, 0.12)',
-        }}
-        className="w-full text-center py-10 sm:py-16 px-5 sm:px-12 relative overflow-hidden rounded-3xl mb-8"
-      >
-        {/* Playful Floating Ambient Pill Accents */}
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-8 hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-rose-100 text-rose-600 text-xs font-bold shadow-sm animate-float">
-          <span>💌 Instant WhatsApp Link</span>
-        </div>
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-8 hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-purple-100 text-purple-600 text-xs font-bold shadow-sm animate-float-reverse">
-          <span>🎵 Plays Your Song</span>
-        </div>
+    <main className="shell">
+      <div className="main-content">
+        {/* ========================================================================= */}
+        {/* 1. PLAYFUL EMOTIONAL HERO BANNER */}
+        {/* ========================================================================= */}
+        <section
+          className="hero-section hero-enhanced text-center mt-4 mb-8"
+          style={{
+            borderRadius: 'clamp(20px, 4vw, 32px)',
+            padding: 'clamp(2rem, 5vw, 3.5rem) clamp(1rem, 3.5vw, 2.5rem)',
+            background: 'linear-gradient(135deg, rgba(255, 241, 242, 0.98) 0%, rgba(255, 245, 248, 0.95) 50%, rgba(245, 243, 255, 0.98) 100%)',
+            border: '1.5px solid rgba(244, 63, 94, 0.18)',
+            boxShadow: '0 20px 50px -15px rgba(225, 29, 72, 0.12)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <div className="hero-glow-orb" aria-hidden="true" />
+          <span className="hero-floating-decor d1" aria-hidden="true">💌</span>
+          <span className="hero-floating-decor d2" aria-hidden="true">💖</span>
+          <span className="hero-floating-decor d3" aria-hidden="true">✨</span>
+          <span className="hero-floating-decor d4" aria-hidden="true">🎂</span>
 
-        {/* Hero Top Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/25 text-rose-700 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-5">
-          <span className="animate-heartbeat">💖</span>
-          <span>Crafted To Bring Happy Tears &amp; Big Smiles</span>
-        </div>
-
-        {/* Hero Main Heading */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight mb-4 leading-tight">
-          Turn Real Emotions Into <br className="hidden sm:inline" />
-          <span className="bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
-            Magical Interactive Surprises
-          </span>
-        </h1>
-
-        {/* Hero Subtitle */}
-        <p className="text-slate-600 text-sm sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed font-medium">
-          Create a private, unskippable digital experience in 3 minutes. Perfect for birthdays, proposals, anniversaries, apologies, and long-distance lovers.
-        </p>
-
-        {/* Hero Call to Actions */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6">
-          <Link
-            href="/templates"
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-rose-500 via-pink-600 to-rose-600 text-white font-black text-sm sm:text-base shadow-lg shadow-rose-500/30 hover:scale-105 active:scale-95 transition-all duration-200"
+          {/* Hero Top Pill */}
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: '#fff1f2',
+              border: '1px solid #fecdd3',
+              padding: '0.35rem 1rem',
+              borderRadius: '999px',
+              fontSize: 'clamp(0.72rem, 1.6vw, 0.8rem)',
+              color: '#be185d',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: '1rem',
+              boxShadow: '0 2px 8px rgba(244,63,94,0.08)',
+            }}
           >
-            ✨ Craft a Surprise Now (From ₹199) →
-          </Link>
-          <Link
-            href="/arcade"
-            className="px-6 py-4 rounded-full bg-white text-purple-700 border border-purple-200 font-bold text-sm sm:text-base shadow-sm hover:bg-purple-50 hover:border-purple-300 transition-all duration-200"
+            <span className="live-pulse-dot" aria-hidden="true" />
+            <span>✨ Crafted To Bring Happy Tears &amp; Big Smiles</span>
+          </div>
+
+          {/* Main Heading */}
+          <h1
+            style={{
+              fontSize: 'clamp(2.1rem, 5.5vw, 3.8rem)',
+              lineHeight: 1.15,
+              fontWeight: 900,
+              color: '#0f172a',
+              margin: '0 auto 1rem',
+              letterSpacing: '-0.03em',
+              maxWidth: '850px',
+            }}
           >
-            🎮 Play Couple Arcade
-          </Link>
-        </div>
+            Turn Real Emotions Into <br />
+            <span className="cursive" style={{ color: '#e11d48', fontSize: '1.08em' }}>
+              Magical Interactive Surprises
+            </span>
+          </h1>
 
-        {/* Corporate Link Subtext */}
-        <div className="mb-6">
-          <Link
-            href="/business"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-rose-600 hover:text-rose-800 underline decoration-rose-300 underline-offset-4"
+          {/* Subtitle */}
+          <p
+            style={{
+              color: '#475569',
+              fontSize: 'clamp(0.95rem, 2vw, 1.12rem)',
+              maxWidth: '680px',
+              margin: '0 auto 1.75rem',
+              lineHeight: 1.6,
+              fontWeight: 500,
+            }}
           >
-            💼 Planning company celebrations? Explore LovelyCrafts for Business →
-          </Link>
-        </div>
-
-        {/* Trust Highlight Chips */}
-        <div className="pt-6 border-t border-rose-200/60 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-slate-700 font-bold">
-          <span className="flex items-center gap-1.5">⚡ Ready in 3 mins</span>
-          <span className="text-rose-300">•</span>
-          <span className="flex items-center gap-1.5">📱 1-Click WhatsApp Share</span>
-          <span className="text-rose-300">•</span>
-          <span className="flex items-center gap-1.5">🔒 100% Private &amp; Safe</span>
-          <span className="text-rose-300">•</span>
-          <span className="flex items-center gap-1.5">🎵 Audio &amp; Confetti Included</span>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 2. LIVE REACTION ACTIVITY TICKER */}
-      {/* ========================================================================= */}
-      <div className="w-full flex justify-center mb-10">
-        <LiveActivityTicker />
-      </div>
-
-      {/* ========================================================================= */}
-      {/* 3. EMOTIONAL MOOD / INTENT MATCHER */}
-      {/* ========================================================================= */}
-      <section className="w-full mb-14">
-        <EmotionFinder />
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 4. THREE SIMPLE STEPS (HOW IT WORKS) */}
-      {/* ========================================================================= */}
-      <section className="w-full mb-16 px-2">
-        <div className="text-center mb-10">
-          <span className="text-xs font-black text-rose-600 uppercase tracking-widest block mb-2">Simple &amp; Fast</span>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900">How The Magic Unfolds in 3 Steps</h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-lg mx-auto font-medium">
-            No design skills needed. Just your genuine feelings and a few clicks.
+            Create a private, unskippable digital experience in 3 minutes. Perfect for birthdays, romantic proposals, anniversaries, apologies, and long-distance lovers.
           </p>
+
+          {/* CTA Buttons */}
+          <div className="hero-actions" style={{ marginBottom: '1.25rem' }}>
+            <Link
+              href="/templates"
+              className="btn-primary"
+              style={{
+                padding: '0.85rem 2rem',
+                fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
+                fontWeight: 800,
+                borderRadius: '999px',
+                background: 'linear-gradient(135deg, #f43f5e 0%, #be185d 100%)',
+                boxShadow: '0 8px 25px rgba(244, 63, 94, 0.35)',
+              }}
+            >
+              ✨ Craft a Surprise Now (From ₹199) ➔
+            </Link>
+
+            <Link
+              href="/arcade"
+              className="btn-secondary"
+              style={{
+                padding: '0.85rem 1.8rem',
+                fontSize: 'clamp(0.9rem, 2vw, 1rem)',
+                fontWeight: 800,
+                borderRadius: '999px',
+                background: '#ffffff',
+                border: '1.5px solid #ddd6fe',
+                color: '#6d28d9',
+              }}
+            >
+              🎮 Play Couple Arcade
+            </Link>
+          </div>
+
+          {/* Business Link */}
+          <div style={{ margin: '0.5rem 0 1.25rem' }}>
+            <Link
+              href="/business"
+              style={{
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                color: '#be185d',
+                textDecoration: 'underline',
+                textUnderlineOffset: '4px',
+              }}
+            >
+              💼 Planning company celebrations? Explore LovelyCrafts for Business ➔
+            </Link>
+          </div>
+
+          {/* Social Proof Strip */}
+          <div className="hero-social-proof">
+            <span className="hero-social-proof-item">
+              <span>⚡</span>
+              <span>Ready in <b>3 mins</b></span>
+            </span>
+            <span>•</span>
+            <span className="hero-social-proof-item">
+              <span>📱</span>
+              <span><b>1-Click</b> WhatsApp Share</span>
+            </span>
+            <span>•</span>
+            <span className="hero-social-proof-item">
+              <span>🔒</span>
+              <span><b>100% Private</b> &amp; Safe</span>
+            </span>
+            <span>•</span>
+            <span className="hero-social-proof-item">
+              <span>🎵</span>
+              <span><b>Music &amp; Confetti</b> Included</span>
+            </span>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 2. LIVE REACTION ACTIVITY TICKER */}
+        {/* ========================================================================= */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.5rem' }}>
+          <LiveActivityTicker />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Step 1 */}
-          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-rose-100/90 shadow-md shadow-rose-500/5 flex flex-col items-center text-center relative hover:translate-y-[-4px] transition-transform duration-200">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-100 to-pink-50 border border-rose-200 flex items-center justify-center text-2xl mb-5 shadow-inner">
-              🎨
+        {/* ========================================================================= */}
+        {/* 3. EMOTIONAL MOOD / INTENT MATCHER */}
+        {/* ========================================================================= */}
+        <section style={{ marginBottom: '3.5rem' }}>
+          <EmotionFinder />
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 4. THREE SIMPLE STEPS (HOW IT WORKS) */}
+        {/* ========================================================================= */}
+        <section style={{ marginBottom: '4rem' }}>
+          <div className="templates-section-heading templates-section-heading--centered">
+            <div>
+              <span className="templates-section-label">Simple &amp; Fast</span>
+              <h2>How The Magic Unfolds in 3 Steps</h2>
             </div>
-            <div className="inline-block px-3 py-0.5 rounded-full bg-rose-50 text-rose-600 font-black text-xs uppercase tracking-wider mb-2">
-              Step 1
-            </div>
-            <h3 className="text-lg font-black text-slate-900 mb-2">Pick an Experience</h3>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-medium">
-              Choose from interactive proposals, birthday bashes, sentimental anniversaries, distance bridges, or sincere apologies.
+            <p className="templates-subtitle">
+              No design skills needed. Just your genuine feelings, a few photos, and your favorite song.
             </p>
           </div>
 
-          {/* Step 2 */}
-          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-pink-100/90 shadow-md shadow-pink-500/5 flex flex-col items-center text-center relative hover:translate-y-[-4px] transition-transform duration-200">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-100 to-purple-50 border border-pink-200 flex items-center justify-center text-2xl mb-5 shadow-inner">
-              📸
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '1.5rem',
+              marginTop: '1.5rem',
+            }}
+          >
+            {/* Step 1 */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                padding: '2rem 1.5rem',
+                border: '1.5px solid #ffe4e6',
+                boxShadow: '0 8px 24px rgba(244, 63, 94, 0.05)',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '18px',
+                  background: 'linear-gradient(135deg, #ffe4e6, #fff1f2)',
+                  border: '1px solid #fecdd3',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.8rem',
+                  margin: '0 auto 1.25rem',
+                }}
+              >
+                🎨
+              </div>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 900,
+                  color: '#e11d48',
+                  background: '#fff1f2',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  textTransform: 'uppercase',
+                  display: 'inline-block',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                Step 1
+              </span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.5rem' }}>
+                Pick an Experience
+              </h3>
+              <p style={{ fontSize: '0.88rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
+                Choose from interactive proposals, birthday bashes, sentimental anniversaries, distance bridges, or sincere apologies.
+              </p>
             </div>
-            <div className="inline-block px-3 py-0.5 rounded-full bg-pink-50 text-pink-600 font-black text-xs uppercase tracking-wider mb-2">
-              Step 2
+
+            {/* Step 2 */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                padding: '2rem 1.5rem',
+                border: '1.5px solid #fce7f3',
+                boxShadow: '0 8px 24px rgba(244, 63, 94, 0.05)',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '18px',
+                  background: 'linear-gradient(135deg, #fce7f3, #fdf2f8)',
+                  border: '1px solid #fbcfe8',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.8rem',
+                  margin: '0 auto 1.25rem',
+                }}
+              >
+                📸
+              </div>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 900,
+                  color: '#db2777',
+                  background: '#fdf2f8',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  textTransform: 'uppercase',
+                  display: 'inline-block',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                Step 2
+              </span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.5rem' }}>
+                Add Photos &amp; Words
+              </h3>
+              <p style={{ fontSize: '0.88rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
+                Drop in your favorite photos, secret letter, inside jokes, and pick a heartwarming background melody.
+              </p>
             </div>
-            <h3 className="text-lg font-black text-slate-900 mb-2">Add Photos &amp; Words</h3>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-medium">
-              Drop in your favorite photos, secret letter, inside jokes, and pick a heartwarming background melody.
+
+            {/* Step 3 */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                padding: '2rem 1.5rem',
+                border: '1.5px solid #ede9fe',
+                boxShadow: '0 8px 24px rgba(124, 58, 237, 0.05)',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '18px',
+                  background: 'linear-gradient(135deg, #ede9fe, #f5f3ff)',
+                  border: '1px solid #ddd6fe',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.8rem',
+                  margin: '0 auto 1.25rem',
+                }}
+              >
+                💌
+              </div>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 900,
+                  color: '#7c3aed',
+                  background: '#f5f3ff',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  textTransform: 'uppercase',
+                  display: 'inline-block',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                Step 3
+              </span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.5rem' }}>
+                Share on WhatsApp
+              </h3>
+              <p style={{ fontSize: '0.88rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
+                Get an instant private link. When they open it, confetti pops, music plays, and your surprise unfolds!
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 5. INTERACTIVE TEMPLATES CATALOG */}
+        {/* ========================================================================= */}
+        <section className="templates-section" style={{ marginBottom: '4rem' }}>
+          <div className="templates-section-heading">
+            <div>
+              <span className="templates-section-label">Curated Surprises</span>
+              <h2>Choose a Template Experience</h2>
+            </div>
+            <p className="templates-subtitle">
+              Every template is custom crafted with smooth animations, audio player, interactive games, and private photo galleries.
+            </p>
+          </div>
+          <TemplatesCatalog templates={templates} />
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 6. COUPLE & BESTIE MINI-GAMES ARCADE SHOWCASE */}
+        {/* ========================================================================= */}
+        <section
+          style={{
+            marginBottom: '4rem',
+            background: 'linear-gradient(135deg, #faf5ff 0%, #fff1f2 50%, #fdf2f8 100%)',
+            border: '1.5px solid #e9d5ff',
+            borderRadius: '28px',
+            padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+            boxShadow: '0 12px 36px rgba(147, 51, 234, 0.06)',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '1rem',
+              marginBottom: '1.75rem',
+            }}
+          >
+            <div>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 900,
+                  color: '#7c3aed',
+                  background: '#f3e8ff',
+                  border: '1px solid #e9d5ff',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  textTransform: 'uppercase',
+                  display: 'inline-block',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                🎮 Couple &amp; Friends Arcade
+              </span>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2rem)', fontWeight: 900, color: '#0f172a', margin: '0 0 0.25rem' }}>
+                Play Cute 30s Games Together
+              </h2>
+              <p style={{ color: '#64748b', fontSize: '0.9rem', margin: 0 }}>
+                Test your chemistry, spin the date wheel, scratch surprise coupons, and challenge each other!
+              </p>
+            </div>
+            <Link
+              href="/arcade"
+              className="btn-primary"
+              style={{
+                background: 'linear-gradient(135deg, #8b5cf6, #be185d)',
+                padding: '0.75rem 1.5rem',
+                fontSize: '0.88rem',
+                borderRadius: '999px',
+                fontWeight: 800,
+                boxShadow: '0 4px 14px rgba(139, 92, 246, 0.3)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              🎮 Open Arcade ➔
+            </Link>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '1rem',
+            }}
+          >
+            <Link
+              href="/arcade/love-quiz"
+              style={{
+                background: '#ffffff',
+                padding: '1.25rem',
+                borderRadius: '20px',
+                border: '1px solid #f3e8ff',
+                textDecoration: 'none',
+                display: 'block',
+                transition: 'transform 0.2s',
+              }}
+            >
+              <div style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>💖</div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.25rem' }}>
+                Chemistry Quiz
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+                6 rapid romance questions to test couple synergy.
+              </p>
+            </Link>
+
+            <Link
+              href="/arcade/heart-rush"
+              style={{
+                background: '#ffffff',
+                padding: '1.25rem',
+                borderRadius: '20px',
+                border: '1px solid #fce7f3',
+                textDecoration: 'none',
+                display: 'block',
+                transition: 'transform 0.2s',
+              }}
+            >
+              <div style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>⚡</div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.25rem' }}>
+                Heart Rush!
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+                Catch falling love letters &amp; dodge heartbreak bombs.
+              </p>
+            </Link>
+
+            <Link
+              href="/arcade/memory-match"
+              style={{
+                background: '#ffffff',
+                padding: '1.25rem',
+                borderRadius: '20px',
+                border: '1px solid #ede9fe',
+                textDecoration: 'none',
+                display: 'block',
+                transition: 'transform 0.2s',
+              }}
+            >
+              <div style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>🃏</div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.25rem' }}>
+                Memory Match
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+                Flip matching couple icons against the clock.
+              </p>
+            </Link>
+
+            <Link
+              href="/arcade/speed-tap"
+              style={{
+                background: '#ffffff',
+                padding: '1.25rem',
+                borderRadius: '20px',
+                border: '1px solid #fef3c7',
+                textDecoration: 'none',
+                display: 'block',
+                transition: 'transform 0.2s',
+              }}
+            >
+              <div style={{ fontSize: '2.2rem', marginBottom: '0.5rem' }}>🫂</div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.25rem' }}>
+                10s Hug Frenzy
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+                Speed tap duel to see who sends the most hugs!
+              </p>
+            </Link>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 7. "HAPPY TEARS & SMILES" WALL OF LOVE (TESTIMONIALS) */}
+        {/* ========================================================================= */}
+        <section style={{ marginBottom: '4rem' }}>
+          <div className="templates-section-heading templates-section-heading--centered">
+            <div>
+              <span className="templates-section-label">Real Stories</span>
+              <h2>Happy Tears &amp; Unforgettable Smiles</h2>
+            </div>
+            <p className="templates-subtitle">
+              See how thousands of partners, besties, and families made someone feel extraordinary.
             </p>
           </div>
 
-          {/* Step 3 */}
-          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-purple-100/90 shadow-md shadow-purple-500/5 flex flex-col items-center text-center relative hover:translate-y-[-4px] transition-transform duration-200">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-100 to-indigo-50 border border-purple-200 flex items-center justify-center text-2xl mb-5 shadow-inner">
-              💌
-            </div>
-            <div className="inline-block px-3 py-0.5 rounded-full bg-purple-50 text-purple-600 font-black text-xs uppercase tracking-wider mb-2">
-              Step 3
-            </div>
-            <h3 className="text-lg font-black text-slate-900 mb-2">Share on WhatsApp</h3>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-medium">
-              Get an instant private link. When they open it, confetti pops, music plays, and your surprise unfolds!
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 5. INTERACTIVE TEMPLATES CATALOG */}
-      {/* ========================================================================= */}
-      <section className="w-full my-6">
-        <div className="text-center mb-8">
-          <span className="text-xs font-extrabold text-rose-600 uppercase tracking-widest block mb-2">Curated Surprises</span>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900">Choose a Template Experience</h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-lg mx-auto font-medium">
-            Every template is custom crafted with smooth animations, audio player, interactive games, and private photo galleries.
-          </p>
-        </div>
-        <TemplatesCatalog templates={templates} />
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 6. COUPLE & BESTIE MINI-GAMES ARCADE SHOWCASE */}
-      {/* ========================================================================= */}
-      <section className="w-full my-12 bg-gradient-to-br from-purple-50/90 via-pink-50/60 to-rose-50/90 border border-purple-200/70 rounded-3xl p-6 sm:p-10 shadow-sm">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100 border border-purple-200 text-purple-800 text-xs font-extrabold uppercase tracking-wider mb-2">
-              🎮 Couple &amp; Friends Arcade
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-              Play Cute 30s Games Together
-            </h2>
-            <p className="text-slate-600 text-xs sm:text-sm mt-1 max-w-xl font-medium">
-              Want something fun right now? Play interactive couple quizzes, scratch surprise vouchers, and spin the date wheel!
-            </p>
-          </div>
-          <Link
-            href="/arcade"
-            className="px-6 py-3 rounded-full bg-purple-600 text-white font-extrabold text-sm shadow-md hover:bg-purple-700 transition-all duration-200 whitespace-nowrap"
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1.25rem',
+              marginTop: '1.5rem',
+            }}
           >
-            🎮 Open Arcade Games →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link
-            href="/arcade"
-            className="bg-white p-4 rounded-2xl border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all duration-200 group block text-left"
-          >
-            <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">💖</div>
-            <h4 className="font-extrabold text-slate-900 text-sm mb-1">Love Compatibility</h4>
-            <p className="text-slate-500 text-xs font-medium">Test your couple synergy &amp; unlock sweet verdict cards.</p>
-          </Link>
-
-          <Link
-            href="/arcade"
-            className="bg-white p-4 rounded-2xl border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all duration-200 group block text-left"
-          >
-            <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">🎰</div>
-            <h4 className="font-extrabold text-slate-900 text-sm mb-1">Date Night Wheel</h4>
-            <p className="text-slate-500 text-xs font-medium">Spin to decide what to eat, watch, or do this weekend.</p>
-          </Link>
-
-          <Link
-            href="/arcade"
-            className="bg-white p-4 rounded-2xl border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all duration-200 group block text-left"
-          >
-            <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">🎟️</div>
-            <h4 className="font-extrabold text-slate-900 text-sm mb-1">Scratch Coupons</h4>
-            <p className="text-slate-500 text-xs font-medium">Scratch to reveal redeemable love coupons &amp; hugs.</p>
-          </Link>
-
-          <Link
-            href="/arcade"
-            className="bg-white p-4 rounded-2xl border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all duration-200 group block text-left"
-          >
-            <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">🧠</div>
-            <h4 className="font-extrabold text-slate-900 text-sm mb-1">Memory Match Duel</h4>
-            <p className="text-slate-500 text-xs font-medium">Flip cute couple icons &amp; beat each other’s high scores.</p>
-          </Link>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 7. "HAPPY TEARS & SMILES" WALL OF LOVE (TESTIMONIALS) */}
-      {/* ========================================================================= */}
-      <section className="w-full my-12">
-        <div className="text-center mb-10">
-          <span className="text-xs font-extrabold text-rose-600 uppercase tracking-widest block mb-2">Real Stories</span>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900">Happy Tears &amp; Unforgettable Smiles</h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-lg mx-auto font-medium">
-            See how thousands of partners, besties, and families made someone feel extraordinary.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Review 1 */}
-          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-rose-100 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-1 text-amber-400 text-sm">
-                  ⭐⭐⭐⭐⭐
+            {/* Review 1 */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                padding: '1.75rem',
+                border: '1.5px solid #ffe4e6',
+                boxShadow: '0 6px 20px rgba(244, 63, 94, 0.04)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <span style={{ color: '#f59e0b', fontSize: '0.95rem' }}>⭐⭐⭐⭐⭐</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#e11d48', background: '#fff1f2', border: '1px solid #fecdd3', padding: '2px 8px', borderRadius: '999px' }}>
+                    Long Distance Anniversary
+                  </span>
                 </div>
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
-                  Long Distance Anniversary
-                </span>
+                <p style={{ fontSize: '0.88rem', color: '#334155', fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1rem' }}>
+                  &ldquo;He lives in Germany and I&apos;m in Bangalore. When he opened the starry night letter at midnight with our song playing, he literally called me crying with happiness. Best ₹199 I have ever spent!&rdquo;
+                </p>
               </div>
-              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed font-medium italic">
-                &ldquo;He lives in Germany and I&apos;m in Bangalore. When he opened the starry night letter at midnight with our song playing, he literally called me crying with happiness. Best ₹199 I have ever spent!&rdquo;
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', fontSize: '0.8rem' }}>
+                <b style={{ color: '#0f172a' }}>Priya &amp; Rohan</b>
+                <span style={{ color: '#94a3b8' }}>Bangalore → Berlin</span>
+              </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="font-extrabold text-slate-900">Priya &amp; Rohan</span>
-              <span className="text-slate-400 font-medium">Bangalore → Berlin</span>
-            </div>
-          </div>
 
-          {/* Review 2 */}
-          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-amber-100 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-1 text-amber-400 text-sm">
-                  ⭐⭐⭐⭐⭐
+            {/* Review 2 */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                padding: '1.75rem',
+                border: '1.5px solid #fef3c7',
+                boxShadow: '0 6px 20px rgba(245, 158, 11, 0.04)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <span style={{ color: '#f59e0b', fontSize: '0.95rem' }}>⭐⭐⭐⭐⭐</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#b45309', background: '#fef3c7', border: '1px solid #fde68a', padding: '2px 8px', borderRadius: '999px' }}>
+                    21st Birthday Surprise
+                  </span>
                 </div>
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
-                  21st Birthday Surprise
-                </span>
+                <p style={{ fontSize: '0.88rem', color: '#334155', fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1rem' }}>
+                  &ldquo;Her reaction video when the balloon pops revealed our secret college photos was priceless! She said it was 100x more emotional and meaningful than any generic gift card.&rdquo;
+                </p>
               </div>
-              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed font-medium italic">
-                &ldquo;Her reaction video when the balloon pops revealed our secret college photos was priceless! She said it was 100x more emotional and meaningful than any generic gift card.&rdquo;
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', fontSize: '0.8rem' }}>
+                <b style={{ color: '#0f172a' }}>Aarav M.</b>
+                <span style={{ color: '#94a3b8' }}>Mumbai</span>
+              </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="font-extrabold text-slate-900">Aarav M.</span>
-              <span className="text-slate-400 font-medium">Mumbai</span>
-            </div>
-          </div>
 
-          {/* Review 3 */}
-          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-1 text-amber-400 text-sm">
-                  ⭐⭐⭐⭐⭐
+            {/* Review 3 */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                padding: '1.75rem',
+                border: '1.5px solid #e2e8f0',
+                boxShadow: '0 6px 20px rgba(0, 0, 0, 0.03)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <span style={{ color: '#f59e0b', fontSize: '0.95rem' }}>⭐⭐⭐⭐⭐</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#475569', background: '#f1f5f9', border: '1px solid #e2e8f0', padding: '2px 8px', borderRadius: '999px' }}>
+                    Heartfelt Apology
+                  </span>
                 </div>
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-50 text-slate-700 border border-slate-200">
-                  Heartfelt Apology
-                </span>
+                <p style={{ fontSize: '0.88rem', color: '#334155', fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1rem' }}>
+                  &ldquo;We had a terrible argument and I was struggling to find the right words. The interactive apology note gave us both a gentle moment to breathe and talk with open hearts. Truly grateful.&rdquo;
+                </p>
               </div>
-              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed font-medium italic">
-                &ldquo;We had a terrible argument and I was struggling to find the right words. The interactive apology note gave us both a gentle moment to breathe and talk with open hearts. Truly grateful.&rdquo;
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', fontSize: '0.8rem' }}>
+                <b style={{ color: '#0f172a' }}>Neha &amp; Vikram</b>
+                <span style={{ color: '#94a3b8' }}>Delhi</span>
+              </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="font-extrabold text-slate-900">Neha &amp; Vikram</span>
-              <span className="text-slate-400 font-medium">Delhi</span>
-            </div>
-          </div>
 
-          {/* Review 4 */}
-          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-pink-100 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-1 text-amber-400 text-sm">
-                  ⭐⭐⭐⭐⭐
+            {/* Review 4 */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                padding: '1.75rem',
+                border: '1.5px solid #fce7f3',
+                boxShadow: '0 6px 20px rgba(244, 63, 94, 0.04)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <span style={{ color: '#f59e0b', fontSize: '0.95rem' }}>⭐⭐⭐⭐⭐</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#be185d', background: '#fdf2f8', border: '1px solid #fbcfe8', padding: '2px 8px', borderRadius: '999px' }}>
+                    Romantic Proposal
+                  </span>
                 </div>
-                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-pink-50 text-pink-700 border border-pink-200">
-                  Romantic Proposal
-                </span>
+                <p style={{ fontSize: '0.88rem', color: '#334155', fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1rem' }}>
+                  &ldquo;The cheeky runaway &apos;NO&apos; button made her giggle so hard while tears welled up in her eyes. When the &apos;YES&apos; burst into heart confetti, it was pure movie magic.&rdquo;
+                </p>
               </div>
-              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed font-medium italic">
-                &ldquo;The cheeky runaway &apos;NO&apos; button made her giggle so hard while tears welled up in her eyes. When the &apos;YES&apos; burst into heart confetti, it was pure movie magic.&rdquo;
-              </p>
-            </div>
-            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="font-extrabold text-slate-900">Tanvi &amp; Sameer</span>
-              <span className="text-slate-400 font-medium">Pune</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', fontSize: '0.8rem' }}>
+                <b style={{ color: '#0f172a' }}>Tanvi &amp; Sameer</b>
+                <span style={{ color: '#94a3b8' }}>Pune</span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ========================================================================= */}
-      {/* 8. TRUST & PEACE OF MIND RIBBON */}
-      {/* ========================================================================= */}
-      <section className="w-full my-8 bg-white border border-rose-100 rounded-3xl p-6 sm:p-8 shadow-sm">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="flex flex-col items-center">
-            <span className="text-3xl mb-2">🔒</span>
-            <strong className="text-xs sm:text-sm text-slate-900 font-bold mb-1">100% Private Links</strong>
-            <span className="text-slate-500 text-xs">Only those with your unique URL can view</span>
+        {/* ========================================================================= */}
+        {/* 8. TRUST & PEACE OF MIND RIBBON */}
+        {/* ========================================================================= */}
+        <section
+          style={{
+            marginBottom: '3.5rem',
+            background: '#ffffff',
+            border: '1.5px solid #ffe4e6',
+            borderRadius: '24px',
+            padding: '2rem 1.5rem',
+            boxShadow: '0 4px 16px rgba(244, 63, 94, 0.04)',
+          }}
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+              gap: '1.5rem',
+              textAlign: 'center',
+            }}
+          >
+            <div>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>🔒</span>
+              <strong style={{ fontSize: '0.92rem', color: '#0f172a', display: 'block', marginBottom: '0.25rem' }}>
+                100% Private Links
+              </strong>
+              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Only those with your unique link can view</span>
+            </div>
+            <div>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>📱</span>
+              <strong style={{ fontSize: '0.92rem', color: '#0f172a', display: 'block', marginBottom: '0.25rem' }}>
+                Zero App Download
+              </strong>
+              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Opens smoothly in any mobile browser</span>
+            </div>
+            <div>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>🎵</span>
+              <strong style={{ fontSize: '0.92rem', color: '#0f172a', display: 'block', marginBottom: '0.25rem' }}>
+                Music &amp; Audio Ready
+              </strong>
+              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Plays background soundtracks &amp; notes</span>
+            </div>
+            <div>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.5rem' }}>⚡</span>
+              <strong style={{ fontSize: '0.92rem', color: '#0f172a', display: 'block', marginBottom: '0.25rem' }}>
+                Instant Delivery
+              </strong>
+              <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Created in 3 mins, ready right on time</span>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-3xl mb-2">📱</span>
-            <strong className="text-xs sm:text-sm text-slate-900 font-bold mb-1">Zero App Download</strong>
-            <span className="text-slate-500 text-xs">Opens instantly in any mobile browser</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-3xl mb-2">🎵</span>
-            <strong className="text-xs sm:text-sm text-slate-900 font-bold mb-1">Music &amp; Audio Ready</strong>
-            <span className="text-slate-500 text-xs">Plays romantic soundtracks or voice notes</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-3xl mb-2">⚡</span>
-            <strong className="text-xs sm:text-sm text-slate-900 font-bold mb-1">Instant Delivery</strong>
-            <span className="text-slate-500 text-xs">Created in 3 mins, ready right when you need it</span>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ========================================================================= */}
-      {/* 9. FINAL PLAYFUL CTA CARD */}
-      {/* ========================================================================= */}
-      <section
-        style={{
-          background: 'linear-gradient(135deg, #f43f5e 0%, #e11d48 50%, #be123c 100%)',
-          boxShadow: '0 20px 45px -10px rgba(244, 63, 94, 0.4)',
-        }}
-        className="w-full rounded-3xl py-12 px-6 sm:px-12 text-center text-white my-8 relative overflow-hidden"
-      >
-        <div className="max-w-2xl mx-auto relative z-10">
-          <span className="text-3xl sm:text-4xl block mb-3 animate-heartbeat">💖✨</span>
-          <h2 className="text-2xl sm:text-4xl font-black mb-4 tracking-tight leading-snug">
+        {/* ========================================================================= */}
+        {/* 9. FINAL PLAYFUL CTA CARD */}
+        {/* ========================================================================= */}
+        <section
+          className="bottom-cta-section-enhanced"
+          style={{
+            padding: 'clamp(2.5rem, 5vw, 3.5rem) 1.5rem',
+            textAlign: 'center',
+            borderRadius: '28px',
+            marginBottom: '2rem',
+            background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fdf2f8 100%)',
+            border: '1.5px solid #fecdd3',
+            boxShadow: '0 16px 40px -10px rgba(244, 63, 94, 0.15)',
+          }}
+        >
+          <span style={{ fontSize: '3rem', display: 'block', marginBottom: '0.75rem' }}>💖 ✨</span>
+          <h2
+            style={{
+              fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
+              color: '#881337',
+              fontWeight: 900,
+              margin: '0 0 0.75rem',
+              lineHeight: 1.2,
+            }}
+          >
             Ready to Make Someone Feel Deeply Special Today?
           </h2>
-          <p className="text-rose-100 text-sm sm:text-base mb-8 font-medium leading-relaxed">
+          <p
+            style={{
+              color: '#9f1239',
+              fontSize: 'clamp(0.95rem, 2vw, 1.05rem)',
+              maxWidth: '600px',
+              margin: '0 auto 1.75rem',
+              lineHeight: 1.6,
+            }}
+          >
             Don&apos;t just send a plain text message. Give them an interactive digital memory they will bookmark and smile at for years to come.
           </p>
           <Link
             href="/templates"
-            className="inline-flex items-center gap-2 px-9 py-4 rounded-full bg-white text-rose-700 font-black text-sm sm:text-base shadow-2xl hover:bg-rose-50 hover:scale-105 active:scale-95 transition-all duration-200"
+            className="btn-primary"
+            style={{
+              padding: '0.95rem 2.5rem',
+              fontSize: '1rem',
+              fontWeight: 800,
+              background: 'linear-gradient(135deg, #f43f5e, #be185d)',
+              borderRadius: '999px',
+              boxShadow: '0 8px 24px rgba(244, 63, 94, 0.35)',
+              display: 'inline-block',
+            }}
           >
-            <span>✨ Start Crafting Now (Starting at ₹199)</span>
-            <span>→</span>
+            ✨ Start Crafting Now (Starting at ₹199) ➔
           </Link>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }
