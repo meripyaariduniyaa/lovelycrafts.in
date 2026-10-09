@@ -454,6 +454,8 @@ function PreviewContent() {
                 onPaid={handlePaymentSuccess}
                 displayAmount={totalAmount}
                 recipientName={note.recipient_name}
+                couponOpen={couponOpen}
+                onToggleCoupon={() => setCouponOpen((prev) => !prev)}
               />
 
             </div>

@@ -3,11 +3,23 @@
 import Script from 'next/script';
 import { useState, useEffect, useRef } from 'react';
 
-export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferRetention = true, recipientName }) {
+export default function PayButton({
+  apologyId,
+  onPaid,
+  displayAmount,
+  autoOfferRetention = true,
+  recipientName,
+  couponOpen: externalCouponOpen,
+  onToggleCoupon,
+}) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [feedback, setFeedback] = useState('');
+
+  const [internalCouponOpen, setInternalCouponOpen] = useState(false);
+  const isCouponOpen = externalCouponOpen !== undefined ? externalCouponOpen : internalCouponOpen;
+  const toggleCoupon = onToggleCoupon || (() => setInternalCouponOpen((prev) => !prev));
 
   // After coupon is applied, we store the resolved order details here
   const [resolvedOrder, setResolvedOrder] = useState(null);
@@ -203,6 +215,32 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
         name: 'Lovely Crafts',
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
+        prefill: {
+          contact: '9999999999',
+          email: 'customer@lovelycrafts.in',
+        },
+        theme: {
+          color: '#f43f5e',
+        },
+        config: {
+          display: {
+            blocks: {
+              upi: {
+                name: 'Pay via UPI Apps (Instant)',
+                instruments: [
+                  {
+                    method: 'upi',
+                    flows: ['intent', 'collect', 'qr'],
+                  },
+                ],
+              },
+            },
+            sequence: ['block.upi'],
+            preferences: {
+              show_default_blocks: true,
+            },
+          },
+        },
         handler: async (response) => {
           const verify = await fetch('/api/razorpay/verify', {
             method: 'POST',
@@ -258,6 +296,32 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
         name: 'Lovely Crafts',
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
+        prefill: {
+          contact: '9999999999',
+          email: 'customer@lovelycrafts.in',
+        },
+        theme: {
+          color: '#f43f5e',
+        },
+        config: {
+          display: {
+            blocks: {
+              upi: {
+                name: 'Pay via UPI Apps (Instant)',
+                instruments: [
+                  {
+                    method: 'upi',
+                    flows: ['intent', 'collect', 'qr'],
+                  },
+                ],
+              },
+            },
+            sequence: ['block.upi'],
+            preferences: {
+              show_default_blocks: true,
+            },
+          },
+        },
         handler: async (response) => {
           const verify = await fetch('/api/razorpay/verify', {
             method: 'POST',
@@ -426,36 +490,75 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
           </div>
         )}
 
-        {/* Coupon row */}
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <input
-            className="form-input"
-            value={couponCode}
-            onChange={(e) => { setCouponCode(e.target.value); setResolvedOrder(null); setFeedback(''); setError(''); }}
-            placeholder="Enter promo / coupon code"
-            style={{ fontSize: '0.88rem', flex: 1, background: '#ffffff', borderColor: '#cbd5e1', color: '#0f172a', padding: '9px 12px', borderRadius: '12px' }}
-            onKeyDown={(e) => e.key === 'Enter' && couponCode.trim() && applyCoupon()}
-          />
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => applyCoupon()}
-            disabled={busy || !couponCode.trim()}
-            style={{
-              whiteSpace: 'nowrap',
-              padding: '9px 16px',
-              borderRadius: '12px',
-              background: couponCode.trim() ? '#fff1f2' : '#f8fafc',
-              border: couponCode.trim() ? '1.5px solid #fecdd3' : '1.5px solid #e2e8f0',
-              color: couponCode.trim() ? '#be185d' : '#94a3b8',
-              fontWeight: 700,
-              fontSize: '0.84rem',
-              cursor: couponCode.trim() ? 'pointer' : 'default'
-            }}
-          >
-            {busy ? '…' : 'Apply'}
-          </button>
-        </div>
+        {/* Coupon row (Expanded / Collapsed according to isCouponOpen) */}
+        {(isCouponOpen || couponCode.trim() || resolvedOrder) ? (
+          <div style={{
+            display: 'flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+            background: '#fff8fa',
+            border: '1.5px solid #fecdd3',
+            borderRadius: '14px',
+            padding: '4px 6px 4px 10px',
+            transition: 'all 0.25s ease'
+          }}>
+            <span style={{ fontSize: '1rem' }}>🎟️</span>
+            <input
+              className="form-input"
+              value={couponCode}
+              onChange={(e) => { setCouponCode(e.target.value); setResolvedOrder(null); setFeedback(''); setError(''); }}
+              placeholder="Enter promo code"
+              style={{
+                fontSize: '0.86rem',
+                flex: 1,
+                background: 'transparent',
+                border: 'none',
+                color: '#0f172a',
+                padding: '6px 4px',
+                outline: 'none',
+                boxShadow: 'none'
+              }}
+              onKeyDown={(e) => e.key === 'Enter' && couponCode.trim() && applyCoupon()}
+            />
+            {couponCode.trim() ? (
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => applyCoupon()}
+                disabled={busy}
+                style={{
+                  whiteSpace: 'nowrap',
+                  padding: '6px 14px',
+                  borderRadius: '10px',
+                  background: 'linear-gradient(135deg, #f43f5e, #be185d)',
+                  border: 'none',
+                  color: '#ffffff',
+                  fontWeight: 800,
+                  fontSize: '0.8rem',
+                  cursor: 'pointer'
+                }}
+              >
+                {busy ? '…' : 'Apply'}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={toggleCoupon}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#94a3b8',
+                  fontSize: '0.8rem',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  fontWeight: 700
+                }}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        ) : null}
 
         {/* Feedback / price preview */}
         {feedback && (
