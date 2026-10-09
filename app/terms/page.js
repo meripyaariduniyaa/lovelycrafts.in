@@ -70,7 +70,7 @@ export default function TermsPage() {
 
           <Section title="3. Payments, Pricing & Non-Refundable Nature">
             <SubHeading>3.1 Standard Pricing</SubHeading>
-            <p>Interactive templates are priced as indicated at checkout (standard launch price <strong>{PRICE}</strong>, inclusive of applicable taxes). Promotional creator coupons or site discount codes can be applied prior to payment.</p>
+            <p>Interactive templates are priced as indicated at checkout prior to payment. Promotional creator coupons or site discount codes can be applied prior to completing the order.</p>
 
             <SubHeading>3.2 Razorpay Processing</SubHeading>
             <p>All payments are processed securely via <strong>Razorpay</strong>. We do not store banking credentials or card details on our infrastructure.</p>

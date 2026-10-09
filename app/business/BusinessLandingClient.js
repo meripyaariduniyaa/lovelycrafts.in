@@ -447,102 +447,241 @@ export default function BusinessLandingClient() {
       </section>
 
       {/* ── CORPORATE PRICING & PLAN CATEGORIES ── */}
-      {/* ── CORPORATE PRICING & PLAN CATEGORIES ── */}
-      <section id="pricing-section" className="b2b-section pricing-section py-16 bg-slate-50/80 border-y border-slate-200/80">
-        <div className="b2b-container max-w-6xl mx-auto px-4">
-          <div className="section-header text-center mb-12">
-            <span className="inline-block px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs font-bold uppercase tracking-wider mb-3">
+      <section id="pricing-section" className="b2b-section pricing-section py-20 bg-gradient-to-b from-slate-50/70 via-rose-50/30 to-slate-50/80 border-y border-slate-200/80">
+        <div className="b2b-container max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="section-header text-center mb-14">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs font-bold uppercase tracking-wider mb-3">
               Corporate Credit Plans
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">4 Simple Business Plan Tiers</h2>
-            <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+              4 Simple Business Plan Tiers
+            </h2>
+            <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
               Transparent credit-based pricing at ₹199 per credit + 18% GST. Pay only for what you celebrate. Bonus credits included in all volume plans.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Plan 1 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-white border border-slate-200 text-slate-900 shadow-sm hover:shadow-md hover:border-slate-300 transition-all">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Starter Pack</span>
-              <h3 className="text-2xl font-black text-slate-900 mb-1">10 Credits</h3>
-              <p className="text-slate-500 text-xs mb-4">Ideal for small teams & instant celebrations.</p>
-              <div className="my-4 pt-4 border-t border-slate-100">
-                <span className="text-3xl font-black text-slate-900">₹1,990</span>
-                <span className="text-slate-500 text-[11px] block font-semibold mt-1">+ 18% GST (₹358) • Total ₹2,348</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch pt-4">
+            {/* Plan 1: Starter */}
+            <div className="flex flex-col justify-between p-7 rounded-3xl bg-white border border-slate-200/90 text-slate-900 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-200">
+              <div>
+                <div className="flex items-center justify-between mb-3 min-h-[26px]">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Starter Pack</span>
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 mb-1">10 Credits</h3>
+                <p className="text-slate-500 text-xs leading-relaxed mb-5 min-h-[34px]">
+                  Ideal for small teams & instant celebrations.
+                </p>
+
+                <div className="py-4 border-y border-slate-100 mb-5">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">₹1,990</span>
+                    <span className="text-xs text-slate-400 font-semibold">+ GST</span>
+                  </div>
+                  <div className="text-[11px] font-semibold text-slate-500 mt-1">
+                    + 18% GST (₹358) • Total ₹2,348
+                  </div>
+                </div>
+
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">What&apos;s Included:</div>
+                <ul className="text-xs text-slate-700 space-y-2.5 mb-6">
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-50 text-emerald-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span><strong>10</strong> Experience Credits</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-50 text-emerald-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Standard Corporate Templates</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-50 text-emerald-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Instant WhatsApp & Email Links</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-50 text-emerald-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>1-Year Credit Validity</span>
+                  </li>
+                </ul>
               </div>
-              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 10 Experience Credits</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Standard Corporate Templates</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Instant WhatsApp & Email Links</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 1-Year Credit Validity</li>
-              </ul>
-              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all">
+
+              <a
+                href="#apply-section"
+                className="w-full text-center py-3.5 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs tracking-wide transition-all duration-150 active:scale-[0.98]"
+              >
                 Select Starter Plan
               </a>
             </div>
 
-            {/* Plan 2 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-rose-50/60 via-white to-white border-2 border-rose-500 text-slate-900 shadow-xl hover:border-rose-600 transition-all scale-[1.02]">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-rose-500 to-pink-600 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-md whitespace-nowrap">
-                ⭐ Most Popular
+            {/* Plan 2: Growth (Featured) */}
+            <div className="relative flex flex-col justify-between p-7 rounded-3xl bg-gradient-to-b from-rose-50/70 via-white to-white border-2 border-rose-500 text-slate-900 shadow-xl shadow-rose-500/10 transition-all duration-200 hover:shadow-2xl hover:shadow-rose-500/15 lg:-translate-y-2">
+              {/* Badge above card with proper spacing */}
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 bg-gradient-to-r from-rose-500 to-pink-600 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-md shadow-rose-500/30 whitespace-nowrap z-10 flex items-center gap-1">
+                <span>⭐</span>
+                <span>Most Popular</span>
               </div>
-              <span className="text-xs font-bold text-rose-600 uppercase tracking-widest mb-2">Growth Pack</span>
-              <h3 className="text-2xl font-black text-slate-900 mb-1">28 Credits <span className="text-xs text-rose-600 font-bold">(25 + 3 Bonus)</span></h3>
-              <p className="text-slate-500 text-xs mb-4">10% Bonus Credits Free! Great for active teams.</p>
-              <div className="my-4 pt-4 border-t border-rose-100">
-                <span className="text-3xl font-black text-slate-900">₹4,477</span>
-                <span className="text-slate-500 text-[11px] block font-semibold mt-1">+ 18% GST (₹806) • Total ₹5,283</span>
+
+              <div>
+                <div className="flex items-center justify-between mb-3 min-h-[26px]">
+                  <span className="text-xs font-bold text-rose-600 uppercase tracking-widest">Growth Pack</span>
+                  <span className="text-[10px] font-extrabold text-rose-700 bg-rose-100/90 px-2 py-0.5 rounded-md">
+                    +10% Bonus
+                  </span>
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 mb-1">
+                  28 Credits <span className="text-xs text-rose-600 font-bold">(25 + 3 Free)</span>
+                </h3>
+                <p className="text-slate-500 text-xs leading-relaxed mb-5 min-h-[34px]">
+                  10% Bonus Credits Free! Great for active growing teams.
+                </p>
+
+                <div className="py-4 border-y border-rose-100/80 mb-5 bg-rose-50/30 -mx-7 px-7">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">₹4,477</span>
+                    <span className="text-xs text-slate-400 font-semibold">+ GST</span>
+                  </div>
+                  <div className="text-[11px] font-semibold text-rose-700 mt-1">
+                    + 18% GST (₹806) • Total ₹5,283
+                  </div>
+                </div>
+
+                <div className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-3">Everything in Starter plus:</div>
+                <ul className="text-xs text-slate-700 space-y-2.5 mb-6">
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-rose-100 text-rose-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span><strong>25 + 3 Free</strong> Bonus Credits</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-rose-100 text-rose-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>All Corporate & Special Templates</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-rose-100 text-rose-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Company Logo & Custom Colors</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-rose-100 text-rose-600 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Employee Roster Excel / CSV Import</span>
+                  </li>
+                </ul>
               </div>
-              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 25 + 3 Free Bonus Credits</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> All Corporate Templates</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Company Logo & Custom Branding</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Employee Roster CSV Upload</li>
-              </ul>
-              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold text-xs shadow-lg shadow-rose-500/25 transition-all">
+
+              <a
+                href="#apply-section"
+                className="w-full text-center py-3.5 px-4 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-extrabold text-xs tracking-wide shadow-md shadow-rose-500/25 transition-all duration-150 active:scale-[0.98]"
+              >
                 Select Growth Plan
               </a>
             </div>
 
-            {/* Plan 3 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-amber-50/50 via-white to-white border border-amber-300 text-slate-900 shadow-md hover:border-amber-400 transition-all">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-[10px] font-black uppercase tracking-wider text-slate-950 shadow-md whitespace-nowrap">
-                🔥 Best Value
+            {/* Plan 3: Enterprise */}
+            <div className="relative flex flex-col justify-between p-7 rounded-3xl bg-gradient-to-b from-amber-50/50 via-white to-white border border-amber-300 text-slate-900 shadow-md hover:shadow-xl hover:border-amber-400 transition-all duration-200">
+              {/* Badge above card with proper spacing */}
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-[10px] font-black uppercase tracking-wider text-slate-950 shadow-md shadow-amber-500/20 whitespace-nowrap z-10 flex items-center gap-1">
+                <span>🔥</span>
+                <span>Best Value</span>
               </div>
-              <span className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2">Enterprise Pack</span>
-              <h3 className="text-2xl font-black text-slate-900 mb-1">60 Credits <span className="text-xs text-amber-700 font-bold">(50 + 10 Bonus)</span></h3>
-              <p className="text-slate-500 text-xs mb-4">20% Bonus Credits Free! Complete annual coverage.</p>
-              <div className="my-4 pt-4 border-t border-amber-100">
-                <span className="text-3xl font-black text-slate-900">₹7,960</span>
-                <span className="text-slate-500 text-[11px] block font-semibold mt-1">+ 18% GST (₹1,433) • Total ₹9,393</span>
+
+              <div>
+                <div className="flex items-center justify-between mb-3 min-h-[26px]">
+                  <span className="text-xs font-bold text-amber-700 uppercase tracking-widest">Enterprise Pack</span>
+                  <span className="text-[10px] font-extrabold text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded-md">
+                    +20% Bonus
+                  </span>
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 mb-1">
+                  60 Credits <span className="text-xs text-amber-700 font-bold">(50 + 10 Free)</span>
+                </h3>
+                <p className="text-slate-500 text-xs leading-relaxed mb-5 min-h-[34px]">
+                  20% Bonus Credits Free! Complete annual celebration coverage.
+                </p>
+
+                <div className="py-4 border-y border-amber-100 mb-5 bg-amber-50/30 -mx-7 px-7">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">₹7,960</span>
+                    <span className="text-xs text-slate-400 font-semibold">+ GST</span>
+                  </div>
+                  <div className="text-[11px] font-semibold text-amber-800 mt-1">
+                    + 18% GST (₹1,433) • Total ₹9,393
+                  </div>
+                </div>
+
+                <div className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-3">Everything in Growth plus:</div>
+                <ul className="text-xs text-slate-700 space-y-2.5 mb-6">
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span><strong>50 + 10 Free</strong> Bonus Credits</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Automated Occasion Reminder Engine</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Employee Onboarding & Kudos Modes</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Priority Corporate HR Support</span>
+                  </li>
+                </ul>
               </div>
-              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 50 + 10 Free Bonus Credits</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Employee Onboarding & Kudos</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Automated Occasion Engine</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Priority HR Support</li>
-              </ul>
-              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs transition-all">
+
+              <a
+                href="#apply-section"
+                className="w-full text-center py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs tracking-wide shadow-sm transition-all duration-150 active:scale-[0.98]"
+              >
                 Select Enterprise Plan
               </a>
             </div>
 
-            {/* Plan 4 */}
-            <div className="relative flex flex-col p-6 rounded-3xl bg-gradient-to-b from-purple-50/50 via-white to-white border border-purple-200 text-slate-900 shadow-md hover:border-purple-300 transition-all">
-              <span className="text-xs font-bold text-purple-700 uppercase tracking-widest mb-2">Custom Scale</span>
-              <h3 className="text-2xl font-black text-slate-900 mb-1">100+ Credits</h3>
-              <p className="text-slate-500 text-xs mb-4">25% Bonus Credits Free! Custom bulk corporate scale.</p>
-              <div className="my-4 pt-4 border-t border-purple-100">
-                <span className="text-3xl font-black text-slate-900">Custom</span>
-                <span className="text-slate-500 text-[11px] block font-semibold mt-1">₹199 / credit + 25% Extra Free</span>
+            {/* Plan 4: Custom Scale */}
+            <div className="flex flex-col justify-between p-7 rounded-3xl bg-gradient-to-b from-purple-50/40 via-white to-white border border-purple-200 text-slate-900 shadow-sm hover:shadow-xl hover:border-purple-300 transition-all duration-200">
+              <div>
+                <div className="flex items-center justify-between mb-3 min-h-[26px]">
+                  <span className="text-xs font-bold text-purple-700 uppercase tracking-widest">Custom Scale</span>
+                  <span className="text-[10px] font-extrabold text-purple-800 bg-purple-100/90 px-2 py-0.5 rounded-md">
+                    +25% Bonus
+                  </span>
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 mb-1">100+ Credits</h3>
+                <p className="text-slate-500 text-xs leading-relaxed mb-5 min-h-[34px]">
+                  25% Bonus Credits Free! Tailored for enterprise organizations.
+                </p>
+
+                <div className="py-4 border-y border-purple-100 mb-5 bg-purple-50/30 -mx-7 px-7">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">Custom</span>
+                  </div>
+                  <div className="text-[11px] font-semibold text-purple-700 mt-1">
+                    ₹199 / credit + 25% Extra Free Credits
+                  </div>
+                </div>
+
+                <div className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-3">Enterprise Capabilities:</div>
+                <ul className="text-xs text-slate-700 space-y-2.5 mb-6">
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-purple-100 text-purple-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span><strong>100+ Credits</strong> + 25% Free Bonus</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-purple-100 text-purple-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Dedicated Subdomain & Custom URL</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-purple-100 text-purple-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Multi-HR Admin Accounts & Roles</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-purple-100 text-purple-700 font-black text-[10px] flex items-center justify-center mt-0.5">✓</span>
+                    <span>Dedicated Customer Success Manager</span>
+                  </li>
+                </ul>
               </div>
-              <ul className="text-xs text-slate-700 space-y-2 mb-6 flex-1">
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> 100+ Credits + 25% Free Bonus</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Dedicated Subdomain & Branding</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Multi-HR Admin Accounts</li>
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Dedicated Account Manager</li>
-              </ul>
-              <a href="#apply-section" className="w-full text-center py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-all">
+
+              <a
+                href="#apply-section"
+                className="w-full text-center py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs tracking-wide shadow-sm transition-all duration-150 active:scale-[0.98]"
+              >
                 Request Custom Quote
               </a>
             </div>

@@ -199,30 +199,23 @@ export default function EmotionFinder() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
-              <div>
-                <span style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a' }}>
-                  ₹{dynamicPricing[template.id]?.price || template.price || 199}
-                </span>
-                <span style={{ fontSize: '0.75rem', color: '#94a3b8', textDecoration: 'line-through', marginLeft: '6px' }}>
-                  ₹{dynamicPricing[template.id]?.basePrice || template.basePrice || 499}
-                </span>
-              </div>
-
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
               <Link
                 href={`/create?template=${template.id}`}
                 style={{
+                  width: '100%',
+                  textAlign: 'center',
                   background: 'linear-gradient(135deg, #f43f5e 0%, #be185d 100%)',
                   color: '#ffffff',
                   fontWeight: 800,
-                  fontSize: '0.82rem',
-                  padding: '7px 14px',
+                  fontSize: '0.86rem',
+                  padding: '9px 16px',
                   borderRadius: '999px',
                   textDecoration: 'none',
                   boxShadow: '0 3px 10px rgba(244, 63, 94, 0.25)',
                 }}
               >
-                Personalize Now →
+                ✨ Personalize This Experience ➔
               </Link>
             </div>
           </div>

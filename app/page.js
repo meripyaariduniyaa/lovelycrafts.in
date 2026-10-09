@@ -139,7 +139,7 @@ export default function Home() {
                 boxShadow: '0 8px 25px rgba(244, 63, 94, 0.35)',
               }}
             >
-              ✨ Craft a Surprise Now (From ₹199) ➔
+              ✨ Craft a Surprise Now ➔
             </Link>
 
             <Link
@@ -604,7 +604,7 @@ export default function Home() {
                   </span>
                 </div>
                 <p style={{ fontSize: '0.88rem', color: '#334155', fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1rem' }}>
-                  &ldquo;He lives in Germany and I&apos;m in Bangalore. When he opened the starry night letter at midnight with our song playing, he literally called me crying with happiness. Best ₹199 I have ever spent!&rdquo;
+                  &ldquo;He lives in Germany and I&apos;m in Bangalore. When he opened the starry night letter at midnight with our song playing, he literally called me crying with happiness. Best surprise experience I have ever sent!&rdquo;
                 </p>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', fontSize: '0.8rem' }}>
@@ -808,7 +808,7 @@ export default function Home() {
               display: 'inline-block',
             }}
           >
-            ✨ Start Crafting Now (Starting at ₹199) ➔
+            ✨ Start Crafting Now ➔
           </Link>
         </section>
       </div>

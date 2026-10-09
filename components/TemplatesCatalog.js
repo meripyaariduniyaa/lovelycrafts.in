@@ -104,27 +104,21 @@ export default function TemplatesCatalog({ templates }) {
                   <ul className="template-feature-list">
                     {template.features.map((feature) => <li key={feature}>{feature}</li>)}
                   </ul>
-                  <div className="template-card-footer">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>₹{activePrice}</span>
-                      <span style={{ fontSize: '0.78rem', color: '#94a3b8', textDecoration: 'line-through' }}>
-                        ₹{activeBasePrice}
-                      </span>
-                    </div>
-                    <div className="template-card-actions" style={{ justifyContent: 'flex-end', gap: '0.5rem' }}>
+                  <div className="template-card-footer" style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', marginTop: 'auto' }}>
+                    <div className="template-card-actions" style={{ width: '100%', display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
                       <PreviewDemoButton
                         templateId={template.id}
                         className="btn-secondary"
-                        style={{ padding: '0.55rem 0.85rem', fontSize: '0.8rem', borderRadius: '999px' }}
+                        style={{ flex: 1, textAlign: 'center', padding: '0.6rem 0.85rem', fontSize: '0.82rem', borderRadius: '999px', fontWeight: 700 }}
                       >
-                        👁️ Preview
+                        👁️ Preview Demo
                       </PreviewDemoButton>
                       <Link
                         href={`/create?template=${template.id}`}
                         className="btn-primary template-create-link"
-                        style={{ padding: '0.55rem 1rem', fontSize: '0.82rem', borderRadius: '999px', fontWeight: 800 }}
+                        style={{ flex: 1, textAlign: 'center', padding: '0.6rem 1rem', fontSize: '0.84rem', borderRadius: '999px', fontWeight: 800 }}
                       >
-                        ✨ Craft This
+                        ✨ Craft This ➔
                       </Link>
                     </div>
                   </div>

@@ -163,23 +163,22 @@ export default function RecipientExperienceWrapper({ note }) {
           align-items: center;
           gap: 8px;
           padding: 13px 24px;
-          background: rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: #ffffff;
+          background: #ffffff;
+          border: 1.5px solid #fecdd3;
+          color: #be185d;
           border-radius: 999px;
-          font-weight: 700;
+          font-weight: 800;
           font-size: 0.95rem;
           cursor: pointer;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 4px 14px rgba(244, 63, 94, 0.1);
           transition: all 0.25s ease;
         }
 
         .completion-replay-btn:hover {
-          background: rgba(255, 255, 255, 0.16);
-          border-color: rgba(255, 255, 255, 0.4);
+          background: #fff1f2;
+          border-color: #f43f5e;
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+          box-shadow: 0 8px 20px rgba(244, 63, 94, 0.2);
         }
 
         .completion-create-btn {
