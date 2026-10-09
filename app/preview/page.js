@@ -104,22 +104,7 @@ function PreviewContent() {
       .catch(() => setQrCodeUrl(''));
   }, [note]);
 
-  // Auto-open purchase modal after 4s of preview (unpaid only)
-  useEffect(() => {
-    if (paid || !note) return;
-    const timer = setTimeout(() => setShowPurchaseModal(true), 4000);
-    return () => clearTimeout(timer);
-  }, [paid, note]);
-
-  // Exit-intent modal on tab switch (unpaid)
-  useEffect(() => {
-    if (paid) return;
-    const handleVisibilityChange = () => {
-      if (document.hidden) setShowPleaseModal(true);
-    };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [paid]);
+  const [couponOpen, setCouponOpen] = useState(false);
 
   const getShareUrl = useCallback((n = note) => {
     if (!n) return '';
@@ -163,6 +148,11 @@ function PreviewContent() {
       a.click();
     } catch (e) { console.error('Keepsake error:', e); }
     finally { setDownloadingKeepsake(false); }
+  };
+
+  const handlePaymentSuccess = () => {
+    setPaid(true);
+    router.push(`/success?id=${note.id}`);
   };
 
   const accent = ACCENT_MAP[note?.template] || ACCENT_MAP.proposal;
@@ -255,26 +245,47 @@ function PreviewContent() {
             <span style={{ fontWeight: 900, fontSize: '0.92rem', color: '#0f172a' }}>LovelyCrafts</span>
           </div>
 
-          <div
-            style={{
-              background: `${accent.color}15`,
-              border: `1px solid ${accent.color}40`,
-              borderRadius: '50px',
-              padding: '4px 10px',
-              fontSize: '0.7rem',
-              fontWeight: 800,
-              color: accent.color,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Preview
-          </div>
+          {paid ? (
+            <Link
+              href={`/success?id=${note.id}`}
+              style={{
+                background: '#ecfdf5',
+                border: '1px solid #a7f3d0',
+                borderRadius: '50px',
+                padding: '4px 12px',
+                fontSize: '0.72rem',
+                fontWeight: 800,
+                color: '#059669',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+              }}
+            >
+              <span>Share Hub</span> ➔
+            </Link>
+          ) : (
+            <div
+              style={{
+                background: `${accent.color}15`,
+                border: `1px solid ${accent.color}40`,
+                borderRadius: '50px',
+                padding: '4px 10px',
+                fontSize: '0.7rem',
+                fontWeight: 800,
+                color: accent.color,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Preview
+            </div>
+          )}
         </div>
       </header>
 
       {/* ── BODY ── */}
-      <main style={{ maxWidth: '480px', margin: '0 auto', padding: '1.5rem 1.25rem 6rem' }}>
+      <main style={{ maxWidth: '480px', margin: '0 auto', padding: '1.5rem 1.25rem 7.5rem' }}>
 
         {/* Title */}
         <motion.div
@@ -290,7 +301,9 @@ function PreviewContent() {
             {note.recipient_name ? `For ${note.recipient_name}` : 'Your Experience'}
           </h1>
           <p style={{ color: '#64748b', fontSize: '0.88rem', margin: 0 }}>
-            This is exactly what they&apos;ll see. Review it, then unlock the shareable link.
+            {paid
+              ? 'Your private experience is unlocked! Share the moment below or visit your share hub.'
+              : 'Review your crafted moment below, then unlock and send with one tap.'}
           </p>
         </motion.div>
 
@@ -309,7 +322,7 @@ function PreviewContent() {
             background: '#ffffff',
           }}
         >
-          {/* Subtle phone frame top header pill */}
+          {/* Phone frame top header pill */}
           <div style={{
             background: '#fff1f5',
             backdropFilter: 'blur(8px)',
@@ -335,7 +348,7 @@ function PreviewContent() {
           <TemplateRenderer note={note} isPreview={true} />
         </motion.div>
 
-        {/* ── UNLOCKED PANEL (inline, only after payment) ── */}
+        {/* ── UNLOCKED PANEL (inline if paid) ── */}
         {paid && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -359,296 +372,99 @@ function PreviewContent() {
         )}
       </main>
 
-      {/* ── STICKY UNLOCK CTA (unpaid only) ── */}
+      {/* ── NON-INTRUSIVE STICKY BOTTOM CHECKOUT DOCK (Unpaid) ── */}
       <AnimatePresence>
         {!paid && (
           <motion.div
-            initial={{ y: 80, opacity: 0 }}
+            initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 80, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30, delay: 0.6 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 320, damping: 32 }}
             style={{
               position: 'fixed',
               bottom: 0,
               left: 0,
               right: 0,
-              zIndex: 40,
-              padding: '0.85rem 1.25rem 1.5rem',
-              background: 'linear-gradient(0deg, rgba(255,255,255,0.98) 70%, rgba(255,255,255,0) 100%)',
-              borderTop: '1px solid rgba(254,205,211,0.5)',
+              zIndex: 60,
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderTop: '1.5px solid #fecdd3',
+              boxShadow: '0 -10px 40px rgba(244, 63, 94, 0.14)',
+              padding: '0.85rem 1.25rem env(safe-area-inset-bottom, 1rem)',
             }}
           >
             <div style={{ maxWidth: '480px', margin: '0 auto' }}>
-              {/* Social proof micro-copy */}
-              <div style={{ textAlign: 'center', marginBottom: '0.6rem', fontSize: '0.75rem', color: '#64748b', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                <span>🔥 <strong>1,420+</strong> unlocked this week</span>
-                <span style={{ color: '#059669', background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '2px 8px', borderRadius: '50px', fontSize: '0.7rem', fontWeight: 800 }}>
-                  🎁 Save 10% Extra Today
-                </span>
+              
+              {/* Top mini row with pricing & coupon toggle */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: couponOpen ? '0.75rem' : '0.5rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a' }}>
+                    ₹{totalAmount}
+                  </span>
+                  <span style={{ fontSize: '0.78rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                    ₹499
+                  </span>
+                  <span style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 800,
+                    color: '#059669',
+                    background: '#ecfdf5',
+                    border: '1px solid #a7f3d0',
+                    padding: '2px 7px',
+                    borderRadius: '50px',
+                  }}>
+                    Save 60%
+                  </span>
+                </div>
+
+                {/* Coupon Code Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => setCouponOpen((prev) => !prev)}
+                  style={{
+                    background: couponOpen ? '#fff1f2' : 'transparent',
+                    border: couponOpen ? '1px solid #fecdd3' : '1px solid transparent',
+                    color: '#be185d',
+                    fontSize: '0.78rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <span>🎟️</span>
+                  <span>{couponOpen ? 'Close Code' : 'Have a Coupon?'}</span>
+                  <span style={{ fontSize: '0.65rem', transform: couponOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▼</span>
+                </button>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => setShowPurchaseModal(true)}
-                style={{
-                  width: '100%',
-                  padding: '16px 24px',
-                  borderRadius: '18px',
-                  background: `linear-gradient(135deg, ${accent.color} 0%, #be123c 100%)`,
-                  border: 'none',
-                  color: '#fff',
-                  fontSize: '1.05rem',
-                  fontWeight: 800,
-                  cursor: 'pointer',
-                  boxShadow: `0 8px 28px rgba(244,63,94,0.35)`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '10px',
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-                {note.recipient_name ? `Unlock ${note.recipient_name}'s Moment` : 'Unlock & Send'}
-                <span style={{ fontSize: '0.88rem', opacity: 0.95, fontWeight: 700 }}>• ₹{totalAmount}</span>
-              </motion.button>
+
+              {/* PayButton (Rendered directly with its coupon row & secure pay button, without taking over whole screen) */}
+              <PayButton
+                apologyId={note.id}
+                onPaid={handlePaymentSuccess}
+                displayAmount={totalAmount}
+                recipientName={note.recipient_name}
+              />
+
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── PURCHASE MODAL (bottom-sheet, opens on CTA click or auto after 4s) ── */}
-      <AnimatePresence>
-        {showPurchaseModal && !paid && (
-          <PurchaseModal
-            note={note}
-            accent={accent}
-            totalAmount={totalAmount}
-            selectedTemplate={selectedTemplate}
-            onClose={() => setShowPurchaseModal(false)}
-            onPaid={() => { setPaid(true); setShowPurchaseModal(false); }}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* ── EXIT-INTENT MODAL (tab switch) ── */}
-      <AnimatePresence>
-        {showPleaseModal && !paid && (
-          <PleaseModal
-            note={note}
-            accent={accent}
-            totalAmount={totalAmount}
-            onClose={() => setShowPleaseModal(false)}
-            onPaid={() => { setPaid(true); setShowPleaseModal(false); }}
-          />
         )}
       </AnimatePresence>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   PURCHASE MODAL (Primary — bottom-sheet over preview)
-───────────────────────────────────────────────────────── */
-function PurchaseModal({ note, accent, totalAmount, selectedTemplate, onClose, onPaid }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 100,
-        background: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-      }}
-      onClick={onClose}
-    >
-      <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: '100%',
-          maxWidth: '480px',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-          background: 'linear-gradient(180deg, #ffffff 0%, #fff8fa 100%)',
-          borderRadius: '28px 28px 0 0',
-          border: `1px solid #fecdd3`,
-          borderBottom: 'none',
-          boxShadow: `0 -24px 80px rgba(244,63,94,0.18)`,
-          paddingBottom: 'env(safe-area-inset-bottom)',
-        }}
-      >
-        {/* Drag handle + close row */}
-        <div style={{
-          position: 'sticky',
-          top: 0,
-          background: 'linear-gradient(180deg, #ffffff 90%, rgba(255,255,255,0) 100%)',
-          padding: '0.85rem 1.25rem 0',
-          zIndex: 1,
-        }}>
-          <div style={{ width: 40, height: 4, borderRadius: 4, background: '#fce7f3', margin: '0 auto 0.85rem' }} />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <div>
-              <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#be185d', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                Ready to send?
-              </div>
-              <div style={{ fontSize: '1.05rem', fontWeight: 900, color: '#0f172a', marginTop: '1px' }}>
-                {note.recipient_name ? `Unlock ${note.recipient_name}'s experience` : 'Unlock & Share'}
-              </div>
-            </div>
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={onClose}
-              style={{
-                background: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '50%',
-                width: 36, height: 36,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', color: '#64748b', fontSize: '1rem',
-                flexShrink: 0, fontWeight: 700,
-              }}
-            >
-              ✕
-            </motion.button>
-          </div>
-          <div style={{ height: 1, background: `linear-gradient(90deg, transparent, #fecdd3, transparent)`, marginBottom: '0.75rem' }} />
-        </div>
 
-        {/* LockedPanel content */}
-        <div style={{ padding: '0 1.25rem 2rem' }}>
-          <LockedPanel
-            note={note}
-            accent={accent}
-            totalAmount={totalAmount}
-            selectedTemplate={selectedTemplate}
-            onPaid={onPaid}
-          />
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────
-   LOCKED PANEL
-───────────────────────────────────────────────────────── */
-function LockedPanel({ note, accent, totalAmount, selectedTemplate, onPaid }) {
-  const recipient = note?.recipient_name || 'them';
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      className="locked-panel-root"
-      style={{
-        background: '#ffffff',
-        border: '1px solid #fce7f3',
-        borderRadius: '24px',
-        padding: '1.25rem 1.25rem 1rem',
-        boxShadow: '0 4px 20px rgba(244,63,94,0.06)',
-      }}
-    >
-      <style jsx>{`
-        @media (max-width: 640px) {
-          .locked-panel-root {
-            padding: 0.85rem 0.85rem 0.75rem !important;
-            border-radius: 20px !important;
-          }
-          .comparison-grid {
-            display: none !important;
-          }
-          .headline-sub {
-            display: none !important;
-          }
-          .lock-header {
-            margin-bottom: 0.65rem !important;
-          }
-          .value-card {
-            padding: 0.75rem 0.85rem !important;
-            margin-bottom: 0.75rem !important;
-            border-radius: 14px !important;
-          }
-        }
-      `}</style>
-
-      {/* Lock Icon + Emotional Headline */}
-      <div className="lock-header" style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
-        <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#d97706', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
-          Don&apos;t Let This Moment Stay Hidden
-        </div>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0f172a', margin: 0, lineHeight: 1.25 }}>
-          Give {recipient} a moment they&apos;ll cherish forever 💕
-        </h2>
-        <p className="headline-sub" style={{ color: '#64748b', fontSize: '0.82rem', margin: '0.35rem 0 0', lineHeight: 1.5 }}>
-          You spent time crafting this experience—don&apos;t let it go unsent.
-        </p>
-      </div>
-
-      {/* Value Card */}
-      <div className="value-card" style={{ background: '#fff9fb', border: '1px solid #fce7f3', borderRadius: '18px', padding: '1rem 1.15rem', marginBottom: '1rem' }}>
-        {/* Value Comparison Card (Desktop/Tablet) */}
-        <div className="comparison-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '0.85rem' }}>
-          <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '12px', padding: '0.65rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '1.1rem', marginBottom: '2px' }}>💬</div>
-            <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#dc2626' }}>Plain Text Message</div>
-            <div style={{ fontSize: '0.68rem', color: '#94a3b8', marginTop: '2px' }}>Forgotten in 10 mins</div>
-          </div>
-          <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '12px', padding: '0.65rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '1.1rem', marginBottom: '2px' }}>✨</div>
-            <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#059669' }}>LovelyCrafts Experience</div>
-            <div style={{ fontSize: '0.68rem', color: '#047857', marginTop: '2px' }}>Kept forever 💕</div>
-          </div>
-        </div>
-
-        {/* Compact Feature List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-          {[
-            `Private shareable link & HD QR card for ${recipient}`,
-            'Interactive music, custom memories & photos',
-            'Live read receipt & reaction notification',
-          ].map((f, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: 15, height: 15, borderRadius: '50%', background: '#dcfce7', color: '#16a34a', fontSize: '0.62rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, flexShrink: 0 }}>✓</div>
-              <span style={{ color: '#334155', fontSize: '0.78rem', fontWeight: 600 }}>{f}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Price Anchoring */}
-        <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #fce7f3', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Special Price</div>
-            <div style={{ fontSize: '0.75rem', color: '#059669', fontWeight: 700 }}>Save 60% Today</div>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <span style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through', marginRight: '6px' }}>₹499</span>
-            <span style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0f172a' }}>₹{totalAmount}</span>
-          </div>
-        </div>
-      </div>
-
-      <PayButton apologyId={note.id} onPaid={onPaid} displayAmount={totalAmount} recipientName={note.recipient_name} />
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center', marginTop: '0.75rem' }}>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round">
-          <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        </svg>
-        <span style={{ color: '#64748b', fontSize: '0.75rem', fontWeight: 500 }}>100% Secure payment via Razorpay</span>
-      </div>
-    </motion.div>
-  );
-}
 
 /* ─────────────────────────────────────────────────────────
    UNLOCKED PANEL
@@ -899,124 +715,7 @@ function UnlockedPanel({ note, accent, getShareUrl, getWhatsAppUrl, copyLink, co
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   PLEASE MODAL (Exit Intent — unpaid)
-───────────────────────────────────────────────────────── */
-function PleaseModal({ note, accent, totalAmount, onClose, onPaid }) {
-  const recipient = note?.recipient_name || 'them';
 
-  const handleClose = () => {
-    if (note?.id) {
-      fetch('/api/coupons/organic-retention', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ noteId: note.id, action: 'disable' })
-      }).catch(() => {});
-    }
-    onClose();
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-        padding: '0 0 0',
-      }}
-      onClick={handleClose}
-    >
-      <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: '100%',
-          maxWidth: '480px',
-          background: 'linear-gradient(180deg, #ffffff 0%, #fff8fa 100%)',
-          borderRadius: '28px 28px 0 0',
-          border: '1px solid #fecdd3',
-          borderBottom: 'none',
-          padding: '2rem 1.75rem 3rem',
-          boxShadow: '0 -20px 60px rgba(244,63,94,0.2)',
-        }}
-      >
-        {/* Drag handle */}
-        <div style={{ width: 40, height: 4, borderRadius: 4, background: '#fce7f3', margin: '0 auto 1.5rem' }} />
-
-        {/* Emotional header */}
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          <motion.div
-            animate={{ rotate: [0, -12, 10, -5, 0], scale: [1, 1.1, 1] }}
-            transition={{ duration: 1.8, delay: 0.2, repeat: Infinity, repeatDelay: 2 }}
-            style={{ fontSize: '3.5rem', marginBottom: '0.5rem', display: 'inline-block' }}
-          >
-            🥺
-          </motion.div>
-          <h2 style={{ fontSize: '1.45rem', fontWeight: 900, color: '#0f172a', margin: '0 0 0.5rem', lineHeight: 1.25 }}>
-            Wait... don&apos;t leave {recipient} waiting 💔
-          </h2>
-          <p style={{ color: '#64748b', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>
-            You put so much heart into creating this for{' '}
-            <strong style={{ color: '#0f172a' }}>{recipient}</strong>.
-            If you leave now, this special moment remains locked and unsent. They deserve to feel this love. 💕
-          </p>
-        </div>
-
-        {/* Price reminder */}
-        <div
-          style={{
-            background: '#fff1f5',
-            border: '1px solid #fecdd3',
-            borderRadius: '16px',
-            padding: '1rem 1.25rem',
-            marginBottom: '1.25rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
-            <div style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '0.2rem', fontWeight: 600 }}>Unlock full experience for</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#0f172a' }}>
-              ₹{totalAmount} <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#94a3b8', textDecoration: 'line-through' }}>₹499</span>
-            </div>
-          </div>
-          <div style={{ fontSize: '2rem' }}>{accent.emoji}</div>
-        </div>
-
-        {/* CTA */}
-        <PayButton apologyId={note.id} onPaid={onPaid} displayAmount={totalAmount} recipientName={note.recipient_name} />
-
-        {/* Dismiss */}
-        <button
-          onClick={handleClose}
-          style={{
-            width: '100%',
-            marginTop: '0.75rem',
-            padding: '12px',
-            borderRadius: '14px',
-            background: 'transparent',
-            border: 'none',
-            color: '#94a3b8',
-            fontSize: '0.88rem',
-            cursor: 'pointer',
-            fontWeight: 600,
-          }}
-        >
-          Dismiss for now
-        </button>
-      </motion.div>
-    </motion.div>
-  );
-}
 
 /* ─────────────────────────────────────────────────────────
    BRANDED QR HELPER

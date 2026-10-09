@@ -89,7 +89,7 @@ export default function RecipientExperienceWrapper({ note }) {
         onReachEnd={handleReachEnd}
       />
 
-      {/* Recipient Interactive Reaction & Reply Back + Replay + Create CTA — ONLY after last scene */}
+      {/* Recipient Interactive Reaction & Wrap Up The Moment — ONLY after last scene */}
       <AnimatePresence>
         {isAtEnd && (
           <motion.div
@@ -99,32 +99,81 @@ export default function RecipientExperienceWrapper({ note }) {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="experience-completion-section"
           >
-            {/* VIP Action Row: Replay Experience & Create Surprise */}
-            <div className="completion-actions-bar">
-              {replayHandler && (
-                <button
-                  type="button"
-                  onClick={handleReplayClick}
-                  className="completion-replay-btn"
-                  id="replay-experience-btn"
-                >
-                  <span className="btn-icon">↺</span>
-                  <span>Replay Experience</span>
-                </button>
-              )}
+            {/* Wrap up the moment primary spotlight card */}
+            <div style={{
+              background: 'linear-gradient(145deg, #ffffff 0%, #fff1f5 100%)',
+              border: '2px solid #fecdd3',
+              borderRadius: '28px',
+              padding: '2rem 1.5rem',
+              textAlign: 'center',
+              width: '100%',
+              boxShadow: '0 16px 40px rgba(244, 63, 94, 0.15)',
+              position: 'relative',
+              overflow: 'hidden',
+            }}>
+              <div style={{ fontSize: '2.8rem', marginBottom: '0.5rem' }}>✨ 💌 💖</div>
+              <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.35rem' }}>
+                A Moment to Remember
+              </div>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a', margin: '0 0 0.5rem', lineHeight: 1.25 }}>
+                Share Your Experience &amp; Thoughts
+              </h2>
+              <p style={{ color: '#64748b', fontSize: '0.88rem', margin: '0 auto 1.5rem', maxWidth: '380px', lineHeight: 1.55 }}>
+                {note.custom_details?.sender_name 
+                  ? `Let ${note.custom_details.sender_name} know how this made you feel. Your reaction will appear on their dashboard!`
+                  : 'Send your emotional reaction and thoughts back so the creator can see how much this meant to you!'}
+              </p>
 
+              {/* Primary Glowing Action */}
               <Link
-                href={`/create?template=${encodeURIComponent(note.template || 'proposal')}`}
-                className="completion-create-btn"
-                id="create-same-surprise-btn"
+                href={`/p/${note.custom_slug || note.id}/react`}
+                className="wrap-moment-glow-btn"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px',
+                  padding: '16px 28px',
+                  borderRadius: '50px',
+                  background: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
+                  color: '#ffffff',
+                  fontSize: '1.02rem',
+                  fontWeight: 800,
+                  textDecoration: 'none',
+                  boxShadow: '0 8px 30px rgba(244, 63, 94, 0.4)',
+                  marginBottom: '1rem',
+                  transition: 'all 0.25s ease',
+                }}
               >
-                <span className="btn-icon">✨</span>
-                <span>Create a Surprise Like This →</span>
+                <span>💌</span>
+                <span>Wrap Up The Moment • Share Your Experience</span>
+                <span>➔</span>
               </Link>
-            </div>
 
-            {/* Recipient Interactive Reaction & Reply Back */}
-            <RecipientReactionBox noteId={note.id} recipientName={note.recipient_name} />
+              {/* Secondary actions */}
+              <div className="completion-actions-bar">
+                {replayHandler && (
+                  <button
+                    type="button"
+                    onClick={handleReplayClick}
+                    className="completion-replay-btn"
+                    id="replay-experience-btn"
+                  >
+                    <span className="btn-icon">↺</span>
+                    <span>Replay Experience</span>
+                  </button>
+                )}
+
+                <Link
+                  href={`/create?template=${encodeURIComponent(note.template || 'proposal')}`}
+                  className="completion-create-btn"
+                  id="create-same-surprise-btn"
+                >
+                  <span className="btn-icon">✨</span>
+                  <span>Create a Surprise Like This</span>
+                </Link>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

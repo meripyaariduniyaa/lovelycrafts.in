@@ -358,24 +358,36 @@ export default function ProfilePage() {
 
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <Link
-                      href={`/preview?id=${note.id}`}
-                      className="btn-secondary"
-                      style={{ flex: 1, textAlign: 'center', fontSize: '0.85rem', textDecoration: 'none', padding: '0.5rem' }}
+                      href={note.is_paid ? `/success?id=${note.id}` : `/preview?id=${note.id}`}
+                      className="btn-primary"
+                      style={{
+                        flex: 1,
+                        textAlign: 'center',
+                        fontSize: '0.85rem',
+                        textDecoration: 'none',
+                        padding: '0.55rem',
+                        background: note.is_paid ? 'linear-gradient(135deg, #16a34a, #15803d)' : 'linear-gradient(135deg, #f43f5e, #be185d)',
+                        borderRadius: '12px',
+                      }}
                     >
-                      {note.is_paid ? 'View & Share' : 'Finish & Pay'}
+                      {note.is_paid ? '🎁 Share Hub & Downloads' : 'Finish & Pay'}
                     </Link>
-                    {note.is_paid && (
-                      <button
-                        className="btn-primary"
-                        style={{ flex: 1, fontSize: '0.85rem', padding: '0.5rem' }}
-                        onClick={() => {
-                          navigator.clipboard.writeText(url);
-                          alert('Link copied to clipboard!');
-                        }}
-                      >
-                        Copy Link
-                      </button>
-                    )}
+                    <Link
+                      href={`/p/${shareSlug}`}
+                      target="_blank"
+                      className="btn-secondary"
+                      style={{
+                        flex: 1,
+                        textAlign: 'center',
+                        fontSize: '0.85rem',
+                        textDecoration: 'none',
+                        padding: '0.55rem',
+                        borderRadius: '12px',
+                        background: '#ffffff',
+                      }}
+                    >
+                      👁️ View Experience
+                    </Link>
                   </div>
                 </div>
               );

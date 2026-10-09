@@ -427,113 +427,120 @@ export default function PayButton({ apologyId, onPaid, displayAmount, autoOfferR
         )}
 
         {/* Coupon row */}
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-        <input
-          className="form-input"
-          value={couponCode}
-          onChange={(e) => { setCouponCode(e.target.value); setResolvedOrder(null); setFeedback(''); setError(''); }}
-          placeholder="Have a coupon code?"
-          style={{ fontSize: '0.9rem', flex: 1, background: '#ffffff', borderColor: '#cbd5e1', color: '#0f172a', padding: '10px 14px', borderRadius: '12px' }}
-          onKeyDown={(e) => e.key === 'Enter' && couponCode.trim() && applyCoupon()}
-        />
-        {couponCode.trim() && !resolvedOrder && (
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <input
+            className="form-input"
+            value={couponCode}
+            onChange={(e) => { setCouponCode(e.target.value); setResolvedOrder(null); setFeedback(''); setError(''); }}
+            placeholder="Enter promo / coupon code"
+            style={{ fontSize: '0.88rem', flex: 1, background: '#ffffff', borderColor: '#cbd5e1', color: '#0f172a', padding: '9px 12px', borderRadius: '12px' }}
+            onKeyDown={(e) => e.key === 'Enter' && couponCode.trim() && applyCoupon()}
+          />
           <button
             type="button"
             className="btn-secondary"
             onClick={() => applyCoupon()}
-            disabled={busy}
-            style={{ whiteSpace: 'nowrap', padding: '0 1.25rem', borderRadius: '12px', background: '#ffffff', border: '1.5px solid #cbd5e1', color: '#0f172a', fontWeight: 700 }}
+            disabled={busy || !couponCode.trim()}
+            style={{
+              whiteSpace: 'nowrap',
+              padding: '9px 16px',
+              borderRadius: '12px',
+              background: couponCode.trim() ? '#fff1f2' : '#f8fafc',
+              border: couponCode.trim() ? '1.5px solid #fecdd3' : '1.5px solid #e2e8f0',
+              color: couponCode.trim() ? '#be185d' : '#94a3b8',
+              fontWeight: 700,
+              fontSize: '0.84rem',
+              cursor: couponCode.trim() ? 'pointer' : 'default'
+            }}
           >
             {busy ? '…' : 'Apply'}
           </button>
-        )}
-      </div>
-
-      {/* Feedback / price preview */}
-      {feedback && (
-        <p style={{ color: '#16a34a', fontSize: '0.85rem', margin: 0, fontWeight: 700, textAlign: 'center' }}>{feedback}</p>
-      )}
-
-      {/* Final price summary card */}
-      {resolvedOrder && !resolvedOrder.free && (
-        <div style={{
-          background: '#f0fdf4',
-          border: '1.5px solid #86efac',
-          borderRadius: '12px',
-          padding: '0.75rem 1rem',
-          fontSize: '0.88rem',
-          color: '#166534',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <span>
-            <del style={{ color: '#94a3b8', marginRight: '0.4rem' }}>₹{basePrice}</del>
-            With {resolvedOrder.discountPercent || ''}% discount applied
-          </span>
-          <strong style={{ fontSize: '1.15rem', color: '#15803d' }}>₹{(resolvedOrder.amount / 100).toFixed(0)}</strong>
         </div>
-      )}
 
-      {/* Pay Now button — sleek gradient & pulse effect */}
-      <button
-        onClick={resolvedOrder ? proceedToPay : directPay}
-        disabled={busy}
-        style={{
-          width: '100%',
-          padding: '16px 20px',
-          borderRadius: '16px',
-          background: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
-          border: 'none',
-          color: '#ffffff',
-          fontSize: '1.02rem',
-          fontWeight: 800,
-          cursor: busy ? 'not-allowed' : 'pointer',
-          opacity: busy ? 0.75 : 1,
-          boxShadow: '0 8px 25px rgba(244,63,94,0.35)',
+        {/* Feedback / price preview */}
+        {feedback && (
+          <p style={{ color: '#16a34a', fontSize: '0.82rem', margin: 0, fontWeight: 700, textAlign: 'center' }}>{feedback}</p>
+        )}
+
+        {/* Final price summary card */}
+        {resolvedOrder && !resolvedOrder.free && (
+          <div style={{
+            background: '#f0fdf4',
+            border: '1.5px solid #86efac',
+            borderRadius: '12px',
+            padding: '0.6rem 0.9rem',
+            fontSize: '0.84rem',
+            color: '#166534',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span>
+              <del style={{ color: '#94a3b8', marginRight: '0.4rem' }}>₹{basePrice}</del>
+              With {resolvedOrder.discountPercent || ''}% discount applied
+            </span>
+            <strong style={{ fontSize: '1.1rem', color: '#15803d' }}>₹{(resolvedOrder.amount / 100).toFixed(0)}</strong>
+          </div>
+        )}
+
+        {/* Pay Now button — sleek gradient & pulse effect */}
+        <button
+          onClick={resolvedOrder ? proceedToPay : directPay}
+          disabled={busy}
+          style={{
+            width: '100%',
+            padding: '14px 18px',
+            borderRadius: '14px',
+            background: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
+            border: 'none',
+            color: '#ffffff',
+            fontSize: '1rem',
+            fontWeight: 800,
+            cursor: busy ? 'not-allowed' : 'pointer',
+            opacity: busy ? 0.75 : 1,
+            boxShadow: '0 6px 20px rgba(244,63,94,0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
+        >
+          {busy ? (
+            <>
+              <div style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid #fff', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
+              Connecting Secure Checkout...
+            </>
+          ) : (
+            payLabel
+          )}
+        </button>
+
+        {/* Sleek UPI & Express Payment Badges */}
+        <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: '8px',
-          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
-      >
-        {busy ? (
-          <>
-            <div style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid #fff', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
-            Connecting Secure Checkout...
-          </>
-        ) : (
-          payLabel
-        )}
-      </button>
-
-      {/* Sleek UPI & Express Payment Badges */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '12px',
-        padding: '8px 12px',
-        background: '#f8fafc',
-        border: '1px solid #e2e8f0',
-        borderRadius: '12px',
-      }}>
-        <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Instant via</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', fontWeight: 700 }}>
-          <span style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '2px 6px', borderRadius: '4px', color: '#059669' }}>GPay</span>
-          <span style={{ background: '#f5f3ff', border: '1px solid #ddd6fe', padding: '2px 6px', borderRadius: '4px', color: '#7c3aed' }}>PhonePe</span>
-          <span style={{ background: '#f0f9ff', border: '1px solid #bae6fd', padding: '2px 6px', borderRadius: '4px', color: '#0284c7' }}>Paytm</span>
-          <span style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '2px 6px', borderRadius: '4px', color: '#b45309' }}>UPI / Cards</span>
+          padding: '6px 10px',
+          background: '#f8fafc',
+          border: '1px solid #e2e8f0',
+          borderRadius: '10px',
+        }}>
+          <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}>Instant via</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: 700 }}>
+            <span style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '1px 5px', borderRadius: '4px', color: '#059669' }}>GPay</span>
+            <span style={{ background: '#f5f3ff', border: '1px solid #ddd6fe', padding: '1px 5px', borderRadius: '4px', color: '#7c3aed' }}>PhonePe</span>
+            <span style={{ background: '#f0f9ff', border: '1px solid #bae6fd', padding: '1px 5px', borderRadius: '4px', color: '#0284c7' }}>Paytm</span>
+            <span style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '1px 5px', borderRadius: '4px', color: '#b45309' }}>Cards/UPI</span>
+          </div>
         </div>
+
       </div>
 
-    </div >
-
-      { error && (
-        <p style={{ color: '#e11d48', marginTop: '0.75rem', fontSize: '0.85rem', textAlign: 'center', fontWeight: 700 }}>⚠️ {error}</p>
-      )
-}
+      {error && (
+        <p style={{ color: '#e11d48', marginTop: '0.5rem', fontSize: '0.82rem', textAlign: 'center', fontWeight: 700 }}>⚠️ {error}</p>
+      )}
     </>
   );
 }
