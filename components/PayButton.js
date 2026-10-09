@@ -216,8 +216,14 @@ export default function PayButton({
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
         prefill: {
-          contact: '9999999999',
-          email: 'customer@lovelycrafts.in',
+          name: recipientName ? `${recipientName}` : 'Customer',
+          contact: '9876543210',
+          email: 'care@lovelycrafts.in',
+        },
+        readonly: {
+          contact: true,
+          email: true,
+          name: true,
         },
         theme: {
           color: '#f43f5e',
@@ -297,8 +303,14 @@ export default function PayButton({
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
         prefill: {
-          contact: '9999999999',
-          email: 'customer@lovelycrafts.in',
+          name: recipientName ? `${recipientName}` : 'Customer',
+          contact: '9876543210',
+          email: 'care@lovelycrafts.in',
+        },
+        readonly: {
+          contact: true,
+          email: true,
+          name: true,
         },
         theme: {
           color: '#f43f5e',
