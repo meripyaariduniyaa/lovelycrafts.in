@@ -1,5 +1,4 @@
 import './globals.css';
-import { Fredoka, Caveat, Dancing_Script } from 'next/font/google';
 import { AuthProvider } from '@/components/AuthProvider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,10 +12,6 @@ import { siteMetadata, SITE_URL, SITE_NAME, DEFAULT_DESCRIPTION, CONTACT_EMAIL, 
 // TODO: Replace GA_MEASUREMENT_ID with your real ID (e.g. G-XXXXXXXXXX)
 // Get it at: https://analytics.google.com → Admin → Data Streams → Web stream → Measurement ID
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX';
-
-const fredoka = Fredoka({ subsets: ['latin'], weight: ['400', '600', '700'], variable: '--font-bold', display: 'swap' });
-const caveat = Caveat({ subsets: ['latin'], variable: '--font-cursive', display: 'swap' });
-const dancing = Dancing_Script({ subsets: ['latin'], variable: '--font-dancing', display: 'swap' });
 
 export const metadata = siteMetadata;
 
@@ -81,8 +76,15 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <html lang="en-IN" className={`${fredoka.variable} ${caveat.variable} ${dancing.variable}`}>
-      <head />
+    <html lang="en-IN">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <AuthProvider>
           <Header />

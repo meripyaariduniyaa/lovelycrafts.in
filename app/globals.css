@@ -19,8 +19,10 @@
   --shadow-glass: 0 10px 30px -5px rgba(225, 29, 72, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
   --shadow-glass-hover: 0 18px 40px -10px rgba(244, 63, 94, 0.2);
 
-  --font-bold: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-cursive: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  --font-bold: 'Fredoka', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-cursive: 'Caveat', 'Playfair Display', Georgia, cursive;
+  --font-dancing: 'Dancing Script', 'Brush Script MT', cursive;
+  --font-inter: 'Inter', sans-serif;
 }
 
 /* ========== PLAYFUL & EMOTIONAL MICRO-ANIMATIONS ========== */
