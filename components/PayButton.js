@@ -31,6 +31,35 @@ export default function PayButton({
   const [creatorReferral, setCreatorReferral] = useState(null);
   const timerRef = useRef(null);
 
+  const [customerPhone, setCustomerPhone] = useState('9717113764');
+  const [customerEmail, setCustomerEmail] = useState('chandan@workcosmo.in');
+
+  // Load saved customer phone / email from localStorage so user never has to re-type
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedPhone = localStorage.getItem('lc_customer_phone');
+      const savedEmail = localStorage.getItem('lc_customer_email');
+      if (savedPhone) {
+        setCustomerPhone(savedPhone);
+      } else {
+        localStorage.setItem('lc_customer_phone', '9717113764');
+      }
+      if (savedEmail) {
+        setCustomerEmail(savedEmail);
+      } else {
+        localStorage.setItem('lc_customer_email', 'chandan@workcosmo.in');
+      }
+    }
+  }, []);
+
+  const handlePhoneChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setCustomerPhone(val);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lc_customer_phone', val);
+    }
+  };
+
   const basePrice = displayAmount || 199;
 
   /* ── Check & Fetch Organic Retention 10% Discount OR Auto-Apply Creator Referral ── */
@@ -207,6 +236,17 @@ export default function PayButton({
         return;
       }
 
+      // Build smart prefill data: fallback to 9717113764 & chandan@workcosmo.in
+      const cleanPhone = (customerPhone || '').replace(/\D/g, '');
+      const validPhone = cleanPhone.length === 10 ? cleanPhone : '9717113764';
+      const cleanEmail = ((customerEmail || '').trim()) || 'chandan@workcosmo.in';
+
+      const prefill = {
+        name: recipientName ? `${recipientName}` : 'Customer',
+        contact: validPhone,
+        email: cleanEmail,
+      };
+
       // Paid path — open Razorpay
       const razorpay = new window.Razorpay({
         key: order.keyId,
@@ -215,16 +255,7 @@ export default function PayButton({
         name: 'Lovely Crafts',
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
-        prefill: {
-          name: recipientName ? `${recipientName}` : 'Customer',
-          contact: '9876543210',
-          email: 'care@lovelycrafts.in',
-        },
-        readonly: {
-          contact: true,
-          email: true,
-          name: true,
-        },
+        prefill,
         theme: {
           color: '#f43f5e',
         },
@@ -295,6 +326,16 @@ export default function PayButton({
       const order = await res.json();
       if (!res.ok) throw new Error(order.error || 'Could not start payment.');
 
+      const cleanPhone = (customerPhone || '').replace(/\D/g, '');
+      const validPhone = cleanPhone.length === 10 ? cleanPhone : '9717113764';
+      const cleanEmail = ((customerEmail || '').trim()) || 'chandan@workcosmo.in';
+
+      const prefill = {
+        name: recipientName ? `${recipientName}` : 'Customer',
+        contact: validPhone,
+        email: cleanEmail,
+      };
+
       const razorpay = new window.Razorpay({
         key: order.keyId,
         amount: order.amount,
@@ -302,16 +343,7 @@ export default function PayButton({
         name: 'Lovely Crafts',
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
-        prefill: {
-          name: recipientName ? `${recipientName}` : 'Customer',
-          contact: '9876543210',
-          email: 'care@lovelycrafts.in',
-        },
-        readonly: {
-          contact: true,
-          email: true,
-          name: true,
-        },
+        prefill,
         theme: {
           color: '#f43f5e',
         },
@@ -597,6 +629,58 @@ export default function PayButton({
             <strong style={{ fontSize: '1.1rem', color: '#15803d' }}>₹{(resolvedOrder.amount / 100).toFixed(0)}</strong>
           </div>
         )}
+
+        {/* Instant 1-Tap UPI Mobile Input (Remembered in localStorage so Razorpay skips details screen) */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: '#ffffff',
+          border: customerPhone.replace(/\D/g, '').length === 10 ? '1.5px solid #86efac' : '1.5px solid #fecdd3',
+          borderRadius: '12px',
+          padding: '7px 12px',
+          boxShadow: '0 2px 6px rgba(244, 63, 94, 0.04)',
+          transition: 'border-color 0.2s',
+        }}>
+          <span style={{ fontSize: '0.9rem' }}>📱</span>
+          <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#be185d' }}>+91</span>
+          <input
+            type="tel"
+            inputMode="numeric"
+            maxLength={10}
+            value={customerPhone}
+            onChange={handlePhoneChange}
+            placeholder="Mobile number (for 1-tap UPI)"
+            style={{
+              flex: 1,
+              border: 'none',
+              outline: 'none',
+              fontSize: '0.86rem',
+              fontWeight: 600,
+              color: '#0f172a',
+              background: 'transparent',
+              padding: '2px 0',
+            }}
+          />
+          {customerPhone.replace(/\D/g, '').length === 10 ? (
+            <span style={{
+              background: '#ecfdf5',
+              border: '1px solid #a7f3d0',
+              color: '#059669',
+              fontSize: '0.72rem',
+              fontWeight: 800,
+              padding: '2px 6px',
+              borderRadius: '6px',
+              whiteSpace: 'nowrap'
+            }}>
+              ⚡ 1-Tap UPI
+            </span>
+          ) : (
+            <span style={{ fontSize: '0.72rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>
+              Fast UPI
+            </span>
+          )}
+        </div>
 
         {/* Pay Now button — sleek gradient & pulse effect */}
         <button
