@@ -256,6 +256,11 @@ export default function PayButton({
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
         prefill,
+        readonly: {
+          contact: true,
+          email: true,
+          name: true,
+        },
         theme: {
           color: '#f43f5e',
         },
@@ -344,6 +349,11 @@ export default function PayButton({
         description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
         order_id: order.orderId,
         prefill,
+        readonly: {
+          contact: true,
+          email: true,
+          name: true,
+        },
         theme: {
           color: '#f43f5e',
         },
