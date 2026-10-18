@@ -75,21 +75,33 @@ export default function TermsPage() {
             <SubHeading>3.2 Razorpay Processing</SubHeading>
             <p>All payments are processed securely via <strong>Razorpay</strong>. We do not store banking credentials or card details on our infrastructure.</p>
 
-            <SubHeading>3.3 Refund Policy</SubHeading>
+            <SubHeading>3.3 Refund Policy &amp; 48-Hour Guarantee</SubHeading>
             <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '0.75rem', padding: '1rem 1.25rem', margin: '0.75rem 0', fontSize: '0.9rem', color: '#92400e' }}>
-              ⚠️ <strong>Digital Instant Access:</strong> Because our interactive surprises are customized instant digital goods immediately delivered via active URLs, all completed purchases are final and non-refundable.
+              ⚠️ <strong>Digital Instant Access:</strong> Because our interactive surprises are customized instant digital goods immediately delivered via active URLs, all completed purchases are generally final and non-refundable.
             </div>
-            <p>Exceptions are made solely for verified duplicate billing or technical failures where a note failed to generate, provided notice is emailed to <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: '#ec4899' }}>{CONTACT_EMAIL}</a> within 48 hours of payment.</p>
+            <p>
+              Under our <strong>48-Hour Refund Guarantee</strong>, exceptions are honored solely for: (1) verified accidental duplicate charges due to payment gateway/network errors without receiving multiple distinct links, or (2) confirmed technical delivery failures where payment was deducted but no active experience link was generated on our infrastructure. In either case, written notice must be submitted with your Order ID to <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: '#ec4899', fontWeight: 600 }}>{CONTACT_EMAIL}</a> within <strong>48 hours</strong> of the transaction timestamp. For full details, please review our dedicated <Link href="/refund" style={{ color: '#ec4899', textDecoration: 'underline' }}>Refund Policy</Link>.
+            </p>
           </Section>
 
           <Section title="4. Creator Club & Affiliate Program Terms">
             <SubHeading>4.1 Program Overview</SubHeading>
-            <p>The LovelyCrafts Creator Club enables content creators and influencers to earn referral commissions by sharing personalized referral links (e.g. <code>/c/creatorname</code>) and branded audience coupon codes.</p>
+            <p>The LovelyCrafts Creator Club enables content creators and influencers to earn referral commissions by sharing personalized referral links (e.g. <code>/c/creatorname</code>) and branded audience coupon codes granting viewers 10% OFF.</p>
 
-            <SubHeading>4.2 Commission Tiers & Attribution</SubHeading>
+            <SubHeading>4.2 Five Approved Commission Tiers &amp; Attribution</SubHeading>
             <ul>
-              <li><strong>Commission Rates:</strong> Commissions range from <strong>10%</strong> (Starter tier) up to <strong>18%</strong> (Elite tier) based on qualifying paid referrals.</li>
+              <li><strong>Tier Structure (Monthly Qualifying Sales):</strong>
+                <ul>
+                  <li><strong>Starter (0–100 orders/month):</strong> 10% commission</li>
+                  <li><strong>Rising (101–300 orders/month):</strong> 15% commission</li>
+                  <li><strong>Creator (301–700 orders/month):</strong> 16% commission</li>
+                  <li><strong>Partner (701–1,500 orders/month):</strong> 17% commission</li>
+                  <li><strong>Elite (1,501+ orders/month):</strong> 18% commission</li>
+                </ul>
+              </li>
+              <li><strong>Monthly Qualification Reset:</strong> Tier levels are calculated based on qualifying paid referral orders in each calendar month, resetting on the 1st of every month to ensure active, recurring performance rewards.</li>
               <li><strong>30-Day Attribution Window:</strong> Referral clicks are tracked for 30 consecutive days via secure attribution cookies (<code>lp_ref</code>). Orders placed within 30 days of a creator link click or via their coupon code are credited to the creator.</li>
+              <li><strong>Eligible Transactions:</strong> Commissions are earned only on paid, completed, and non-refunded transactions. Cancelled or refunded orders are deducted from pending commission balances.</li>
             </ul>
 
             <SubHeading>4.3 Payouts & Minimum Threshold</SubHeading>
