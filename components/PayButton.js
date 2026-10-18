@@ -2,7 +2,6 @@
 
 import Script from 'next/script';
 import { useState, useEffect, useRef } from 'react';
-import { useGeoLocation } from '@/hooks/useGeoLocation';
 
 export default function PayButton({
   apologyId,
@@ -24,9 +23,6 @@ export default function PayButton({
 
   // After coupon is applied, we store the resolved order details here
   const [resolvedOrder, setResolvedOrder] = useState(null);
-
-  // Geolocation state: purchases only enabled for clients in India
-  const { isIndia, country } = useGeoLocation();
 
   // Organic customer 10% retention coupon state
   const [retentionCoupon, setRetentionCoupon] = useState(null);
@@ -68,7 +64,7 @@ export default function PayButton({
 
   /* ── Check & Fetch Organic Retention 10% Discount OR Auto-Apply Creator Referral ── */
   useEffect(() => {
-    if (!apologyId || !isIndia) return;
+    if (!apologyId) return;
 
     let mounted = true;
     async function checkRetentionOrReferral() {
@@ -161,10 +157,6 @@ export default function PayButton({
 
   /* ── Step 1: Validate coupon & preview final price ── */
   async function applyCoupon(codeOverride) {
-    if (!isIndia) {
-      setError('Purchases are currently restricted to clients located in India only.');
-      return;
-    }
     const code = (typeof codeOverride === 'string' ? codeOverride : couponCode).trim();
     if (!code) return;
     setBusy(true);
@@ -214,10 +206,6 @@ export default function PayButton({
 
   /* ── Step 2: Proceed to payment with the resolved order ── */
   async function proceedToPay() {
-    if (!isIndia) {
-      setError('Purchases are currently restricted to clients located in India only.');
-      return;
-    }
     if (!resolvedOrder) return;
     setBusy(true);
     setError('');
@@ -331,10 +319,6 @@ export default function PayButton({
 
   /* ── Direct pay (no coupon entered) ── */
   async function directPay() {
-    if (!isIndia) {
-      setError('Purchases are currently restricted to clients located in India only.');
-      return;
-    }
     setBusy(true);
     setError('');
 
@@ -437,82 +421,6 @@ export default function PayButton({
     const s = secs % 60;
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
-
-  // If client is outside India, block Razorpay script and render international visitor notice
-  if (!isIndia) {
-    return (
-      <div style={{
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-        border: '1.5px solid #e2e8f0',
-        borderRadius: '16px',
-        padding: '16px 18px',
-        boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
-        textAlign: 'center',
-      }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '8px',
-          alignSelf: 'center',
-          background: '#f1f5f9',
-          border: '1px solid #cbd5e1',
-          padding: '4px 12px',
-          borderRadius: '50px',
-        }}>
-          <span style={{ fontSize: '1rem' }}>🌍</span>
-          <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            International Visitor Mode
-          </span>
-        </div>
-
-        <div>
-          <h4 style={{ margin: '0 0 6px 0', fontSize: '0.98rem', fontWeight: 800, color: '#0f172a' }}>
-            Purchases Available Only in India 🇮🇳
-          </h4>
-          <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5 }}>
-            This page and its live preview are visible worldwide. However, checkout and private link generation are currently restricted to clients located in India.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          disabled
-          style={{
-            width: '100%',
-            padding: '12px 16px',
-            borderRadius: '12px',
-            background: '#e2e8f0',
-            border: '1px solid #cbd5e1',
-            color: '#64748b',
-            fontSize: '0.88rem',
-            fontWeight: 700,
-            cursor: 'not-allowed',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-          }}
-        >
-          <span>🔒</span>
-          <span>Checkout Blocked (Outside India)</span>
-        </button>
-
-        <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
-          UPI & Domestic INR payments only. International payments coming soon.
-        </span>
-
-        {error && (
-          <p style={{ color: '#e11d48', margin: 0, fontSize: '0.82rem', textAlign: 'center', fontWeight: 700 }}>
-            ⚠️ {error}
-          </p>
-        )}
-      </div>
-    );
-  }
 
   return (
     <>

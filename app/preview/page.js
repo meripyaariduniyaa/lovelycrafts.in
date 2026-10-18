@@ -12,7 +12,6 @@ import TemplateRenderer from '@/components/templates/TemplateRenderer';
 import { templates } from '@/lib/templates';
 import { createKeepsakePoster } from '@/components/KeepsakePoster';
 import { WhatsAppIcon, LinkIcon } from '@/components/AppIcons';
-import { useGeoLocation } from '@/hooks/useGeoLocation';
 
 /* ─────────────────────────────────────────────────────────
    TEMPLATE ACCENT MAP
@@ -61,7 +60,6 @@ function PreviewContent() {
   const [showPleaseModal, setShowPleaseModal] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [dynamicPricing, setDynamicPricing] = useState({});
-  const { isIndia, country } = useGeoLocation();
 
   useEffect(() => {
     fetch('/api/pricing')
@@ -403,75 +401,51 @@ function PreviewContent() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: (isIndia && couponOpen) ? '0.75rem' : '0.5rem',
+                marginBottom: couponOpen ? '0.75rem' : '0.5rem',
               }}>
-                {isIndia ? (
-                  <>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a' }}>
-                        ₹{totalAmount}
-                      </span>
-                      <span style={{ fontSize: '0.78rem', color: '#94a3b8', textDecoration: 'line-through' }}>
-                        ₹499
-                      </span>
-                      <span style={{
-                        fontSize: '0.7rem',
-                        fontWeight: 800,
-                        color: '#059669',
-                        background: '#ecfdf5',
-                        border: '1px solid #a7f3d0',
-                        padding: '2px 7px',
-                        borderRadius: '50px',
-                      }}>
-                        Save 60%
-                      </span>
-                    </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a' }}>
+                    ₹{totalAmount}
+                  </span>
+                  <span style={{ fontSize: '0.78rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                    ₹499
+                  </span>
+                  <span style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 800,
+                    color: '#059669',
+                    background: '#ecfdf5',
+                    border: '1px solid #a7f3d0',
+                    padding: '2px 7px',
+                    borderRadius: '50px',
+                  }}>
+                    Save 60%
+                  </span>
+                </div>
 
-                    {/* Coupon Code Toggle Button */}
-                    <button
-                      type="button"
-                      onClick={() => setCouponOpen((prev) => !prev)}
-                      style={{
-                        background: couponOpen ? '#fff1f2' : 'transparent',
-                        border: couponOpen ? '1px solid #fecdd3' : '1px solid transparent',
-                        color: '#be185d',
-                        fontSize: '0.78rem',
-                        fontWeight: 800,
-                        cursor: 'pointer',
-                        padding: '4px 10px',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        transition: 'all 0.2s',
-                      }}
-                    >
-                      <span>🎟️</span>
-                      <span>{couponOpen ? 'Close Code' : 'Have a Coupon?'}</span>
-                      <span style={{ fontSize: '0.65rem', transform: couponOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▼</span>
-                    </button>
-                  </>
-                ) : (
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '0.9rem' }}>📍</span>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#475569' }}>
-                        Browsing Region: <strong style={{ color: '#0f172a' }}>{country || 'International'}</strong>
-                      </span>
-                    </div>
-                    <span style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 800,
-                      color: '#475569',
-                      background: '#f1f5f9',
-                      border: '1px solid #e2e8f0',
-                      padding: '3px 9px',
-                      borderRadius: '50px',
-                    }}>
-                      Preview Mode
-                    </span>
-                  </div>
-                )}
+                {/* Coupon Code Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => setCouponOpen((prev) => !prev)}
+                  style={{
+                    background: couponOpen ? '#fff1f2' : 'transparent',
+                    border: couponOpen ? '1px solid #fecdd3' : '1px solid transparent',
+                    color: '#be185d',
+                    fontSize: '0.78rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <span>🎟️</span>
+                  <span>{couponOpen ? 'Close Code' : 'Have a Coupon?'}</span>
+                  <span style={{ fontSize: '0.65rem', transform: couponOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▼</span>
+                </button>
               </div>
 
               {/* PayButton (Rendered directly with its coupon row & secure pay button, without taking over whole screen) */}
