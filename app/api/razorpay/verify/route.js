@@ -6,9 +6,20 @@ import { calculateEffectiveTierAndRate, commissionForAmount, normalizeCode } fro
 import { verifyReferral } from '@/lib/referral-crypto';
 import { createAutoInvoice } from '@/lib/finance';
 import { disableOrganicRetentionCoupon } from '@/lib/coupons';
+import { getClientCountry } from '@/lib/geo';
 
 export async function POST(request) {
   try {
+    // Enforce India-only payment verification
+    const geo = getClientCountry(request);
+    if (!geo.isIndia) {
+      return NextResponse.json({
+        error: 'Payment verification is restricted to clients located in India only.',
+        countryBlocked: true,
+        detectedCountry: geo.country,
+      }, { status: 403 });
+    }
+
     const adminDb = getAdminDb();
     const {
       apologyId,

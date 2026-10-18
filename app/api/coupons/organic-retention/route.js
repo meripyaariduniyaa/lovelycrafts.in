@@ -2,9 +2,15 @@ import { NextResponse } from 'next/server';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { verifyReferral } from '@/lib/referral-crypto';
 import { generateOrganicRetentionCoupon, disableOrganicRetentionCoupon } from '@/lib/coupons';
+import { getClientCountry } from '@/lib/geo';
 
 export async function POST(request) {
   try {
+    const geo = getClientCountry(request);
+    if (!geo.isIndia) {
+      return NextResponse.json({ ok: false, eligible: false, countryBlocked: true, message: 'Offers restricted to India' });
+    }
+
     const adminDb = getAdminDb();
     const body = await request.json().catch(() => ({}));
     const { noteId, action = 'get_or_create', code, couponId } = body;

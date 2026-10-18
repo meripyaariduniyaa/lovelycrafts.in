@@ -4,9 +4,20 @@ import { getAdminDb } from '@/lib/firebase-admin';
 import { resolveCoupon } from '@/lib/coupons';
 import { verifyReferral } from '@/lib/referral-crypto';
 import { getTemplatePrice } from '@/lib/pricing';
+import { getClientCountry } from '@/lib/geo';
 
 export async function POST(request) {
   try {
+    // Enforce India-only purchase restriction
+    const geo = getClientCountry(request);
+    if (!geo.isIndia) {
+      return NextResponse.json({
+        error: `Purchases are currently restricted to clients located in India only. (Detected origin: ${geo.country || 'International'})`,
+        countryBlocked: true,
+        detectedCountry: geo.country,
+      }, { status: 403 });
+    }
+
     const adminDb = getAdminDb();
     const { apologyId, couponCode } = await request.json();
 
