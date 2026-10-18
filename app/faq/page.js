@@ -71,7 +71,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: 'What is your refund policy?',
-        a: 'If you encounter any technical glitch or issues accessing your created link, our support team will resolve it or provide a full refund within 7 days. Check our Refund Policy for details.',
+        a: 'Because LovelyCrafts delivers instant customized digital surprises, completed purchases are generally non-refundable. However, we provide a 48-Hour Refund Guarantee for confirmed technical delivery failures (where payment was deducted but no gift link was generated) or accidental duplicate transactions. Submit your Order ID to support within 48 hours of payment for a full refund. Check our Refund Policy page for full details.',
       },
     ],
   },
@@ -80,11 +80,11 @@ const FAQ_CATEGORIES = [
     faqs: [
       {
         q: 'What is the LovelyCrafts Creator Club?',
-        a: 'The Creator Club is our affiliate program for content creators, influencers, and digital marketers. Creators get a custom referral link/coupon and earn up to 18% commission on referred template unlocks.',
+        a: 'The Creator Club is our affiliate program for content creators, influencers, and digital marketers. Creators get an exclusive referral link and 10% coupon code for their audience, earning 10% to 18% tiered commissions across 5 performance levels based on monthly sales volume.',
       },
       {
         q: 'How are creator payouts processed?',
-        a: 'Payouts are disbursed weekly via direct UPI transfer or bank transfer once creator earnings meet the minimum payout threshold.',
+        a: 'Payouts are disbursed automatically via UPI or direct NEFT bank transfer once your confirmed commission balance reaches the minimum threshold of ₹500. Qualifying tiers reset at the beginning of each calendar month.',
       },
     ],
   },

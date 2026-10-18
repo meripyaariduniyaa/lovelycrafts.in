@@ -837,6 +837,23 @@ export default function PayButton({
           </div>
         </div>
 
+        {/* 48-Hour Refund Guarantee Notice */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '6px',
+          fontSize: '0.74rem',
+          color: '#64748b',
+          fontWeight: 600,
+        }}>
+          <span>🛡️ 100% Secure via Razorpay</span>
+          <span>•</span>
+          <a href="/refund" target="_blank" rel="noreferrer" style={{ color: '#be185d', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+            48-Hour Refund Guarantee
+          </a>
+        </div>
+
       </div>
 
       {error && (

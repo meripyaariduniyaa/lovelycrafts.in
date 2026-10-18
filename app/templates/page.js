@@ -102,7 +102,7 @@ export default function TemplatesPage() {
             }}
           >
             <span className="live-pulse-dot" aria-hidden="true" />
-            <span>🎁 EXPLORE ALL 10+ INTERACTIVE TEMPLATES</span>
+            <span>🎁 EXPLORE ALL {templates.length} INTERACTIVE TEMPLATES</span>
           </div>
 
           <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.15, fontWeight: 900, color: '#1c1917', margin: '0 auto 0.75rem', letterSpacing: '-0.03em' }}>

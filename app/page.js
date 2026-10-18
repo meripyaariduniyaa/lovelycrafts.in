@@ -139,7 +139,7 @@ export default function Home() {
                 boxShadow: '0 8px 25px rgba(244, 63, 94, 0.35)',
               }}
             >
-              ✨ Craft a Surprise Now ➔
+              Create a Personalized Gift ➔
             </Link>
 
             <Link
@@ -808,7 +808,7 @@ export default function Home() {
               display: 'inline-block',
             }}
           >
-            ✨ Start Crafting Now ➔
+            Create a Personalized Gift ➔
           </Link>
         </section>
       </div>

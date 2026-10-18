@@ -61,11 +61,11 @@ const FAQS = [
   },
   {
     q: 'How much commission can I earn?',
-    a: 'You earn 10% to 18% commission on every qualifying paid referral. Your commission percentage starts at 10% (Starter tier) and increases automatically up to 18% (Elite tier) as your total successful referrals grow.',
+    a: 'You earn 10% to 18% commission on every qualifying paid referral. Your tier is calculated based on monthly orders: Starter (0–100 @ 10%), Rising (101–300 @ 15%), Creator (301–700 @ 16%), Partner (701–1,500 @ 17%), and Elite (1,501+ @ 18%). Commission tiers evaluate fresh each calendar month.',
   },
   {
     q: 'What discount does my audience receive?',
-    a: 'Depending on your custom creator offer, your audience receives 10% OFF across all LovelyCrafts interactive experiences with your coupon.',
+    a: 'Your audience receives an exclusive 10% OFF across all LovelyCrafts interactive gift experiences when applying your personal creator coupon code.',
   },
   {
     q: 'How do referrals and attribution work?',
@@ -88,8 +88,8 @@ const FAQS = [
     a: 'Absolutely! You can feature LovelyCrafts in Instagram Reels, Stories, bio links, YouTube Shorts, video descriptions, TikTok, or WhatsApp status.',
   },
   {
-    q: 'What happens if an order is refunded or cancelled?',
-    a: 'Since LovelyCrafts digital experiences are instant personalized online gifts with immediate access, all purchases are final and non-refundable. Your referral earnings on completed orders are locked and credited to your balance.',
+    q: 'What happens if an order is refunded?',
+    a: 'We provide a 48-hour refund window covering duplicate transactions or technical delivery failures. If an order is refunded under this policy, the corresponding commission is deducted. For completed experiences, commissions are safely credited and ready for payout.',
   },
 ];
 
@@ -541,40 +541,43 @@ export default function CreatorsLandingPage() {
               Earn more as you grow
             </h2>
             <p style={{ color: '#6b7280', fontSize: '0.92rem', marginBottom: '20px' }}>
-              Your commission increases automatically as your successful referrals grow.
+              Your commission tier automatically advances based on your monthly successful referrals.
             </p>
 
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid #f3f4f6' }}>
-                    <th style={{ padding: '10px 12px', color: '#6b7280', fontSize: '0.85rem' }}>Successful Referrals</th>
+                    <th style={{ padding: '10px 12px', color: '#6b7280', fontSize: '0.85rem' }}>Tier &amp; Monthly Orders</th>
                     <th style={{ padding: '10px 12px', color: '#6b7280', fontSize: '0.85rem', textAlign: 'right' }}>Commission</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>🌱 0–99 referrals</td>
+                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>🌱 Starter (0–100 orders/mo)</td>
                     <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>10%</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💚 100–199 referrals</td>
+                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💚 Rising (101–300 orders/mo)</td>
                     <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>15%</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💙 200–299 referrals</td>
+                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💙 Creator (301–700 orders/mo)</td>
                     <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>16%</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💜 300–399 referrals</td>
+                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💜 Partner (701–1,500 orders/mo)</td>
                     <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>17%</td>
                   </tr>
                   <tr>
-                    <td style={{ padding: '12px', fontWeight: 700, color: '#111827', fontSize: '0.95rem' }}>👑 400+ referrals</td>
+                    <td style={{ padding: '12px', fontWeight: 700, color: '#111827', fontSize: '0.95rem' }}>👑 Elite (1,501+ orders/mo)</td>
                     <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.15rem', textAlign: 'right' }}>18%</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div style={{ marginTop: '16px', padding: '10px 14px', background: '#fdf2f8', borderRadius: '12px', border: '1px solid #fce7f3', fontSize: '0.82rem', color: '#9d174d' }}>
+              💡 <strong>Monthly Reset &amp; Fast Payout:</strong> Tiers recalculate on the 1st of every month. Commission balance is paid out to your UPI or bank account upon reaching ₹500.
             </div>
           </div>
 

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { templates } from '@/lib/templates';
 
 const OCCASIONS_SHOWCASE = [
   {
@@ -460,107 +461,142 @@ export default function BusinessLandingClient() {
         </div>
       </section>
 
-      {/* ── PRICING MODEL / DEMO CTA ── */}
+      {/* ── STANDARDIZED CORPORATE SUBSCRIPTION ── */}
       <section id="pricing-section" className="b2b-section pricing-section">
         <div className="b2b-container">
           <div className="section-header text-center">
-            <span className="section-tag">Transparent Pricing</span>
-            <h2 className="section-heading">Built for Teams of All Sizes</h2>
+            <span className="section-tag">Simple &amp; Transparent Pricing</span>
+            <h2 className="section-heading">LovelyCrafts Business Plan</h2>
             <p className="section-desc">
-              Custom pricing tailored to your team. No surprise bills — pay only for what your team celebrates.
+              One predictable subscription for modern workplace recognition. Celebrate all milestones with zero hidden fees.
             </p>
           </div>
 
-          <div className="pricing-model-grid">
-            <div className="pricing-model-card">
-              <div className="pricing-card-top">
-                <div className="pricing-model-icon">🎯</div>
-                <h3 className="pricing-model-title">Per-Experience Model</h3>
-                <p className="pricing-model-desc">
-                  Pay per unique employee experience created. Perfect for growing teams starting out.
-                </p>
-                <div className="pricing-rate-wrap">
-                  <span className="pricing-rate-amount">₹199</span>
-                  <span className="pricing-rate-period">/ unique celebration</span>
+          <div className="corporate-plan-card glass-panel">
+            <div className="corporate-plan-main">
+              <div className="plan-badge-row">
+                <span className="pricing-popular-badge-static">🏢 Standard Corporate Plan</span>
+                <span className="plan-billing-badge">Postpaid Monthly Billing</span>
+              </div>
+
+              <div className="plan-price-header">
+                <div className="price-block">
+                  <div className="price-number-row">
+                    <span className="currency">₹</span>
+                    <span className="price-amount">2,499</span>
+                    <span className="price-period">+ applicable GST / month</span>
+                  </div>
+                  <p className="price-subtext">Includes <strong>20 celebration credits</strong> every month</p>
+                </div>
+
+                <div className="additional-credit-pill">
+                  <span className="pill-label">Need more celebrations?</span>
+                  <span className="pill-value">₹99 + GST</span>
+                  <span className="pill-desc">per additional credit</span>
                 </div>
               </div>
-              <ul className="pricing-features-list">
-                <li><span className="chk">✓</span> Access to 40+ interactive templates</li>
-                <li><span className="chk">✓</span> Automated birthday &amp; tenure alerts</li>
-                <li><span className="chk">✓</span> 1-click WhatsApp / Email delivery link</li>
-                <li><span className="chk">✓</span> No monthly subscriptions or expiry</li>
-              </ul>
-              <a href="#apply-section" className="pricing-card-cta">
-                Apply for Access →
-              </a>
-            </div>
 
-            <div className="pricing-model-card featured">
-              <div className="pricing-popular-badge">⭐ Recommended for Companies</div>
-              <div className="pricing-card-top">
-                <div className="pricing-model-icon">🏢</div>
-                <h3 className="pricing-model-title">Volume-Based Plans</h3>
-                <p className="pricing-model-desc">
-                  Curated packages for companies with 50+ staff. Maximum flexibility with tiered volume discounts.
-                </p>
-                <div className="pricing-rate-wrap">
-                  <span className="pricing-rate-amount">Volume Tier</span>
-                  <span className="pricing-rate-period">Up to 25% Bonus Credits</span>
+              <div className="plan-inclusions-grid">
+                <div className="inclusion-item">
+                  <span className="chk">✓</span>
+                  <div>
+                    <strong>20 Monthly Credits Included</strong>
+                    <p>1 credit = 1 customized interactive surprise generated and delivered for an employee.</p>
+                  </div>
+                </div>
+
+                <div className="inclusion-item">
+                  <span className="chk">✓</span>
+                  <div>
+                    <strong>Full Interactive Template Access</strong>
+                    <p>Unlimited access to our complete catalog of {templates.length} interactive experiences.</p>
+                  </div>
+                </div>
+
+                <div className="inclusion-item">
+                  <span className="chk">✓</span>
+                  <div>
+                    <strong>Automated Occasion Engine</strong>
+                    <p>Sync Excel/CSV rosters to automatically track birthdays, work anniversaries, and tenure milestones.</p>
+                  </div>
+                </div>
+
+                <div className="inclusion-item">
+                  <span className="chk">✓</span>
+                  <div>
+                    <strong>Custom Company Branding</strong>
+                    <p>Incorporate your company logo, greeting tone, manager signatures, and brand accent colors.</p>
+                  </div>
+                </div>
+
+                <div className="inclusion-item">
+                  <span className="chk">✓</span>
+                  <div>
+                    <strong>Dedicated Corporate Workspace</strong>
+                    <p>Dedicated workspace portal at business.lovelycrafts.in/[your-company] with multi-admin roles.</p>
+                  </div>
+                </div>
+
+                <div className="inclusion-item">
+                  <span className="chk">✓</span>
+                  <div>
+                    <strong>Unified GST Invoicing</strong>
+                    <p>Postpaid billing with unified monthly invoices and detailed audit log reports.</p>
+                  </div>
                 </div>
               </div>
-              <ul className="pricing-features-list">
-                <li><span className="chk">✓</span> Everything in Per-Experience</li>
-                <li><span className="chk">✓</span> Excel / CSV bulk employee roster sync</li>
-                <li><span className="chk">✓</span> Custom company logo &amp; brand palette</li>
-                <li><span className="chk">✓</span> Priority HR onboarding &amp; account review</li>
-                <li><span className="chk">✓</span> Monthly unified corporate billing &amp; GST invoices</li>
-              </ul>
-              <button type="button" onClick={() => setDemoModalOpen(true)} className="pricing-card-cta featured-cta">
-                Book a Demo for Quote →
-              </button>
-            </div>
 
-            <div className="pricing-model-card">
-              <div className="pricing-card-top">
-                <div className="pricing-model-icon">🤝</div>
-                <h3 className="pricing-model-title">Enterprise Contracts</h3>
-                <p className="pricing-model-desc">
-                  Tailored deployments for 500+ employees with strict security, SLA guarantees, and custom templates.
-                </p>
-                <div className="pricing-rate-wrap">
-                  <span className="pricing-rate-amount">Custom SLA</span>
-                  <span className="pricing-rate-period">Bespoke SLA &amp; Support</span>
+              {/* Billing Rules & Real Example Box */}
+              <div className="plan-rules-box">
+                <h4 className="rules-heading">📋 How Billing &amp; Credits Work:</h4>
+                <div className="rules-grid">
+                  <div className="rule-point">
+                    <span className="rule-icon">⚡</span>
+                    <div>
+                      <strong>Credit Usage:</strong> 1 credit is consumed whenever an interactive employee celebration is generated and delivered.
+                    </div>
+                  </div>
+                  <div className="rule-point">
+                    <span className="rule-icon">📅</span>
+                    <div>
+                      <strong>Monthly Reset &amp; Expiry:</strong> 20 base credits are replenished on the 1st of each month. Unused credits expire at month-end.
+                    </div>
+                  </div>
+                  <div className="rule-point">
+                    <span className="rule-icon">🔄</span>
+                    <div>
+                      <strong>Auto-Renewal &amp; Flexibility:</strong> Subscription auto-renews monthly postpaid. You can pause or cancel anytime with zero lock-in.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="billing-example-banner">
+                  <span className="example-badge">💡 Real Monthly Billing Example</span>
+                  <p>
+                    A 35-person team celebrates <strong>35 occasions</strong> this month:
+                    <br />
+                    <code>Base Plan (includes 20 credits) = ₹2,499</code> + <code>15 extra credits @ ₹99 = ₹1,485</code>
+                    <br />
+                    <strong>Total Monthly Invoice: ₹3,984 + applicable GST</strong> (No hidden fees).
+                  </p>
                 </div>
               </div>
-              <ul className="pricing-features-list">
-                <li><span className="chk">✓</span> Dedicated Enterprise Account Manager</li>
-                <li><span className="chk">✓</span> Bespoke interactive mini-game templates</li>
-                <li><span className="chk">✓</span> Multi-department roles &amp; audit trails</li>
-                <li><span className="chk">✓</span> HRMS integration (Workday, Darwinbox, etc.)</li>
-                <li><span className="chk">✓</span> Enterprise SOC2/GDPR compliance isolation</li>
-              </ul>
-              <button type="button" onClick={() => setDemoModalOpen(true)} className="pricing-card-cta">
-                Contact Enterprise Team →
-              </button>
-            </div>
-          </div>
 
-          <div className="demo-cta-banner">
-            <div className="demo-cta-content">
-              <span className="demo-cta-tag">🎬 Live Walkthrough</span>
-              <h3 className="demo-cta-title">See LovelyCrafts for Business in Action</h3>
-              <p className="demo-cta-desc">
-                Book a free 15-minute demo. We will show you how it works for your team size, and give you a custom pricing quote.
-              </p>
+              <div className="plan-actions-row">
+                <button
+                  type="button"
+                  onClick={() => setDemoModalOpen(true)}
+                  className="b2b-btn-primary"
+                >
+                  <span>Book a Free 15-Min Demo</span>
+                  <span>🎬</span>
+                </button>
+                <a href="#apply-section" className="b2b-btn-secondary">
+                  <span>Apply for Business Access</span>
+                  <span>↓</span>
+                </a>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setDemoModalOpen(true)}
-              className="b2b-btn-primary demo-cta-btn"
-            >
-              <span>Book a Free Demo</span>
-              <span>→</span>
-            </button>
           </div>
         </div>
       </section>
@@ -1772,218 +1808,248 @@ export default function BusinessLandingClient() {
           background: radial-gradient(circle 800px at 50% 50%, rgba(244, 63, 94, 0.07), transparent 70%);
         }
 
-        .pricing-model-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-          margin-bottom: 48px;
-          align-items: stretch;
-        }
-
-        .pricing-model-card {
-          background: rgba(15, 17, 30, 0.6);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 26px;
-          padding: 36px 30px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        /* ── STANDARDIZED CORPORATE PLAN CARD ── */
+        .corporate-plan-card {
+          max-width: 960px;
+          margin: 0 auto;
+          background: linear-gradient(180deg, rgba(244, 63, 94, 0.08) 0%, rgba(15, 17, 30, 0.85) 100%);
+          border: 1.5px solid rgba(244, 63, 94, 0.4);
+          border-radius: 28px;
+          padding: 48px;
+          box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.8), 0 0 50px rgba(244, 63, 94, 0.15);
           position: relative;
-          backdrop-filter: blur(20px);
+          backdrop-filter: blur(24px);
         }
 
-        .pricing-model-card:hover {
-          border-color: rgba(255, 255, 255, 0.25);
-          transform: translateY(-6px);
-          box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+        .plan-badge-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 24px;
+          flex-wrap: wrap;
+          gap: 12px;
         }
 
-        .pricing-model-card.featured {
-          background: linear-gradient(180deg, rgba(244, 63, 94, 0.12) 0%, rgba(15, 17, 30, 0.8) 100%);
-          border: 2px solid rgba(244, 63, 94, 0.5);
-          box-shadow: 0 25px 70px -15px rgba(244, 63, 94, 0.35), 0 0 0 1px rgba(244, 63, 94, 0.3);
-          transform: scale(1.03);
-          z-index: 2;
-        }
-
-        .pricing-model-card.featured:hover {
-          transform: scale(1.04) translateY(-6px);
-          box-shadow: 0 35px 80px -15px rgba(244, 63, 94, 0.5), 0 0 30px rgba(244, 63, 94, 0.3);
-        }
-
-        .pricing-popular-badge {
-          position: absolute;
-          top: -14px;
-          left: 50%;
-          transform: translateX(-50%);
+        .pricing-popular-badge-static {
           background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
           color: #ffffff;
-          font-size: 0.74rem;
+          font-size: 0.8rem;
           font-weight: 800;
           letter-spacing: 0.04em;
           padding: 6px 16px;
           border-radius: 999px;
           box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
-          white-space: nowrap;
         }
 
-        .pricing-card-top {
-          margin-bottom: 24px;
-        }
-
-        .pricing-model-icon {
-          font-size: 2.6rem;
-          margin-bottom: 16px;
-        }
-
-        .pricing-model-title {
-          font-size: 1.45rem;
-          font-weight: 900;
-          color: #ffffff;
-          margin-bottom: 8px;
-          letter-spacing: -0.02em;
-        }
-
-        .pricing-model-desc {
-          font-size: 0.9rem;
-          color: #94a3b8;
-          line-height: 1.6;
-          margin-bottom: 20px;
-          min-height: 44px;
-        }
-
-        .pricing-rate-wrap {
-          display: flex;
-          align-items: baseline;
-          gap: 8px;
-          padding: 14px 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .pricing-rate-amount {
-          font-size: 1.9rem;
-          font-weight: 900;
-          color: #ffffff;
-        }
-
-        .pricing-rate-period {
-          font-size: 0.82rem;
-          color: #fda4af;
-          font-weight: 700;
-        }
-
-        .pricing-features-list {
-          list-style: none;
-          padding: 0;
-          margin: 0 0 28px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          font-size: 0.88rem;
-          color: #cbd5e1;
-          flex: 1;
-        }
-
-        .pricing-features-list li {
-          display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          line-height: 1.45;
-        }
-
-        .pricing-features-list .chk {
-          color: #10b981;
-          font-weight: 900;
-          font-size: 0.85rem;
-          flex-shrink: 0;
-        }
-
-        .pricing-card-cta {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          padding: 13px 20px;
-          border-radius: 12px;
+        .plan-billing-badge {
           background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.14);
-          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: #94a3b8;
+          font-size: 0.8rem;
           font-weight: 700;
-          font-size: 0.94rem;
-          text-decoration: none;
-          cursor: pointer;
-          transition: all 0.25s ease;
-          font-family: inherit;
+          padding: 5px 14px;
+          border-radius: 999px;
         }
 
-        .pricing-card-cta:hover {
-          background: rgba(255, 255, 255, 0.12);
-          border-color: rgba(255, 255, 255, 0.3);
-          transform: translateY(-2px);
-        }
-
-        .pricing-card-cta.featured-cta {
-          background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-          border-color: rgba(255, 255, 255, 0.2);
-          box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4);
-        }
-
-        .pricing-card-cta.featured-cta:hover {
-          box-shadow: 0 8px 30px rgba(244, 63, 94, 0.6);
-        }
-
-        /* ── DEMO CTA BANNER ── */
-        .demo-cta-banner {
+        .plan-price-header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 32px;
-          background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(139, 92, 246, 0.12) 100%);
-          border: 1px solid rgba(244, 63, 94, 0.35);
-          border-radius: 24px;
-          padding: 42px 48px;
-          box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.6), 0 0 40px rgba(244, 63, 94, 0.1);
-          backdrop-filter: blur(20px);
+          gap: 24px;
+          padding-bottom: 28px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          margin-bottom: 32px;
+          flex-wrap: wrap;
         }
 
-        .demo-cta-content {
-          flex: 1;
-          min-width: 300px;
+        .price-number-row {
+          display: flex;
+          align-items: baseline;
+          gap: 8px;
         }
 
-        .demo-cta-tag {
-          display: inline-block;
-          font-size: 0.8rem;
+        .price-number-row .currency {
+          font-size: 2.2rem;
           font-weight: 800;
+          color: #fda4af;
+        }
+
+        .price-number-row .price-amount {
+          font-size: 3.8rem;
+          font-weight: 900;
+          color: #ffffff;
+          line-height: 1;
+          letter-spacing: -0.03em;
+        }
+
+        .price-number-row .price-period {
+          font-size: 1rem;
+          color: #94a3b8;
+          font-weight: 600;
+        }
+
+        .price-subtext {
+          margin: 10px 0 0;
+          font-size: 1.05rem;
+          color: #cbd5e1;
+        }
+
+        .price-subtext strong {
           color: #f43f5e;
-          background: rgba(244, 63, 94, 0.15);
-          padding: 4px 12px;
-          border-radius: 999px;
-          margin-bottom: 12px;
+        }
+
+        .additional-credit-pill {
+          background: rgba(244, 63, 94, 0.12);
+          border: 1px solid rgba(244, 63, 94, 0.35);
+          border-radius: 18px;
+          padding: 16px 24px;
+          text-align: right;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .pill-label {
+          font-size: 0.76rem;
+          font-weight: 700;
+          color: #fda4af;
+          text-transform: uppercase;
           letter-spacing: 0.05em;
         }
 
-        .demo-cta-title {
-          font-size: 1.85rem;
+        .pill-value {
+          font-size: 1.6rem;
           font-weight: 900;
           color: #ffffff;
-          margin-bottom: 10px;
-          letter-spacing: -0.025em;
         }
 
-        .demo-cta-desc {
-          font-size: 1rem;
-          color: #cbd5e1;
-          line-height: 1.65;
-          margin: 0;
+        .pill-desc {
+          font-size: 0.8rem;
+          color: #94a3b8;
         }
 
-        .demo-cta-btn {
+        .plan-inclusions-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24px;
+          margin-bottom: 36px;
+        }
+
+        .inclusion-item {
+          display: flex;
+          gap: 14px;
+          align-items: flex-start;
+        }
+
+        .inclusion-item .chk {
+          color: #10b981;
+          font-weight: 900;
+          font-size: 0.95rem;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: rgba(16, 185, 129, 0.15);
+          display: flex;
+          align-items: center;
+          justify-content: center;
           flex-shrink: 0;
-          font-size: 1.05rem !important;
-          padding: 16px 36px !important;
+          margin-top: 2px;
+        }
+
+        .inclusion-item strong {
+          display: block;
+          color: #ffffff;
+          font-size: 1.02rem;
+          font-weight: 800;
+          margin-bottom: 4px;
+        }
+
+        .inclusion-item p {
+          margin: 0;
+          font-size: 0.88rem;
+          color: #94a3b8;
+          line-height: 1.55;
+        }
+
+        /* Rules & Billing Example */
+        .plan-rules-box {
+          background: rgba(10, 12, 22, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 20px;
+          padding: 24px 28px;
+          margin-bottom: 36px;
+        }
+
+        .rules-heading {
+          font-size: 1rem;
+          font-weight: 800;
+          color: #ffffff;
+          margin: 0 0 16px;
+        }
+
+        .rules-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 18px;
+          margin-bottom: 20px;
+        }
+
+        .rule-point {
+          display: flex;
+          gap: 10px;
+          font-size: 0.86rem;
+          color: #cbd5e1;
+          line-height: 1.5;
+        }
+
+        .rule-point strong {
+          color: #ffffff;
+        }
+
+        .rule-icon {
+          font-size: 1.2rem;
+          flex-shrink: 0;
+        }
+
+        .billing-example-banner {
+          background: rgba(244, 63, 94, 0.08);
+          border: 1px solid rgba(244, 63, 94, 0.25);
+          border-radius: 14px;
+          padding: 16px 20px;
+        }
+
+        .example-badge {
+          display: inline-block;
+          font-size: 0.74rem;
+          font-weight: 800;
+          color: #fda4af;
+          margin-bottom: 6px;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+
+        .billing-example-banner p {
+          margin: 0;
+          font-size: 0.92rem;
+          color: #e2e8f0;
+          line-height: 1.6;
+        }
+
+        .billing-example-banner code {
+          background: rgba(0, 0, 0, 0.4);
+          padding: 2px 8px;
+          border-radius: 6px;
+          color: #fb7185;
+          font-family: monospace;
+          font-size: 0.88rem;
+        }
+
+        .plan-actions-row {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 18px;
+          flex-wrap: wrap;
         }
 
         /* ── APPLICATION FORM SECTION ── */
@@ -2316,12 +2382,6 @@ export default function BusinessLandingClient() {
           .b2b-hero-title {
             font-size: 3.2rem;
           }
-          .pricing-model-card.featured {
-            transform: none;
-          }
-          .pricing-model-card.featured:hover {
-            transform: translateY(-6px);
-          }
         }
 
         @media (max-width: 900px) {
@@ -2333,9 +2393,19 @@ export default function BusinessLandingClient() {
             gap: 40px;
           }
           .steps-grid,
-          .benefits-grid,
-          .pricing-model-grid {
+          .benefits-grid {
             grid-template-columns: 1fr 1fr;
+          }
+          .corporate-plan-card {
+            padding: 32px 24px;
+          }
+          .plan-inclusions-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+          }
+          .rules-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
           }
           .mockup-body {
             grid-template-columns: 1fr;
@@ -2352,14 +2422,6 @@ export default function BusinessLandingClient() {
           .checkbox-grid {
             grid-template-columns: 1fr 1fr;
           }
-          .demo-cta-banner {
-            flex-direction: column;
-            text-align: center;
-            padding: 32px 24px;
-          }
-          .demo-cta-title {
-            font-size: 1.4rem;
-          }
           .value-strip {
             border-radius: 20px;
             gap: 16px;
@@ -2373,9 +2435,17 @@ export default function BusinessLandingClient() {
           .section-heading {
             font-size: 2rem;
           }
+          .plan-price-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 18px;
+          }
+          .additional-credit-pill {
+            width: 100%;
+            text-align: left;
+          }
           .steps-grid,
-          .benefits-grid,
-          .pricing-model-grid {
+          .benefits-grid {
             grid-template-columns: 1fr;
           }
           .checkbox-grid {

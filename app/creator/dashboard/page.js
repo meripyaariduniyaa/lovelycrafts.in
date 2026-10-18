@@ -685,7 +685,7 @@ export default function CreatorDashboardPage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
             <div>
               <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#f43f5e', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                🏆 CREATOR TIER ROADMAP (2X EXPONENTIAL TIERS)
+                🏆 MONTHLY CREATOR TIER ROADMAP
               </span>
               <h2 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '4px 0 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span>{currentTier.emoji}</span> {currentTier.name} Tier ({currentRate}% Commission)
@@ -732,10 +732,10 @@ export default function CreatorDashboardPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
             {[
               { name: 'Starter', min: 0, range: '0–100', rate: '10%', emoji: '🌱' },
-              { name: 'Rising', min: 100, range: '100–300', rate: '15%', emoji: '💚' },
-              { name: 'Creator', min: 300, range: '300–700', rate: '16%', emoji: '💙' },
-              { name: 'Partner', min: 700, range: '700–1500', rate: '17%', emoji: '💜' },
-              { name: 'Elite', min: 1500, range: '1500+', rate: '18%', emoji: '👑' },
+              { name: 'Rising', min: 101, range: '101–300', rate: '15%', emoji: '💚' },
+              { name: 'Creator', min: 301, range: '301–700', rate: '16%', emoji: '💙' },
+              { name: 'Partner', min: 701, range: '701–1,500', rate: '17%', emoji: '💜' },
+              { name: 'Elite', min: 1501, range: '1,501+', rate: '18%', emoji: '👑' },
             ].map((t) => {
               const isUnlocked = currentOrders >= t.min;
               const isCurrent = currentTier.name?.toLowerCase() === t.name.toLowerCase();

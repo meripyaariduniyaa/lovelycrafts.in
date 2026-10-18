@@ -104,7 +104,18 @@ export default function TemplatesCatalog({ templates }) {
                   <ul className="template-feature-list">
                     {template.features.map((feature) => <li key={feature}>{feature}</li>)}
                   </ul>
-                  <div className="template-card-footer" style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', marginTop: 'auto' }}>
+                  <div className="template-card-footer" style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', padding: '0 4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                        <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#e11d48' }}>₹{activePrice}</span>
+                        {activeBasePrice > activePrice && (
+                          <span style={{ fontSize: '0.82rem', color: '#94a3b8', textDecoration: 'line-through' }}>₹{activeBasePrice}</span>
+                        )}
+                      </div>
+                      <span style={{ fontSize: '0.72rem', color: '#059669', fontWeight: 700, background: '#ecfdf5', padding: '2px 8px', borderRadius: '99px' }}>
+                        One-Time • Instant Access
+                      </span>
+                    </div>
                     <div className="template-card-actions" style={{ width: '100%', display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
                       <PreviewDemoButton
                         templateId={template.id}
