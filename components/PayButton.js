@@ -6,22 +6,18 @@ import { useState, useEffect, useRef } from 'react';
 export default function PayButton({
   apologyId,
   onPaid,
-  displayAmount,
+  displayAmount = 199,
+  baseAmount = 499,
   autoOfferRetention = true,
   recipientName,
-  couponOpen: externalCouponOpen,
-  onToggleCoupon,
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [showCouponModal, setShowCouponModal] = useState(false);
 
-  const [internalCouponOpen, setInternalCouponOpen] = useState(false);
-  const isCouponOpen = externalCouponOpen !== undefined ? externalCouponOpen : internalCouponOpen;
-  const toggleCoupon = onToggleCoupon || (() => setInternalCouponOpen((prev) => !prev));
-
-  // After coupon is applied, we store the resolved order details here
+  // Resolved order from Razorpay order creation endpoint
   const [resolvedOrder, setResolvedOrder] = useState(null);
 
   // Organic customer 10% retention coupon state
@@ -34,33 +30,28 @@ export default function PayButton({
   const [customerPhone, setCustomerPhone] = useState('9717113764');
   const [customerEmail, setCustomerEmail] = useState('chandan@workcosmo.in');
 
-  // Load saved customer phone / email from localStorage so user never has to re-type
+  // Load saved customer phone / email silently from localStorage for Razorpay prefill
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedPhone = localStorage.getItem('lc_customer_phone');
       const savedEmail = localStorage.getItem('lc_customer_email');
-      if (savedPhone) {
-        setCustomerPhone(savedPhone);
-      } else {
-        localStorage.setItem('lc_customer_phone', '9717113764');
-      }
-      if (savedEmail) {
-        setCustomerEmail(savedEmail);
-      } else {
-        localStorage.setItem('lc_customer_email', 'chandan@workcosmo.in');
-      }
+      if (savedPhone) setCustomerPhone(savedPhone);
+      if (savedEmail) setCustomerEmail(savedEmail);
     }
   }, []);
 
-  const handlePhoneChange = (e) => {
-    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-    setCustomerPhone(val);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('lc_customer_phone', val);
-    }
-  };
+  const basePrice = Number(displayAmount) || 199;
+  const originalStrikethrough = Number(baseAmount) || 499;
 
-  const basePrice = displayAmount || 199;
+  // Active payable price
+  const currentPrice = resolvedOrder
+    ? (resolvedOrder.free ? 0 : Math.round(resolvedOrder.amount / 100))
+    : basePrice;
+
+  // Active discount percentage
+  const discountPercent = originalStrikethrough > currentPrice
+    ? Math.round(((originalStrikethrough - currentPrice) / originalStrikethrough) * 100)
+    : 60;
 
   /* ── Check & Fetch Organic Retention 10% Discount OR Auto-Apply Creator Referral ── */
   useEffect(() => {
@@ -79,7 +70,7 @@ export default function PayButton({
         const res = await fetch('/api/coupons/organic-retention', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ noteId: apologyId, action: 'get_or_create' })
+          body: JSON.stringify({ noteId: apologyId, action: 'get_or_create' }),
         });
         const data = await res.json();
         if (!mounted) return;
@@ -94,7 +85,7 @@ export default function PayButton({
           return;
         }
 
-        // Auto-apply previously saved coupon (e.g. from /create?coupon= or storefront)
+        // Auto-apply previously saved coupon
         if (localCode) {
           applyCoupon(localCode);
           return;
@@ -126,12 +117,11 @@ export default function PayButton({
       setRetentionSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timerRef.current);
-          // Disable coupon on backend once expired
           fetch('/api/coupons/organic-retention', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ noteId: apologyId, code: retentionCoupon.code, action: 'disable' })
-          }).catch(() => { });
+            body: JSON.stringify({ noteId: apologyId, code: retentionCoupon.code, action: 'disable' }),
+          }).catch(() => {});
           return 0;
         }
         return prev - 1;
@@ -144,14 +134,16 @@ export default function PayButton({
   /* ── Dismiss retention offer & disable single-use code ── */
   const handleDismissRetention = async () => {
     setRetentionDismissed(true);
+    setResolvedOrder(null);
+    setCouponCode('');
     if (retentionCoupon?.code) {
       try {
         await fetch('/api/coupons/organic-retention', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ noteId: apologyId, code: retentionCoupon.code, action: 'disable' })
+          body: JSON.stringify({ noteId: apologyId, code: retentionCoupon.code, action: 'disable' }),
         });
-      } catch { }
+      } catch {}
     }
   };
 
@@ -168,7 +160,7 @@ export default function PayButton({
       const res = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apologyId, couponCode: code })
+        body: JSON.stringify({ apologyId, couponCode: code }),
       });
       const order = await res.json();
 
@@ -177,19 +169,14 @@ export default function PayButton({
         return;
       }
 
-      // Update coupon code input if override was used
-      if (typeof codeOverride === 'string') {
-        setCouponCode(codeOverride);
-      }
-
-      // Store the full order so Step 2 can use it
+      setCouponCode(code);
       setResolvedOrder(order);
 
       if (order.free) {
-        setFeedback(order.message || `🎉 100% off! Your note is unlocked for free.`);
+        setFeedback(order.message || '🎉 100% OFF! Experience unlocked for free.');
       } else {
-        const discounted = (order.amount / 100).toFixed(0);
-        const saved = (basePrice - discounted).toFixed(0);
+        const discounted = Math.round(order.amount / 100);
+        const saved = basePrice - discounted;
         setFeedback(
           order.message ||
           (order.discountPercent
@@ -201,6 +188,17 @@ export default function PayButton({
       setError(e.message || 'Something went wrong.');
     } finally {
       setBusy(false);
+    }
+  }
+
+  /* ── Remove applied coupon ── */
+  function removeCoupon() {
+    setCouponCode('');
+    setResolvedOrder(null);
+    setFeedback('');
+    setError('');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('lc_saved_coupon');
     }
   }
 
@@ -225,8 +223,8 @@ export default function PayButton({
             creatorId: order.creatorId || null,
             attributionSource: order.attributionSource || null,
             free: true,
-            amount: 0
-          })
+            amount: 0,
+          }),
         });
         if (!verify.ok) {
           const d = await verify.json().catch(() => ({}));
@@ -236,7 +234,6 @@ export default function PayButton({
         return;
       }
 
-      // Build smart prefill data: fallback to 9717113764 & chandan@workcosmo.in
       const cleanPhone = (customerPhone || '').replace(/\D/g, '');
       const validPhone = cleanPhone.length === 10 ? cleanPhone : '9717113764';
       const cleanEmail = ((customerEmail || '').trim()) || 'chandan@workcosmo.in';
@@ -247,20 +244,14 @@ export default function PayButton({
         email: cleanEmail,
       };
 
-      // Paid path — open Razorpay
       const razorpay = new window.Razorpay({
         key: order.keyId,
         amount: order.amount,
         currency: order.currency,
         name: 'Lovely Crafts',
-        description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
+        description: recipientName ? `Private Gift for ${recipientName}` : 'Private Gift Experience',
         order_id: order.orderId,
         prefill,
-        readonly: {
-          contact: true,
-          email: true,
-          name: true,
-        },
         theme: {
           color: '#f43f5e',
         },
@@ -295,15 +286,15 @@ export default function PayButton({
               attributionSource: order.attributionSource || null,
               discountPercent: order.discountPercent || 0,
               amountPaid: order.amount,
-              ...response
-            })
+              ...response,
+            }),
           });
           if (!verify.ok) {
             const d = await verify.json().catch(() => ({}));
             throw new Error(d.error || 'Payment verification failed.');
           }
           onPaid();
-        }
+        },
       });
 
       razorpay.on('payment.failed', (r) =>
@@ -326,7 +317,7 @@ export default function PayButton({
       const res = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apologyId, couponCode: '' })
+        body: JSON.stringify({ apologyId, couponCode: '' }),
       });
       const order = await res.json();
       if (!res.ok) throw new Error(order.error || 'Could not start payment.');
@@ -346,14 +337,9 @@ export default function PayButton({
         amount: order.amount,
         currency: order.currency,
         name: 'Lovely Crafts',
-        description: recipientName ? `Private Link for ${recipientName}` : 'Private Interactive Link',
+        description: recipientName ? `Private Gift for ${recipientName}` : 'Private Gift Experience',
         order_id: order.orderId,
         prefill,
-        readonly: {
-          contact: true,
-          email: true,
-          name: true,
-        },
         theme: {
           color: '#f43f5e',
         },
@@ -385,15 +371,15 @@ export default function PayButton({
               couponCode: '',
               discountPercent: 0,
               amountPaid: order.amount,
-              ...response
-            })
+              ...response,
+            }),
           });
           if (!verify.ok) {
             const d = await verify.json().catch(() => ({}));
             throw new Error(d.error || 'Payment verification failed.');
           }
           onPaid();
-        }
+        },
       });
 
       razorpay.on('payment.failed', (r) =>
@@ -407,14 +393,13 @@ export default function PayButton({
     }
   }
 
-  /* ── Determine what the "Pay Now" button should show ── */
-  const payLabel = (() => {
-    const target = recipientName ? `${recipientName}'s` : 'Their';
-    if (!resolvedOrder) return `✨ Unlock ${target} Moment • ₹${basePrice}`;
-    if (resolvedOrder.free) return '🎉 Unlock for Free Now';
-    const amount = (resolvedOrder.amount / 100).toFixed(0);
-    return `✨ Unlock ${target} Moment • ₹${amount}`;
-  })();
+  const handleCheckoutClick = () => {
+    if (resolvedOrder) {
+      proceedToPay();
+    } else {
+      directPay();
+    }
+  };
 
   const formatTimer = (secs) => {
     const m = Math.floor(secs / 60);
@@ -422,350 +407,387 @@ export default function PayButton({
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
+  // Determine Ribbon Content based on active discounts (strictly no '50 cashback')
+  const ribbonText = (() => {
+    if (retentionCoupon && retentionSeconds > 0 && !retentionDismissed) {
+      return `🎁 Special 10% Instant Discount Applied! • ⏱️ ${formatTimer(retentionSeconds)}`;
+    }
+    if (resolvedOrder && resolvedOrder.discountPercent) {
+      return `🎉 Instant ${resolvedOrder.discountPercent}% Discount Applied with code ${couponCode.toUpperCase()}!`;
+    }
+    if (creatorReferral) {
+      return `🎁 Partner Discount Active with ${creatorReferral.code}!`;
+    }
+    return `🎁 Special Discount Available • Limited Time Offer`;
+  })();
+
   return (
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-        {/* Creator Referral Active Badge */}
-        {creatorReferral && (
-          <div style={{
-            background: 'linear-gradient(135deg, #fff1f2 0%, #fff5f8 100%)',
-            border: '1.5px solid #fecdd3',
-            borderRadius: '14px',
-            padding: '10px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '8px',
-            boxShadow: '0 2px 8px rgba(244, 63, 94, 0.05)',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '1.1rem' }}>🎁</span>
-              <span style={{ fontSize: '0.84rem', fontWeight: 700, color: '#be185d' }}>
-                Creator Partner Discount: <strong style={{ color: '#0f172a' }}>{creatorReferral.creator_name || 'Creator'}</strong>
-              </span>
-            </div>
-            <span style={{
-              fontSize: '0.78rem',
-              fontWeight: 800,
-              color: '#be185d',
-              background: '#ffffff',
-              border: '1px solid #fecdd3',
-              padding: '2px 8px',
-              borderRadius: '6px',
-              fontFamily: 'monospace',
-              letterSpacing: '0.04em',
-            }}>
-              {creatorReferral.code}
-            </span>
-          </div>
-        )}
-
-        {/* Organic Retention 10% Special Offer Banner */}
-        {retentionCoupon && !retentionDismissed && retentionSeconds > 0 && (
-          <div style={{
-            background: 'linear-gradient(135deg, #fff1f2 0%, #fef3c7 100%)',
-            border: '1.5px solid #fecdd3',
-            borderRadius: '16px',
-            padding: '14px 16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            boxShadow: '0 4px 16px rgba(244, 63, 94, 0.08)',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '1.2rem' }}>🎁</span>
-                <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a' }}>
-                  {resolvedOrder && couponCode === retentionCoupon.code
-                    ? '🎉 Instant 10% Extra OFF Applied!'
-                    : 'Special 10% Instant Discount Available!'}
-                </span>
-              </div>
-              <span style={{
-                fontSize: '0.75rem',
-                fontWeight: 800,
-                color: '#b45309',
-                background: '#ffffff',
-                border: '1px solid #fde68a',
-                padding: '4px 10px',
-                borderRadius: '8px',
-                fontVariantNumeric: 'tabular-nums',
-                letterSpacing: '0.02em',
-              }}>
-                ⏱️ {formatTimer(retentionSeconds)}
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.8rem', color: '#475569' }}>
-                Code: <strong style={{ color: '#be185d', letterSpacing: '0.06em', fontFamily: 'monospace', background: '#ffffff', border: '1px solid #fecdd3', padding: '2px 8px', borderRadius: '6px' }}>{retentionCoupon.code}</strong> (Save 10% extra)
-              </span>
-              <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                {(!resolvedOrder || couponCode !== retentionCoupon.code) && (
-                  <button
-                    type="button"
-                    onClick={() => applyCoupon(retentionCoupon.code)}
-                    disabled={busy}
-                    style={{
-                      background: 'linear-gradient(135deg, #f43f5e, #e11d48)',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '6px 14px',
-                      fontSize: '0.78rem',
-                      fontWeight: 800,
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                      boxShadow: '0 2px 8px rgba(244, 63, 94, 0.25)',
-                    }}
-                  >
-                    {busy ? 'Applying…' : 'Claim 10% OFF'}
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={handleDismissRetention}
-                  title="Dismiss offer"
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#94a3b8',
-                    fontSize: '0.85rem',
-                    cursor: 'pointer',
-                    padding: '2px 6px',
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Coupon row (Expanded / Collapsed according to isCouponOpen) */}
-        {(isCouponOpen || couponCode.trim() || resolvedOrder) ? (
-          <div style={{
-            display: 'flex',
-            gap: '0.5rem',
-            alignItems: 'center',
-            background: '#fff8fa',
-            border: '1.5px solid #fecdd3',
-            borderRadius: '14px',
-            padding: '4px 6px 4px 10px',
-            transition: 'all 0.25s ease'
-          }}>
-            <span style={{ fontSize: '1rem' }}>🎟️</span>
-            <input
-              className="form-input"
-              value={couponCode}
-              onChange={(e) => { setCouponCode(e.target.value); setResolvedOrder(null); setFeedback(''); setError(''); }}
-              placeholder="Enter promo code"
-              style={{
-                fontSize: '0.86rem',
-                flex: 1,
-                background: 'transparent',
-                border: 'none',
-                color: '#0f172a',
-                padding: '6px 4px',
-                outline: 'none',
-                boxShadow: 'none'
-              }}
-              onKeyDown={(e) => e.key === 'Enter' && couponCode.trim() && applyCoupon()}
-            />
-            {couponCode.trim() ? (
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={() => applyCoupon()}
-                disabled={busy}
-                style={{
-                  whiteSpace: 'nowrap',
-                  padding: '6px 14px',
-                  borderRadius: '10px',
-                  background: 'linear-gradient(135deg, #f43f5e, #be185d)',
-                  border: 'none',
-                  color: '#ffffff',
-                  fontWeight: 800,
-                  fontSize: '0.8rem',
-                  cursor: 'pointer'
-                }}
-              >
-                {busy ? '…' : 'Apply'}
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={toggleCoupon}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#94a3b8',
-                  fontSize: '0.8rem',
-                  cursor: 'pointer',
-                  padding: '4px 8px',
-                  fontWeight: 700
-                }}
-              >
-                ✕
-              </button>
-            )}
-          </div>
-        ) : null}
-
-        {/* Feedback / price preview */}
-        {feedback && (
-          <p style={{ color: '#16a34a', fontSize: '0.82rem', margin: 0, fontWeight: 700, textAlign: 'center' }}>{feedback}</p>
-        )}
-
-        {/* Final price summary card */}
-        {resolvedOrder && !resolvedOrder.free && (
-          <div style={{
-            background: '#f0fdf4',
-            border: '1.5px solid #86efac',
-            borderRadius: '12px',
-            padding: '0.6rem 0.9rem',
-            fontSize: '0.84rem',
-            color: '#166534',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <span>
-              <del style={{ color: '#94a3b8', marginRight: '0.4rem' }}>₹{basePrice}</del>
-              With {resolvedOrder.discountPercent || ''}% discount applied
-            </span>
-            <strong style={{ fontSize: '1.1rem', color: '#15803d' }}>₹{(resolvedOrder.amount / 100).toFixed(0)}</strong>
-          </div>
-        )}
-
-        {/* Instant 1-Tap UPI Mobile Input (Remembered in localStorage so Razorpay skips details screen) */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: '#ffffff',
-          border: customerPhone.replace(/\D/g, '').length === 10 ? '1.5px solid #86efac' : '1.5px solid #fecdd3',
-          borderRadius: '12px',
-          padding: '7px 12px',
-          boxShadow: '0 2px 6px rgba(244, 63, 94, 0.04)',
-          transition: 'border-color 0.2s',
-        }}>
-          <span style={{ fontSize: '0.9rem' }}>📱</span>
-          <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#be185d' }}>+91</span>
-          <input
-            type="tel"
-            inputMode="numeric"
-            maxLength={10}
-            value={customerPhone}
-            onChange={handlePhoneChange}
-            placeholder="Mobile number (for 1-tap UPI)"
-            style={{
-              flex: 1,
-              border: 'none',
-              outline: 'none',
-              fontSize: '0.86rem',
-              fontWeight: 600,
-              color: '#0f172a',
-              background: 'transparent',
-              padding: '2px 0',
-            }}
-          />
-          {customerPhone.replace(/\D/g, '').length === 10 ? (
-            <span style={{
-              background: '#ecfdf5',
-              border: '1px solid #a7f3d0',
-              color: '#059669',
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              padding: '2px 6px',
-              borderRadius: '6px',
-              whiteSpace: 'nowrap'
-            }}>
-              ⚡ 1-Tap UPI
-            </span>
-          ) : (
-            <span style={{ fontSize: '0.72rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>
-              Fast UPI
-            </span>
-          )}
-        </div>
-
-        {/* Pay Now button — sleek gradient & pulse effect */}
-        <button
-          onClick={resolvedOrder ? proceedToPay : directPay}
-          disabled={busy}
+      {/* ── FIXED COMPACT BOTTOM BAR (Exactly matching reference design) ── */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 60,
+          background: '#090814',
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.6)',
+        }}
+      >
+        {/* Top Highlight Ribbon */}
+        <div
           style={{
-            width: '100%',
-            padding: '14px 18px',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
-            border: 'none',
-            color: '#ffffff',
-            fontSize: '1rem',
+            background: 'linear-gradient(90deg, #00d293 0%, #00b884 100%)',
+            color: '#022c22',
+            padding: '5px 12px',
+            textAlign: 'center',
+            fontSize: '0.78rem',
             fontWeight: 800,
-            cursor: busy ? 'not-allowed' : 'pointer',
-            opacity: busy ? 0.75 : 1,
-            boxShadow: '0 6px 20px rgba(244,63,94,0.3)',
+            letterSpacing: '0.02em',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           }}
         >
-          {busy ? (
-            <>
-              <div style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid #fff', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
-              Connecting Secure Checkout...
-            </>
-          ) : (
-            payLabel
+          <span>{ribbonText}</span>
+          {retentionCoupon && retentionSeconds > 0 && !retentionDismissed && (
+            <button
+              type="button"
+              onClick={handleDismissRetention}
+              title="Remove discount"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#064e3b',
+                cursor: 'pointer',
+                fontWeight: 900,
+                fontSize: '0.8rem',
+                padding: '0 4px',
+              }}
+            >
+              ✕
+            </button>
           )}
-        </button>
+        </div>
 
-        {/* Sleek UPI & Express Payment Badges */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '8px',
-          padding: '6px 10px',
-          background: '#f8fafc',
-          border: '1px solid #e2e8f0',
-          borderRadius: '10px',
-        }}>
-          <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}>Instant via</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: 700 }}>
-            <span style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '1px 5px', borderRadius: '4px', color: '#059669' }}>GPay</span>
-            <span style={{ background: '#f5f3ff', border: '1px solid #ddd6fe', padding: '1px 5px', borderRadius: '4px', color: '#7c3aed' }}>PhonePe</span>
-            <span style={{ background: '#f0f9ff', border: '1px solid #bae6fd', padding: '1px 5px', borderRadius: '4px', color: '#0284c7' }}>Paytm</span>
-            <span style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '1px 5px', borderRadius: '4px', color: '#b45309' }}>Cards/UPI</span>
+        {/* Content Container */}
+        <div
+          style={{
+            maxWidth: '460px',
+            margin: '0 auto',
+            padding: '10px 16px 12px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+          }}
+        >
+          {/* Price & Coupon Row */}
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            <div>
+              <div style={{ fontSize: '0.72rem', color: '#cbd5e1', fontWeight: 700, marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span>Special Price</span>
+                <span>🎉</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                <span style={{ fontSize: '0.85rem', color: '#94a3b8', textDecoration: 'line-through', fontWeight: 600 }}>
+                  ₹{originalStrikethrough}
+                </span>
+                <span style={{ fontSize: '1.45rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
+                  ₹{currentPrice}
+                </span>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 900,
+                    color: '#022c22',
+                    background: '#00e5a3',
+                    padding: '2px 8px',
+                    borderRadius: '999px',
+                  }}
+                >
+                  {discountPercent}% OFF
+                </span>
+              </div>
+            </div>
+
+            {/* Coupon button */}
+            <button
+              type="button"
+              onClick={() => setShowCouponModal(true)}
+              style={{
+                background: couponCode ? 'rgba(0, 229, 163, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                border: couponCode ? '1px solid #00e5a3' : '1px solid rgba(255, 255, 255, 0.18)',
+                color: couponCode ? '#00e5a3' : '#f43f5e',
+                fontSize: '0.76rem',
+                fontWeight: 800,
+                padding: '5px 11px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <span>🎟️</span>
+              <span>{couponCode ? `${couponCode.toUpperCase()}` : 'Have a coupon?'}</span>
+            </button>
           </div>
-        </div>
 
-        {/* 48-Hour Refund Guarantee Notice */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '6px',
-          fontSize: '0.74rem',
-          color: '#64748b',
-          fontWeight: 600,
-        }}>
-          <span>🛡️ 100% Secure via Razorpay</span>
-          <span>•</span>
-          <a href="/refund" target="_blank" rel="noreferrer" style={{ color: '#be185d', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-            48-Hour Refund Guarantee
-          </a>
-        </div>
+          {/* Primary CTA Button */}
+          <button
+            type="button"
+            onClick={handleCheckoutClick}
+            disabled={busy}
+            style={{
+              width: '100%',
+              padding: '13px 20px',
+              borderRadius: '999px',
+              border: 'none',
+              background: 'linear-gradient(135deg, #e75c8d 0%, #db2777 50%, #f43f5e 100%)',
+              color: '#ffffff',
+              fontSize: '1.05rem',
+              fontWeight: 800,
+              cursor: busy ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 20px rgba(225, 29, 72, 0.45)',
+              transition: 'transform 0.15s ease, filter 0.15s ease',
+              opacity: busy ? 0.75 : 1,
+            }}
+          >
+            {busy ? (
+              <span>Connecting…</span>
+            ) : resolvedOrder?.free ? (
+              <span>🎉 Unlock for Free Now</span>
+            ) : (
+              <span>Get this at ₹{currentPrice}</span>
+            )}
+          </button>
 
+          {/* Trust Row */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              fontSize: '0.68rem',
+              color: '#94a3b8',
+              fontWeight: 600,
+            }}
+          >
+            <span>✓ Secure payment via Razorpay</span>
+            <span>•</span>
+            <span>⚡ Instant delivery after payment</span>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <p style={{ color: '#fb7185', margin: '2px 0 0', fontSize: '0.78rem', textAlign: 'center', fontWeight: 700 }}>
+              ⚠️ {error}
+            </p>
+          )}
+        </div>
       </div>
 
-      {error && (
-        <p style={{ color: '#e11d48', marginTop: '0.5rem', fontSize: '0.82rem', textAlign: 'center', fontWeight: 700 }}>⚠️ {error}</p>
+      {/* ── ELEGANT COUPON MODAL / DRAWER (Reliable open & close) ── */}
+      {showCouponModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            background: 'rgba(0, 0, 0, 0.75)',
+            backdropFilter: 'blur(6px)',
+            WebkitBackdropFilter: 'blur(6px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px',
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowCouponModal(false);
+          }}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '380px',
+              background: '#131124',
+              border: '1.5px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '24px',
+              padding: '22px 20px',
+              color: '#ffffff',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
+              position: 'relative',
+            }}
+          >
+            {/* Modal Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.2rem' }}>🎟️</span>
+                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: '#ffffff' }}>
+                  Apply Promo Code
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCouponModal(false)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '30px',
+                  height: '30px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Currently Applied Code */}
+            {couponCode && (
+              <div
+                style={{
+                  background: 'rgba(0, 229, 163, 0.12)',
+                  border: '1px solid #00e5a3',
+                  borderRadius: '12px',
+                  padding: '10px 12px',
+                  marginBottom: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700, textTransform: 'uppercase' }}>
+                    Active Coupon
+                  </div>
+                  <strong style={{ fontSize: '0.95rem', color: '#00e5a3', fontFamily: 'monospace' }}>
+                    {couponCode.toUpperCase()}
+                  </strong>
+                </div>
+                <button
+                  type="button"
+                  onClick={removeCoupon}
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid rgba(255, 255, 255, 0.25)',
+                    color: '#fca5a5',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    padding: '4px 10px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+
+            {/* Input & Apply Row */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '8px',
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                borderRadius: '14px',
+                padding: '4px 6px 4px 12px',
+                marginBottom: '10px',
+              }}
+            >
+              <input
+                type="text"
+                value={couponCode}
+                onChange={(e) => {
+                  setCouponCode(e.target.value);
+                  setError('');
+                  setFeedback('');
+                }}
+                placeholder="Enter promo code"
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                }}
+                onKeyDown={(e) => e.key === 'Enter' && applyCoupon()}
+              />
+              <button
+                type="button"
+                onClick={() => applyCoupon()}
+                disabled={busy || !couponCode.trim()}
+                style={{
+                  background: 'linear-gradient(135deg, #f43f5e, #be185d)',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '10px',
+                  padding: '8px 14px',
+                  fontSize: '0.8rem',
+                  fontWeight: 800,
+                  cursor: busy || !couponCode.trim() ? 'not-allowed' : 'pointer',
+                  opacity: busy || !couponCode.trim() ? 0.6 : 1,
+                }}
+              >
+                {busy ? '…' : 'Apply'}
+              </button>
+            </div>
+
+            {/* Feedback / Error */}
+            {feedback && (
+              <p style={{ color: '#00e5a3', fontSize: '0.8rem', margin: '4px 0 8px', fontWeight: 700 }}>
+                {feedback}
+              </p>
+            )}
+            {error && (
+              <p style={{ color: '#fb7185', fontSize: '0.8rem', margin: '4px 0 8px', fontWeight: 700 }}>
+                ⚠️ {error}
+              </p>
+            )}
+
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setShowCouponModal(false)}
+              style={{
+                width: '100%',
+                marginTop: '10px',
+                padding: '10px',
+                background: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: '#cbd5e1',
+                borderRadius: '12px',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                cursor: 'pointer',
+              }}
+            >
+              Done
+            </button>
+          </div>
+        </div>
       )}
     </>
   );
