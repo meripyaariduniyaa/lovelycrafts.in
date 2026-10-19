@@ -27,7 +27,7 @@ export default function ProposalExperience({ note, isPreview = false, onReachEnd
   const photos = (Array.isArray(rawPhotos) ? rawPhotos : []).map((p) => (typeof p === 'string' ? p : p?.url)).filter(Boolean);
 
   return (
-    <div style={{ background: '#0a0510', minHeight: '100vh', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
+    <div style={{ background: '#0a0510', minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Dancing+Script:wght@600;700&family=Caveat:wght@500;700&display=swap');
         @keyframes floatHeart { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-12px) rotate(5deg); } }
@@ -40,7 +40,7 @@ export default function ProposalExperience({ note, isPreview = false, onReachEnd
 
 
       <AnimatePresence mode="wait">
-        {scene === 1 && <Scene1YesNo key="s1" recipientName={recipientName} senderName={senderName} quotation={quotation} onYes={() => setScene(2)} />}
+        {scene === 1 && <Scene1YesNo key="s1" recipientName={recipientName} senderName={senderName} quotation={quotation} onYes={() => setScene(2)} isPreview={isPreview} />}
         {scene === 2 && <Scene2Confetti key="s2" recipientName={recipientName} onNext={() => setScene(3)} />}
         {scene === 3 && <Scene3Envelope key="s3" onOpen={() => setScene(4)} />}
         {scene === 4 && <Scene4Letter key="s4" letter={letter} senderName={senderName} recipientName={recipientName} onNext={() => setScene(5)} photos={photos} />}
@@ -53,7 +53,7 @@ export default function ProposalExperience({ note, isPreview = false, onReachEnd
 /* ─────────────────────────────────────────────────────────
    SCENE 1: YES / NO — flying NO button
 ───────────────────────────────────────────────────────── */
-function Scene1YesNo({ recipientName, senderName, quotation, onYes }) {
+function Scene1YesNo({ recipientName, senderName, quotation, onYes, isPreview = false }) {
   const [noPos, setNoPos] = useState({ x: 0, y: 0 });
   const [noClickCount, setNoClickCount] = useState(0);
   const [showHint, setShowHint] = useState(false);
@@ -94,7 +94,7 @@ function Scene1YesNo({ recipientName, senderName, quotation, onYes }) {
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.5 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #2d0a1a 0%, #0a0510 100%)', padding: '2rem', position: 'relative', overflow: 'hidden' }}
+      style={{ minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #2d0a1a 0%, #0a0510 100%)', padding: isPreview ? '1.25rem 1rem' : '2rem', position: 'relative', overflow: 'hidden' }}
     >
       {/* Floating hearts background */}
       {particles.map((p) => (

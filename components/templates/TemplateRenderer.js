@@ -42,5 +42,18 @@ export default function TemplateRenderer({ note, isPreview = false, onReachEnd }
       experience = <ProposalExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} />;
   }
 
-  return <div className="experience-wrapper">{experience}</div>;
+  return (
+    <div
+      className={`experience-wrapper ${isPreview ? 'is-preview-mockup' : ''}`}
+      style={{
+        width: '100%',
+        height: isPreview ? '100%' : 'auto',
+        minHeight: isPreview ? '100%' : '100vh',
+        position: 'relative',
+        overflow: isPreview ? 'hidden' : 'visible',
+      }}
+    >
+      {experience}
+    </div>
+  );
 }

@@ -45,7 +45,7 @@ export default function BirthdayExperience({ note, isPreview = false, onReachEnd
   const goNext = () => setScene((s) => s + 1);
 
   return (
-    <div style={{ background: '#080810', minHeight: '100vh', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
+    <div style={{ background: '#080810', minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Dancing+Script:wght@600;700&family=Caveat:wght@500;700&display=swap');
         @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
@@ -57,7 +57,7 @@ export default function BirthdayExperience({ note, isPreview = false, onReachEnd
       `}</style>
 
       <AnimatePresence mode="wait">
-        {scene === 1 && <SceneSplash key="s1" name={name} onNext={goNext} />}
+        {scene === 1 && <SceneSplash key="s1" name={name} onNext={goNext} isPreview={isPreview} />}
         {scene === 2 && <SceneHBDFull key="s2" name={name} turningAge={turningAge} onNext={goNext} />}
         {scene === 3 && <SceneGoldTree key="s3" name={name} onNext={goNext} />}
         {scene === 4 && <SceneNameReveal key="s4" name={name} turningAge={turningAge} onNext={goNext} />}
@@ -74,7 +74,7 @@ export default function BirthdayExperience({ note, isPreview = false, onReachEnd
 }
 
 /* ── SCENE 1: Interactive SVG Splash — Magic Wand & Glowing Heart ── */
-function SceneSplash({ name, onNext }) {
+function SceneSplash({ name, onNext, isPreview = false }) {
   const [thrown, setThrown] = useState(false);
   const [burst, setBurst] = useState(false);
 
@@ -93,14 +93,15 @@ function SceneSplash({ name, onNext }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.05 }}
       style={{
-        minHeight: '100vh',
+        minHeight: isPreview ? '100%' : '100vh',
+        height: isPreview ? '100%' : 'auto',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         background: 'radial-gradient(circle at 50% 40%, #1e0915 0%, #080309 70%, #000000 100%)',
-        padding: '2rem 1rem',
+        padding: isPreview ? '1.25rem 1rem' : '2rem 1rem',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -128,7 +129,7 @@ function SceneSplash({ name, onNext }) {
           fontWeight: 700,
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
-          marginBottom: '2.5rem',
+          marginBottom: isPreview ? '1.25rem' : '2.5rem',
           textShadow: '0 0 12px rgba(244, 63, 94, 0.4)',
         }}
       >
@@ -136,7 +137,7 @@ function SceneSplash({ name, onNext }) {
       </motion.p>
 
       {/* Target SVG Heart Box */}
-      <div style={{ position: 'relative', width: 160, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '3rem' }}>
+      <div style={{ position: 'relative', width: 160, height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: isPreview ? '1.5rem' : '3rem' }}>
         <motion.div
           animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0.7, 0.3] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}

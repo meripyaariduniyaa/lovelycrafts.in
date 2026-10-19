@@ -221,6 +221,73 @@ function PreviewContent() {
           width: 0px;
           background: transparent;
         }
+
+        /* ── TEMPLATE PHONE MOCKUP FIT (Whole screen of mobile, strictly non-overflowing) ── */
+        .device-screen-scroll {
+          width: 100% !important;
+          height: 100% !important;
+          overflow: hidden !important;
+          position: relative !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+
+        .device-screen-scroll .experience-wrapper,
+        .device-screen-scroll .is-preview-mockup {
+          width: 100% !important;
+          height: 100% !important;
+          min-height: 100% !important;
+          max-height: 100% !important;
+          position: relative !important;
+          overflow: hidden !important;
+          display: flex !important;
+          flex-direction: column !important;
+          flex: 1 1 100% !important;
+        }
+
+        /* Override 100vh on direct stage wrappers and scenes inside phone mockup */
+        .device-screen-scroll .experience-wrapper > div,
+        .device-screen-scroll .is-preview-mockup > div {
+          width: 100% !important;
+          height: 100% !important;
+          min-height: 100% !important;
+          max-height: 100% !important;
+          position: relative !important;
+          overflow: hidden !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+
+        /* Enforce 100% height instead of 100vh on all stage components */
+        .device-screen-scroll [style*="100vh"],
+        .device-screen-scroll [style*="110vh"],
+        .device-screen-scroll [style*="min-height: 100vh"],
+        .device-screen-scroll [style*="min-height:100vh"],
+        .device-screen-scroll [style*="height: 100vh"],
+        .device-screen-scroll [style*="height:100vh"],
+        .device-screen-scroll div[style*="100vh"] {
+          min-height: 100% !important;
+          height: 100% !important;
+          max-height: 100% !important;
+          overflow: hidden !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Harmonious spacing for phone screen */
+        .device-screen-scroll [style*="margin-bottom: 2.5rem"],
+        .device-screen-scroll [style*="marginBottom: 2.5rem"],
+        .device-screen-scroll [style*="margin-bottom:2.5rem"] {
+          margin-bottom: 1.25rem !important;
+        }
+        .device-screen-scroll [style*="margin-bottom: 3rem"],
+        .device-screen-scroll [style*="marginBottom: 3rem"],
+        .device-screen-scroll [style*="margin-bottom:3rem"] {
+          margin-bottom: 1.5rem !important;
+        }
+        .device-screen-scroll [style*="padding: 2rem 1rem"],
+        .device-screen-scroll [style*="padding: 2rem"] {
+          padding: 1.25rem 1rem !important;
+        }
       `}</style>
 
       {/* ── TOP HEADER (Matching reference design with circular back button and centered title) ── */}
@@ -395,11 +462,12 @@ function PreviewContent() {
             style={{
               width: '100%',
               height: '100%',
-              overflowY: 'auto',
-              overflowX: 'hidden',
+              overflow: 'hidden',
               position: 'relative',
-              borderRadius: '40px',
+              borderRadius: '38px',
               background: '#080810',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <TemplateRenderer note={note} isPreview={true} />
