@@ -185,7 +185,9 @@ function PreviewContent() {
   return (
     <div
       style={{
+        height: paid ? 'auto' : '100dvh',
         minHeight: '100vh',
+        maxHeight: paid ? 'none' : '100dvh',
         background: '#080811',
         backgroundImage: `
           radial-gradient(circle at 50% 15%, rgba(225, 29, 72, 0.12) 0%, transparent 60%),
@@ -197,7 +199,7 @@ function PreviewContent() {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        overflowX: 'hidden',
+        overflow: paid ? 'auto' : 'hidden',
       }}
     >
       <style>{`
@@ -224,14 +226,14 @@ function PreviewContent() {
       {/* ── TOP HEADER (Matching reference design with circular back button and centered title) ── */}
       <header
         style={{
-          position: 'sticky',
-          top: 0,
+          flexShrink: 0,
+          position: 'relative',
           zIndex: 50,
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           background: 'rgba(8, 8, 17, 0.85)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          padding: '0.75rem 1rem',
+          padding: '0.45rem 1rem',
         }}
       >
         <div
@@ -247,8 +249,8 @@ function PreviewContent() {
           <Link
             href={`/create?template=${note?.template || 'proposal'}`}
             style={{
-              width: '36px',
-              height: '36px',
+              width: '32px',
+              height: '32px',
               borderRadius: '50%',
               background: 'rgba(255, 255, 255, 0.95)',
               display: 'flex',
@@ -261,17 +263,17 @@ function PreviewContent() {
             }}
             title="Edit Experience"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </Link>
 
           {/* Centered Title & Subtitle */}
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+            <h1 style={{ margin: 0, fontSize: '1.12rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
               Preview
             </h1>
-            <p style={{ margin: '1px 0 0', fontSize: '0.8rem', color: '#94a3b8', fontWeight: 500 }}>
+            <p style={{ margin: '1px 0 0', fontSize: '0.74rem', color: '#94a3b8', fontWeight: 500 }}>
               This is how it will look
             </p>
           </div>
@@ -281,8 +283,8 @@ function PreviewContent() {
             <Link
               href={`/success?id=${note.id}`}
               style={{
-                width: '36px',
-                height: '36px',
+                width: '32px',
+                height: '32px',
                 borderRadius: '50%',
                 background: '#059669',
                 display: 'flex',
@@ -290,41 +292,44 @@ function PreviewContent() {
                 justifyContent: 'center',
                 color: '#ffffff',
                 textDecoration: 'none',
-                fontSize: '1rem',
+                fontSize: '0.9rem',
               }}
               title="Share Hub"
             >
               ✓
             </Link>
           ) : (
-            <div style={{ width: '36px' }} />
+            <div style={{ width: '32px' }} />
           )}
         </div>
       </header>
 
-      {/* ── MAIN VIEWPORT (Phone Mockup perfectly centered with ample room) ── */}
+      {/* ── MAIN VIEWPORT (Phone Mockup perfectly fitted into available space) ── */}
       <main
         style={{
           flex: 1,
+          minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: paid ? '1.5rem 1rem 3rem' : '1.25rem 1rem 170px',
+          padding: paid ? '1.5rem 1rem 3rem' : '4px 12px 6px',
           position: 'relative',
+          overflow: paid ? 'visible' : 'hidden',
         }}
       >
         {/* Recipient note title pill if not paid */}
         {!paid && note.recipient_name && (
           <div
             style={{
-              marginBottom: '10px',
-              fontSize: '0.85rem',
+              flexShrink: 0,
+              marginBottom: '6px',
+              fontSize: '0.78rem',
               fontWeight: 700,
               color: '#fecdd3',
               background: 'rgba(244, 63, 94, 0.15)',
               border: '1px solid rgba(244, 63, 94, 0.3)',
-              padding: '3px 14px',
+              padding: '2px 12px',
               borderRadius: '999px',
               display: 'inline-flex',
               alignItems: 'center',
@@ -340,20 +345,25 @@ function PreviewContent() {
         <div
           style={{
             position: 'relative',
-            width: '100%',
-            maxWidth: '380px',
-            height: 'clamp(520px, 66vh, 680px)',
+            flex: paid ? 'none' : '1',
+            minHeight: 0,
+            height: paid ? 'clamp(500px, 64vh, 660px)' : '100%',
+            maxHeight: paid ? 'none' : '100%',
+            aspectRatio: paid ? 'auto' : '9 / 18.5',
+            width: paid ? '100%' : 'auto',
+            maxWidth: 'min(380px, 92vw)',
             background: '#000000',
-            borderRadius: '44px',
+            borderRadius: '38px',
             border: '3.5px solid rgba(255, 255, 255, 0.16)',
             boxShadow: `
-              0 25px 70px -15px rgba(0, 0, 0, 0.9),
-              0 0 35px rgba(225, 29, 72, 0.15),
+              0 20px 50px -15px rgba(0, 0, 0, 0.9),
+              0 0 30px rgba(225, 29, 72, 0.15),
               inset 0 0 0 1px rgba(255, 255, 255, 0.08)
             `,
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
+            margin: '0 auto',
           }}
         >
           {/* Top Speaker / Dynamic Island Notch Pill */}

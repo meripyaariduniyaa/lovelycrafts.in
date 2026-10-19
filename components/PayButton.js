@@ -425,13 +425,12 @@ export default function PayButton({
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
-      {/* ── FIXED COMPACT BOTTOM BAR (Exactly matching reference design) ── */}
+      {/* ── COMPACT BOTTOM BAR (Docked in single view) ── */}
       <div
         style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          position: 'relative',
+          width: '100%',
+          flexShrink: 0,
           zIndex: 60,
           background: '#090814',
           borderTop: '1px solid rgba(255, 255, 255, 0.1)',
@@ -443,9 +442,9 @@ export default function PayButton({
           style={{
             background: 'linear-gradient(90deg, #00d293 0%, #00b884 100%)',
             color: '#022c22',
-            padding: '5px 12px',
+            padding: '4px 12px',
             textAlign: 'center',
-            fontSize: '0.78rem',
+            fontSize: '0.74rem',
             fontWeight: 800,
             letterSpacing: '0.02em',
             display: 'flex',
@@ -480,10 +479,10 @@ export default function PayButton({
           style={{
             maxWidth: '460px',
             margin: '0 auto',
-            padding: '10px 16px 12px',
+            padding: '6px 16px 8px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '8px',
+            gap: '6px',
           }}
         >
           {/* Price & Coupon Row */}
@@ -546,12 +545,12 @@ export default function PayButton({
             disabled={busy}
             style={{
               width: '100%',
-              padding: '13px 20px',
+              padding: '11px 18px',
               borderRadius: '999px',
               border: 'none',
               background: 'linear-gradient(135deg, #e75c8d 0%, #db2777 50%, #f43f5e 100%)',
               color: '#ffffff',
-              fontSize: '1.05rem',
+              fontSize: '1rem',
               fontWeight: 800,
               cursor: busy ? 'not-allowed' : 'pointer',
               display: 'flex',
