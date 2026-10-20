@@ -1032,6 +1032,138 @@
   }
 }
 
+/* Active gift experiences: warm, accessible clay surfaces for live and preview views. */
+.lc-clay-experience {
+  --lc-clay-bg: #f7f0e8;
+  --lc-clay-card: #fffaf4;
+  --lc-clay-inset: #efe4d8;
+  --lc-clay-border: #e6d6c7;
+  --lc-clay-ink: #44352e;
+  --lc-clay-muted: #74645a;
+  color: var(--lc-clay-ink);
+  background: radial-gradient(ellipse at 12% 8%, #fffaf3 0, transparent 42%), linear-gradient(145deg, #f7f0e8, #f3e9df);
+  min-height: 100vh;
+}
+
+.lc-clay-experience [style*="min-height: 100vh"],
+.lc-clay-experience [style*="min-height:100vh"],
+.lc-clay-experience [style*="height: 100vh"],
+.lc-clay-experience [style*="height:100vh"],
+.lc-clay-experience .miss-you-viewport {
+  background-color: var(--lc-clay-bg) !important;
+  background-image: radial-gradient(ellipse at 18% 10%, #fffaf3 0, transparent 44%), linear-gradient(145deg, #f7f0e8, #f1e6db) !important;
+  color: var(--lc-clay-ink) !important;
+}
+
+.lc-clay-experience h1,
+.lc-clay-experience h2,
+.lc-clay-experience h3,
+.lc-clay-experience h4,
+.lc-clay-experience h5,
+.lc-clay-experience h6,
+.lc-clay-experience p,
+.lc-clay-experience li,
+.lc-clay-experience label,
+.lc-clay-experience blockquote,
+.lc-clay-experience figcaption {
+  color: var(--lc-clay-ink) !important;
+  -webkit-text-fill-color: var(--lc-clay-ink) !important;
+}
+
+.lc-clay-experience [style*="color: '#fff'"],
+.lc-clay-experience [style*="color: \"#fff\""],
+.lc-clay-experience [style*="color: rgb(255, 255, 255)"],
+.lc-clay-experience [style*="color: white"],
+.lc-clay-experience [style*="color: #f1f5f9"],
+.lc-clay-experience [style*="color: #e2e8f0"],
+.lc-clay-experience [style*="color: #cbd5e1"],
+.lc-clay-experience [style*="color: #94a3b8"] {
+  color: var(--lc-clay-ink) !important;
+  -webkit-text-fill-color: var(--lc-clay-ink) !important;
+}
+
+.lc-clay-experience .celestial-card,
+.lc-clay-experience .memoryverse-container,
+.lc-clay-experience .birthday-stage,
+.lc-clay-experience .love-letter-paper,
+.lc-clay-experience .mom-card,
+.lc-clay-experience .valentine-card,
+.lc-clay-experience .wedding-card,
+.lc-clay-experience .capsule-card,
+.lc-clay-experience .envelope-card,
+.lc-clay-experience .gift-box-wrapper {
+  color: var(--lc-clay-ink) !important;
+  background: linear-gradient(145deg, #fffaf4, #f1e5d9) !important;
+  border: 1px solid rgba(230, 214, 199, .9) !important;
+  border-radius: 24px;
+  box-shadow: 10px 10px 24px rgba(130, 99, 75, .13), -8px -8px 22px rgba(255, 255, 255, .82) !important;
+}
+
+.lc-clay-experience button:not([style*="background: none"]):not([style*="background:none"]),
+.lc-clay-experience .btn-celestial {
+  color: #563c34 !important;
+  background: linear-gradient(145deg, #fffaf4, #ecddd0) !important;
+  border: 1px solid #e2cdbb !important;
+  border-radius: 16px !important;
+  box-shadow: 6px 6px 14px rgba(130, 99, 75, .16), -5px -5px 12px rgba(255, 255, 255, .85) !important;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.lc-clay-experience button:not([style*="background: none"]):not([style*="background:none"]):hover,
+.lc-clay-experience .btn-celestial:hover {
+  transform: translateY(-2px);
+  box-shadow: 8px 8px 18px rgba(130, 99, 75, .2), -5px -5px 12px rgba(255, 255, 255, .9) !important;
+}
+
+.lc-clay-experience button:focus-visible,
+.lc-clay-experience a:focus-visible,
+.lc-clay-experience input:focus-visible,
+.lc-clay-experience textarea:focus-visible,
+.lc-clay-experience select:focus-visible {
+  outline: 3px solid #ae655b !important;
+  outline-offset: 3px;
+}
+
+.lc-clay-experience input,
+.lc-clay-experience textarea,
+.lc-clay-experience select {
+  color: var(--lc-clay-ink) !important;
+  background: #fffaf4 !important;
+  border: 1px solid var(--lc-clay-border) !important;
+  border-radius: 14px;
+  box-shadow: inset 3px 3px 7px rgba(130, 99, 75, .1), inset -3px -3px 7px rgba(255, 255, 255, .85);
+}
+
+.lc-clay-experience input::placeholder,
+.lc-clay-experience textarea::placeholder { color: #8b7a70 !important; opacity: 1; }
+
+.lc-clay-experience .celestial-card {
+  background: linear-gradient(145deg, #fffaf4, #f1e5d9) !important;
+  box-shadow: 10px 10px 24px rgba(130, 99, 75, .13), -8px -8px 22px rgba(255, 255, 255, .82) !important;
+}
+
+.lc-clay-experience .lc-clay-completion-card {
+  background: linear-gradient(145deg, #fffaf4, #f2e4d8) !important;
+  border: 1px solid #e4d1c1 !important;
+  box-shadow: 12px 12px 28px rgba(130, 99, 75, .16), -8px -8px 22px rgba(255, 255, 255, .85) !important;
+}
+
+.lc-clay-experience .wrap-moment-glow-btn {
+  color: #563c34 !important;
+  background: linear-gradient(145deg, #fffaf4, #ead6c7) !important;
+  border: 1px solid #dfc5b1;
+  box-shadow: 7px 7px 18px rgba(130, 99, 75, .16), -5px -5px 14px rgba(255, 255, 255, .85) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lc-clay-experience *, .lc-clay-experience *::before, .lc-clay-experience *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
 /* ---------- 1. ROMANTIC APOLOGY ENHANCEMENTS ---------- */
 .sorry-flow-container.vibe-cute {
   background: radial-gradient(circle at center, #f8f3eb 0%, #f8f3eb 100%);

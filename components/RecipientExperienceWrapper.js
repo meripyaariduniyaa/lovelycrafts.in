@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import TemplateRenderer from '@/components/templates/TemplateRenderer';
@@ -33,12 +33,12 @@ export default function RecipientExperienceWrapper({ note }) {
     }
   }, [note?.id]);
 
-  const handleReachEnd = (ended, onReplay) => {
+  const handleReachEnd = useCallback((ended, onReplay) => {
     setIsAtEnd(Boolean(ended));
     if (onReplay) {
       setReplayHandler(() => onReplay);
     }
-  };
+  }, []);
 
   const handleReplayClick = () => {
     setIsAtEnd(false);
@@ -100,7 +100,7 @@ export default function RecipientExperienceWrapper({ note }) {
             className="experience-completion-section"
           >
             {/* Wrap up the moment primary spotlight card */}
-            <div style={{
+            <div className="lc-clay-completion-card" style={{
               background: 'linear-gradient(145deg, #ffffff 0%, #fff1f5 100%)',
               border: '2px solid #fecdd3',
               borderRadius: '28px',
@@ -126,7 +126,7 @@ export default function RecipientExperienceWrapper({ note }) {
 
               {/* Primary Glowing Action */}
               <Link
-                href={`/p/${note.custom_slug || note.id}/react`}
+              href={`/p/${encodeURIComponent(note.id)}/react`}
                 className="wrap-moment-glow-btn"
                 style={{
                   display: 'flex',

@@ -295,16 +295,27 @@ export async function POST(request) {
     }
 
     // 3b. Auto-generate internal invoice in finance_invoices (Item 3b)
+    let autoInvoice = null;
     try {
-      await createAutoInvoice({
+      autoInvoice = await createAutoInvoice({
         db: adminDb,
         orderId: orderRef.id,
-        noteData,
+        noteData: { ...noteData, id: apologyId },
         amountInRupees: Number(((finalAmountPaid || 0) / 100).toFixed(2)),
         couponCode: normalizedCode,
         discountPercent: finalDiscountPercent,
         paymentMethod: method === 'coupon' ? 'VIP Gift Pass' : method === 'cashfree' ? 'Cashfree' : 'UPI / Razorpay',
+        customerName: buyerName,
+        customerEmail: buyerEmail,
+        customerPhone: buyerPhone,
       });
+
+      if (autoInvoice?.id) {
+        await orderRef.update({
+          invoice_id: autoInvoice.id,
+          invoice_number: autoInvoice.invoiceNumber || null,
+        }).catch(() => {});
+      }
     } catch (invoiceErr) {
       console.error('Failed to auto-generate finance invoice:', invoiceErr);
     }
@@ -320,6 +331,8 @@ export async function POST(request) {
         paymentMethod: method === 'coupon' ? 'VIP Gift Pass' : method === 'cashfree' ? 'Cashfree Payments' : 'UPI / Razorpay',
         noteId: apologyId,
         discountPercent: finalDiscountPercent,
+        invoiceId: autoInvoice?.id || orderRef.id,
+        invoiceNumber: autoInvoice?.invoiceNumber || null,
       }).catch((emailErr) => console.error('Receipt email failed:', emailErr));
     }
 
@@ -449,7 +462,12 @@ export async function POST(request) {
       }
     }
 
-    return NextResponse.json({ ok: true, orderId: orderRef.id });
+    return NextResponse.json({
+      ok: true,
+      orderId: orderRef.id,
+      invoiceId: autoInvoice?.id || null,
+      invoiceUrl: `/invoice/${autoInvoice?.id || orderRef.id}`,
+    });
   } catch (error) {
     console.error('Payment verification error:', error);
     return NextResponse.json({ error: error.message || 'Unable to verify payment.' }, { status: 500 });

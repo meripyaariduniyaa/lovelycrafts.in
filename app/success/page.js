@@ -545,6 +545,55 @@ function SuccessContent() {
                 {downloadingKeepsake ? 'Rendering…' : 'Download Poster'}
               </button>
             </div>
+
+            {/* Direct Invoice View & Download Card */}
+            {note?.is_paid && (
+              <div style={{
+                marginTop: '14px',
+                background: '#f8fafc',
+                border: '1.5px solid #e2e8f0',
+                borderRadius: '16px',
+                padding: '12px 18px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '12px',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ fontSize: '1.4rem' }}>🧾</span>
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#0f172a' }}>
+                      Tax Invoice &amp; Payment Receipt
+                    </div>
+                    <div style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                      Official proof of payment with GST breakdown
+                    </div>
+                  </div>
+                </div>
+                <Link
+                  href={`/invoice/${note.id}`}
+                  target="_blank"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: '#ffffff',
+                    border: '1.5px solid #cbd5e1',
+                    color: '#be185d',
+                    fontSize: '0.78rem',
+                    fontWeight: 800,
+                    padding: '8px 16px',
+                    borderRadius: '10px',
+                    textDecoration: 'none',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  📄 View / Download Invoice
+                </Link>
+              </div>
+            )}
           </div>
         </motion.div>
 

@@ -1,6 +1,6 @@
-import { getAdminDb } from '@/lib/firebase-admin';
 import Link from 'next/link';
 import RecipientExperienceWrapper from '@/components/RecipientExperienceWrapper';
+import { resolveNoteSlug } from '@/lib/resolve-note-slug';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,12 +9,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://lovelycrafts.in';
 // Private note pages are NEVER indexed — all generated user content stays private
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  let apology = null;
-
-  try {
-    const snap = await getAdminDb().collection('notes').doc(slug).get();
-    if (snap.exists) apology = snap.data();
-  } catch {}
+  const resolvedNote = await resolveNoteSlug(slug);
+  const apology = resolvedNote?.data || null;
 
   const expires = apology?.expires_at?.toDate?.() || (apology?.expires_at ? new Date(apology.expires_at) : null);
   const valid = apology?.is_paid === true && expires && expires.getTime() > Date.now();
@@ -41,12 +37,8 @@ export async function generateMetadata({ params }) {
 
 export default async function CustomLinkPage({ params }) {
   const { slug } = await params;
-  let apology = null;
-
-  try {
-    const snap = await getAdminDb().collection('notes').doc(slug).get();
-    if (snap.exists) apology = snap.data();
-  } catch {}
+  const resolvedNote = await resolveNoteSlug(slug);
+  const apology = resolvedNote?.data || null;
 
   const expires = apology?.expires_at?.toDate?.() || (apology?.expires_at ? new Date(apology.expires_at) : null);
   const valid = apology?.is_paid === true && expires && expires.getTime() > Date.now();
@@ -72,7 +64,7 @@ export default async function CustomLinkPage({ params }) {
 
   // Create a clean, plain serializable JavaScript object for the Client Component
   const serializableNote = {
-    id: slug,
+    id: resolvedNote.id,
     recipient_name: apology.recipient_name || '',
     custom_message: apology.custom_message || '',
     image_urls: Array.isArray(apology.image_urls) ? apology.image_urls : [],

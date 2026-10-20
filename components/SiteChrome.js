@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import StickyCtaBar from '@/components/StickyCtaBar';
 
-const immersiveFlowRoutes = ['/create', '/preview', '/checkout', '/success'];
+const immersiveFlowRoutes = ['/create', '/preview', '/checkout', '/success', '/invoice'];
 
 export default function SiteChrome({ children }) {
   const pathname = usePathname() || '/';

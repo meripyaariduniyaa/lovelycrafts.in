@@ -44,7 +44,7 @@ export default function TemplateRenderer({ note, isPreview = false, onReachEnd }
 
   return (
     <div
-      className={`experience-wrapper ${isPreview ? 'is-preview-mockup' : ''}`}
+      className={`experience-wrapper lc-clay-experience lc-clay-${templateId} ${isPreview ? 'is-preview-mockup' : ''}`}
       style={{
         width: '100%',
         height: isPreview ? '100%' : 'auto',

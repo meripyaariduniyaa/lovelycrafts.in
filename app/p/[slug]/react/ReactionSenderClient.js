@@ -122,7 +122,7 @@ export default function ReactionSenderClient({ note }) {
       }}>
         <div style={{ maxWidth: '480px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link
-            href={`/p/${note.custom_slug || note.id}`}
+            href={`/p/${encodeURIComponent(note.id)}`}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -217,7 +217,7 @@ export default function ReactionSenderClient({ note }) {
               {/* Action Buttons */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <Link
-                  href={`/p/${note.custom_slug || note.id}`}
+                  href={`/p/${encodeURIComponent(note.id)}`}
                   style={{
                     display: 'flex',
                     alignItems: 'center',

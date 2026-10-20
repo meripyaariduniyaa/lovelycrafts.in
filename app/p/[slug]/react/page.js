@@ -1,17 +1,13 @@
-import { getAdminDb } from '@/lib/firebase-admin';
 import Link from 'next/link';
 import ReactionSenderClient from './ReactionSenderClient';
+import { resolveNoteSlug } from '@/lib/resolve-note-slug';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  let apology = null;
-
-  try {
-    const snap = await getAdminDb().collection('notes').doc(slug).get();
-    if (snap.exists) apology = snap.data();
-  } catch {}
+  const resolvedNote = await resolveNoteSlug(slug);
+  const apology = resolvedNote?.data || null;
 
   const recipientName = apology?.recipient_name || 'Someone Special';
 
@@ -24,12 +20,8 @@ export async function generateMetadata({ params }) {
 
 export default async function ReactionPage({ params }) {
   const { slug } = await params;
-  let apology = null;
-
-  try {
-    const snap = await getAdminDb().collection('notes').doc(slug).get();
-    if (snap.exists) apology = snap.data();
-  } catch {}
+  const resolvedNote = await resolveNoteSlug(slug);
+  const apology = resolvedNote?.data || null;
 
   const expires = apology?.expires_at?.toDate?.() || (apology?.expires_at ? new Date(apology.expires_at) : null);
   const valid = apology?.is_paid === true && (!expires || expires.getTime() > Date.now());
@@ -52,7 +44,7 @@ export default async function ReactionPage({ params }) {
   }
 
   const serializableNote = {
-    id: slug,
+    id: resolvedNote.id,
     recipient_name: apology.recipient_name || '',
     sender_name: apology.custom_details?.sender_name || '',
     template: apology.template || 'proposal',
