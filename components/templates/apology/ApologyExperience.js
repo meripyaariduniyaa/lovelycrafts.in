@@ -12,8 +12,23 @@ import { motion, AnimatePresence } from 'framer-motion';
    3. Sacred Memory Gallery / Promise Polaroids
    4. "Thank You For Forgiving Me 🥺" Warm Glow & Heart Shower
 ───────────────────────────────────────────────────────── */
-export default function ApologyExperience({ note, isPreview = false, onReachEnd }) {
+export default function ApologyExperience({ note, isPreview = false, onReachEnd, onGoToReact, reactUrl }) {
   const [scene, setScene] = useState(1);
+
+  const targetSlug = note?.slug || note?.custom_slug || note?.id || '';
+  const resolvedReactUrl = reactUrl || (targetSlug ? `/p/${encodeURIComponent(targetSlug)}/react` : '');
+
+  const handleFinalEnd = () => {
+    if (onGoToReact) {
+      onGoToReact();
+      return;
+    }
+    if (resolvedReactUrl && !isPreview) {
+      window.location.href = resolvedReactUrl;
+      return;
+    }
+    onReachEnd?.(true, () => setScene(1));
+  };
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -163,7 +178,9 @@ export default function ApologyExperience({ note, isPreview = false, onReachEnd 
               key="s4"
               recipientName={recipientName}
               senderName={senderName}
+              onGoToReact={handleFinalEnd}
               onReplay={() => setScene(1)}
+              reactUrl={resolvedReactUrl}
             />
           )}
         </AnimatePresence>
@@ -906,7 +923,7 @@ function SceneMemories({ photos, recipientName, senderName, onNext }) {
 /* ─────────────────────────────────────────────────────────
    SCENE 4: THANK YOU (FORGIVENESS EMBRACED)
 ───────────────────────────────────────────────────────── */
-function SceneThankYou({ recipientName, senderName, onReplay }) {
+function SceneThankYou({ recipientName, senderName, onReplay, onGoToReact, reactUrl }) {
   // Celebration heart confetti
   const hearts = Array.from({ length: 30 }, (_, i) => ({
     id: i,
@@ -1012,28 +1029,58 @@ function SceneThankYou({ recipientName, senderName, onReplay }) {
           </div>
         </div>
 
-        {/* Replay Button */}
-        <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={onReplay}
-          style={{
-            padding: '14px 32px',
-            borderRadius: '999px',
-            background: 'rgba(255, 255, 255, 0.08)',
-            border: '1px solid rgba(94, 234, 212, 0.3)',
-            color: '#5eead4',
-            fontSize: '0.92rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <span>🔄 Replay Experience</span>
-        </motion.button>
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+          {onGoToReact && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onGoToReact}
+              id="apology-final-wrap-btn"
+              style={{
+                padding: '16px 40px',
+                borderRadius: '999px',
+                background: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
+                border: 'none',
+                color: '#ffffff',
+                fontSize: '1.02rem',
+                fontWeight: 800,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                boxShadow: '0 8px 30px rgba(20, 184, 166, 0.45)',
+              }}
+            >
+              <span>💌</span>
+              <span>Send Your Reaction &amp; Thoughts</span>
+              <span>➔</span>
+            </motion.button>
+          )}
+
+          {/* Replay Button */}
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onReplay}
+            style={{
+              padding: '12px 28px',
+              borderRadius: '999px',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(94, 234, 212, 0.3)',
+              color: '#5eead4',
+              fontSize: '0.88rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <span>🔄 Replay Experience</span>
+          </motion.button>
+        </div>
       </motion.div>
     </motion.div>
   );

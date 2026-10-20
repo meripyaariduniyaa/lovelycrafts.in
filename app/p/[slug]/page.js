@@ -65,6 +65,7 @@ export default async function CustomLinkPage({ params }) {
   // Create a clean, plain serializable JavaScript object for the Client Component
   const serializableNote = {
     id: resolvedNote.id,
+    slug: slug || apology.custom_slug || resolvedNote.id,
     recipient_name: apology.recipient_name || '',
     custom_message: apology.custom_message || '',
     image_urls: Array.isArray(apology.image_urls) ? apology.image_urls : [],

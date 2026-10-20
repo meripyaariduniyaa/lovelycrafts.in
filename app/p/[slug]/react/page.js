@@ -20,11 +20,13 @@ export async function generateMetadata({ params }) {
 
 export default async function ReactionPage({ params }) {
   const { slug } = await params;
-  const resolvedNote = await resolveNoteSlug(slug);
+  const decodedSlug = typeof slug === 'string' ? decodeURIComponent(slug) : slug;
+  const resolvedNote = await resolveNoteSlug(decodedSlug);
   const apology = resolvedNote?.data || null;
 
   const expires = apology?.expires_at?.toDate?.() || (apology?.expires_at ? new Date(apology.expires_at) : null);
-  const valid = apology?.is_paid === true && (!expires || expires.getTime() > Date.now());
+  const isDev = process.env.NODE_ENV !== 'production';
+  const valid = Boolean(apology && (apology?.is_paid === true || isDev) && (!expires || expires.getTime() > Date.now()));
 
   if (!valid || !apology) {
     return (

@@ -15,8 +15,23 @@ import PolaroidStack from '../common/PolaroidStack';
    4. Handwritten letter line-by-line
    5. Memory photos (interactive PolaroidStack)
 ───────────────────────────────────────────────────────── */
-export default function ProposalExperience({ note, isPreview = false, onReachEnd }) {
+export default function ProposalExperience({ note, isPreview = false, onReachEnd, onGoToReact, reactUrl }) {
   const [scene, setScene] = useState(1);
+
+  const targetSlug = note?.slug || note?.custom_slug || note?.id || '';
+  const resolvedReactUrl = reactUrl || (targetSlug ? `/p/${encodeURIComponent(targetSlug)}/react` : '');
+
+  const handleFinalEnd = () => {
+    if (onGoToReact) {
+      onGoToReact();
+      return;
+    }
+    if (resolvedReactUrl && !isPreview) {
+      window.location.href = resolvedReactUrl;
+      return;
+    }
+    onReachEnd?.(true, () => setScene(1));
+  };
 
 
   const recipientName = note?.recipient_name || 'My Love';
@@ -44,7 +59,7 @@ export default function ProposalExperience({ note, isPreview = false, onReachEnd
         {scene === 2 && <Scene2Confetti key="s2" recipientName={recipientName} onNext={() => setScene(3)} />}
         {scene === 3 && <Scene3Envelope key="s3" onOpen={() => setScene(4)} />}
         {scene === 4 && <Scene4Letter key="s4" letter={letter} senderName={senderName} recipientName={recipientName} onNext={() => setScene(5)} photos={photos} />}
-        {scene === 5 && <Scene5Photos key="s5" photos={photos} recipientName={recipientName} onEnd={() => onReachEnd?.(true, () => setScene(1))} />}
+        {scene === 5 && <Scene5Photos key="s5" photos={photos} recipientName={recipientName} onEnd={handleFinalEnd} reactUrl={resolvedReactUrl} />}
       </AnimatePresence>
     </div>
   );
@@ -442,24 +457,24 @@ function Scene5Photos({ photos, recipientName, onEnd }) {
           whileHover={{ scale: 1.04, boxShadow: '0 8px 30px rgba(244,63,94,0.45)' }}
           whileTap={{ scale: 0.96 }}
           onClick={onEnd}
+          id="proposal-final-wrap-btn"
           style={{
             marginTop: '2rem',
-            padding: '14px 36px',
+            padding: '16px 40px',
             borderRadius: '50px',
             background: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
             border: 'none',
             color: '#fff',
-            fontSize: '1rem',
+            fontSize: '1.02rem',
             fontWeight: 800,
             cursor: 'pointer',
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px',
-            boxShadow: '0 4px 20px rgba(244,63,94,0.3)',
+            gap: '10px',
+            boxShadow: '0 8px 30px rgba(244,63,94,0.45)',
           }}
         >
-          <span>🌹 Always & Forever</span>
-          <span>♥</span>
+          <span>💍 Share Your Reaction • Always &amp; Forever ♥</span>
         </motion.button>
       )}
     </motion.div>

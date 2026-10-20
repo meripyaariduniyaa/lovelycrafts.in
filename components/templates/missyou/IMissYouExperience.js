@@ -13,8 +13,23 @@ import PolaroidStack from '../common/PolaroidStack';
  * 3. 10,000 km Virtual Hug Transmitter
  * 4. Unsent Letter Across Miles & Polaroids
  */
-export default function IMissYouExperience({ note, isPreview = false, onReachEnd }) {
+export default function IMissYouExperience({ note, isPreview = false, onReachEnd, onGoToReact, reactUrl }) {
   const [chapter, setChapter] = useState(1);
+
+  const targetSlug = note?.slug || note?.custom_slug || note?.id || '';
+  const resolvedReactUrl = reactUrl || (targetSlug ? `/p/${encodeURIComponent(targetSlug)}/react` : '');
+
+  const handleFinalEnd = () => {
+    if (onGoToReact) {
+      onGoToReact();
+      return;
+    }
+    if (resolvedReactUrl && !isPreview) {
+      window.location.href = resolvedReactUrl;
+      return;
+    }
+    onReachEnd?.(true, () => setChapter(1));
+  };
 
   const recipientName = note?.recipient_name || 'My Favorite Person';
   const customDetails = note?.custom_details || {};
@@ -229,7 +244,9 @@ export default function IMissYouExperience({ note, isPreview = false, onReachEnd
               senderName={senderName}
               letterText={letterText}
               photos={photos}
-              onEnd={() => onReachEnd?.(true, () => setChapter(1))}
+              onEnd={handleFinalEnd}
+              onGoToReact={handleFinalEnd}
+              reactUrl={resolvedReactUrl}
             />
           )}
         </AnimatePresence>
@@ -715,7 +732,7 @@ function Chapter3HugTransmitter({ recipientName, senderName, distanceKm, onNext 
 /* ─────────────────────────────────────────────────────────────
    CHAPTER 4: Unsent Letter Across Miles & Polaroids
 ───────────────────────────────────────────────────────────── */
-function Chapter4Letter({ recipientName, senderName, letterText, photos, onEnd }) {
+function Chapter4Letter({ recipientName, senderName, letterText, photos, onEnd, onGoToReact, reactUrl }) {
   const [reaction, setReaction] = useState(null);
 
   return (
@@ -834,6 +851,34 @@ function Chapter4Letter({ recipientName, senderName, letterText, photos, onEnd }
             ✨ Your reaction was saved in their heart.
           </motion.p>
         )}
+
+        {/* Primary Wrap & React Button */}
+        <div style={{ marginTop: '24px' }}>
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={onGoToReact || onEnd}
+            id="missyou-final-wrap-btn"
+            style={{
+              padding: '16px 36px',
+              borderRadius: '999px',
+              background: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+              border: 'none',
+              color: '#ffffff',
+              fontSize: '0.98rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)',
+            }}
+          >
+            <span>💌</span>
+            <span>Share Your Reaction Across The Miles</span>
+            <span>➔</span>
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );

@@ -17,8 +17,23 @@ import PolaroidStack from '../common/PolaroidStack';
    6. Envelope + handwritten letter
    7. Love meter rapid-tap → happy ending
 ───────────────────────────────────────────────────────── */
-export default function AnniversaryExperience({ note, isPreview = false, onReachEnd }) {
+export default function AnniversaryExperience({ note, isPreview = false, onReachEnd, onGoToReact, reactUrl }) {
   const [scene, setScene] = useState(1);
+
+  const targetSlug = note?.slug || note?.custom_slug || note?.id || '';
+  const resolvedReactUrl = reactUrl || (targetSlug ? `/p/${encodeURIComponent(targetSlug)}/react` : '');
+
+  const handleFinalEnd = () => {
+    if (onGoToReact) {
+      onGoToReact();
+      return;
+    }
+    if (resolvedReactUrl && !isPreview) {
+      window.location.href = resolvedReactUrl;
+      return;
+    }
+    onReachEnd?.(true, () => setScene(1));
+  };
 
 
   const name = note?.recipient_name || 'My Love';
@@ -62,7 +77,7 @@ export default function AnniversaryExperience({ note, isPreview = false, onReach
         {scene === 5 && <SceneChampagne key="s5" name={name} senderName={senderName} onNext={goNext} />}
         {scene === 6 && <SceneEnvelope key="s6" onOpen={goNext} />}
         {scene === 7 && <SceneLetter key="s7" letter={letter} name={name} senderName={senderName} onNext={goNext} />}
-        {scene === 8 && <SceneLoveMeter key="s8" name={name} onEnd={() => onReachEnd?.(true, () => setScene(1))} />}
+        {scene === 8 && <SceneLoveMeter key="s8" name={name} onEnd={handleFinalEnd} reactUrl={resolvedReactUrl} />}
       </AnimatePresence>
     </div>
   );
@@ -508,8 +523,9 @@ function SceneLoveMeter({ name, onEnd }) {
             <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
               whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
               onClick={onEnd}
-              style={{ padding: '15px 36px', borderRadius: '50px', background: 'linear-gradient(135deg,#fbbf24,#92400e)', border: 'none', color: '#fff', fontSize: '1rem', fontWeight: 700, cursor: 'pointer' }}>
-              🥂 That's a wrap!
+              id="anniversary-final-wrap-btn"
+              style={{ padding: '16px 40px', borderRadius: '50px', background: 'linear-gradient(135deg,#fbbf24,#92400e)', border: 'none', color: '#fff', fontSize: '1.05rem', fontWeight: 800, cursor: 'pointer', boxShadow: '0 10px 30px rgba(251,191,36,0.4)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <span>🥂 That&apos;s a wrap! • Share Reaction 💌</span>
             </motion.button>
           )}
         </motion.div>

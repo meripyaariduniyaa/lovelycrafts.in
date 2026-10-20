@@ -73,6 +73,14 @@ export default function RecipientExperienceWrapper({ note }) {
 
   // Full experience unlocked
   const musicPreset = customDetails.audio_preset || 'romantic-piano';
+  const targetSlug = note?.slug || note?.custom_slug || note?.id || '';
+  const reactUrl = targetSlug ? `/p/${encodeURIComponent(targetSlug)}/react` : `/p/${encodeURIComponent(note?.id || '')}/react`;
+
+  const handleGoToReact = useCallback(() => {
+    if (reactUrl) {
+      window.location.href = reactUrl;
+    }
+  }, [reactUrl]);
 
   return (
     <div className="recipient-experience-container">
@@ -87,6 +95,8 @@ export default function RecipientExperienceWrapper({ note }) {
         note={note} 
         isPreview={false} 
         onReachEnd={handleReachEnd}
+        onGoToReact={handleGoToReact}
+        reactUrl={reactUrl}
       />
 
       {/* Recipient Interactive Reaction & Wrap Up The Moment — ONLY after last scene */}
@@ -125,9 +135,14 @@ export default function RecipientExperienceWrapper({ note }) {
               </p>
 
               {/* Primary Glowing Action */}
-              <Link
-              href={`/p/${encodeURIComponent(note.id)}/react`}
+              <a
+                href={reactUrl}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleGoToReact();
+                }}
                 className="wrap-moment-glow-btn"
+                id="wrap-up-moment-btn"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -143,12 +158,13 @@ export default function RecipientExperienceWrapper({ note }) {
                   boxShadow: '0 8px 30px rgba(244, 63, 94, 0.4)',
                   marginBottom: '1rem',
                   transition: 'all 0.25s ease',
+                  cursor: 'pointer',
                 }}
               >
                 <span>💌</span>
                 <span>Wrap Up The Moment • Share Your Experience</span>
                 <span>➔</span>
-              </Link>
+              </a>
 
               {/* Secondary actions */}
               <div className="completion-actions-bar">

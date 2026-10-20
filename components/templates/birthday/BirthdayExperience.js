@@ -19,8 +19,23 @@ import PolaroidStack from '../common/PolaroidStack';
   10. Handwritten letter
   11. Final happy birthday celebration
 ───────────────────────────────────────────────────────── */
-export default function BirthdayExperience({ note, isPreview = false, onReachEnd }) {
+export default function BirthdayExperience({ note, isPreview = false, onReachEnd, onGoToReact, reactUrl }) {
   const [scene, setScene] = useState(1);
+
+  const targetSlug = note?.slug || note?.custom_slug || note?.id || '';
+  const resolvedReactUrl = reactUrl || (targetSlug ? `/p/${encodeURIComponent(targetSlug)}/react` : '');
+
+  const handleFinalEnd = () => {
+    if (onGoToReact) {
+      onGoToReact();
+      return;
+    }
+    if (resolvedReactUrl && !isPreview) {
+      window.location.href = resolvedReactUrl;
+      return;
+    }
+    onReachEnd?.(true, () => setScene(1));
+  };
 
   const name = note?.recipient_name || 'Birthday Star';
   const senderName = note?.custom_details?.sender_name || '';
@@ -67,7 +82,7 @@ export default function BirthdayExperience({ note, isPreview = false, onReachEnd
         {scene === 8 && <SceneMemories key="s8" photos={photos} name={name} onNext={goNext} />}
         {scene === 9 && <SceneEnvelope key="s9" onOpen={goNext} />}
         {scene === 10 && <SceneLetter key="s10" letter={letter} senderName={senderName} name={name} onNext={goNext} />}
-        {scene === 11 && <SceneFinal key="s11" name={name} turningAge={turningAge} onEnd={() => onReachEnd?.(true, () => setScene(1))} />}
+        {scene === 11 && <SceneFinal key="s11" name={name} turningAge={turningAge} onEnd={handleFinalEnd} reactUrl={resolvedReactUrl} />}
       </AnimatePresence>
     </div>
   );
@@ -889,7 +904,7 @@ function SceneLetter({ letter, senderName, name, onNext }) {
 }
 
 /* ── SCENE FINAL: Happy Birthday again ── */
-function SceneFinal({ name, turningAge, onEnd }) {
+function SceneFinal({ name, turningAge, onEnd, reactUrl }) {
   const confetti = Array.from({ length: 50 }, (_, i) => ({
     id: i, left: `${(i * 23 + 3) % 100}%`, delay: `${(i * 0.05).toFixed(2)}s`,
     dur: `${2 + (i % 5) * 0.4}s`, color: ['#fbbf24', '#f43f5e', '#a855f7', '#38bdf8', '#4ade80', '#fff'][i % 6],
@@ -920,8 +935,9 @@ function SceneFinal({ name, turningAge, onEnd }) {
           <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
             whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
             onClick={onEnd}
-            style={{ padding: '15px 36px', borderRadius: '50px', background: 'linear-gradient(135deg,#f59e0b,#b45309)', border: 'none', color: '#fff', fontSize: '1rem', fontWeight: 700, cursor: 'pointer' }}>
-            🎂 That's a wrap! ✨
+            id="birthday-final-wrap-btn"
+            style={{ padding: '16px 40px', borderRadius: '50px', background: 'linear-gradient(135deg,#f59e0b,#b45309)', border: 'none', color: '#fff', fontSize: '1.05rem', fontWeight: 800, cursor: 'pointer', boxShadow: '0 10px 30px rgba(245,158,11,0.4)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <span>🎂 That&apos;s a wrap! • Share Reaction 💌</span>
           </motion.button>
         )}
       </motion.div>

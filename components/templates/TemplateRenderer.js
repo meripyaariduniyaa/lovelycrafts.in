@@ -16,7 +16,7 @@ import IMissYouExperience from './missyou/IMissYouExperience';
  * - 'emotional-apology'  -> ApologyExperience
  * - 'i-miss-you'         -> IMissYouExperience
  */
-export default function TemplateRenderer({ note, isPreview = false, onReachEnd }) {
+export default function TemplateRenderer({ note, isPreview = false, onReachEnd, onGoToReact, reactUrl }) {
   if (!note) return null;
 
   const templateId = note.template || 'proposal';
@@ -24,22 +24,22 @@ export default function TemplateRenderer({ note, isPreview = false, onReachEnd }
 
   switch (templateId) {
     case 'proposal':
-      experience = <ProposalExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} />;
+      experience = <ProposalExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} onGoToReact={onGoToReact} reactUrl={reactUrl} />;
       break;
     case 'anniversary':
-      experience = <AnniversaryExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} />;
+      experience = <AnniversaryExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} onGoToReact={onGoToReact} reactUrl={reactUrl} />;
       break;
     case 'emotional-apology':
-      experience = <ApologyExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} />;
+      experience = <ApologyExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} onGoToReact={onGoToReact} reactUrl={reactUrl} />;
       break;
     case 'birthday':
-      experience = <BirthdayExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} />;
+      experience = <BirthdayExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} onGoToReact={onGoToReact} reactUrl={reactUrl} />;
       break;
     case 'i-miss-you':
-      experience = <IMissYouExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} />;
+      experience = <IMissYouExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} onGoToReact={onGoToReact} reactUrl={reactUrl} />;
       break;
     default:
-      experience = <ProposalExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} />;
+      experience = <ProposalExperience note={note} isPreview={isPreview} onReachEnd={onReachEnd} onGoToReact={onGoToReact} reactUrl={reactUrl} />;
   }
 
   return (
