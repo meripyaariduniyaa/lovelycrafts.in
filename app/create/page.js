@@ -505,6 +505,7 @@ function SelectScreen({ templates, onSelect }) {
 
       {/* Template Cards */}
       <div
+        className="lc-template-choice-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',

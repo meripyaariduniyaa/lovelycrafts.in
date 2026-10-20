@@ -1,4 +1,5 @@
 import './globals.css';
+import './mobile-compact.css';
 import { AuthProvider } from '@/components/AuthProvider';
 import SiteChrome from '@/components/SiteChrome';
 import Oneko from '@/components/Oneko';
@@ -82,7 +83,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body className="lc-responsive-app">
         <AuthProvider>
           <SiteChrome>{children}</SiteChrome>
           <Oneko />
