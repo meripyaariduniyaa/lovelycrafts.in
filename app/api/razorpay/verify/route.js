@@ -1,28 +1,24 @@
-import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
+import Razorpay from 'razorpay';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { calculateEffectiveTierAndRate, commissionForAmount, normalizeCode } from '@/lib/creator-club';
 import { verifyReferral } from '@/lib/referral-crypto';
 import { createAutoInvoice } from '@/lib/finance';
-import { disableOrganicRetentionCoupon } from '@/lib/coupons';
+import { disableOrganicRetentionCoupon, resolveCoupon } from '@/lib/coupons';
+import { getTemplatePrice } from '@/lib/pricing';
+import { createSettlementOrderId, verifyHmacSha256Signature } from '@/lib/razorpay-security';
+import { sendReceipt } from '@/lib/email';
 
 export async function POST(request) {
   try {
     const adminDb = getAdminDb();
-    const {
-      apologyId,
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      couponCode,
-      couponId,
-      creatorId,
-      attributionSource,
-      discountPercent,
-      amountPaid,
-      free,
-    } = await request.json();
+    const body = await request.json();
+    const { apologyId, razorpay_order_id, razorpay_payment_id, razorpay_signature, buyerName: bodyBuyerName, buyerEmail: bodyBuyerEmail, buyerPhone: bodyBuyerPhone } = body;
+    const provider = body.provider === 'cashfree' ? 'cashfree' : 'razorpay';
+    if (typeof apologyId !== 'string' || !apologyId.trim()) {
+      return NextResponse.json({ error: 'Gift identifier is required.' }, { status: 400 });
+    }
 
     const noteRef = adminDb.collection('notes').doc(apologyId);
     const noteSnap = await noteRef.get();
@@ -33,31 +29,139 @@ export async function POST(request) {
 
     const noteData = noteSnap.data();
     const created = noteData.created_at?.toDate?.() || new Date();
-    const normalizedCode = couponCode ? normalizeCode(couponCode) : null;
-    const finalDiscountPercent = free === true ? 100 : Number(discountPercent) || 0;
-    const finalAmountPaid = free === true ? 0 : Number(amountPaid) || 0;
-    const method = free === true ? 'coupon' : 'razorpay';
+    const templateId = noteData.template || 'proposal';
+    let normalizedCode = null;
+    let effectiveCouponId = null;
+    let effectiveCreatorId = null;
+    let effectiveAttributionSource = null;
+    let finalDiscountPercent = 0;
+    let finalAmountPaid = 0;
+    let method = provider;
+    let paymentOrderId = null;
+    let paymentId = null;
+    let buyerName = bodyBuyerName || '';
+    let buyerEmail = bodyBuyerEmail || '';
+    let buyerPhone = bodyBuyerPhone || '';
 
-    if (free !== true) {
-      if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-        return NextResponse.json({ error: 'Missing Razorpay payment data.' }, { status: 400 });
+    if (body.free === true) {
+      const price = await getTemplatePrice(templateId);
+      const freeCoupon = await resolveCoupon(body.couponCode, {
+        db: adminDb,
+        templateId,
+        orderAmountPaise: price.pricePaise,
+        creatorUserId: noteData.creator_uid,
+      });
+      if (!freeCoupon.valid || freeCoupon.percent !== 100) {
+        return NextResponse.json({ error: 'This coupon is not eligible to unlock the gift.' }, { status: 400 });
       }
 
-      const secret = process.env.RAZORPAY_KEY_SECRET || 'rzp_secret_placeholder';
-      const expected = crypto.createHmac('sha256', secret)
-        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-        .digest('hex');
+      normalizedCode = normalizeCode(freeCoupon.code);
+      effectiveCouponId = freeCoupon.id || null;
+      effectiveCreatorId = freeCoupon.creator_id || null;
+      effectiveAttributionSource = effectiveCreatorId ? 'coupon' : null;
+      finalDiscountPercent = 100;
+      method = 'coupon';
+    } else {
+      if (provider === 'cashfree') {
+        const cashfreeOrderId = body.cashfree_order_id;
+        const clientId = process.env.CASHFREE_CLIENT_ID;
+        const clientSecret = process.env.CASHFREE_CLIENT_SECRET;
+        const mode = process.env.CASHFREE_ENVIRONMENT === 'production' ? 'production' : 'sandbox';
+        if (!cashfreeOrderId || !clientId || !clientSecret) {
+          return NextResponse.json({ error: 'Cashfree verification is not configured.' }, { status: 503 });
+        }
+        const apiBase = mode === 'production' ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
+        const apiHeaders = {
+          'x-client-id': clientId,
+          'x-client-secret': clientSecret,
+          'x-api-version': process.env.CASHFREE_API_VERSION || '2025-01-01',
+          Accept: 'application/json',
+        };
+        const [orderResponse, paymentsResponse] = await Promise.all([
+          fetch(`${apiBase}/orders/${encodeURIComponent(cashfreeOrderId)}`, { headers: apiHeaders, cache: 'no-store' }),
+          fetch(`${apiBase}/orders/${encodeURIComponent(cashfreeOrderId)}/payments`, { headers: apiHeaders, cache: 'no-store' }),
+        ]);
+        if (!orderResponse.ok || !paymentsResponse.ok) {
+          return NextResponse.json({ error: 'Cashfree could not confirm this payment yet.' }, { status: 502 });
+        }
+        const [providerOrder, providerPayments] = await Promise.all([orderResponse.json(), paymentsResponse.json()]);
+        const providerPayment = (Array.isArray(providerPayments) ? providerPayments : []).find((payment) => payment.payment_status === 'SUCCESS');
+        const tags = providerOrder.order_tags || {};
+        const amountPaise = Math.round(Number(providerOrder.order_amount) * 100);
+        if (
+          providerOrder.order_id !== cashfreeOrderId ||
+          providerOrder.order_status !== 'PAID' ||
+          tags.note_id !== apologyId ||
+          !providerPayment ||
+          Math.round(Number(providerPayment.payment_amount) * 100) !== amountPaise ||
+          providerPayment.payment_currency !== 'INR'
+        ) {
+          return NextResponse.json({ error: 'Cashfree has not verified a successful payment for this gift.' }, { status: 400 });
+        }
 
-      if (expected !== razorpay_signature) {
-        return NextResponse.json({ error: 'Invalid payment signature.' }, { status: 400 });
+        paymentOrderId = providerOrder.order_id;
+        paymentId = String(providerPayment.cf_payment_id);
+        normalizedCode = tags.coupon_code ? normalizeCode(tags.coupon_code) : null;
+        effectiveCouponId = tags.coupon_id || null;
+        effectiveCreatorId = tags.creator_id || null;
+        effectiveAttributionSource = tags.attribution_source || null;
+        finalDiscountPercent = Number(tags.discount_percent) || 0;
+        finalAmountPaid = amountPaise;
+        if (tags.buyer_name) buyerName = tags.buyer_name;
+        else if (providerOrder.customer_details?.customer_name) buyerName = providerOrder.customer_details.customer_name;
+        if (tags.buyer_email) buyerEmail = tags.buyer_email;
+        else if (providerOrder.customer_details?.customer_email) buyerEmail = providerOrder.customer_details.customer_email;
+        if (tags.buyer_phone) buyerPhone = tags.buyer_phone;
+        else if (providerOrder.customer_details?.customer_phone) buyerPhone = providerOrder.customer_details.customer_phone;
+      } else {
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+          return NextResponse.json({ error: 'Missing Razorpay payment data.' }, { status: 400 });
+        }
+
+        const keyId = process.env.RAZORPAY_KEY_ID;
+        const secret = process.env.RAZORPAY_KEY_SECRET;
+        if (!keyId || !secret) {
+          return NextResponse.json({ error: 'Payment verification is not configured.' }, { status: 503 });
+        }
+        if (!verifyHmacSha256Signature(`${razorpay_order_id}|${razorpay_payment_id}`, razorpay_signature, secret)) {
+          return NextResponse.json({ error: 'Invalid payment signature.' }, { status: 400 });
+        }
+
+        const razorpay = new Razorpay({ key_id: keyId, key_secret: secret });
+        const [providerOrder, providerPayment] = await Promise.all([
+          razorpay.orders.fetch(razorpay_order_id),
+          razorpay.payments.fetch(razorpay_payment_id),
+        ]);
+        const trustedNotes = providerOrder.notes || {};
+
+        if (
+          providerOrder.id !== razorpay_order_id ||
+          providerPayment.order_id !== providerOrder.id ||
+          providerPayment.status !== 'captured' ||
+          Number(providerPayment.amount) !== Number(providerOrder.amount) ||
+          providerPayment.currency !== 'INR' ||
+          (providerOrder.receipt !== apologyId && trustedNotes.apologyId !== apologyId)
+        ) {
+          return NextResponse.json({ error: 'The payment could not be verified for this gift.' }, { status: 400 });
+        }
+
+        paymentOrderId = providerOrder.id;
+        paymentId = providerPayment.id;
+        normalizedCode = trustedNotes.couponCode ? normalizeCode(trustedNotes.couponCode) : null;
+        effectiveCouponId = trustedNotes.couponId || null;
+        effectiveCreatorId = trustedNotes.creatorId || null;
+        effectiveAttributionSource = trustedNotes.attributionSource || null;
+        finalDiscountPercent = Number(trustedNotes.discountPercent) || 0;
+        finalAmountPaid = Number(providerPayment.amount);
+        // Buyer details from trusted server-side Razorpay notes
+        if (trustedNotes.buyerName) buyerName = trustedNotes.buyerName;
+        if (trustedNotes.buyerEmail) buyerEmail = trustedNotes.buyerEmail;
+        if (trustedNotes.buyerPhone) buyerPhone = trustedNotes.buyerPhone;
       }
     }
 
     // 1. Resolve Coupon & Creator early
     let resolvedCouponDoc = null;
-    let effectiveCouponId = couponId || null;
-    let effectiveCreatorId = creatorId || null;
-    let effectiveAttributionSource = attributionSource || null;
 
     if (effectiveCouponId) {
       const cRef = adminDb.collection('coupons').doc(effectiveCouponId);
@@ -85,21 +189,33 @@ export async function POST(request) {
       }
     }
 
-    // 2. Update Note record
-    await noteRef.update({
-      is_paid: true,
-      expires_at: Timestamp.fromDate(new Date(created.getTime() + 90 * 24 * 60 * 60 * 1000)),
-      razorpay_order_id: razorpay_order_id || null,
-      razorpay_payment_id: razorpay_payment_id || null,
-      coupon_code: normalizedCode,
-      discount_percent: finalDiscountPercent,
-      amount_paid: finalAmountPaid,
-      payment_method: method,
-      paid_at: FieldValue.serverTimestamp(),
-    });
+    // 2. Create a deterministic, transactional settlement record so provider retries
+    // cannot create another order or commission for the same payment.
+    const orderRef = adminDb.collection('orders').doc(
+      createSettlementOrderId({ paymentId, noteId: apologyId }),
+    );
+    const existingPaymentOrder = paymentId
+      ? await adminDb.collection('orders').where(provider === 'cashfree' ? 'cashfree_payment_id' : 'razorpay_payment_id', '==', paymentId).limit(1).get()
+      : await adminDb.collection('orders').where('note_id', '==', apologyId).limit(1).get();
+    if (!existingPaymentOrder.empty) {
+      const existing = existingPaymentOrder.docs[0];
+      if (existing.data().note_id !== apologyId) {
+        return NextResponse.json({ error: 'The payment is already linked to another gift.' }, { status: 409 });
+      }
+      return NextResponse.json({ ok: true, orderId: existing.id, duplicate: true });
+    }
 
-    // 3. Create Immutable Order Snapshot in orders & permanent admin_payment_ledger vault
-    const orderRef = adminDb.collection('orders').doc();
+    if (noteData.is_paid) {
+      const alreadyPaidWithThisPayment = method === 'razorpay'
+        ? noteData.razorpay_payment_id === paymentId
+        : method === 'cashfree'
+          ? noteData.cashfree_payment_id === paymentId
+          : noteData.payment_method === 'coupon' && noteData.coupon_code === normalizedCode;
+      if (!alreadyPaidWithThisPayment) {
+        return NextResponse.json({ error: 'This gift has already been paid.' }, { status: 409 });
+      }
+    }
+
     const orderSnapshot = {
       note_id: apologyId,
       customer_uid: noteData.creator_uid || null,
@@ -111,16 +227,60 @@ export async function POST(request) {
       final_amount: finalAmountPaid,
       amount_in_rupees: Number(((finalAmountPaid || 0) / 100).toFixed(2)),
       payment_method: method,
+      payment_provider: method === 'coupon' ? null : method,
       payment_status: 'paid',
-      razorpay_order_id: razorpay_order_id || null,
-      razorpay_payment_id: razorpay_payment_id || null,
+      ...(method === 'cashfree'
+        ? { cashfree_order_id: paymentOrderId, cashfree_payment_id: paymentId }
+        : { razorpay_order_id: paymentOrderId, razorpay_payment_id: paymentId }),
       attribution_source: effectiveAttributionSource,
+      buyer_name: buyerName || null,
+      buyer_email: buyerEmail || null,
+      buyer_phone: buyerPhone || null,
       created_at: FieldValue.serverTimestamp(),
       paid_at: FieldValue.serverTimestamp(),
     };
 
-    // Save to primary orders collection
-    await orderRef.set(orderSnapshot);
+    const settlementOutcome = await adminDb.runTransaction(async (transaction) => {
+      const currentNoteSnap = await transaction.get(noteRef);
+      const currentOrderSnap = await transaction.get(orderRef);
+      if (!currentNoteSnap.exists) return 'missing-note';
+      if (currentOrderSnap.exists) return 'duplicate';
+
+      const currentNote = currentNoteSnap.data();
+      if (currentNote.is_paid) {
+        const samePayment = method === 'razorpay'
+          ? currentNote.razorpay_payment_id === paymentId
+          : method === 'cashfree'
+            ? currentNote.cashfree_payment_id === paymentId
+            : currentNote.payment_method === 'coupon' && currentNote.coupon_code === normalizedCode;
+        if (!samePayment) return 'already-paid';
+      }
+
+      transaction.create(orderRef, orderSnapshot);
+      transaction.update(noteRef, {
+        is_paid: true,
+        expires_at: Timestamp.fromDate(new Date(created.getTime() + 90 * 24 * 60 * 60 * 1000)),
+        ...(method === 'cashfree'
+          ? { cashfree_order_id: paymentOrderId, cashfree_payment_id: paymentId, payment_provider: 'cashfree' }
+          : { razorpay_order_id: paymentOrderId, razorpay_payment_id: paymentId, ...(method === 'razorpay' ? { payment_provider: 'razorpay' } : {}) }),
+        coupon_code: normalizedCode,
+        discount_percent: finalDiscountPercent,
+        amount_paid: finalAmountPaid,
+        payment_method: method,
+        paid_at: FieldValue.serverTimestamp(),
+      });
+      return 'created';
+    });
+
+    if (settlementOutcome === 'duplicate') {
+      return NextResponse.json({ ok: true, orderId: orderRef.id, duplicate: true });
+    }
+    if (settlementOutcome === 'already-paid') {
+      return NextResponse.json({ error: 'This gift has already been paid.' }, { status: 409 });
+    }
+    if (settlementOutcome === 'missing-note') {
+      return NextResponse.json({ error: 'Note not found.' }, { status: 404 });
+    }
 
     // Save permanent immutable copy to admin_payment_ledger
     try {
@@ -143,10 +303,24 @@ export async function POST(request) {
         amountInRupees: Number(((finalAmountPaid || 0) / 100).toFixed(2)),
         couponCode: normalizedCode,
         discountPercent: finalDiscountPercent,
-        paymentMethod: method === 'coupon' ? 'VIP Gift Pass' : 'UPI / Razorpay',
+        paymentMethod: method === 'coupon' ? 'VIP Gift Pass' : method === 'cashfree' ? 'Cashfree' : 'UPI / Razorpay',
       });
     } catch (invoiceErr) {
       console.error('Failed to auto-generate finance invoice:', invoiceErr);
+    }
+
+    // 3c. Send purchase receipt email to buyer
+    if (buyerEmail) {
+      sendReceipt({
+        to: buyerEmail,
+        buyerName: buyerName || 'there',
+        orderId: orderRef.id,
+        templateId: noteData.template || 'proposal',
+        amountRupees: Number(((finalAmountPaid || 0) / 100).toFixed(2)),
+        paymentMethod: method === 'coupon' ? 'VIP Gift Pass' : method === 'cashfree' ? 'Cashfree Payments' : 'UPI / Razorpay',
+        noteId: apologyId,
+        discountPercent: finalDiscountPercent,
+      }).catch((emailErr) => console.error('Receipt email failed:', emailErr));
     }
 
     // 4. Atomically increment coupon usage & deactivate single-use/retention coupons

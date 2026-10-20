@@ -31,7 +31,7 @@ export const metadata = {
     description: 'Make a personalized digital gift in 3 minutes. Share on WhatsApp instantly.',
     images: [DEFAULT_OG_IMAGE],
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
 export default function CreateLayout({ children }) {

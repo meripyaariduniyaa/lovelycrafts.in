@@ -89,10 +89,10 @@ export default function RecipientReactionBox({ noteId, recipientName }) {
           border-radius: 14px; padding: 12px 16px;
           font-size: 14px; font-family: 'Inter', sans-serif;
           resize: none; outline: none;
-          background: #ffffff; color: #0f172a;
+          background: #ffffff; color: #43332b;
           transition: all 0.2s; box-sizing: border-box;
         }
-        .rrb-textarea::placeholder { color: #94a3b8; }
+        .rrb-textarea::placeholder { color: #79675c; }
         .rrb-textarea:focus {
           border-color: #f43f5e;
           background: #ffffff;
@@ -101,7 +101,7 @@ export default function RecipientReactionBox({ noteId, recipientName }) {
         .rrb-send {
           width: 100%; padding: 14px;
           border-radius: 16px; border: none;
-          background: linear-gradient(135deg, #f43f5e, #be185d);
+          background: linear-gradient(135deg, #a64036, #a64036);
           color: white; font-weight: 800; font-size: 15px;
           cursor: pointer; font-family: 'Inter', sans-serif;
           box-shadow: 0 8px 24px rgba(190,24,93,0.25);

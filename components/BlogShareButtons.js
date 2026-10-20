@@ -67,7 +67,7 @@ export default function BlogShareButtons({ title, url }) {
         target="_blank"
         rel="noopener noreferrer"
         style={{
-          background: '#0f172a',
+          background: '#f8f3eb',
           color: '#fff',
           padding: '6px 14px',
           borderRadius: '8px',

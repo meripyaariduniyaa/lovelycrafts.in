@@ -27,7 +27,7 @@ export default function ProposalExperience({ note, isPreview = false, onReachEnd
   const photos = (Array.isArray(rawPhotos) ? rawPhotos : []).map((p) => (typeof p === 'string' ? p : p?.url)).filter(Boolean);
 
   return (
-    <div style={{ background: '#0a0510', minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
+    <div style={{ background: '#f8f3eb', minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Dancing+Script:wght@600;700&family=Caveat:wght@500;700&display=swap');
         @keyframes floatHeart { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-12px) rotate(5deg); } }
@@ -94,7 +94,7 @@ function Scene1YesNo({ recipientName, senderName, quotation, onYes, isPreview = 
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.5 }}
-      style={{ minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #2d0a1a 0%, #0a0510 100%)', padding: isPreview ? '1.25rem 1rem' : '2rem', position: 'relative', overflow: 'hidden' }}
+      style={{ minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #f8f3eb 0%, #f8f3eb 100%)', padding: isPreview ? '1.25rem 1rem' : '2rem', position: 'relative', overflow: 'hidden' }}
     >
       {/* Floating hearts background */}
       {particles.map((p) => (
@@ -200,7 +200,7 @@ function Scene2Confetti({ recipientName, onNext }) {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #1a0d2e 0%, #080810 100%)', position: 'relative', overflow: 'hidden', padding: '2rem' }}
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #f8f3eb 0%, #f8f3eb 100%)', position: 'relative', overflow: 'hidden', padding: '2rem' }}
     >
       {/* Confetti */}
       {confetti.map((c) => (
@@ -221,7 +221,7 @@ function Scene2Confetti({ recipientName, onNext }) {
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
           onClick={onNext}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
-          style={{ padding: '15px 36px', borderRadius: '50px', background: 'linear-gradient(135deg,#f43f5e,#be123c)', border: 'none', color: '#fff', fontSize: '1rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 24px rgba(244,63,94,0.4)' }}
+          style={{ padding: '15px 36px', borderRadius: '50px', background: 'linear-gradient(135deg,#f43f5e,#be123c)', border: 'none', color: '#fff', fontSize: '1rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 24px rgba(166, 64, 54, 0.96)' }}
         >
           Open your letter 💌
         </motion.button>
@@ -244,7 +244,7 @@ function Scene3Envelope({ onOpen }) {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #1a0d0d 0%, #080810 100%)', padding: '2rem' }}
+      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}
     >
       <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} style={{ textAlign: 'center' }}>
         <p style={{ color: '#94a3b8', fontSize: '0.88rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
@@ -312,11 +312,11 @@ function Scene4Letter({ letter, senderName, recipientName, onNext, photos }) {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 0%, #1a0d0d 0%, #080810 100%)', padding: '2rem' }}
+      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 0%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}
     >
       <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} style={{ maxWidth: '420px', width: '100%' }}>
         {/* Parchment paper */}
-        <div style={{ background: 'linear-gradient(180deg, #fef9f0 0%, #fdf6e8 100%)', borderRadius: '4px', padding: '2rem', boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,200,150,0.3)', position: 'relative', minHeight: '280px' }}>
+        <div style={{ background: 'linear-gradient(180deg, #fef9f0 0%, #fdf6e8 100%)', borderRadius: '4px', padding: '2rem', boxShadow: '0 8px 40px rgba(247, 238, 228, 0.96), 0 0 0 1px rgba(255,200,150,0.3)', position: 'relative', minHeight: '280px' }}>
           {/* Ruled lines */}
           {Array.from({ length: 12 }, (_, i) => (
             <div key={i} style={{ position: 'absolute', left: '2rem', right: '2rem', top: `${3.5 + i * 2}rem`, height: 1, background: 'rgba(120,80,40,0.12)' }} />
@@ -353,7 +353,7 @@ function Scene4Letter({ letter, senderName, recipientName, onNext, photos }) {
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
             whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
             onClick={onNext}
-            style={{ width: '100%', marginTop: '1.5rem', padding: '15px', borderRadius: '16px', background: 'linear-gradient(135deg,#f43f5e,#be123c)', border: 'none', color: '#fff', fontSize: '1rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(244,63,94,0.35)' }}
+            style={{ width: '100%', marginTop: '1.5rem', padding: '15px', borderRadius: '16px', background: 'linear-gradient(135deg,#f43f5e,#be123c)', border: 'none', color: '#fff', fontSize: '1rem', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(166, 64, 54, 0.96)' }}
           >
             📸 See our memories →
           </motion.button>
@@ -384,7 +384,7 @@ function Scene5Photos({ photos, recipientName, onEnd }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(ellipse at 50% 40%, #1a0812 0%, #080810 100%)',
+        background: 'radial-gradient(ellipse at 50% 40%, #f8f3eb 0%, #f8f3eb 100%)',
         padding: '2rem 1.25rem',
       }}
     >

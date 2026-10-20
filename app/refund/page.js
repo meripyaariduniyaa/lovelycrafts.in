@@ -29,7 +29,7 @@ const EFFECTIVE_DATE = 'September 13, 2026';
 
 export default function RefundPolicyPage() {
   return (
-    <main className="shell" style={{ padding: '3rem 1rem' }}>
+    <main className="shell lc-page-shell" style={{ padding: '3rem 1rem' }}>
       <div style={{ maxWidth: '820px', margin: '0 auto' }}>
 
         {/* Breadcrumb */}
@@ -49,7 +49,7 @@ export default function RefundPolicyPage() {
             <strong>Effective Date:</strong> {EFFECTIVE_DATE} &nbsp;|&nbsp;
             <strong>Platform:</strong> {SITE_NAME} ({SITE_URL})
           </p>
-          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#92400e' }}>
+          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#43332b' }}>
             ⚠️ <strong>Please read carefully:</strong> Because {SITE_NAME} delivers instant digital experiences, all sales are generally final. Refunds are issued only in the two specific cases described below.
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function RefundPolicyPage() {
               description="If your payment was successfully deducted but no shareable gift link or experience page was created and delivered to you (i.e., a confirmed technical failure on our end), you are entitled to a full refund or a re-generation of your gift at no extra cost."
             />
 
-            <div style={{ marginTop: '1.25rem', padding: '1rem 1.25rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#14532d' }}>
+            <div style={{ marginTop: '1.25rem', padding: '1rem 1.25rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#43332b' }}>
               ✅ <strong>In all other cases</strong>, purchases are final and no refund will be issued.
             </div>
           </Section>
@@ -101,11 +101,11 @@ export default function RefundPolicyPage() {
                 with the subject line: <strong>&quot;Refund Request — [Your Order ID]&quot;</strong>.
               </li>
               <li>
-                Include your <strong>Razorpay payment ID / order ID</strong>, the email address used during checkout, and a brief description of the issue (duplicate charge or failed page generation).
+                Include your <strong>payment provider and payment/order ID</strong>, the email address used during checkout, and a brief description of the issue (duplicate charge or failed page generation).
               </li>
             </ol>
 
-            <div style={{ marginTop: '1.25rem', padding: '1rem 1.25rem', background: '#fef9c3', border: '1px solid #fde68a', borderRadius: '0.75rem', fontSize: '0.875rem', color: '#78350f' }}>
+            <div style={{ marginTop: '1.25rem', padding: '1rem 1.25rem', background: '#fef9c3', border: '1px solid #fde68a', borderRadius: '0.75rem', fontSize: '0.875rem', color: '#43332b' }}>
               ⏰ <strong>48-Hour Window:</strong> Refund requests must be submitted within <strong>48 hours</strong> of the original purchase timestamp. No exceptions will be made after this window, even for otherwise eligible cases.
             </div>
           </Section>
@@ -113,7 +113,7 @@ export default function RefundPolicyPage() {
           <Section title="4. Refund Processing">
             <ul>
               <li>Once your request is verified, approved refunds are typically processed within <strong>5–7 business days</strong>.</li>
-              <li>Refunds are credited back to the original payment method (UPI, card, net banking, wallet) used at checkout via Razorpay.</li>
+              <li>Refunds are credited back to the original payment method (UPI, card, net banking, wallet) through the provider used at checkout: Razorpay or Cashfree.</li>
               <li>We will send a confirmation email once the refund has been initiated.</li>
               <li>{SITE_NAME} does not issue cash refunds, gift cards, or credits in place of monetary refunds.</li>
             </ul>

@@ -59,7 +59,7 @@ export default function LiveTemplatePreviewModal({ templateId, onClose }) {
         width: '100vw',
         height: '100vh',
         zIndex: 999999,
-        background: 'rgba(10, 8, 18, 0.94)',
+        background: 'rgba(247, 238, 228, 0.96)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         display: 'flex',
@@ -78,7 +78,7 @@ export default function LiveTemplatePreviewModal({ templateId, onClose }) {
       <div
         style={{
           width: '100%',
-          background: 'rgba(24, 18, 38, 0.98)',
+          background: 'rgba(247, 238, 228, 0.96)',
           borderBottom: '1px solid rgba(255, 255, 255, 0.14)',
           padding: '0.75rem 1.25rem',
           display: 'flex',
@@ -181,7 +181,7 @@ export default function LiveTemplatePreviewModal({ templateId, onClose }) {
             width: '100%',
             maxWidth: '680px',
             position: 'relative',
-            background: '#0f0c19',
+            background: '#f8f3eb',
             borderRadius: '24px',
             overflow: 'hidden',
             boxShadow: '0 25px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.1)',

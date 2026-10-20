@@ -116,7 +116,7 @@ export default function WaxSealLetter({
             <span
               style={{
                 display: 'inline-block',
-                background: 'linear-gradient(135deg, #b45309, #78350f)',
+                background: 'linear-gradient(135deg, #b45309, #f8f3eb)',
                 color: '#ffffff',
                 padding: '0.75rem 1.8rem',
                 borderRadius: '999px',

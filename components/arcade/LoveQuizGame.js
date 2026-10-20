@@ -215,7 +215,7 @@ export default function LoveQuizGame({ onGameOver, challengeTargetScore = null, 
 
       {/* Game States */}
       {gameState === 'ready' && (
-        <div style={{ padding: '2rem 1rem', background: '#fff1f2', borderRadius: '24px', border: '2px dashed #f43f5e' }}>
+        <div style={{ padding: '2rem 1rem', background: '#fff1f2', borderRadius: '24px', border: '2px dashed #a64036' }}>
           <span style={{ fontSize: '3.5rem', display: 'block', marginBottom: '0.5rem' }}>🧠❓</span>
           <h2 style={{ fontSize: '1.6rem', color: '#881337', fontWeight: 800, margin: '0 0 0.5rem' }}>
             Couple Chemistry Quiz!
@@ -237,7 +237,7 @@ export default function LoveQuizGame({ onGameOver, challengeTargetScore = null, 
       {gameState === 'playing' && currentQ && (
         <div style={{ background: '#ffffff', borderRadius: '24px', border: '1px solid #fecdd3', padding: '1.5rem 1rem', boxShadow: '0 10px 30px rgba(0,0,0,0.04)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#be185d', background: '#fff1f2', padding: '0.2rem 0.7rem', borderRadius: '999px' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#43332b', background: '#fff1f2', padding: '0.2rem 0.7rem', borderRadius: '999px' }}>
               Question {currentQIndex + 1} of {QUIZ_QUESTIONS.length}
             </span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -287,7 +287,7 @@ export default function LoveQuizGame({ onGameOver, challengeTargetScore = null, 
                   onPointerDown={() => !isEliminated && handleSelectOption(idx, opt.pts)}
                   disabled={isEliminated}
                   style={{
-                    background: isEliminated ? '#f3f4f6' : isSelected ? 'linear-gradient(135deg, #10b981, #059669)' : '#fdf2f8',
+                    background: isEliminated ? '#f3f4f6' : isSelected ? 'linear-gradient(135deg, #10b981, #f8f3eb)' : '#fdf2f8',
                     color: isEliminated ? '#d1d5db' : isSelected ? '#ffffff' : '#881337',
                     border: `1.5px solid ${isEliminated ? '#e5e7eb' : '#fbcfe8'}`,
                     borderRadius: '16px',
@@ -317,7 +317,7 @@ export default function LoveQuizGame({ onGameOver, challengeTargetScore = null, 
       )}
 
       {gameState === 'gameover' && (
-        <div style={{ padding: '2rem 1rem', background: '#ffffff', borderRadius: '24px', border: '2px solid #059669', boxShadow: '0 12px 36px rgba(0,0,0,0.08)' }}>
+        <div style={{ padding: '2rem 1rem', background: '#ffffff', borderRadius: '24px', border: '2px solid #f8f3eb', boxShadow: '0 12px 36px rgba(0,0,0,0.08)' }}>
           <span style={{ fontSize: '3.5rem', display: 'block', marginBottom: '0.5rem' }}>👑</span>
           <h2 style={{ fontSize: '1.75rem', color: '#1f2937', fontWeight: 900, margin: '0 0 0.25rem' }}>
             Quiz Completed!

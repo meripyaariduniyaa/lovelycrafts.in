@@ -4,8 +4,8 @@
 
 /* ---------- 1. MEMORYVERSE TEMPLATE ---------- */
 .memoryverse-container {
-  background: radial-gradient(circle at center, #1e102d 0%, #0b0514 100%);
-  color: #f3e8ff;
+  background: radial-gradient(circle at center, #f8f3eb 0%, #f8f3eb 100%);
+  color: #59483c;
   border-radius: 24px;
   padding: 2.5rem;
   border: 3px solid #8b5cf6;
@@ -57,7 +57,7 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(8px);
-  color: #f3e8ff;
+  color: #59483c;
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
@@ -68,7 +68,7 @@
   border-color: #f0abfc;
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 0 20px rgba(192, 132, 252, 0.6);
-  color: #fff;
+  color: #43332b;
 }
 
 /* ---------- 2. BIRTHDAY SURPRISE TEMPLATE ---------- */
@@ -81,7 +81,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  color: #fff;
+  color: #43332b;
 }
 
 .curtain-wrapper {
@@ -103,7 +103,7 @@
   top: 0;
   bottom: 0;
   width: 50%;
-  background: linear-gradient(90deg, #990000 0%, #cc0000 50%, #800000 100%);
+  background: linear-gradient(90deg, #a64036 0%, #a64036 50%, #f8f3eb 100%);
   z-index: 5;
   transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
@@ -171,7 +171,7 @@
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ff4d4d, #990000);
+  background: radial-gradient(circle at 30% 30%, #ff4d4d, #a64036);
   border: 3px solid #660000;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.4);
   color: #ffd700;
@@ -239,7 +239,7 @@
 
 .btn-yes-val {
   background: #e11d48;
-  color: #fff;
+  color: #43332b;
   font-size: 1.25rem;
   padding: 1rem 2rem;
   border-radius: 999px;
@@ -258,7 +258,7 @@
 
 .btn-no-val {
   background: #94a3b8;
-  color: #fff;
+  color: #43332b;
   font-size: 1rem;
   padding: 0.85rem 1.5rem;
   border-radius: 999px;
@@ -272,7 +272,7 @@
 
 /* ---------- 6. WEDDING INVITATION TEMPLATE ---------- */
 .wedding-card {
-  background: linear-gradient(145deg, #4c0519 0%, #881337 100%);
+  background: linear-gradient(145deg, #f8f3eb 0%, #f8f3eb 100%);
   border: 4px solid #fbbf24;
   border-radius: 24px;
   padding: 3rem 2rem;
@@ -313,7 +313,7 @@
 
 /* ---------- 7. MEMORY TIME CAPSULE TEMPLATE ---------- */
 .capsule-card {
-  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  background: linear-gradient(145deg, #f8f3eb 0%, #f8f3eb 100%);
   border: 4px solid #38bdf8;
   border-radius: 24px;
   padding: 2.5rem;
@@ -326,7 +326,7 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: radial-gradient(circle, #0284c7 0%, #0369a1 100%);
+  background: radial-gradient(circle, #f8f3eb 0%, #f8f3eb 100%);
   border: 4px solid #7dd3fc;
   box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
   display: flex;
@@ -374,14 +374,14 @@
 
 /* ---------- 9. DIGITAL SCRAPBOOK TEMPLATE ---------- */
 .scrapbook-desk {
-  background: #451a03;
-  background-image: radial-gradient(#78350f 1px, transparent 1px);
+  background: #f8f3eb;
+  background-image: radial-gradient(#f8f3eb 1px, transparent 1px);
   background-size: 16px 16px;
   border-radius: 24px;
   padding: 2.5rem;
   border: 4px solid #78350f;
   box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
-  color: #fff;
+  color: #43332b;
 }
 
 .polaroid-frame {
@@ -424,7 +424,7 @@
 .gift-box-3d {
   width: 120px;
   height: 120px;
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  background: linear-gradient(135deg, #ec4899 0%, #a64036 100%);
   border: 4px solid #3b0f1b;
   border-radius: 20px;
   margin: 0 auto;
@@ -464,7 +464,7 @@
 
 /* ---------- 11. ROSE SPECIAL TEMPLATE ---------- */
 .rose-special-container {
-  background: radial-gradient(circle at center, #2e020d 0%, #0d0004 100%);
+  background: radial-gradient(circle at center, #f8f3eb 0%, #f8f3eb 100%);
   border-radius: 24px;
   padding: 3rem 2rem;
   color: #ffe4e6;
@@ -527,13 +527,13 @@
 .flower-chip:hover,
 .flower-chip.picked {
   background: #22c55e;
-  color: #fff;
+  color: #43332b;
   transform: translateY(-2px);
 }
 
 /* ---------- 13. PERSONALIZED SONG TEMPLATE ---------- */
 .song-player-card {
-  background: linear-gradient(145deg, #18181b 0%, #09090b 100%);
+  background: linear-gradient(145deg, #f8f3eb 0%, #f8f3eb 100%);
   border: 3px solid #27272a;
   border-radius: 24px;
   padding: 2.5rem;
@@ -547,7 +547,7 @@
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  background: radial-gradient(circle, #3f3f46 0%, #18181b 40%, #09090b 100%);
+  background: radial-gradient(circle, #f8f3eb 0%, #f8f3eb 40%, #f8f3eb 100%);
   border: 4px solid #52525b;
   margin: 0 auto 1.5rem;
   display: flex;
@@ -611,7 +611,7 @@
 
 /* ---------- 14. PERSONALIZED AI IMAGE TEMPLATE ---------- */
 .art-gallery-card {
-  background: #111827;
+  background: #f8f3eb;
   border: 4px solid #f59e0b;
   border-radius: 24px;
   padding: 2.5rem;
@@ -640,7 +640,7 @@
 }
 
 .filter-btn {
-  background: #1f2937;
+  background: #f8f3eb;
   color: #d1d5db;
   border: 1px solid #374151;
   padding: 0.5rem 1rem;
@@ -683,7 +683,7 @@
    16. MULTI-STEP ROMANTIC INTERACTIVE APOLOGY FLOW TEMPLATE
    ========================================================================== */
 .sorry-flow-container {
-  background: linear-gradient(135deg, #1a0826 0%, #2d0b38 50%, #170421 100%);
+  background: linear-gradient(135deg, #f8f3eb 0%, #f8f3eb 50%, #f8f3eb 100%);
   color: #fdf2f8;
   border-radius: 28px;
   padding: 2.5rem 1.75rem;
@@ -729,7 +729,7 @@
   background: rgba(255, 255, 255, 0.12);
   border: 1.5px solid rgba(244, 114, 182, 0.5);
   backdrop-filter: blur(10px);
-  color: #fff;
+  color: #43332b;
   padding: 0.5rem 0.9rem;
   border-radius: 999px;
   font-size: 0.825rem;
@@ -781,7 +781,7 @@
   font-family: var(--font-dancing), 'Dancing Script', 'Playfair Display', Georgia, serif;
   font-size: clamp(2rem, 6vw, 3rem);
   font-weight: 700;
-  color: #fff;
+  color: #43332b;
   text-shadow: 0 0 15px rgba(244, 114, 182, 0.6);
   margin-bottom: 0.5rem;
 }
@@ -794,8 +794,8 @@
 }
 
 .sorry-flow-btn-glowing {
-  background: linear-gradient(135deg, #ff4b8b 0%, #d92662 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #ff4b8b 0%, #a64036 100%);
+  color: #43332b;
   border: none;
   padding: 0.9rem 2.25rem;
   border-radius: 9999px;
@@ -841,7 +841,7 @@
 .meter-bar-track {
   width: 100%;
   height: 22px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(247, 238, 228, 0.96);
   border-radius: 999px;
   overflow: hidden;
   padding: 3px;
@@ -850,7 +850,7 @@
 
 .meter-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ec4899, #f43f5e, #fbbf24);
+  background: linear-gradient(90deg, #ec4899, #a64036, #fbbf24);
   border-radius: 999px;
   transition: width 0.1s ease-out;
   box-shadow: 0 0 15px rgba(244, 63, 94, 0.8);
@@ -887,7 +887,7 @@
   border: 1.5px solid rgba(244, 114, 182, 0.35);
   border-radius: 20px;
   padding: 1.25rem 1.5rem;
-  color: #fff;
+  color: #43332b;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
@@ -1008,7 +1008,7 @@
 }
 
 .forgive-confetti-btn {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #10b981 0%, #f8f3eb 100%);
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
 }
 
@@ -1034,19 +1034,19 @@
 
 /* ---------- 1. ROMANTIC APOLOGY ENHANCEMENTS ---------- */
 .sorry-flow-container.vibe-cute {
-  background: radial-gradient(circle at center, #2e1065 0%, #0f172a 100%);
+  background: radial-gradient(circle at center, #f8f3eb 0%, #f8f3eb 100%);
 }
 .sorry-flow-container.vibe-romantic {
-  background: radial-gradient(circle at center, #4c0519 0%, #0f051d 100%);
+  background: radial-gradient(circle at center, #f8f3eb 0%, #f8f3eb 100%);
 }
 .sorry-flow-container.vibe-sincere {
-  background: radial-gradient(circle at center, #1e1b4b 0%, #030712 100%);
+  background: radial-gradient(circle at center, #f8f3eb 0%, #f8f3eb 100%);
 }
 
 .vibe-chip {
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  color: #43332b;
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
   font-size: 0.8rem;
@@ -1091,19 +1091,19 @@
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 900;
-  color: #ffffff;
+  color: #43332b;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 /* ---------- 2. BIRTHDAY SURPRISE THEMES ---------- */
 .birthday-stage.theme-royal {
-  background: linear-gradient(135deg, #881337, #e11d48, #9f1239);
+  background: linear-gradient(135deg, #f8f3eb, #a64036, #a64036);
 }
 .birthday-stage.theme-rainbow {
-  background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899, #f43f5e);
+  background: linear-gradient(135deg, #f8f3eb, #f8f3eb, #ec4899, #a64036);
 }
 .birthday-stage.theme-bollywood {
-  background: linear-gradient(135deg, #451a03, #78350f, #b45309, #d97706);
+  background: linear-gradient(135deg, #f8f3eb, #f8f3eb, #a64036, #d97706);
 }
 
 .birthday-cake-container {
@@ -1187,8 +1187,8 @@
   border-color: #f472b6;
 }
 .love-letter-paper.style-midnight {
-  background: #0f172a;
-  color: #f1f5f9;
+  background: #f8f3eb;
+  color: #57463d;
   border-color: #38bdf8;
   box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
 }
@@ -1246,7 +1246,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #43332b;
   border: 3px solid #881337;
 }
 
@@ -1312,7 +1312,7 @@
 
 .mom-secret-btn {
   background: linear-gradient(135deg, #f472b6, #ec4899);
-  color: #fff;
+  color: #43332b;
   border: none;
   padding: 0.75rem 1.25rem;
   border-radius: 999px;
@@ -1406,7 +1406,7 @@
 .gift-box-3d {
   width: 140px;
   height: 140px;
-  background: linear-gradient(135deg, #e11d48, #be185d);
+  background: linear-gradient(135deg, #a64036, #a64036);
   border-radius: 20px;
   border: 4px solid #3b0f1b;
   margin: 0 auto;
@@ -1469,7 +1469,7 @@
 }
 .layer-badge.active {
   background: #d81e5b;
-  color: #fff;
+  color: #43332b;
 }
 
 .surprise-layer-card {
@@ -1493,7 +1493,7 @@
   transform: translateX(-50%);
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(225, 29, 72, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(247, 238, 228, 0.96) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -1540,7 +1540,7 @@
 }
 
 .rose-message-card {
-  background: rgba(13, 0, 4, 0.85);
+  background: rgba(247, 238, 228, 0.96);
   border: 2px solid #e11d48;
   padding: 2rem;
   border-radius: 20px;
@@ -1774,7 +1774,7 @@
 .overlay-dark {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(247, 238, 228, 0.96);
   transition: opacity 1s ease-in-out;
   pointer-events: none;
 }
@@ -1873,7 +1873,7 @@
   border: none;
   padding: 16px 44px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #e72b77, #c91c68);
+  background: linear-gradient(180deg, #a64036, #a64036);
   color: white;
   font-weight: 700;
   box-shadow: 0 12px 25px rgba(200, 30, 100, .25);

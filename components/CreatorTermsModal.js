@@ -30,7 +30,7 @@ function Section({ num, title, children }) {
         alignItems: 'baseline',
       }}>
         <span style={{
-          background: '#0f172a',
+          background: '#f8f3eb',
           color: '#fff',
           borderRadius: '4px',
           fontSize: '0.72rem',
@@ -112,7 +112,7 @@ export default function CreatorTermsModal({ creatorName, creatorEmail, onAccept 
       <div style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0,0,0,0.72)',
+        background: 'rgba(247, 238, 228, 0.96)',
         backdropFilter: 'blur(6px)',
         WebkitBackdropFilter: 'blur(6px)',
         zIndex: 9998,
@@ -142,7 +142,7 @@ export default function CreatorTermsModal({ creatorName, creatorEmail, onAccept 
 
           {/* Header */}
           <div style={{
-            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+            background: 'linear-gradient(135deg, #f8f3eb 0%, #f8f3eb 100%)',
             padding: '24px 28px',
             flexShrink: 0,
           }}>

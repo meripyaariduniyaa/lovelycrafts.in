@@ -117,7 +117,7 @@ export default async function TemplateDetailPage({ params }) {
   };
 
   return (
-    <main className="shell">
+    <main className="shell lc-page-shell">
       <JsonLd data={creativeWorkSchema} />
       <JsonLd data={breadcrumbsLd} />
 
@@ -143,11 +143,11 @@ export default async function TemplateDetailPage({ params }) {
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '2rem' }}>
             {template.bestFor.map((tag) => (
-              <span key={tag} className="template-tag" style={{ fontSize: '0.85rem', padding: '0.3rem 0.75rem', background: '#ffe4e6', color: '#e11d48' }}>
+              <span key={tag} className="template-tag" style={{ fontSize: '0.85rem', padding: '0.3rem 0.75rem', background: '#ffe4e6', color: '#a64036' }}>
                 ✨ {tag}
               </span>
             ))}
-            <span className="template-tag" style={{ fontSize: '0.85rem', padding: '0.3rem 0.75rem', background: '#f3f4f6', color: '#4b5563' }}>
+            <span className="template-tag" style={{ fontSize: '0.85rem', padding: '0.3rem 0.75rem', background: '#f3f4f6', color: '#43332b' }}>
               ⏱ {template.time} setup time
             </span>
           </div>
@@ -205,7 +205,7 @@ export default async function TemplateDetailPage({ params }) {
             <h2 style={{ fontSize: '1.3rem', marginBottom: '1rem', color: '#111' }}>💬 Sample Message Prompts & Ideas</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {template.prompts.map((prompt, i) => (
-                <div key={i} style={{ background: '#fff1f2', padding: '0.9rem 1.2rem', borderRadius: '0.75rem', borderLeft: '4px solid #f43f5e', fontSize: '0.95rem', color: '#881337', fontStyle: 'italic' }}>
+                <div key={i} style={{ background: '#fff1f2', padding: '0.9rem 1.2rem', borderRadius: '0.75rem', borderLeft: '4px solid #a64036', fontSize: '0.95rem', color: '#43332b', fontStyle: 'italic' }}>
                   &ldquo;{prompt}&rdquo;
                 </div>
               ))}
@@ -215,7 +215,7 @@ export default async function TemplateDetailPage({ params }) {
 
         {/* Creator Tip */}
         {template.tips && (
-          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '1.25rem 1.5rem', borderRadius: '1rem', marginTop: '2rem', color: '#166534', fontSize: '0.95rem' }}>
+          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '1.25rem 1.5rem', borderRadius: '1rem', marginTop: '2rem', color: '#43332b', fontSize: '0.95rem' }}>
             <strong>💡 Creator Tip:</strong> {template.tips}
           </div>
         )}
@@ -228,11 +228,11 @@ export default async function TemplateDetailPage({ params }) {
               .filter((t) => t.id !== template.id)
               .slice(0, 6)
               .map((other) => (
-                <Link key={other.id} href={`/templates/${other.id}`} className="template-tag" style={{ textDecoration: 'none', fontSize: '0.88rem', padding: '0.45rem 0.9rem', background: '#fff1f2', color: '#be185d', borderRadius: '999px', fontWeight: 600 }}>
+                <Link key={other.id} href={`/templates/${other.id}`} className="template-tag" style={{ textDecoration: 'none', fontSize: '0.88rem', padding: '0.45rem 0.9rem', background: '#fff1f2', color: '#a64036', borderRadius: '999px', fontWeight: 600 }}>
                   {other.icon} {other.title}
                 </Link>
               ))}
-            <Link href="/templates" className="template-tag" style={{ textDecoration: 'none', fontSize: '0.88rem', padding: '0.45rem 0.9rem', background: '#f3f4f6', color: '#374151', borderRadius: '999px', fontWeight: 600 }}>
+            <Link href="/templates" className="template-tag" style={{ textDecoration: 'none', fontSize: '0.88rem', padding: '0.45rem 0.9rem', background: '#f3f4f6', color: '#43332b', borderRadius: '999px', fontWeight: 600 }}>
               ✨ View All Templates →
             </Link>
           </div>

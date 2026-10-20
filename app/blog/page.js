@@ -141,7 +141,7 @@ export default async function BlogPage() {
   const regularPosts = blogs.slice(1);
 
   return (
-    <main style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #fff7ed 0%, #fff1f2 15%, #ffffff 40%)', color: '#0f172a', paddingBottom: '90px' }}>
+    <main className="lc-page-shell" style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #fff7ed 0%, #fff1f2 15%, #ffffff 40%)', color: '#43332b', paddingBottom: '90px' }}>
       
       {/* HERO SECTION */}
       <section className="hero-section hero-enhanced text-center mb-10" style={{ maxWidth: '1200px', margin: '0 auto 40px', padding: 'clamp(2rem, 4vw, 3.2rem) 24px', borderRadius: 'clamp(20px, 4vw, 28px)' }}>
@@ -239,7 +239,7 @@ export default async function BlogPage() {
                     Featured Article
                   </span>
                   {(featuredPost.tags || []).slice(0, 2).map((t) => (
-                    <span key={t} style={{ background: '#fff1f2', color: '#be185d', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
+                    <span key={t} style={{ background: '#fff1f2', color: '#a64036', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
                       #{t}
                     </span>
                   ))}
@@ -305,7 +305,7 @@ export default async function BlogPage() {
                   <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                     <div style={{ display: 'flex', gap: '6px', marginBottom: '10px', flexWrap: 'wrap' }}>
                       {(post.tags || []).slice(0, 2).map((t) => (
-                        <span key={t} style={{ background: '#fff1f2', color: '#be185d', padding: '3px 8px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700 }}>
+                        <span key={t} style={{ background: '#fff1f2', color: '#a64036', padding: '3px 8px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700 }}>
                           #{t}
                         </span>
                       ))}

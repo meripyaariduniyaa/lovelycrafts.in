@@ -99,7 +99,7 @@ function ScratchPhotoCard({ photo, accentColor, onScratchComplete }) {
   const handleTouchEnd = () => { isDrawing.current = false; };
 
   return (
-    <div style={{ width: '100%', height: '260px', borderRadius: '10px', overflow: 'hidden', background: '#0f172a', position: 'relative' }}>
+    <div style={{ width: '100%', height: '260px', borderRadius: '10px', overflow: 'hidden', background: '#f8f3eb', position: 'relative' }}>
       {/* Photo Image */}
       <img
         src={photo.url}

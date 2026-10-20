@@ -213,9 +213,9 @@ export default function BlogBlocks({ blocks = [] }) {
 
           case 'code': {
             return (
-              <div key={key} style={{ margin: '1.25rem 0', background: '#0f172a', color: '#e2e8f0', borderRadius: '12px', overflow: 'hidden', fontSize: '0.9rem' }}>
+              <div key={key} style={{ margin: '1.25rem 0', background: '#f8f3eb', color: '#e2e8f0', borderRadius: '12px', overflow: 'hidden', fontSize: '0.9rem' }}>
                 {block.language && (
-                  <div style={{ background: '#1e293b', padding: '6px 16px', fontSize: '0.75rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', borderBottom: '1px solid #334155' }}>
+                  <div style={{ background: '#f8f3eb', padding: '6px 16px', fontSize: '0.75rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', borderBottom: '1px solid #f8f3eb' }}>
                     {block.language}
                   </div>
                 )}

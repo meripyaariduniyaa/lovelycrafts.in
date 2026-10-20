@@ -1,9 +1,9 @@
-import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { calculateEffectiveTierAndRate, commissionForAmount, normalizeCode } from '@/lib/creator-club';
 import { disableOrganicRetentionCoupon } from '@/lib/coupons';
+import { createSettlementOrderId, verifyHmacSha256Signature } from '@/lib/razorpay-security';
 
 export async function POST(request) {
   try {
@@ -11,12 +11,11 @@ export async function POST(request) {
     const signature = request.headers.get('x-razorpay-signature');
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
-    // Validate webhook signature if secret is configured
-    if (webhookSecret && signature) {
-      const expected = crypto.createHmac('sha256', webhookSecret).update(rawBody).digest('hex');
-      if (expected !== signature) {
-        return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
-      }
+    if (!webhookSecret) {
+      return NextResponse.json({ error: 'Webhook verification is not configured.' }, { status: 503 });
+    }
+    if (!verifyHmacSha256Signature(rawBody, signature, webhookSecret)) {
+      return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
     }
 
     let payload;
@@ -54,7 +53,7 @@ export async function POST(request) {
         return NextResponse.json({ status: 'ignored', message: 'Note not found' });
       }
 
-      // Check if order already recorded in 'orders' collection
+      // Existing records were settled by an earlier callback; keep the note in sync and stop here.
       let orderSnap = await adminDb.collection('orders').where('note_id', '==', apologyId).limit(1).get();
       if (orderSnap.empty && razorpay_payment_id) {
         orderSnap = await adminDb.collection('orders').where('razorpay_payment_id', '==', razorpay_payment_id).limit(1).get();
@@ -62,25 +61,28 @@ export async function POST(request) {
 
       const noteData = noteSnap.data();
       const created = noteData.created_at?.toDate?.() || new Date();
-
-      if (!noteData.is_paid) {
-        await noteRef.update({
-          is_paid: true,
-          expires_at: Timestamp.fromDate(new Date(created.getTime() + 90 * 24 * 60 * 60 * 1000)),
-          razorpay_order_id: razorpay_order_id || null,
-          razorpay_payment_id: razorpay_payment_id || null,
-          coupon_code: couponCode,
-          discount_percent: discountPercent,
-          amount_paid: amountPaid,
-          payment_method: 'razorpay',
-          paid_at: FieldValue.serverTimestamp(),
-        });
+      if (!orderSnap.empty) {
+        if (!noteData.is_paid) {
+          await noteRef.update({
+            is_paid: true,
+            expires_at: Timestamp.fromDate(new Date(created.getTime() + 90 * 24 * 60 * 60 * 1000)),
+            razorpay_order_id: razorpay_order_id || null,
+            razorpay_payment_id: razorpay_payment_id || null,
+            coupon_code: couponCode,
+            discount_percent: discountPercent,
+            amount_paid: amountPaid,
+            payment_method: 'razorpay',
+            payment_provider: 'razorpay',
+            paid_at: FieldValue.serverTimestamp(),
+          });
+        }
+        return NextResponse.json({ status: 'ok', handled: true, duplicate: true, event });
       }
 
-      let orderId = null;
-      if (orderSnap.empty) {
-        const newOrderRef = adminDb.collection('orders').doc();
-        orderId = newOrderRef.id;
+      const newOrderRef = adminDb.collection('orders').doc(
+        createSettlementOrderId({ paymentId: razorpay_payment_id, noteId: apologyId }),
+      );
+      const orderId = newOrderRef.id;
 
         const orderPayload = {
           note_id: apologyId,
@@ -93,6 +95,7 @@ export async function POST(request) {
           final_amount: amountPaid,
           amount_in_rupees: Number(((amountPaid || 0) / 100).toFixed(2)),
           payment_method: 'razorpay',
+          payment_provider: 'razorpay',
           payment_status: 'paid',
           razorpay_order_id: razorpay_order_id || null,
           razorpay_payment_id: razorpay_payment_id || null,
@@ -101,7 +104,34 @@ export async function POST(request) {
           paid_at: FieldValue.serverTimestamp(),
         };
 
-        await newOrderRef.set(orderPayload);
+      const createdOrder = await adminDb.runTransaction(async (transaction) => {
+        const [currentNoteSnap, existingOrderSnap] = await Promise.all([
+          transaction.get(noteRef),
+          transaction.get(newOrderRef),
+        ]);
+        if (!currentNoteSnap.exists || existingOrderSnap.exists) return false;
+
+        const currentNote = currentNoteSnap.data();
+        if (currentNote.is_paid && currentNote.razorpay_payment_id !== razorpay_payment_id) return false;
+
+        transaction.create(newOrderRef, orderPayload);
+        transaction.update(noteRef, {
+          is_paid: true,
+          expires_at: Timestamp.fromDate(new Date(created.getTime() + 90 * 24 * 60 * 60 * 1000)),
+          razorpay_order_id: razorpay_order_id || null,
+          razorpay_payment_id: razorpay_payment_id || null,
+          coupon_code: couponCode,
+          discount_percent: discountPercent,
+          amount_paid: amountPaid,
+          payment_method: 'razorpay',
+          paid_at: FieldValue.serverTimestamp(),
+        });
+        return true;
+      });
+
+      if (!createdOrder) {
+        return NextResponse.json({ status: 'ok', handled: true, duplicate: true, event });
+      }
 
         // Save permanent immutable copy to admin_payment_ledger
         try {
@@ -228,8 +258,6 @@ export async function POST(request) {
             }
           }
         }
-      }
-
       return NextResponse.json({ status: 'ok', handled: true, event });
     }
 

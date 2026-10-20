@@ -60,6 +60,7 @@ export default function MarketingPopup() {
       pathname === '/create' ||
       pathname?.startsWith('/create/') ||
       pathname?.startsWith('/preview') ||
+      pathname?.startsWith('/checkout') ||
       pathname?.startsWith('/share') ||
       pathname?.startsWith('/arcade')
     ) {
@@ -138,7 +139,7 @@ export default function MarketingPopup() {
 
         {/* Top Header Badge */}
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, #f43f5e, #be185d)', color: '#ffffff', fontSize: '0.72rem', fontWeight: 800, padding: '0.25rem 0.85rem', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.08em', boxShadow: '0 4px 12px rgba(244,63,94,0.25)', marginBottom: '0.5rem' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, #f43f5e, #be185d)', color: '#ffffff', fontSize: '0.72rem', fontWeight: 800, padding: '0.25rem 0.85rem', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.08em', boxShadow: '0 4px 12px rgba(166, 64, 54, 0.96)', marginBottom: '0.5rem' }}>
             ✨ Trending Digital Surprises
           </div>
 

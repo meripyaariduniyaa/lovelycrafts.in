@@ -26,7 +26,7 @@ const EFFECTIVE_DATE = 'September 8, 2026';
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="shell" style={{ padding: '3rem 1rem' }}>
+    <main className="shell lc-page-shell" style={{ padding: '3rem 1rem' }}>
       <div style={{ maxWidth: '820px', margin: '0 auto' }}>
 
         {/* Breadcrumb */}
@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage() {
             <strong>Effective Date:</strong> {EFFECTIVE_DATE} &nbsp;|&nbsp;
             <strong>Platform:</strong> {SITE_NAME} ({SITE_URL})
           </p>
-          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fef9c3', border: '1px solid #fde68a', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#78350f' }}>
+          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fef9c3', border: '1px solid #fde68a', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#43332b' }}>
             ⚠️ <strong>Important:</strong> Please read this policy carefully before using {SITE_NAME} or applying for the Creator Club. By accessing or using our service, you agree to the practices described below.
           </div>
         </div>
@@ -63,7 +63,7 @@ export default function PrivacyPolicyPage() {
               <li><strong>Gift Content:</strong> Recipient names, custom messages, promises, event dates, and other personal text entered into our templates.</li>
               <li><strong>Photos & Media:</strong> Images you upload to personalize gifts are securely stored on Cloudinary, our third-party media delivery infrastructure.</li>
               <li><strong>Voice Notes:</strong> Audio recordings optionally added to surprises are stored securely for interactive playback by your recipient.</li>
-              <li><strong>Payment Information:</strong> Transactions are securely processed via Razorpay. We do not store credit/debit card numbers or net banking credentials on our servers.</li>
+              <li><strong>Payment Information:</strong> Transactions are securely processed via Razorpay or Cashfree. If you choose Cashfree, the mobile number you enter is sent to Cashfree to initiate checkout and is not stored in your gift record. We do not store card numbers, UPI PINs, or net banking credentials on our servers.</li>
               <li><strong>Custom Share Links:</strong> Any customized short link or slug you choose for your note.</li>
             </ul>
 
@@ -90,7 +90,7 @@ export default function PrivacyPolicyPage() {
           <Section title="4. How We Use Your Information">
             <ul>
               <li>To create, host, encrypt, and deliver your interactive digital surprise experiences.</li>
-              <li>To process payments and verify unlock status via Razorpay.</li>
+              <li>To process payments and verify unlock status via Razorpay or Cashfree.</li>
               <li>To track creator referrals, calculate tiered commissions (10% to 18%), and disburse payouts.</li>
               <li>To authenticate users and creators via Google Sign-In (Firebase Authentication).</li>
               <li>To maintain platform security, prevent fraudulent multi-accounting, and enforce terms.</li>
@@ -111,6 +111,7 @@ export default function PrivacyPolicyPage() {
             <p>We work with industry-leading third-party services that comply with strict data security standards:</p>
             <Table rows={[
               ['Razorpay', 'Payment processing and UPI verification', 'https://razorpay.com/privacy/'],
+              ['Cashfree Payments', 'Payment processing and payment status verification', 'https://www.cashfree.com/privacy-policy/'],
               ['Firebase (Google)', 'Authentication and cloud database', 'https://firebase.google.com/support/privacy'],
               ['Cloudinary', 'Encrypted media storage & CDN delivery', 'https://cloudinary.com/privacy'],
               ['Google AdSense', 'Monetization on public pages', 'https://policies.google.com/technologies/ads'],
@@ -123,7 +124,7 @@ export default function PrivacyPolicyPage() {
             <ul>
               <li>All web traffic is transmitted strictly over HTTPS/TLS 1.3 encryption.</li>
               <li>Access to private notes is gated by Firebase Firestore security rules and unique unguessable slugs.</li>
-              <li>Payment credentials never touch our servers; all transactions are encrypted through Razorpay&apos;s PCI-DSS compliant infrastructure.</li>
+              <li>Payment credentials never touch our servers; payment details are handled by the selected payment provider.</li>
             </ul>
           </Section>
 

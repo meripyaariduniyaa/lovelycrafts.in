@@ -16,6 +16,8 @@ export default function PayButton({
   const [couponCode, setCouponCode] = useState('');
   const [feedback, setFeedback] = useState('');
   const [showCouponModal, setShowCouponModal] = useState(false);
+  const [buyerName, setBuyerName] = useState('');
+  const [buyerEmail, setBuyerEmail] = useState('');
 
   // Resolved order from Razorpay order creation endpoint
   const [resolvedOrder, setResolvedOrder] = useState(null);
@@ -26,19 +28,6 @@ export default function PayButton({
   const [retentionDismissed, setRetentionDismissed] = useState(false);
   const [creatorReferral, setCreatorReferral] = useState(null);
   const timerRef = useRef(null);
-
-  const [customerPhone, setCustomerPhone] = useState('9717113764');
-  const [customerEmail, setCustomerEmail] = useState('chandan@workcosmo.in');
-
-  // Load saved customer phone / email silently from localStorage for Razorpay prefill
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedPhone = localStorage.getItem('lc_customer_phone');
-      const savedEmail = localStorage.getItem('lc_customer_email');
-      if (savedPhone) setCustomerPhone(savedPhone);
-      if (savedEmail) setCustomerEmail(savedEmail);
-    }
-  }, []);
 
   const basePrice = Number(displayAmount) || 199;
   const originalStrikethrough = Number(baseAmount) || 499;
@@ -160,7 +149,7 @@ export default function PayButton({
       const res = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apologyId, couponCode: code }),
+        body: JSON.stringify({ apologyId, couponCode: code, buyerName, buyerEmail }),
       });
       const order = await res.json();
 
@@ -224,6 +213,8 @@ export default function PayButton({
             attributionSource: order.attributionSource || null,
             free: true,
             amount: 0,
+            buyerName,
+            buyerEmail,
           }),
         });
         if (!verify.ok) {
@@ -234,14 +225,8 @@ export default function PayButton({
         return;
       }
 
-      const cleanPhone = (customerPhone || '').replace(/\D/g, '');
-      const validPhone = cleanPhone.length === 10 ? cleanPhone : '9717113764';
-      const cleanEmail = ((customerEmail || '').trim()) || 'chandan@workcosmo.in';
-
       const prefill = {
         name: recipientName ? `${recipientName}` : 'Customer',
-        contact: validPhone,
-        email: cleanEmail,
       };
 
       const razorpay = new window.Razorpay({
@@ -286,6 +271,8 @@ export default function PayButton({
               attributionSource: order.attributionSource || null,
               discountPercent: order.discountPercent || 0,
               amountPaid: order.amount,
+              buyerName,
+              buyerEmail,
               ...response,
             }),
           });
@@ -317,19 +304,13 @@ export default function PayButton({
       const res = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apologyId, couponCode: '' }),
+        body: JSON.stringify({ apologyId, couponCode: '', buyerName, buyerEmail }),
       });
       const order = await res.json();
       if (!res.ok) throw new Error(order.error || 'Could not start payment.');
 
-      const cleanPhone = (customerPhone || '').replace(/\D/g, '');
-      const validPhone = cleanPhone.length === 10 ? cleanPhone : '9717113764';
-      const cleanEmail = ((customerEmail || '').trim()) || 'chandan@workcosmo.in';
-
       const prefill = {
         name: recipientName ? `${recipientName}` : 'Customer',
-        contact: validPhone,
-        email: cleanEmail,
       };
 
       const razorpay = new window.Razorpay({
@@ -371,6 +352,8 @@ export default function PayButton({
               couponCode: '',
               discountPercent: 0,
               amountPaid: order.amount,
+              buyerName,
+              buyerEmail,
               ...response,
             }),
           });
@@ -432,7 +415,7 @@ export default function PayButton({
           width: '100%',
           flexShrink: 0,
           zIndex: 60,
-          background: '#090814',
+          background: '#f8f3eb',
           borderTop: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.6)',
         }}
@@ -606,7 +589,7 @@ export default function PayButton({
             position: 'fixed',
             inset: 0,
             zIndex: 100,
-            background: 'rgba(0, 0, 0, 0.75)',
+            background: 'rgba(247, 238, 228, 0.96)',
             backdropFilter: 'blur(6px)',
             WebkitBackdropFilter: 'blur(6px)',
             display: 'flex',
@@ -622,7 +605,7 @@ export default function PayButton({
             style={{
               width: '100%',
               maxWidth: '380px',
-              background: '#131124',
+              background: '#f8f3eb',
               border: '1.5px solid rgba(255, 255, 255, 0.15)',
               borderRadius: '24px',
               padding: '22px 20px',
@@ -765,6 +748,30 @@ export default function PayButton({
                 ⚠️ {error}
               </p>
             )}
+
+            {/* Close button */}
+            {/* Buyer details */}
+            <div style={{ marginTop: '14px', display: 'grid', gap: '8px' }}>
+              <p style={{ margin: 0, fontSize: '0.78rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                📧 Receipt details
+              </p>
+              <input
+                type="text"
+                value={buyerName}
+                onChange={(e) => setBuyerName(e.target.value)}
+                placeholder="Your name"
+                autoComplete="name"
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', padding: '9px 12px', color: '#ffffff', fontSize: '0.85rem', outline: 'none' }}
+              />
+              <input
+                type="email"
+                value={buyerEmail}
+                onChange={(e) => setBuyerEmail(e.target.value)}
+                placeholder="Email for receipt (optional)"
+                autoComplete="email"
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', padding: '9px 12px', color: '#ffffff', fontSize: '0.85rem', outline: 'none' }}
+              />
+            </div>
 
             {/* Close button */}
             <button

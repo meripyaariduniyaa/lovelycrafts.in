@@ -96,7 +96,7 @@ export default function AudioPlayer({ presetId = 'romantic-piano', autoStart = f
             width: '34px',
             height: '34px',
             borderRadius: '50%',
-            background: isPlaying ? 'linear-gradient(135deg, #f43f5e, #be185d)' : '#f3f4f6',
+            background: isPlaying ? 'linear-gradient(135deg, #a64036, #a64036)' : '#f3f4f6',
             color: isPlaying ? '#ffffff' : '#4b5563',
             border: 'none',
             display: 'flex',

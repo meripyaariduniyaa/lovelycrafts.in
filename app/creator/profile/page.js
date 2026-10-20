@@ -102,7 +102,7 @@ export default function CreatorProfilePage() {
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '24px 16px' }}>
         
         {/* Header Card */}
-        <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', borderRadius: '20px', padding: '28px 32px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ background: 'linear-gradient(135deg, #f8f3eb 0%, #f8f3eb 100%)', borderRadius: '20px', padding: '28px 32px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 800, color: '#fff', border: '2px solid rgba(255,255,255,0.2)', overflow: 'hidden', flexShrink: 0 }}>
             {profile?.profile_image ? (
               <img src={profile.profile_image} alt={profile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -143,7 +143,7 @@ export default function CreatorProfilePage() {
               onClick={() => setActiveTab(tab.id)}
               style={{
                 flex: 1, padding: '9px 16px', borderRadius: '8px', border: 'none',
-                background: activeTab === tab.id ? '#0f172a' : 'transparent',
+                background: activeTab === tab.id ? '#f8f3eb' : 'transparent',
                 color: activeTab === tab.id ? '#fff' : '#64748b',
                 fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', transition: 'all 0.15s',
               }}
@@ -172,7 +172,7 @@ export default function CreatorProfilePage() {
                 <span style={{ fontSize: '0.88rem', color: '#0f172a', fontWeight: 500, textAlign: 'right' }}>{value}</span>
               </div>
             ))}
-            <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '10px', padding: '12px 16px', fontSize: '0.82rem', color: '#0369a1' }}>
+            <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '10px', padding: '12px 16px', fontSize: '0.82rem', color: '#43332b' }}>
               💡 To update your personal details, submit a Change Request from the tab above. Admin will review and apply changes.
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function CreatorProfilePage() {
         {/* Bank Tab */}
         {activeTab === 'bank' && (
           <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div style={{ background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '10px', padding: '12px 16px', fontSize: '0.82rem', color: '#92400e', marginBottom: '4px' }}>
+            <div style={{ background: '#fef3c7', border: '1px solid #fde68a', borderRadius: '10px', padding: '12px 16px', fontSize: '0.82rem', color: '#43332b', marginBottom: '4px' }}>
               🔒 Bank details are stored securely and used exclusively for payout processing.
             </div>
             {[
@@ -195,7 +195,7 @@ export default function CreatorProfilePage() {
                 <span style={{ fontSize: '0.88rem', color: '#0f172a', fontWeight: 600, fontFamily: 'monospace' }}>{value}</span>
               </div>
             ))}
-            <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '10px', padding: '12px 16px', fontSize: '0.82rem', color: '#0369a1' }}>
+            <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '10px', padding: '12px 16px', fontSize: '0.82rem', color: '#43332b' }}>
               To update bank details, use the Change Requests tab. Account number changes require admin verification.
             </div>
           </div>
@@ -210,7 +210,7 @@ export default function CreatorProfilePage() {
               <h3 style={{ margin: '0 0 16px', fontSize: '0.95rem', fontWeight: 700, color: '#0f172a' }}>Submit a Change Request</h3>
               
               {message && (
-                <div style={{ padding: '10px 14px', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '16px', background: message.startsWith('Error') ? '#fee2e2' : '#f0fdf4', color: message.startsWith('Error') ? '#991b1b' : '#15803d', border: `1px solid ${message.startsWith('Error') ? '#fecaca' : '#bbf7d0'}` }}>
+                <div style={{ padding: '10px 14px', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '16px', background: message.startsWith('Error') ? '#fee2e2' : '#f0fdf4', color: message.startsWith('Error') ? '#a64036' : '#f8f3eb', border: `1px solid ${message.startsWith('Error') ? '#fecaca' : '#bbf7d0'}` }}>
                   {message}
                 </div>
               )}
@@ -221,7 +221,7 @@ export default function CreatorProfilePage() {
                   <select
                     value={changeField}
                     onChange={(e) => setChangeField(e.target.value)}
-                    style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.88rem', outline: 'none', background: '#fff', color: '#0f172a' }}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.88rem', outline: 'none', background: '#fff', color: '#43332b' }}
                   >
                     {CHANGEABLE_FIELDS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
                   </select>
@@ -240,7 +240,7 @@ export default function CreatorProfilePage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  style={{ padding: '11px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '0.88rem', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1 }}
+                  style={{ padding: '11px', background: '#f8f3eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '0.88rem', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1 }}
                 >
                   {submitting ? 'Submitting...' : 'Submit Change Request'}
                 </button>

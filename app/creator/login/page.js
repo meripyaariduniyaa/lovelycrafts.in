@@ -83,7 +83,7 @@ export default function CreatorLoginPage() {
         </div>
 
         {error && (
-          <div style={{ color: '#b91c1c', background: '#fef2f2', border: '1px solid #fecaca', padding: '10px 14px', borderRadius: '10px', fontSize: '0.85rem', marginBottom: '20px' }}>
+          <div style={{ color: '#43332b', background: '#fef2f2', border: '1px solid #fecaca', padding: '10px 14px', borderRadius: '10px', fontSize: '0.85rem', marginBottom: '20px' }}>
             ⚠️ {error}
           </div>
         )}
@@ -152,7 +152,7 @@ export default function CreatorLoginPage() {
         </form>
 
         {/* SECURITY NOTICE FOR FIRST TIME LOGIN */}
-        <div style={{ background: '#fff1f2', border: '1px border-dashed #fda4af', borderRadius: '12px', padding: '10px 14px', fontSize: '0.8rem', color: '#be123c', lineHeight: 1.4, marginBottom: '20px', textAlign: 'left' }}>
+        <div style={{ background: '#fff1f2', border: '1px border-dashed #fda4af', borderRadius: '12px', padding: '10px 14px', fontSize: '0.8rem', color: '#a64036', lineHeight: 1.4, marginBottom: '20px', textAlign: 'left' }}>
           💡 <strong>First-Time Login Note:</strong> If you are signing in with a temporary password provided by your admin, please <Link href="/creator/change-password" style={{ color: '#9f1239', fontWeight: 800, textDecoration: 'underline' }}>change your password</Link> after your first login.
         </div>
 

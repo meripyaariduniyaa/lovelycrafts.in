@@ -154,7 +154,7 @@ export default function CinematicStageWrapper({
           gap: '10px',
           zIndex: 30,
           backdropFilter: 'blur(20px)',
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0) 100%)',
+          background: 'linear-gradient(180deg, rgba(247, 238, 228, 0.96) 0%, rgba(247, 238, 228, 0.96) 70%, rgba(0,0,0,0) 100%)',
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', width: 'min(96vw, 1000px)', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>

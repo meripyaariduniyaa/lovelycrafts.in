@@ -56,7 +56,7 @@ export default function MemoryTimeMachine({ milestones = [], onComplete }) {
                   width: isCurrent ? '26px' : '16px',
                   height: isCurrent ? '26px' : '16px',
                   borderRadius: '50%',
-                  background: isCurrent ? '#fef08a' : isPassed ? '#f43f5e' : '#334155',
+                  background: isCurrent ? '#fef08a' : isPassed ? '#f43f5e' : '#f8f3eb',
                   border: isCurrent ? '3px solid #f43f5e' : '2px solid rgba(255,255,255,0.3)',
                   boxShadow: isCurrent ? '0 0 16px #fef08a' : 'none',
                   cursor: 'pointer',
@@ -83,7 +83,7 @@ export default function MemoryTimeMachine({ milestones = [], onComplete }) {
             padding: '2rem 1.5rem',
             borderRadius: '24px',
             border: '1.5px solid rgba(251, 191, 36, 0.4)',
-            background: 'rgba(15, 23, 42, 0.75)',
+            background: 'rgba(247, 238, 228, 0.96)',
             boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
           }}
         >

@@ -22,7 +22,7 @@ export default function SecretRevealHUD({
         gap: '8px',
         padding: '6px 14px',
         borderRadius: '99px',
-        background: 'rgba(0, 0, 0, 0.4)',
+        background: 'rgba(247, 238, 228, 0.96)',
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(255, 255, 255, 0.15)',
       }}

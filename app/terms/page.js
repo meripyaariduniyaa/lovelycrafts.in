@@ -28,7 +28,7 @@ const NOTE_EXPIRY_DAYS = 90;
 
 export default function TermsPage() {
   return (
-    <main className="shell" style={{ padding: '3rem 1rem' }}>
+    <main className="shell lc-page-shell" style={{ padding: '3rem 1rem' }}>
       <div style={{ maxWidth: '820px', margin: '0 auto' }}>
 
         {/* Breadcrumb */}
@@ -46,7 +46,7 @@ export default function TermsPage() {
             <strong>Effective Date:</strong> {EFFECTIVE_DATE} &nbsp;|&nbsp;
             <strong>Platform:</strong> {SITE_NAME} ({SITE_URL})
           </p>
-          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fff1f2', border: '1px solid #fecdd3', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#9f1239' }}>
+          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fff1f2', border: '1px solid #fecdd3', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#a64036' }}>
             📌 By accessing or using {SITE_NAME} or joining the Creator Club, you agree to be bound by these Terms.
           </div>
         </div>
@@ -72,11 +72,11 @@ export default function TermsPage() {
             <SubHeading>3.1 Standard Pricing</SubHeading>
             <p>Interactive templates are priced as indicated at checkout prior to payment. Promotional creator coupons or site discount codes can be applied prior to completing the order.</p>
 
-            <SubHeading>3.2 Razorpay Processing</SubHeading>
-            <p>All payments are processed securely via <strong>Razorpay</strong>. We do not store banking credentials or card details on our infrastructure.</p>
+            <SubHeading>3.2 Payment Processing</SubHeading>
+            <p>Payments are processed securely by the payment provider selected at checkout: <strong>Razorpay or Cashfree</strong>. We do not store banking credentials or card details on our infrastructure.</p>
 
             <SubHeading>3.3 Refund Policy &amp; 48-Hour Guarantee</SubHeading>
-            <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '0.75rem', padding: '1rem 1.25rem', margin: '0.75rem 0', fontSize: '0.9rem', color: '#92400e' }}>
+            <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '0.75rem', padding: '1rem 1.25rem', margin: '0.75rem 0', fontSize: '0.9rem', color: '#43332b' }}>
               ⚠️ <strong>Digital Instant Access:</strong> Because our interactive surprises are customized instant digital goods immediately delivered via active URLs, all completed purchases are generally final and non-refundable.
             </div>
             <p>

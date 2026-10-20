@@ -29,6 +29,15 @@ export default function Header() {
     };
   }, [mobileMenuOpen]);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [mobileMenuOpen]);
+
   if (
     pathname?.startsWith('/p/') ||
     pathname?.startsWith('/admin') ||
@@ -36,9 +45,6 @@ export default function Header() {
     pathname?.startsWith('/del') ||
     pathname?.startsWith('/creator/') ||
     pathname === '/creator' ||
-    pathname === '/create' ||
-    pathname?.startsWith('/create/') ||
-    pathname === '/preview' ||
     (pathname?.startsWith('/arcade/') && pathname !== '/arcade')
   ) {
     return null;
@@ -50,7 +56,7 @@ export default function Header() {
         <div className="topbar-inner">
           <LovelyCraftsLogo size={38} />
 
-          {/* Clean 4-Link Desktop Navigation */}
+          {/* Primary public-site navigation */}
           <div className="nav-links desktop-nav">
             <Link
               href="/templates"
@@ -71,6 +77,17 @@ export default function Header() {
               className={`nav-link ${pathname === '/business' ? 'active' : ''}`}
             >
               💼 For Business
+            </Link>
+
+            <Link href="/templates#how-your-gift-is-made" className="nav-link">
+              How it works
+            </Link>
+
+            <Link
+              href="/creators"
+              className={`nav-link ${pathname?.startsWith('/creators') ? 'active' : ''}`}
+            >
+              Creator Club
             </Link>
 
             <Link
@@ -104,6 +121,7 @@ export default function Header() {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label={mobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
             aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             <span className={`burger-bar ${mobileMenuOpen ? 'open' : ''}`} />
             <span className={`burger-bar ${mobileMenuOpen ? 'open' : ''}`} />
@@ -122,7 +140,12 @@ export default function Header() {
       )}
 
       {/* Mobile Navigation Drawer */}
-      <div className={`mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}>
+      <nav
+        id="mobile-navigation"
+        aria-label="Mobile navigation"
+        aria-hidden={!mobileMenuOpen}
+        className={`mobile-drawer ${mobileMenuOpen ? 'open' : ''}`}
+      >
         <div className="mobile-drawer-header">
           <div onClick={() => setMobileMenuOpen(false)}>
             <LovelyCraftsLogo size={34} />
@@ -187,6 +210,18 @@ export default function Header() {
           </Link>
 
           <Link
+            href="/creators"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <span className="mobile-nav-icon">✦</span>
+            <div>
+              <strong>Creator Club</strong>
+              <small>Share LovelyCrafts with your audience</small>
+            </div>
+          </Link>
+
+          <Link
             href="/profile"
             className="mobile-nav-item"
             onClick={() => setMobileMenuOpen(false)}
@@ -209,7 +244,7 @@ export default function Header() {
           </Link>
           <p className="mobile-drawer-subtext">Made for the people who matter most ❤️</p>
         </div>
-      </div>
+      </nav>
     </>
   );
 }

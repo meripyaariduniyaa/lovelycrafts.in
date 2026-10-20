@@ -91,18 +91,18 @@ export default function CreatorChangePasswordPage() {
         </div>
 
         {/* Security Tip Callout */}
-        <div style={{ background: '#fff1f2', border: '1px solid #fecdd3', borderRadius: '14px', padding: '12px 16px', marginBottom: '20px', fontSize: '0.85rem', color: '#9f1239', lineHeight: 1.5 }}>
+        <div style={{ background: '#fff1f2', border: '1px solid #fecdd3', borderRadius: '14px', padding: '12px 16px', marginBottom: '20px', fontSize: '0.85rem', color: '#a64036', lineHeight: 1.5 }}>
           💡 <strong>First-Time Login Tip:</strong> If you signed in using the temporary password assigned by admin during approval, please set your permanent private password here.
         </div>
 
         {error && (
-          <div style={{ color: '#b91c1c', background: '#fef2f2', border: '1px solid #fecaca', padding: '10px 14px', borderRadius: '10px', fontSize: '0.85rem', marginBottom: '18px' }}>
+          <div style={{ color: '#43332b', background: '#fef2f2', border: '1px solid #fecaca', padding: '10px 14px', borderRadius: '10px', fontSize: '0.85rem', marginBottom: '18px' }}>
             ⚠️ {error}
           </div>
         )}
 
         {success && (
-          <div style={{ color: '#15803d', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '12px 14px', borderRadius: '10px', fontSize: '0.88rem', fontWeight: 700, marginBottom: '18px', textAlign: 'center' }}>
+          <div style={{ color: '#43332b', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '12px 14px', borderRadius: '10px', fontSize: '0.88rem', fontWeight: 700, marginBottom: '18px', textAlign: 'center' }}>
             ✅ {success} Redirecting to your dashboard...
           </div>
         )}
@@ -116,7 +116,7 @@ export default function CreatorChangePasswordPage() {
               type="email"
               disabled
               value={user.email || ''}
-              style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e5e7eb', background: '#f9fafb', fontSize: '0.9rem', color: '#6b7280' }}
+              style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e5e7eb', background: '#f9fafb', fontSize: '0.9rem', color: '#43332b' }}
             />
           </div>
 

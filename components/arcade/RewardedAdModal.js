@@ -51,7 +51,7 @@ export default function RewardedAdModal({ isOpen, onClose, onRewardGranted, rewa
       position: 'fixed',
       inset: 0,
       zIndex: 9999,
-      background: 'rgba(15, 23, 42, 0.75)',
+      background: 'rgba(247, 238, 228, 0.96)',
       backdropFilter: 'blur(8px)',
       WebkitBackdropFilter: 'blur(8px)',
       display: 'flex',
@@ -71,7 +71,7 @@ export default function RewardedAdModal({ isOpen, onClose, onRewardGranted, rewa
         position: 'relative'
       }}>
         
-        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#be185d', background: '#fff1f2', padding: '0.2rem 0.65rem', borderRadius: '999px', display: 'inline-block', marginBottom: '0.75rem' }}>
+        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#43332b', background: '#fff1f2', padding: '0.2rem 0.65rem', borderRadius: '999px', display: 'inline-block', marginBottom: '0.75rem' }}>
           🎬 SPONSORED REWARDED AD
         </span>
 
@@ -84,7 +84,7 @@ export default function RewardedAdModal({ isOpen, onClose, onRewardGranted, rewa
 
         {/* Simulated Sponsored Ad Player / Banner */}
         <div style={{
-          background: 'linear-gradient(135deg, #1e1b4b, #312e81)',
+          background: 'linear-gradient(135deg, #f8f3eb, #f8f3eb)',
           borderRadius: '16px',
           padding: '1.5rem 1rem',
           color: '#ffffff',

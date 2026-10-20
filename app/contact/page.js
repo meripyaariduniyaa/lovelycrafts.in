@@ -45,7 +45,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="shell" style={{ padding: '2.5rem 1rem 5rem', background: '#fafaf9', minHeight: '100vh' }}>
+    <main className="shell lc-page-shell" style={{ padding: '2.5rem 1rem 5rem', background: '#fafaf9', minHeight: '100vh' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -143,7 +143,7 @@ export default function ContactPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                  <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: '#ffe4e6', color: '#be185d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: '#ffe4e6', color: '#a64036', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>
                     ✉️
                   </div>
                   <div>
@@ -175,10 +175,10 @@ export default function ContactPage() {
                     <h3 style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>Social Media DMs</h3>
                     <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 8px' }}>Follow us or reach out on social media:</p>
                     <div style={{ display: 'flex', gap: '10px' }}>
-                      <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" style={{ background: '#fdf2f8', color: '#be185d', padding: '6px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, textDecoration: 'none', border: '1px solid #fecdd3' }}>
+                      <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" style={{ background: '#fdf2f8', color: '#a64036', padding: '6px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, textDecoration: 'none', border: '1px solid #fecdd3' }}>
                         Instagram ↗
                       </a>
-                      <a href={X_URL} target="_blank" rel="noopener noreferrer" style={{ background: '#f8fafc', color: '#0f172a', padding: '6px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, textDecoration: 'none', border: '1px solid #e2e8f0' }}>
+                      <a href={X_URL} target="_blank" rel="noopener noreferrer" style={{ background: '#f8fafc', color: '#43332b', padding: '6px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, textDecoration: 'none', border: '1px solid #e2e8f0' }}>
                         X (Twitter) ↗
                       </a>
                     </div>
@@ -187,7 +187,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div style={{ marginTop: '2rem', padding: '1.15rem', background: '#fff5f8', borderRadius: '14px', border: '1px solid #fecdd3', fontSize: '0.86rem', color: '#881337', lineHeight: 1.5 }}>
+            <div style={{ marginTop: '2rem', padding: '1.15rem', background: '#fff5f8', borderRadius: '14px', border: '1px solid #fecdd3', fontSize: '0.86rem', color: '#43332b', lineHeight: 1.5 }}>
               💡 Looking for instant answers regarding link privacy or delivery? Check our <Link href="/faq" style={{ color: '#be185d', fontWeight: 800, textDecoration: 'underline' }}>FAQ Help Center</Link>.
             </div>
           </div>

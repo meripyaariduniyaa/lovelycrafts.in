@@ -314,7 +314,7 @@ export default function CreatorDashboardPage() {
                 await logout();
                 router.push('/creator/login');
               }}
-              style={{ background: '#f3f4f6', color: '#4b5563', border: 'none', padding: '10px 18px', borderRadius: '10px', fontWeight: 600, cursor: 'pointer' }}
+              style={{ background: '#f3f4f6', color: '#43332b', border: 'none', padding: '10px 18px', borderRadius: '10px', fontWeight: 600, cursor: 'pointer' }}
             >
               Sign Out
             </button>
@@ -334,7 +334,7 @@ export default function CreatorDashboardPage() {
             You haven&apos;t applied to the Creator Club yet. Apply now to get your exclusive coupon code, custom referral link, and earn up to 18% commission.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
-            <Link href="/creators#apply" style={{ background: '#e11d48', color: '#fff', padding: '12px 24px', borderRadius: '12px', fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 14px rgba(225,29,72,0.2)', width: '100%', maxWidth: '280px' }}>
+            <Link href="/creators#apply" style={{ background: '#e11d48', color: '#fff', padding: '12px 24px', borderRadius: '12px', fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 14px rgba(166, 64, 54, 0.96)', width: '100%', maxWidth: '280px' }}>
               Start Creator Application 🚀
             </Link>
             <button
@@ -343,7 +343,7 @@ export default function CreatorDashboardPage() {
                 await logout();
                 router.push('/creator/login');
               }}
-              style={{ background: 'transparent', color: '#6b7280', border: 'none', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer', padding: '8px' }}
+              style={{ background: 'transparent', color: '#43332b', border: 'none', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer', padding: '8px' }}
             >
               🚪 Sign Out ({user?.email})
             </button>
@@ -364,7 +364,7 @@ export default function CreatorDashboardPage() {
           <p style={{ color: '#b45309', fontSize: '1rem', lineHeight: 1.6, marginBottom: '24px' }}>
             Hey <strong>{creator.name}</strong>! Your application for <code>lovelycrafts.in/c/{creator.slug}</code> has been received and is currently under review by our admin team.
           </p>
-          <div style={{ background: '#fffbeb', padding: '16px', borderRadius: '12px', textAlign: 'left', fontSize: '0.85rem', color: '#78350f', border: '1px dashed #fcd34d', marginBottom: '20px' }}>
+          <div style={{ background: '#fffbeb', padding: '16px', borderRadius: '12px', textAlign: 'left', fontSize: '0.85rem', color: '#43332b', border: '1px dashed #fcd34d', marginBottom: '20px' }}>
             <div style={{ marginBottom: '4px' }}>📌 Status: <strong>Pending Admin Approval</strong></div>
             <div style={{ marginBottom: '4px' }}>📬 Email: <strong>{creator.email}</strong></div>
             <div>🔗 Requested URL: <strong>lovelycrafts.in/c/{creator.slug}</strong></div>
@@ -375,7 +375,7 @@ export default function CreatorDashboardPage() {
               await logout();
               router.push('/creator/login');
             }}
-            style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a', padding: '10px 20px', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', minHeight: '44px' }}
+            style={{ background: '#fef3c7', color: '#43332b', border: '1px solid #fde68a', padding: '10px 20px', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', minHeight: '44px' }}
           >
             🚪 Sign Out
           </button>
@@ -449,7 +449,7 @@ export default function CreatorDashboardPage() {
             <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>
               <span style={{ fontSize: '1.3rem' }}>❤️</span> Lovely<span style={{ color: '#e11d48' }}>Crafts</span>
             </Link>
-            <span style={{ background: '#ffe4e6', color: '#be123c', padding: '3px 9px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <span style={{ background: '#ffe4e6', color: '#a64036', padding: '3px 9px', borderRadius: '8px', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Creator Hub
             </span>
           </div>
@@ -473,7 +473,7 @@ export default function CreatorDashboardPage() {
               }}
             >
               <span>💡</span> Viral Content Ideas
-              <span style={{ background: '#fef08a', color: '#854d0e', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '999px', fontWeight: 800 }}>
+              <span style={{ background: '#fef08a', color: '#43332b', fontSize: '0.65rem', padding: '1px 6px', borderRadius: '999px', fontWeight: 800 }}>
                 HOT 🔥
               </span>
             </Link>
@@ -520,11 +520,11 @@ export default function CreatorDashboardPage() {
               💳 {bankVerificationStatus === 'verified' ? 'Bank ✓' : 'Bank Payout ⚠️'}
             </button>
 
-            <Link href={`/creators/${creator.slug}`} target="_blank" style={{ fontSize: '0.8rem', color: '#e11d48', textDecoration: 'none', fontWeight: 700, background: '#fff1f2', padding: '6px 12px', borderRadius: '8px', border: '1px solid #fecdd3' }}>
+            <Link href={`/creators/${creator.slug}`} target="_blank" style={{ fontSize: '0.8rem', color: '#43332b', textDecoration: 'none', fontWeight: 700, background: '#fff1f2', padding: '6px 12px', borderRadius: '8px', border: '1px solid #fecdd3' }}>
               👁️ Storefront
             </Link>
             
-            <Link href="/creator/change-password" style={{ fontSize: '0.8rem', color: '#475569', textDecoration: 'none', fontWeight: 600, background: '#f1f5f9', padding: '6px 12px', borderRadius: '8px' }}>
+            <Link href="/creator/change-password" style={{ fontSize: '0.8rem', color: '#43332b', textDecoration: 'none', fontWeight: 600, background: '#f1f5f9', padding: '6px 12px', borderRadius: '8px' }}>
               🔒 Password
             </Link>
 
@@ -567,11 +567,11 @@ export default function CreatorDashboardPage() {
                 <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>
                   {creator.name}
                 </h1>
-                <span style={{ background: '#dcfce7', color: '#15803d', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '999px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ background: '#dcfce7', color: '#43332b', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '999px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   ✓ Verified Creator
                 </span>
                 {bankVerificationStatus === 'verified' && (
-                  <span style={{ background: '#eff6ff', color: '#1d4ed8', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '999px' }}>
+                  <span style={{ background: '#eff6ff', color: '#43332b', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '999px' }}>
                     🏦 KYC &amp; Bank Verified
                   </span>
                 )}
@@ -590,21 +590,21 @@ export default function CreatorDashboardPage() {
             <button
               type="button"
               onClick={() => setEditingProfile(!editingProfile)}
-              style={{ background: '#f1f5f9', color: '#334155', border: '1px solid #cbd5e1', padding: '10px 16px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', flex: 1, minWidth: '120px', minHeight: '42px' }}
+              style={{ background: '#f1f5f9', color: '#43332b', border: '1px solid #cbd5e1', padding: '10px 16px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', flex: 1, minWidth: '120px', minHeight: '42px' }}
             >
               ✏️ {editingProfile ? 'Close Editor' : 'Edit Profile'}
             </button>
             <button
               type="button"
               onClick={() => setShowBankModal(true)}
-              style={{ background: '#ffe4e6', color: '#be123c', border: '1px solid #fecdd3', padding: '10px 16px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', flex: 1, minWidth: '140px', minHeight: '42px' }}
+              style={{ background: '#ffe4e6', color: '#a64036', border: '1px solid #fecdd3', padding: '10px 16px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', flex: 1, minWidth: '140px', minHeight: '42px' }}
             >
               💳 Bank &amp; KYC
             </button>
             <button
               type="button"
               onClick={() => setShowQrModal(true)}
-              style={{ background: '#0f172a', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', flex: 1, minWidth: '120px', minHeight: '42px' }}
+              style={{ background: '#f8f3eb', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', flex: 1, minWidth: '120px', minHeight: '42px' }}
             >
               📱 QR Toolkit
             </button>
@@ -620,7 +620,7 @@ export default function CreatorDashboardPage() {
         </div>
 
         {/* VIRAL CONTENT PLAYBOOK HERO BANNER */}
-        <div style={{ background: 'linear-gradient(135deg, #be123c 0%, #e11d48 50%, #9013fe 100%)', borderRadius: '24px', padding: '24px 28px', color: '#fff', marginBottom: '24px', boxShadow: '0 10px 30px rgba(225,29,72,0.2)', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ background: 'linear-gradient(135deg, #be123c 0%, #e11d48 50%, #9013fe 100%)', borderRadius: '24px', padding: '24px 28px', color: '#fff', marginBottom: '24px', boxShadow: '0 10px 30px rgba(166, 64, 54, 0.96)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '220px', height: '220px', background: 'rgba(255,255,255,0.15)', borderRadius: '50%', filter: 'blur(40px)', pointerEvents: 'none' }} />
           
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', position: 'relative', zIndex: 2 }}>
@@ -679,7 +679,7 @@ export default function CreatorDashboardPage() {
         </div>
 
         {/* VISUAL TIER PROGRESS & LEVEL UP BAR */}
-        <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', color: '#fff', borderRadius: '24px', padding: '24px 28px', marginBottom: '24px', boxShadow: '0 8px 30px rgba(15,23,42,0.15)', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ background: 'linear-gradient(135deg, #f8f3eb 0%, #f8f3eb 100%)', color: '#fff', borderRadius: '24px', padding: '24px 28px', marginBottom: '24px', boxShadow: '0 8px 30px rgba(15,23,42,0.15)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '180px', height: '180px', borderRadius: '50%', background: 'rgba(225,29,72,0.15)', filter: 'blur(30px)', pointerEvents: 'none' }} />
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
@@ -743,7 +743,7 @@ export default function CreatorDashboardPage() {
                 <div
                   key={t.name}
                   style={{
-                    background: isCurrent ? 'rgba(244,63,94,0.25)' : isUnlocked ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.2)',
+                    background: isCurrent ? 'rgba(244,63,94,0.25)' : isUnlocked ? 'rgba(255,255,255,0.06)' : 'rgba(247, 238, 228, 0.96)',
                     border: isCurrent ? '1px solid #f43f5e' : '1px solid rgba(255,255,255,0.08)',
                     borderRadius: '10px',
                     padding: '8px 10px',
@@ -778,7 +778,7 @@ export default function CreatorDashboardPage() {
               <button
                 type="button"
                 onClick={dismissWelcomeGuide}
-                style={{ background: '#fff', color: '#64748b', border: '1px solid #cbd5e1', padding: '6px 14px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', minHeight: '36px' }}
+                style={{ background: '#fff', color: '#43332b', border: '1px solid #cbd5e1', padding: '6px 14px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', minHeight: '36px' }}
               >
                 Dismiss Checklist ✕
               </button>
@@ -827,7 +827,7 @@ export default function CreatorDashboardPage() {
             <button
               type="button"
               onClick={() => setShowWelcomeGuide(true)}
-              style={{ background: 'transparent', border: 'none', color: '#e11d48', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}
+              style={{ background: 'transparent', border: 'none', color: '#a64036', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }}
             >
               📖 View Creator Checklist
             </button>
@@ -842,7 +842,7 @@ export default function CreatorDashboardPage() {
             </h3>
             <form onSubmit={handleSaveProfile} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
               <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '16px', background: '#fff5f7', padding: '16px', borderRadius: '16px', border: '1px dashed #f472b6', flexWrap: 'wrap' }}>
-                <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#ffe4e6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', border: '2px solid #f43f5e', overflow: 'hidden', flexShrink: 0 }}>
+                <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#ffe4e6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', border: '2px solid #a64036', overflow: 'hidden', flexShrink: 0 }}>
                   {profileForm.profile_image ? (
                     <img src={profileForm.profile_image} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
@@ -868,7 +868,7 @@ export default function CreatorDashboardPage() {
                       <button
                         type="button"
                         onClick={() => setProfileForm((prev) => ({ ...prev, profile_image: '' }))}
-                        style={{ background: '#f1f5f9', color: '#64748b', border: 'none', padding: '8px 14px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer' }}
+                        style={{ background: '#f1f5f9', color: '#43332b', border: 'none', padding: '8px 14px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer' }}
                       >
                         Remove
                       </button>
@@ -946,7 +946,7 @@ export default function CreatorDashboardPage() {
                 <button
                   type="button"
                   onClick={() => setEditingProfile(false)}
-                  style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '10px 16px', borderRadius: '10px', fontWeight: 600, cursor: 'pointer', minHeight: '44px' }}
+                  style={{ background: '#f1f5f9', color: '#43332b', border: 'none', padding: '10px 16px', borderRadius: '10px', fontWeight: 600, cursor: 'pointer', minHeight: '44px' }}
                 >
                   Cancel
                 </button>
@@ -1001,7 +1001,7 @@ export default function CreatorDashboardPage() {
           <div style={{ background: '#fff', borderRadius: '24px', padding: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 14px rgba(0,0,0,0.03)', marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>⏳ Pending Earnings Breakdown</h3>
-              <span style={{ fontSize: '0.8rem', color: '#64748b', background: '#f1f5f9', padding: '4px 10px', borderRadius: '20px', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.8rem', color: '#43332b', background: '#f1f5f9', padding: '4px 10px', borderRadius: '20px', fontWeight: 600 }}>
                 {commissions.filter(c => c.status === 'pending').length} entries · ₹{(commissions.filter(c => c.status === 'pending').reduce((s,c) => s + (Number(c.commission_amount)||0),0)/100).toFixed(2)} total
               </span>
             </div>
@@ -1028,16 +1028,16 @@ export default function CreatorDashboardPage() {
                           </td>
                           <td style={{ padding: '10px 12px' }}>
                             {isReferralBounty ? (
-                              <span style={{ background: '#f3e8ff', color: '#7e22ce', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800 }}>🎁 Referral Bounty</span>
+                              <span style={{ background: '#f3e8ff', color: '#43332b', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800 }}>🎁 Referral Bounty</span>
                             ) : (
-                              <span style={{ background: '#f0fdf4', color: '#15803d', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>🛒 Sale Commission</span>
+                              <span style={{ background: '#f0fdf4', color: '#43332b', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>🛒 Sale Commission</span>
                             )}
                           </td>
                           <td style={{ padding: '10px 12px', textAlign: 'right', fontWeight: 800, color: isReferralBounty ? '#7e22ce' : '#059669', fontFamily: 'monospace' }}>
                             ₹{((Number(c.commission_amount)||0)/100).toFixed(2)}
                           </td>
                           <td style={{ padding: '10px 12px', textAlign: 'center' }}>
-                            <span style={{ background: '#fef9c3', color: '#854d0e', padding: '3px 8px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 800 }}>Pending</span>
+                            <span style={{ background: '#fef9c3', color: '#43332b', padding: '3px 8px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 800 }}>Pending</span>
                           </td>
                         </tr>
                       );
@@ -1065,15 +1065,15 @@ export default function CreatorDashboardPage() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               {bankVerificationStatus === 'verified' ? (
-                <span style={{ background: '#dcfce7', color: '#15803d', padding: '6px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 800 }}>
+                <span style={{ background: '#dcfce7', color: '#43332b', padding: '6px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 800 }}>
                   ✓ Bank Verified
                 </span>
               ) : bankVerificationStatus === 'pending_verification' ? (
-                <span style={{ background: '#fef3c7', color: '#b45309', padding: '6px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 800 }}>
+                <span style={{ background: '#fef3c7', color: '#a64036', padding: '6px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 800 }}>
                   ⏳ Verification In Progress
                 </span>
               ) : (
-                <span style={{ background: '#fee2e2', color: '#b91c1c', padding: '6px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 800 }}>
+                <span style={{ background: '#fee2e2', color: '#a64036', padding: '6px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 800 }}>
                   ⚠️ Bank Details Missing
                 </span>
               )}
@@ -1153,7 +1153,7 @@ export default function CreatorDashboardPage() {
                 type="text"
                 readOnly
                 value={referralUrl}
-                style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#f8fafc', fontSize: '0.85rem', color: '#0f172a' }}
+                style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#f8fafc', fontSize: '0.85rem', color: '#43332b' }}
               />
               <button
                 type="button"
@@ -1184,7 +1184,7 @@ export default function CreatorDashboardPage() {
                   type="text"
                   readOnly
                   value={primaryCouponCode}
-                  style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: '1px solid #fecdd3', background: '#fff1f2', fontSize: '1rem', fontWeight: 800, color: '#be123c', fontFamily: 'monospace' }}
+                  style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: '1px solid #fecdd3', background: '#fff1f2', fontSize: '1rem', fontWeight: 800, color: '#a64036', fontFamily: 'monospace' }}
                 />
                 <button
                   type="button"
@@ -1221,7 +1221,7 @@ export default function CreatorDashboardPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', alignItems: 'center' }}>
               
               {/* Visual Card Graphic */}
-              <div style={{ background: 'linear-gradient(135deg, #e11d48 0%, #9013fe 100%)', borderRadius: '20px', padding: '24px', color: '#fff', boxShadow: '0 12px 30px rgba(225,29,72,0.25)', position: 'relative', overflow: 'hidden', minHeight: '190px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div style={{ background: 'linear-gradient(135deg, #e11d48 0%, #9013fe 100%)', borderRadius: '20px', padding: '24px', color: '#fff', boxShadow: '0 12px 30px rgba(166, 64, 54, 0.96)', position: 'relative', overflow: 'hidden', minHeight: '190px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '120px', height: '120px', background: 'rgba(255,255,255,0.15)', borderRadius: '50%', filter: 'blur(20px)' }} />
                 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -1234,7 +1234,7 @@ export default function CreatorDashboardPage() {
                 </div>
 
                 <div style={{ margin: '16px 0', display: 'flex', alignItems: 'center', gap: '14px' }}>
-                  <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: '#fff', border: '2px solid rgba(255,255,255,0.8)', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', color: '#e11d48' }}>
+                  <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: '#fff', border: '2px solid rgba(255,255,255,0.8)', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', color: '#a64036' }}>
                     {creator.profile_image ? <img src={creator.profile_image} alt={creator.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '💖'}
                   </div>
                   <div>
@@ -1243,12 +1243,12 @@ export default function CreatorDashboardPage() {
                   </div>
                 </div>
 
-                <div style={{ background: 'rgba(255,255,255,0.95)', color: '#0f172a', padding: '10px 16px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ background: 'rgba(255,255,255,0.95)', color: '#43332b', padding: '10px 16px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div>
                     <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', display: 'block' }}>Use Code At Checkout</span>
                     <strong style={{ fontSize: '1.1rem', color: '#e11d48', fontFamily: 'monospace' }}>{primaryCouponCode}</strong>
                   </div>
-                  <span style={{ background: '#ffe4e6', color: '#be123c', padding: '4px 10px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 800 }}>
+                  <span style={{ background: '#ffe4e6', color: '#a64036', padding: '4px 10px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 800 }}>
                     10% OFF
                   </span>
                 </div>
@@ -1271,7 +1271,7 @@ export default function CreatorDashboardPage() {
                     setCopiedDisclosure(true);
                     setTimeout(() => setCopiedDisclosure(false), 2000);
                   }}
-                  style={{ background: copiedDisclosure ? '#059669' : '#0f172a', color: '#fff', border: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', minHeight: '44px' }}
+                  style={{ background: copiedDisclosure ? '#059669' : '#f8f3eb', color: '#fff', border: 'none', padding: '12px 18px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', minHeight: '44px' }}
                 >
                   {copiedDisclosure ? '✓ Copied Story Caption!' : '📋 Copy Caption for Instagram Story'}
                 </button>
@@ -1382,7 +1382,7 @@ export default function CreatorDashboardPage() {
           <div style={{ background: '#fff', borderRadius: '14px', padding: '16px', border: '1px solid #e9d5ff', marginBottom: '20px' }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#7e22ce', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.06em' }}>Your Creator Invite Link</div>
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-              <code style={{ flex: 1, background: '#faf5ff', border: '1px solid #e9d5ff', borderRadius: '8px', padding: '10px 14px', fontSize: '0.82rem', color: '#581c87', fontFamily: 'monospace', wordBreak: 'break-all', minWidth: 0 }}>
+              <code style={{ flex: 1, background: '#faf5ff', border: '1px solid #e9d5ff', borderRadius: '8px', padding: '10px 14px', fontSize: '0.82rem', color: '#43332b', fontFamily: 'monospace', wordBreak: 'break-all', minWidth: 0 }}>
                 {`${typeof window !== 'undefined' ? window.location.origin : 'https://lovelycrafts.in'}/creators?ref=${creator.slug}`}
               </code>
               <button
@@ -1435,9 +1435,9 @@ export default function CreatorDashboardPage() {
                       </td>
                       <td style={{ padding: '12px 14px', textAlign: 'center' }}>
                         {ic.referral_bounty_awarded ? (
-                          <span style={{ background: '#dcfce7', color: '#15803d', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800 }}>🏆 Earned!</span>
+                          <span style={{ background: '#dcfce7', color: '#43332b', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800 }}>🏆 Earned!</span>
                         ) : ic.status === 'approved' ? (
-                          <span style={{ background: '#fef9c3', color: '#92400e', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>⏳ Awaiting Sale</span>
+                          <span style={{ background: '#fef9c3', color: '#43332b', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>⏳ Awaiting Sale</span>
                         ) : (
                           <span style={{ background: '#f1f5f9', color: '#94a3b8', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>—</span>
                         )}
@@ -1485,7 +1485,7 @@ export default function CreatorDashboardPage() {
                       <td style={{ padding: '12px 14px', fontSize: '0.85rem', color: '#475569' }}>{p.method || 'UPI'}</td>
                       <td style={{ padding: '12px 14px', fontSize: '0.85rem', color: '#64748b', fontFamily: 'monospace' }}>{p.reference || '—'}</td>
                       <td style={{ padding: '12px 14px' }}>
-                        <span style={{ background: '#dcfce7', color: '#15803d', fontSize: '0.75rem', fontWeight: 800, padding: '3px 8px', borderRadius: '6px' }}>
+                        <span style={{ background: '#dcfce7', color: '#43332b', fontSize: '0.75rem', fontWeight: 800, padding: '3px 8px', borderRadius: '6px' }}>
                           ✓ Paid
                         </span>
                       </td>
@@ -1505,8 +1505,8 @@ export default function CreatorDashboardPage() {
 
       {/* BANK / PAYOUT DETAILS UPDATE REQUEST MODAL */}
       {showBankModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.65)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 100 }}>
-          <div style={{ background: '#fff', borderRadius: '24px', padding: '28px', maxWidth: '640px', width: '100%', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #e2e8f0' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(247, 238, 228, 0.96)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 100 }}>
+          <div style={{ background: '#fff', borderRadius: '24px', padding: '28px', maxWidth: '640px', width: '100%', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(247, 238, 228, 0.96)', border: '1px solid #e2e8f0' }}>
             
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <div>
@@ -1520,7 +1520,7 @@ export default function CreatorDashboardPage() {
               <button
                 type="button"
                 onClick={() => setShowBankModal(false)}
-                style={{ background: '#f1f5f9', border: 'none', color: '#64748b', width: '36px', height: '36px', borderRadius: '50%', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ background: '#f1f5f9', border: 'none', color: '#43332b', width: '36px', height: '36px', borderRadius: '50%', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 ✕
               </button>
@@ -1531,7 +1531,7 @@ export default function CreatorDashboardPage() {
             </p>
 
             {bankSuccessMsg && (
-              <div style={{ background: '#dcfce7', color: '#15803d', padding: '14px 16px', borderRadius: '12px', fontSize: '0.88rem', fontWeight: 700, marginBottom: '16px', border: '1px solid #bbf7d0' }}>
+              <div style={{ background: '#dcfce7', color: '#43332b', padding: '14px 16px', borderRadius: '12px', fontSize: '0.88rem', fontWeight: 700, marginBottom: '16px', border: '1px solid #bbf7d0' }}>
                 {bankSuccessMsg}
               </div>
             )}
@@ -1627,7 +1627,7 @@ export default function CreatorDashboardPage() {
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                  <label style={{ background: '#0f172a', color: '#fff', padding: '8px 16px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, cursor: uploadingDoc ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <label style={{ background: '#f8f3eb', color: '#fff', padding: '8px 16px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, cursor: uploadingDoc ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                     <input
                       type="file"
                       accept="image/*,application/pdf"
@@ -1681,7 +1681,7 @@ export default function CreatorDashboardPage() {
                 <button
                   type="button"
                   onClick={() => setShowBankModal(false)}
-                  style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '12px 18px', borderRadius: '12px', fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer', minHeight: '44px' }}
+                  style={{ background: '#f1f5f9', color: '#43332b', border: 'none', padding: '12px 18px', borderRadius: '12px', fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer', minHeight: '44px' }}
                 >
                   Cancel
                 </button>
@@ -1694,8 +1694,8 @@ export default function CreatorDashboardPage() {
 
       {/* CREATOR QR CODE TOOLKIT MODAL */}
       {showQrModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.65)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 100 }}>
-          <div style={{ background: '#fff', borderRadius: '24px', padding: '28px', maxWidth: '440px', width: '100%', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', border: '1px solid #e2e8f0' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(247, 238, 228, 0.96)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 100 }}>
+          <div style={{ background: '#fff', borderRadius: '24px', padding: '28px', maxWidth: '440px', width: '100%', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(247, 238, 228, 0.96)', border: '1px solid #e2e8f0' }}>
             
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <div style={{ textAlign: 'left' }}>
@@ -1709,7 +1709,7 @@ export default function CreatorDashboardPage() {
               <button
                 type="button"
                 onClick={() => setShowQrModal(false)}
-                style={{ background: '#f1f5f9', border: 'none', color: '#64748b', width: '36px', height: '36px', borderRadius: '50%', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ background: '#f1f5f9', border: 'none', color: '#43332b', width: '36px', height: '36px', borderRadius: '50%', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 ✕
               </button>
@@ -1747,7 +1747,7 @@ export default function CreatorDashboardPage() {
                   setCopiedLink(true);
                   setTimeout(() => setCopiedLink(false), 2000);
                 }}
-                style={{ background: '#f1f5f9', color: '#334155', border: 'none', padding: '10px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}
+                style={{ background: '#f1f5f9', color: '#43332b', border: 'none', padding: '10px 18px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}
               >
                 {copiedLink ? '✓ Copied Link' : '🔗 Copy Direct URL'}
               </button>

@@ -142,7 +142,7 @@ export default function SparklerCanvas({ onSparkDraw, targetName = '' }) {
           display: 'block',
           cursor: 'crosshair',
           touchAction: 'none',
-          background: '#0f172a',
+          background: '#f8f3eb',
         }}
       />
 

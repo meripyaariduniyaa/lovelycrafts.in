@@ -1,10 +1,7 @@
 import './globals.css';
 import { AuthProvider } from '@/components/AuthProvider';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import StickyCtaBar from '@/components/StickyCtaBar';
+import SiteChrome from '@/components/SiteChrome';
 import Oneko from '@/components/Oneko';
-import GoogleAdSenseScript from '@/components/ArcadeAdSenseScript';
 import Script from 'next/script';
 import { siteMetadata, SITE_URL, SITE_NAME, DEFAULT_DESCRIPTION, CONTACT_EMAIL, INSTAGRAM_URL, X_URL } from '@/lib/seo';
 
@@ -18,7 +15,7 @@ export const metadata = siteMetadata;
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ff4d6d',
+  themeColor: '#f6f0e8',
 };
 
 export default function RootLayout({ children }) {
@@ -81,18 +78,14 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
       <body>
         <AuthProvider>
-          <Header />
-          <div className="page-content">{children}</div>
-          <Footer />
-          <StickyCtaBar />
+          <SiteChrome>{children}</SiteChrome>
           <Oneko />
-          <GoogleAdSenseScript />
         </AuthProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema).replace(/</g, '\\u003c') }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema).replace(/</g, '\\u003c') }} />

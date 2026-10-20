@@ -293,7 +293,7 @@ export default function FeaturedCreatorsSection() {
             fontSize: '0.9rem',
             fontWeight: 800,
             borderRadius: '12px',
-            background: '#0f172a',
+            background: '#f8f3eb',
             color: '#fff',
             whiteSpace: 'nowrap',
           }}

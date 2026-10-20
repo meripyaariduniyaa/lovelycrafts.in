@@ -258,7 +258,7 @@ export default function CreatorsLandingPage() {
   };
 
   return (
-    <main style={{ minHeight: '100vh', background: 'radial-gradient(circle at 50% 0%, #ffe4e6 0%, #fff1f2 35%, #fafafa 100%)', padding: '40px 16px 100px' }}>
+    <main className="lc-page-shell" style={{ minHeight: '100vh', background: 'radial-gradient(circle at 50% 0%, #ffe4e6 0%, #fff1f2 35%, #fafafa 100%)', padding: '40px 16px 100px' }}>
       <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
 
         {/* =========================================================================
@@ -362,16 +362,16 @@ export default function CreatorsLandingPage() {
 
           {/* Value Pillars Quick Bar */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', maxWidth: '880px', margin: '1.75rem auto 0' }}>
-            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
+            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#43332b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
               <span>🎁</span> Free experiences
             </div>
-            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
+            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#43332b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
               <span>🎟️</span> Your own discount code
             </div>
-            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
+            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#43332b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
               <span>💰</span> 10–18% commission
             </div>
-            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
+            <div style={{ background: '#fff', padding: '14px 16px', borderRadius: '16px', border: '1px solid #fecdd3', fontSize: '0.92rem', fontWeight: 700, color: '#43332b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(225,29,72,0.04)' }}>
               <span>🌐</span> Your own creator page
             </div>
           </div>
@@ -413,7 +413,7 @@ export default function CreatorsLandingPage() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                     <div style={{ fontSize: '2.4rem' }}>{exp.icon}</div>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#be123c', background: '#ffe4e6', padding: '3px 10px', borderRadius: '999px' }}>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#43332b', background: '#ffe4e6', padding: '3px 10px', borderRadius: '999px' }}>
                       {exp.badge}
                     </span>
                   </div>
@@ -576,7 +576,7 @@ export default function CreatorsLandingPage() {
                 </tbody>
               </table>
             </div>
-            <div style={{ marginTop: '16px', padding: '10px 14px', background: '#fdf2f8', borderRadius: '12px', border: '1px solid #fce7f3', fontSize: '0.82rem', color: '#9d174d' }}>
+            <div style={{ marginTop: '16px', padding: '10px 14px', background: '#fdf2f8', borderRadius: '12px', border: '1px solid #fce7f3', fontSize: '0.82rem', color: '#a64036' }}>
               💡 <strong>Monthly Reset &amp; Fast Payout:</strong> Tiers recalculate on the 1st of every month. Commission balance is paid out to your UPI or bank account upon reaching ₹500.
             </div>
           </div>
@@ -674,7 +674,7 @@ export default function CreatorsLandingPage() {
             </div>
           </div>
 
-          <div style={{ textAlign: 'center', background: '#fdf2f8', padding: '10px 20px', borderRadius: '999px', maxWidth: '420px', margin: '0 auto', fontSize: '0.85rem', color: '#be185d', fontWeight: 700 }}>
+          <div style={{ textAlign: 'center', background: '#fdf2f8', padding: '10px 20px', borderRadius: '999px', maxWidth: '420px', margin: '0 auto', fontSize: '0.85rem', color: '#a64036', fontWeight: 700 }}>
             ⏳ Referrals are attributed for 30 full days from click.
           </div>
         </section>
@@ -700,7 +700,7 @@ export default function CreatorsLandingPage() {
                 <code style={{ fontSize: '0.95rem', color: '#e11d48', fontWeight: 700 }}>lovelycrafts.in/creators/ananya</code>
               </div>
               <div>
-                <a href="#apply" style={{ background: '#111827', color: '#fff', padding: '12px 24px', borderRadius: '12px', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>
+                <a href="#apply" style={{ background: '#f8f3eb', color: '#fff', padding: '12px 24px', borderRadius: '12px', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>
                   Claim Your Handle 🚀
                 </a>
               </div>
@@ -712,7 +712,7 @@ export default function CreatorsLandingPage() {
                 <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#ffe4e6', margin: '0 auto 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', border: '2px solid #fda4af' }}>
                   👩‍🦰
                 </div>
-                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#059669', background: '#ecfdf5', padding: '2px 8px', borderRadius: '999px', display: 'inline-block', marginBottom: '6px' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#43332b', background: '#ecfdf5', padding: '2px 8px', borderRadius: '999px', display: 'inline-block', marginBottom: '6px' }}>
                   ✓ Verified Creator
                 </div>
                 <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#111827', margin: '0 0 4px' }}>Ananya Sharma</h4>
@@ -912,7 +912,7 @@ export default function CreatorsLandingPage() {
               <p style={{ color: '#475569', fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 10px' }}>
                 When sharing LovelyCrafts in your videos, posts, or stories, please clearly disclose your affiliate relationship (as required by ASCI / FTC guidelines).
               </p>
-              <div style={{ background: '#fff', padding: '8px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.82rem', color: '#334155', fontFamily: 'monospace' }}>
+              <div style={{ background: '#fff', padding: '8px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.82rem', color: '#43332b', fontFamily: 'monospace' }}>
                 &quot;I&apos;m partnered with LovelyCrafts, and you can use my code YOURCODE for 10% off at lovelycrafts.in/c/yourname&quot;
               </div>
             </div>
@@ -990,13 +990,13 @@ export default function CreatorsLandingPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleApply} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div style={{ background: '#f9fafb', padding: '10px 14px', borderRadius: '10px', fontSize: '0.85rem', color: '#4b5563', border: '1px solid #f3f4f6' }}>
+                    <div style={{ background: '#f9fafb', padding: '10px 14px', borderRadius: '10px', fontSize: '0.85rem', color: '#43332b', border: '1px solid #f3f4f6' }}>
                       Signed in as: <strong>{user.email}</strong>
                     </div>
 
                     {/* Profile Picture Uploader */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '14px', background: '#fff1f2', padding: '12px 16px', borderRadius: '12px', border: '1px dashed #f472b6' }}>
-                      <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: '#ffe4e6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', border: '2px solid #f43f5e', overflow: 'hidden', flexShrink: 0 }}>
+                      <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: '#ffe4e6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', border: '2px solid #a64036', overflow: 'hidden', flexShrink: 0 }}>
                         {formData.profile_image ? (
                           <img src={formData.profile_image} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
@@ -1101,7 +1101,7 @@ export default function CreatorsLandingPage() {
                     </div>
 
                     {errorMessage && (
-                      <div style={{ color: '#b91c1c', background: '#fef2f2', padding: '10px', borderRadius: '8px', fontSize: '0.85rem' }}>
+                      <div style={{ color: '#43332b', background: '#fef2f2', padding: '10px', borderRadius: '8px', fontSize: '0.85rem' }}>
                         {errorMessage}
                       </div>
                     )}

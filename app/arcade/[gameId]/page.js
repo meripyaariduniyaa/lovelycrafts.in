@@ -9,7 +9,7 @@ import SpeedTapGame from '@/components/arcade/SpeedTapGame';
 import LoveQuizGame from '@/components/arcade/LoveQuizGame';
 import WordScrambleGame from '@/components/arcade/WordScrambleGame';
 import GameDuelCard from '@/components/arcade/GameDuelCard';
-import ArcadeAdBanner from '@/components/ArcadeAdBanner';
+
 import { WhatsAppIcon } from '@/components/AppIcons';
 
 const GAME_INFO = {
@@ -244,8 +244,6 @@ function GameRunner() {
           />
         </div>
 
-        {/* Arcade Monetization Ad Banner */}
-        <ArcadeAdBanner slot="arcade-game-bottom" />
 
         {/* Challenge Mode: Partner Score Submission & Live Winner Card */}
         {challengeId && latestScore !== null && !duelResult && (
@@ -311,7 +309,7 @@ function GameRunner() {
 
             {/* Score Comparison Display */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', margin: '1.5rem 0' }}>
-              <div style={{ background: '#fff5f8', padding: '1rem', borderRadius: '16px', border: duelResult.winner === 'creator' ? '2px solid #f43f5e' : '1px solid #fecdd3' }}>
+              <div style={{ background: '#fff5f8', padding: '1rem', borderRadius: '16px', border: duelResult.winner === 'creator' ? '2px solid #a64036' : '1px solid #fecdd3' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase' }}>
                   {duelResult.creatorName} {duelResult.winner === 'creator' && '👑'}
                 </span>
@@ -320,7 +318,7 @@ function GameRunner() {
                 </div>
               </div>
 
-              <div style={{ background: '#fff5f8', padding: '1rem', borderRadius: '16px', border: duelResult.winner === 'partner' ? '2px solid #f43f5e' : '1px solid #fecdd3' }}>
+              <div style={{ background: '#fff5f8', padding: '1rem', borderRadius: '16px', border: duelResult.winner === 'partner' ? '2px solid #a64036' : '1px solid #fecdd3' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase' }}>
                   {duelResult.partnerName} {duelResult.winner === 'partner' && '👑'}
                 </span>

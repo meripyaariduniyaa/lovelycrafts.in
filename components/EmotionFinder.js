@@ -104,7 +104,7 @@ export default function EmotionFinder() {
                 border: isSelected ? '2px solid #e11d48' : '1px solid #fecdd3',
                 borderRadius: '999px',
                 padding: '8px 18px',
-                background: isSelected ? 'linear-gradient(135deg, #f43f5e 0%, #be185d 100%)' : '#ffffff',
+                background: isSelected ? 'linear-gradient(135deg, #a64036 0%, #a64036 100%)' : '#ffffff',
                 color: isSelected ? '#ffffff' : '#475569',
                 fontWeight: 800,
                 fontSize: '0.88rem',

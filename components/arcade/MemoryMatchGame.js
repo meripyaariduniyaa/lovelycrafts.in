@@ -227,7 +227,7 @@ export default function MemoryMatchGame({ onGameOver, challengeTargetScore = nul
                     borderRadius: '16px',
                     border: '2px solid',
                     borderColor: isMatched ? '#10b981' : isFlipped ? '#f43f5e' : '#fecdd3',
-                    background: isMatched ? '#dcfce7' : isFlipped ? '#fff1f2' : 'linear-gradient(135deg, #fda4af, #f43f5e)',
+                    background: isMatched ? '#dcfce7' : isFlipped ? '#fff1f2' : 'linear-gradient(135deg, #fda4af, #a64036)',
                     fontSize: isFlipped ? 'clamp(24px, 6vw, 36px)' : '0px',
                     cursor: isMatched ? 'default' : 'pointer',
                     display: 'flex',

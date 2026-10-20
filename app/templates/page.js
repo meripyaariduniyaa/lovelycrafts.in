@@ -67,7 +67,7 @@ export default function TemplatesPage() {
   };
 
   return (
-    <main className="shell">
+    <main className="shell lc-marketplace-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

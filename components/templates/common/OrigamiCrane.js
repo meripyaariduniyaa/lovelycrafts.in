@@ -34,7 +34,7 @@ export default function OrigamiCrane({ commitments = [], onComplete }) {
           whileTap={{ scale: 0.95 }}
           style={{
             display: 'inline-block',
-            background: 'linear-gradient(135deg, #0f766e, #115e59)',
+            background: 'linear-gradient(135deg, #f8f3eb, #f8f3eb)',
             padding: '2.5rem 3rem',
             borderRadius: '28px',
             border: '2px solid #5eead4',
@@ -85,7 +85,7 @@ export default function OrigamiCrane({ commitments = [], onComplete }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
                 style={{
-                  background: 'rgba(15, 23, 42, 0.8)',
+                  background: 'rgba(247, 238, 228, 0.96)',
                   borderRadius: '20px',
                   padding: '16px 14px',
                   border: '1.5px solid #2dd4bf',

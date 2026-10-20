@@ -159,7 +159,7 @@ export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
           width: 72px;
           height: 72px;
           border-radius: 50%;
-          background: radial-gradient(circle at 35% 30%, #f43f5e 0%, #be185d 50%, #881337 100%);
+          background: radial-gradient(circle at 35% 30%, #a64036 0%, #a64036 50%, #f8f3eb 100%);
           border: none;
           box-shadow: 0 10px 25px rgba(136, 19, 55, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -3px 6px rgba(0, 0, 0, 0.35);
           cursor: pointer;

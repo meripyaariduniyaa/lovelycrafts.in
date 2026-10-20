@@ -439,7 +439,7 @@ export default function ContentIdeasPage() {
   };
 
   return (
-    <main style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #fff1f2 0%, #ffffff 30%, #f8fafc 100%)', padding: '32px 16px 90px' }}>
+    <main className="lc-page-shell" style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #fff1f2 0%, #ffffff 30%, #f8fafc 100%)', padding: '32px 16px 90px' }}>
       <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
 
         {/* TOP BREADCRUMB & PORTAL ACTIONS */}
@@ -557,7 +557,7 @@ export default function ContentIdeasPage() {
         {activeMainTab === 'generator' && (
           <section style={{ background: '#fff', borderRadius: '24px', padding: '32px', border: '1px solid #e2e8f0', boxShadow: '0 8px 30px rgba(0,0,0,0.04)', marginBottom: '32px' }}>
             <div style={{ marginBottom: '24px' }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#ffe4e6', color: '#be123c', padding: '4px 12px', borderRadius: '999px', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#ffe4e6', color: '#a64036', padding: '4px 12px', borderRadius: '999px', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
                 Instant AI-Style Strategy Tool
               </div>
               <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px' }}>
@@ -577,7 +577,7 @@ export default function ContentIdeasPage() {
                 <select
                   value={genTemplate}
                   onChange={(e) => setGenTemplate(e.target.value)}
-                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b', background: '#f8fafc' }}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#43332b', background: '#f8fafc' }}
                 >
                   {TEMPLATES.map((t) => (
                     <option key={t.id} value={t.id}>{t.label}</option>
@@ -592,7 +592,7 @@ export default function ContentIdeasPage() {
                 <select
                   value={genType}
                   onChange={(e) => setGenType(e.target.value)}
-                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b', background: '#f8fafc' }}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#43332b', background: '#f8fafc' }}
                 >
                   {CONTENT_TYPES.map((t) => (
                     <option key={t.id} value={t.id}>{t.label}</option>
@@ -607,7 +607,7 @@ export default function ContentIdeasPage() {
                 <select
                   value={genStyle}
                   onChange={(e) => setGenStyle(e.target.value)}
-                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b', background: '#f8fafc' }}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#43332b', background: '#f8fafc' }}
                 >
                   {STYLES.map((s) => (
                     <option key={s.id} value={s.id}>{s.label}</option>
@@ -622,7 +622,7 @@ export default function ContentIdeasPage() {
                 <select
                   value={genHook}
                   onChange={(e) => setGenHook(e.target.value)}
-                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#1e293b', background: '#f8fafc' }}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.88rem', fontWeight: 600, color: '#43332b', background: '#f8fafc' }}
                 >
                   {HOOK_TYPES.map((h) => (
                     <option key={h.id} value={h.id}>{h.label}</option>
@@ -672,7 +672,7 @@ export default function ContentIdeasPage() {
                   <button
                     type="button"
                     onClick={() => copyToClipboard(`${generatedIdea.hook}\n\nSCRIPT:\n${generatedIdea.script}\n\nCAPTION:\n${generatedIdea.caption}`, 'gen_all')}
-                    style={{ background: copiedKey === 'gen_all' ? '#15803d' : '#fff', color: copiedKey === 'gen_all' ? '#fff' : '#be185d', border: '1px solid #f472b6', padding: '6px 14px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ background: copiedKey === 'gen_all' ? '#f8f3eb' : '#fff', color: copiedKey === 'gen_all' ? '#fff' : '#a64036', border: '1px solid #f472b6', padding: '6px 14px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer' }}
                   >
                     {copiedKey === 'gen_all' ? '✓ Copied All!' : 'Copy Entire Blueprint 📋'}
                   </button>
@@ -682,7 +682,7 @@ export default function ContentIdeasPage() {
                   <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase', marginBottom: '4px' }}>
                     1. The 3-Second Viral Hook
                   </div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', background: '#fff', padding: '12px 16px', borderRadius: '12px', border: '1px solid #fce7f3' }}>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#43332b', background: '#fff', padding: '12px 16px', borderRadius: '12px', border: '1px solid #fce7f3' }}>
                     {generatedIdea.hook}
                   </div>
                 </div>
@@ -691,7 +691,7 @@ export default function ContentIdeasPage() {
                   <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase', marginBottom: '4px' }}>
                     2. 20-Second Scene Breakdown
                   </div>
-                  <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.9rem', color: '#334155', background: '#fff', padding: '14px 16px', borderRadius: '12px', border: '1px solid #fce7f3', margin: 0, lineHeight: 1.6 }}>
+                  <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.9rem', color: '#43332b', background: '#fff', padding: '14px 16px', borderRadius: '12px', border: '1px solid #fce7f3', margin: 0, lineHeight: 1.6 }}>
                     {generatedIdea.script}
                   </pre>
                 </div>
@@ -701,7 +701,7 @@ export default function ContentIdeasPage() {
                     <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase', marginBottom: '4px' }}>
                       3. Recommended Audio Vibe
                     </div>
-                    <div style={{ fontSize: '0.9rem', color: '#0f172a', background: '#fff', padding: '12px 16px', borderRadius: '12px', border: '1px solid #fce7f3', fontWeight: 600 }}>
+                    <div style={{ fontSize: '0.9rem', color: '#43332b', background: '#fff', padding: '12px 16px', borderRadius: '12px', border: '1px solid #fce7f3', fontWeight: 600 }}>
                       🎵 {generatedIdea.audio}
                     </div>
                   </div>
@@ -714,12 +714,12 @@ export default function ContentIdeasPage() {
                       <button
                         type="button"
                         onClick={() => copyToClipboard(generatedIdea.caption, 'gen_caption')}
-                        style={{ background: 'transparent', border: 'none', color: '#be185d', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                        style={{ background: 'transparent', border: 'none', color: '#a64036', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
                       >
                         {copiedKey === 'gen_caption' ? '✓ Copied' : 'Copy Caption 📋'}
                       </button>
                     </div>
-                    <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.85rem', color: '#334155', background: '#fff', padding: '12px 16px', borderRadius: '12px', border: '1px solid #fce7f3', margin: 0, lineHeight: 1.5 }}>
+                    <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.85rem', color: '#43332b', background: '#fff', padding: '12px 16px', borderRadius: '12px', border: '1px solid #fce7f3', margin: 0, lineHeight: 1.5 }}>
                       {generatedIdea.caption}
                     </pre>
                   </div>
@@ -781,7 +781,7 @@ export default function ContentIdeasPage() {
                   </div>
                 </div>
 
-                <span style={{ background: '#fdf2f8', color: '#be185d', padding: '6px 14px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 800, border: '1px solid #fbcfe8' }}>
+                <span style={{ background: '#fdf2f8', color: '#a64036', padding: '6px 14px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 800, border: '1px solid #fbcfe8' }}>
                   {selectedBlueprint.badge}
                 </span>
               </div>
@@ -799,7 +799,7 @@ export default function ContentIdeasPage() {
                         <button
                           type="button"
                           onClick={() => copyToClipboard(h.hook, `hook_${activeBlueprintTab}_${i}`)}
-                          style={{ background: 'transparent', border: 'none', color: '#64748b', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                          style={{ background: 'transparent', border: 'none', color: '#43332b', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
                         >
                           {copiedKey === `hook_${activeBlueprintTab}_${i}` ? '✓ Copied' : 'Copy 📋'}
                         </button>
@@ -823,12 +823,12 @@ export default function ContentIdeasPage() {
                   <button
                     type="button"
                     onClick={() => copyToClipboard(selectedBlueprint.script, `script_${activeBlueprintTab}`)}
-                    style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '4px 10px', borderRadius: '8px', color: '#334155', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '4px 10px', borderRadius: '8px', color: '#43332b', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
                   >
                     {copiedKey === `script_${activeBlueprintTab}` ? '✓ Copied' : 'Copy Script 📋'}
                   </button>
                 </div>
-                <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.88rem', color: '#334155', background: '#f8fafc', padding: '16px', borderRadius: '14px', border: '1px solid #e2e8f0', margin: 0, lineHeight: 1.6 }}>
+                <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.88rem', color: '#43332b', background: '#f8fafc', padding: '16px', borderRadius: '14px', border: '1px solid #e2e8f0', margin: 0, lineHeight: 1.6 }}>
                   {selectedBlueprint.script}
                 </pre>
               </div>
@@ -839,7 +839,7 @@ export default function ContentIdeasPage() {
                   <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>
                     🎵 Audio Suggestion
                   </h3>
-                  <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '14px', border: '1px solid #e2e8f0', fontSize: '0.88rem', color: '#334155', lineHeight: 1.5 }}>
+                  <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '14px', border: '1px solid #e2e8f0', fontSize: '0.88rem', color: '#43332b', lineHeight: 1.5 }}>
                     {selectedBlueprint.audioSuggestion}
                   </div>
                 </div>
@@ -852,12 +852,12 @@ export default function ContentIdeasPage() {
                     <button
                       type="button"
                       onClick={() => copyToClipboard(selectedBlueprint.caption, `cap_${activeBlueprintTab}`)}
-                      style={{ background: '#ffe4e6', color: '#be123c', border: 'none', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                      style={{ background: '#ffe4e6', color: '#a64036', border: 'none', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
                     >
                       {copiedKey === `cap_${activeBlueprintTab}` ? '✓ Copied!' : 'Copy Caption 📋'}
                     </button>
                   </div>
-                  <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.82rem', color: '#334155', background: '#f8fafc', padding: '16px', borderRadius: '14px', border: '1px solid #e2e8f0', margin: 0, lineHeight: 1.5 }}>
+                  <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', fontSize: '0.82rem', color: '#43332b', background: '#f8fafc', padding: '16px', borderRadius: '14px', border: '1px solid #e2e8f0', margin: 0, lineHeight: 1.5 }}>
                     {selectedBlueprint.caption}
                   </pre>
                 </div>
@@ -900,7 +900,7 @@ export default function ContentIdeasPage() {
                         ))}
                       </div>
                     ) : (
-                      <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: '0.84rem', color: '#334155', background: '#fff', padding: '14px', borderRadius: '12px', border: '1px solid #e2e8f0', margin: '0 0 16px', lineHeight: 1.5 }}>
+                      <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: '0.84rem', color: '#43332b', background: '#fff', padding: '14px', borderRadius: '12px', border: '1px solid #e2e8f0', margin: '0 0 16px', lineHeight: 1.5 }}>
                         {tmpl.text}
                       </pre>
                     )}
@@ -910,7 +910,7 @@ export default function ContentIdeasPage() {
                     type="button"
                     onClick={() => copyToClipboard(tmpl.text || tmpl.frames.map((f) => `${f.frame}:\n${f.text}`).join('\n\n'), `tmpl_${idx}`)}
                     style={{
-                      background: copiedKey === `tmpl_${idx}` ? '#059669' : '#fff',
+                      background: copiedKey === `tmpl_${idx}` ? '#f8f3eb' : '#fff',
                       color: copiedKey === `tmpl_${idx}` ? '#fff' : '#334155',
                       border: '1px solid #cbd5e1',
                       borderRadius: '10px',
@@ -947,7 +947,7 @@ export default function ContentIdeasPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px', marginBottom: '36px' }}>
               {CALENDAR.map(([day, concept]) => (
                 <div key={day} style={{ background: '#f8fafc', padding: '14px', borderRadius: '14px', border: '1px solid #e2e8f0' }}>
-                  <div style={{ display: 'inline-block', background: '#ffe4e6', color: '#be123c', padding: '2px 8px', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 800, marginBottom: '6px' }}>
+                  <div style={{ display: 'inline-block', background: '#ffe4e6', color: '#a64036', padding: '2px 8px', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 800, marginBottom: '6px' }}>
                     DAY {day}
                   </div>
                   <div style={{ fontSize: '0.84rem', fontWeight: 600, color: '#1e293b', lineHeight: 1.4 }}>

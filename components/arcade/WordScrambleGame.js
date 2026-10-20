@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import RewardedAdModal from '@/components/arcade/RewardedAdModal';
+
 
 const LOVE_WORDS = [
   { word: 'SOULMATE', hint: '💞 Your perfect match forever' },
@@ -32,7 +32,7 @@ export default function WordScrambleGame({ onGameOver, challengeTargetScore = nu
   const [solved, setSolved] = useState(0);
   const [hintsLeft, setHintsLeft] = useState(3);       // per-game hint tokens
   const [revealedSlots, setRevealedSlots] = useState([]); // indices already placed by hints
-  const [showAdModal, setShowAdModal] = useState(false);
+
 
   const currentWord = words[currentWordIdx];
 
@@ -187,7 +187,7 @@ export default function WordScrambleGame({ onGameOver, challengeTargetScore = nu
       </div>
 
       {gameState === 'ready' && (
-        <div style={{ padding: '2rem 1rem', background: '#fff1f2', borderRadius: '24px', border: '2px dashed #f43f5e' }}>
+        <div style={{ padding: '2rem 1rem', background: '#fff1f2', borderRadius: '24px', border: '2px dashed #a64036' }}>
           <span style={{ fontSize: '3.5rem', display: 'block', marginBottom: '0.5rem' }}>🔡💌</span>
           <h2 style={{ fontSize: '1.6rem', color: '#881337', fontWeight: 800, margin: '0 0 0.5rem' }}>Love Word Scramble!</h2>
           <p style={{ color: '#9f1239', fontSize: '0.95rem', maxWidth: '400px', margin: '0 auto 1.5rem', lineHeight: 1.6 }}>
@@ -202,7 +202,7 @@ export default function WordScrambleGame({ onGameOver, challengeTargetScore = nu
       {gameState === 'playing' && currentWord && (
         <div style={{ background: flashBg, borderRadius: '24px', border: `1px solid ${flash === 'correct' ? '#86efac' : flash === 'wrong' ? '#fca5a5' : '#fecdd3'}`, padding: '1.5rem 1rem', boxShadow: '0 10px 30px rgba(0,0,0,0.04)', transition: 'background 0.2s ease' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#7c3aed', background: '#f5f3ff', padding: '0.3rem 0.8rem', borderRadius: '999px' }}>
+            <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#43332b', background: '#f5f3ff', padding: '0.3rem 0.8rem', borderRadius: '999px' }}>
               Word {currentWordIdx + 1} of {words.length}
             </div>
             {/* Hint Tokens */}
@@ -227,7 +227,7 @@ export default function WordScrambleGame({ onGameOver, challengeTargetScore = nu
                   onPointerDown={() => letter && !isHintSlot && tapSelected(i)}
                   style={{
                     width: '2.6rem', height: '2.6rem',
-                    background: isHintSlot ? 'linear-gradient(135deg, #f59e0b, #d97706)' : letter ? '#7c3aed' : 'rgba(124,58,237,0.08)',
+                    background: isHintSlot ? 'linear-gradient(135deg, #f59e0b, #d97706)' : letter ? '#f8f3eb' : 'rgba(124,58,237,0.08)',
                     color: '#ffffff',
                     border: `2px solid ${isHintSlot ? '#d97706' : letter ? '#7c3aed' : '#c4b5fd'}`,
                     borderRadius: '12px',
@@ -351,16 +351,10 @@ export default function WordScrambleGame({ onGameOver, challengeTargetScore = nu
         </div>
       )}
 
-      {/* Rewarded Ad Modal */}
-      <RewardedAdModal
-        isOpen={showAdModal}
-        onClose={() => setShowAdModal(false)}
-        rewardTitle="+2 Free Hints"
-        onRewardGranted={() => setHintsLeft((prev) => prev + 2)}
-      />
+
 
       {gameState === 'gameover' && (
-        <div style={{ padding: '2rem 1rem', background: '#ffffff', borderRadius: '24px', border: '2px solid #7c3aed', boxShadow: '0 12px 36px rgba(0,0,0,0.08)' }}>
+        <div style={{ padding: '2rem 1rem', background: '#ffffff', borderRadius: '24px', border: '2px solid #f8f3eb', boxShadow: '0 12px 36px rgba(0,0,0,0.08)' }}>
           <span style={{ fontSize: '3.5rem', display: 'block', marginBottom: '0.5rem' }}>🏆</span>
           <h2 style={{ fontSize: '1.75rem', color: '#1f2937', fontWeight: 900, margin: '0 0 0.25rem' }}>Scramble Complete!</h2>
           <div style={{ fontSize: '0.85rem', fontWeight: 800, color: getRank(score).color, marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>

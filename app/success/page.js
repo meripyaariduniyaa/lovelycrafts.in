@@ -183,13 +183,13 @@ function SuccessContent() {
             <span style={{ fontSize: '1.1rem' }}>💖</span>
             <span style={{ fontWeight: 900, fontSize: '0.95rem', color: '#0f172a' }}>LovelyCrafts</span>
           </div>
-          <span style={{ background: '#dcfce7', border: '1px solid #86efac', color: '#15803d', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '50px' }}>
+          <span style={{ background: '#dcfce7', border: '1px solid #86efac', color: '#43332b', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '50px' }}>
             ✓ Unlocked
           </span>
         </div>
       </header>
 
-      <main style={{ maxWidth: '520px', margin: '0 auto', padding: '1.5rem 1.25rem' }}>
+      <main className="lc-page-shell" style={{ maxWidth: '520px', margin: '0 auto', padding: '1.5rem 1.25rem' }}>
 
         {/* Celebration Hero Card */}
         <motion.div
@@ -347,7 +347,7 @@ function SuccessContent() {
               width: '100%',
               padding: '12px',
               borderRadius: '14px',
-              background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+              background: 'linear-gradient(135deg, #16a34a 0%, #f8f3eb 100%)',
               color: '#ffffff',
               fontSize: '0.92rem',
               fontWeight: 800,
@@ -389,7 +389,7 @@ function SuccessContent() {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
-              background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+              background: 'linear-gradient(135deg, #25d366 0%, #128c7e 100%)',
               color: '#ffffff',
               padding: '15px 20px',
               borderRadius: '16px',

@@ -67,7 +67,7 @@ const FAQ_CATEGORIES = [
     faqs: [
       {
         q: 'What payment methods do you accept?',
-        a: 'We process payments securely via Razorpay, supporting Google Pay, PhonePe, Paytm, UPI, all major Credit/Debit cards, and Net Banking.',
+        a: 'We process payments securely via Razorpay or Cashfree, supporting UPI, major Credit/Debit cards, and Net Banking.',
       },
       {
         q: 'What is your refund policy?',
@@ -107,7 +107,7 @@ export default function FAQPage() {
   };
 
   return (
-    <main className="shell" style={{ padding: '2.5rem 1rem 5rem', background: '#fafaf9', minHeight: '100vh' }}>
+    <main className="shell lc-page-shell" style={{ padding: '2.5rem 1rem 5rem', background: '#fafaf9', minHeight: '100vh' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

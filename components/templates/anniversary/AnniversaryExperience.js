@@ -42,7 +42,7 @@ export default function AnniversaryExperience({ note, isPreview = false, onReach
   const goNext = () => setScene((s) => s + 1);
 
   return (
-    <div style={{ background: '#080810', minHeight: '100vh', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
+    <div style={{ background: '#f8f3eb', minHeight: '100vh', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Dancing+Script:wght@600;700&family=Caveat:wght@500;700&display=swap');
         @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
@@ -80,7 +80,7 @@ function SceneCelebration({ name, onNext }) {
 
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #1a1000 0%, #080810 100%)', position: 'relative', overflow: 'hidden', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #f8f3eb 0%, #f8f3eb 100%)', position: 'relative', overflow: 'hidden', padding: '2rem' }}>
       {confetti.map((c) => (
         <div key={c.id} style={{ position: 'absolute', top: 0, left: c.left, fontSize: c.size, color: c.color, animation: `confettiFall ${c.dur} ${c.delay} ease-in infinite`, pointerEvents: 'none' }}>■</div>
       ))}
@@ -147,7 +147,7 @@ function SceneTimer({ anniversaryDateStr, firstMetDateStr, name, onNext }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #1a1000 0%, #080810 100%)', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}>
       <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ color: '#94a3b8', fontSize: '0.78rem', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
         ⏰ Time Together
       </motion.p>
@@ -194,7 +194,7 @@ function SceneTimer({ anniversaryDateStr, firstMetDateStr, name, onNext }) {
 /* ── SCENE 3: Timeline ── */
 function SceneTimeline({ journey, photos, name, onNext }) {
   const validEvents = journey.filter((j) => j.date && j.memory);
-  if (validEvents.length === 0) { return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#080810', padding: '2rem', flexDirection: 'column', gap: '1.5rem' }}>
+  if (validEvents.length === 0) { return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f3eb', padding: '2rem', flexDirection: 'column', gap: '1.5rem' }}>
     <p style={{ color: '#64748b', textAlign: 'center' }}>Your journey is still being written... 💕</p>
     <button onClick={onNext} style={{ padding: '14px 32px', borderRadius: '50px', background: 'linear-gradient(135deg,#fbbf24,#92400e)', border: 'none', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Continue →</button>
   </motion.div>; }
@@ -203,7 +203,7 @@ function SceneTimeline({ journey, photos, name, onNext }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #1a1200 0%, #080810 100%)', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}>
       <p style={{ color: '#64748b', fontSize: '0.78rem', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>🗺️ Our Journey</p>
 
       {/* Timeline */}
@@ -215,7 +215,7 @@ function SceneTimeline({ journey, photos, name, onNext }) {
           <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}
             style={{ display: 'flex', gap: '1rem', marginBottom: '1.25rem', paddingLeft: '44px', position: 'relative' }}>
             {/* Dot */}
-            <div style={{ position: 'absolute', left: 11, top: 6, width: 20, height: 20, borderRadius: '50%', background: '#fbbf24', border: '3px solid #080810', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem' }}>
+            <div style={{ position: 'absolute', left: 11, top: 6, width: 20, height: 20, borderRadius: '50%', background: '#fbbf24', border: '3px solid #f8f3eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem' }}>
               {i === current ? '★' : '●'}
             </div>
             <div style={{ background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.15)', borderRadius: '12px', padding: '0.85rem 1rem', flex: 1 }}>
@@ -250,7 +250,7 @@ function SceneHeartBalloons({ reasons, onNext }) {
   const [popped, setPopped] = useState(new Set());
   const validReasons = reasons.filter(Boolean);
   if (validReasons.length === 0) {
-    return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#080810', padding: '2rem', flexDirection: 'column', gap: '1.5rem' }}>
+    return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f3eb', padding: '2rem', flexDirection: 'column', gap: '1.5rem' }}>
       <div style={{ fontSize: '3rem' }}>❤️</div>
       <p style={{ color: '#fda4af', textAlign: 'center', fontFamily: "'Dancing Script', cursive", fontSize: '1.3rem' }}>I love you more than words can say 💕</p>
       <button onClick={onNext} style={{ padding: '14px 32px', borderRadius: '50px', background: 'linear-gradient(135deg,#f43f5e,#be123c)', border: 'none', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Continue →</button>
@@ -262,7 +262,7 @@ function SceneHeartBalloons({ reasons, onNext }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #1a0505 0%, #080810 100%)', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}>
       <p style={{ color: '#64748b', fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>💕 Pop the Hearts!</p>
       <p style={{ color: '#475569', fontSize: '0.85rem', marginBottom: '2rem' }}>Each heart reveals a reason why I love you</p>
 
@@ -311,7 +311,7 @@ function SceneChampagne({ name, senderName, onNext }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 60%, #1a1200 0%, #080810 100%)', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 60%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
 
       {/* Champagne glasses */}
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end', marginBottom: '2rem', position: 'relative' }}>
@@ -378,7 +378,7 @@ function SceneEnvelope({ onOpen }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #1a1000 0%, #080810 100%)', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} style={{ color: '#94a3b8', fontSize: '0.85rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
         A love letter, sealed with warmth 💌
       </motion.p>
@@ -416,9 +416,9 @@ function SceneLetter({ letter, name, senderName, onNext }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#080810', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f3eb', padding: '2rem' }}>
       <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} style={{ maxWidth: '400px', width: '100%' }}>
-        <div style={{ background: 'linear-gradient(180deg,#fef9f0,#fdf6e8)', borderRadius: '4px', padding: '1.75rem', boxShadow: '0 8px 40px rgba(0,0,0,0.5)', minHeight: '260px', position: 'relative' }}>
+        <div style={{ background: 'linear-gradient(180deg,#fef9f0,#fdf6e8)', borderRadius: '4px', padding: '1.75rem', boxShadow: '0 8px 40px rgba(247, 238, 228, 0.96)', minHeight: '260px', position: 'relative' }}>
           {Array.from({ length: 12 }, (_, i) => <div key={i} style={{ position: 'absolute', left: '1.75rem', right: '1.75rem', top: `${3 + i * 1.8}rem`, height: 1, background: 'rgba(120,80,40,0.1)' }} />)}
           <p style={{ fontFamily: "'Caveat', cursive", fontSize: '0.9rem', color: '#92400e', margin: '0 0 0.75rem', position: 'relative' }}>My dearest {name},</p>
           <div style={{ position: 'relative' }}>
@@ -468,7 +468,7 @@ function SceneLoveMeter({ name, onEnd }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #1a0505 0%, #080810 100%)', padding: '2rem', userSelect: 'none' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem', userSelect: 'none' }}>
 
       {!done ? (
         <>

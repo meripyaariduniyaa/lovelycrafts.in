@@ -934,13 +934,13 @@ export default function BusinessLandingClient() {
         /* ── GLOBAL WRAPPER & ATMOSPHERE ── */
         .b2b-wrapper {
           min-height: 100vh;
-          background-color: #05050e;
+          background-color: #f8f3eb;
           background-image: 
             radial-gradient(ellipse 90% 60% at 50% -10%, rgba(244, 63, 94, 0.15), transparent 70%),
             radial-gradient(circle 600px at 100% 20%, rgba(139, 92, 246, 0.12), transparent 60%),
             radial-gradient(circle 700px at 0% 60%, rgba(236, 72, 153, 0.08), transparent 60%),
             radial-gradient(circle 800px at 50% 100%, rgba(99, 102, 241, 0.08), transparent 70%);
-          color: #f1f5f9;
+          color: #57463d;
           font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
           padding-bottom: 100px;
           position: relative;
@@ -987,7 +987,7 @@ export default function BusinessLandingClient() {
           border-radius: 9999px;
           background: rgba(244, 63, 94, 0.08);
           border: 1px solid rgba(244, 63, 94, 0.3);
-          color: #fda4af;
+          color: #9d382f;
           font-size: 0.85rem;
           font-weight: 700;
           margin-bottom: 28px;
@@ -1019,7 +1019,7 @@ export default function BusinessLandingClient() {
           line-height: 1.12;
           letter-spacing: -0.035em;
           margin-bottom: 24px;
-          color: #ffffff;
+          color: #43332b;
           max-width: 950px;
           margin-left: auto;
           margin-right: auto;
@@ -1027,7 +1027,7 @@ export default function BusinessLandingClient() {
         }
 
         .gradient-text {
-          background: linear-gradient(135deg, #f43f5e 0%, #fb7185 30%, #e879f9 70%, #a855f7 100%);
+          background: linear-gradient(135deg, #f7eee4 0%, #fb7185 30%, #e879f9 70%, #f7eee4 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-size: 250% auto;
@@ -1042,7 +1042,7 @@ export default function BusinessLandingClient() {
 
         .b2b-hero-subtitle {
           font-size: 1.2rem;
-          color: #94a3b8;
+          color: #79675c;
           max-width: 740px;
           margin: 0 auto 44px;
           line-height: 1.75;
@@ -1065,8 +1065,8 @@ export default function BusinessLandingClient() {
           gap: 10px;
           padding: 16px 36px;
           border-radius: 14px;
-          background: linear-gradient(135deg, #f43f5e 0%, #e11d48 50%, #be123c 100%);
-          color: #ffffff;
+          background: linear-gradient(135deg, #f7eee4 0%, #f7eee4 50%, #f7eee4 100%);
+          color: #43332b;
           font-weight: 800;
           font-size: 1.05rem;
           text-decoration: none;
@@ -1109,7 +1109,7 @@ export default function BusinessLandingClient() {
           border-radius: 14px;
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.14);
-          color: #f1f5f9;
+          color: #57463d;
           font-weight: 700;
           font-size: 1.02rem;
           cursor: pointer;
@@ -1150,12 +1150,12 @@ export default function BusinessLandingClient() {
           align-items: center;
           gap: 10px;
           font-size: 0.9rem;
-          color: #cbd5e1;
+          color: #726157;
           font-weight: 500;
         }
 
         .value-item strong {
-          color: #ffffff;
+          color: #43332b;
           font-weight: 700;
         }
 
@@ -1191,14 +1191,14 @@ export default function BusinessLandingClient() {
         .section-heading {
           font-size: 2.75rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
           margin-bottom: 16px;
           letter-spacing: -0.03em;
           line-height: 1.15;
         }
 
         .section-desc {
-          color: #94a3b8;
+          color: #79675c;
           font-size: 1.08rem;
           max-width: 640px;
           margin: 0 auto;
@@ -1207,7 +1207,7 @@ export default function BusinessLandingClient() {
         }
 
         .glass-panel {
-          background: rgba(15, 17, 30, 0.7);
+          background: rgba(247, 238, 228, 0.96);
           border: 1px solid rgba(255, 255, 255, 0.1);
           box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
           border-radius: 28px;
@@ -1233,7 +1233,7 @@ export default function BusinessLandingClient() {
           border-radius: 14px;
           background: rgba(255, 255, 255, 0.04);
           border: 1px solid rgba(255, 255, 255, 0.08);
-          color: #94a3b8;
+          color: #79675c;
           font-weight: 600;
           font-size: 0.94rem;
           cursor: pointer;
@@ -1243,7 +1243,7 @@ export default function BusinessLandingClient() {
 
         .showcase-tab:hover {
           background: rgba(255, 255, 255, 0.08);
-          color: #f1f5f9;
+          color: #57463d;
           border-color: rgba(255, 255, 255, 0.18);
           transform: translateY(-2px);
         }
@@ -1251,7 +1251,7 @@ export default function BusinessLandingClient() {
         .showcase-tab.active {
           background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
           border-color: rgba(244, 63, 94, 0.5);
-          color: #ffffff;
+          color: #43332b;
           font-weight: 800;
           box-shadow: 0 8px 30px rgba(244, 63, 94, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
           transform: translateY(-2px);
@@ -1297,14 +1297,14 @@ export default function BusinessLandingClient() {
         .showcase-title {
           font-size: 2.2rem;
           font-weight: 900;
-          color: #ffffff !important;
+          color: #43332b !important;
           margin-bottom: 16px;
           line-height: 1.22;
           letter-spacing: -0.025em;
         }
 
         .showcase-text {
-          color: #cbd5e1 !important;
+          color: #726157 !important;
           font-size: 1.05rem;
           line-height: 1.7;
           margin-bottom: 28px;
@@ -1322,7 +1322,7 @@ export default function BusinessLandingClient() {
           display: flex;
           align-items: center;
           gap: 12px;
-          color: #e2e8f0;
+          color: #62534a;
           font-size: 0.96rem;
           font-weight: 500;
         }
@@ -1349,7 +1349,7 @@ export default function BusinessLandingClient() {
           border-radius: 10px;
           background: rgba(244, 63, 94, 0.12);
           border: 1px solid rgba(244, 63, 94, 0.35);
-          color: #fda4af;
+          color: #9d382f;
           font-weight: 700;
           font-size: 0.92rem;
           text-decoration: none;
@@ -1358,7 +1358,7 @@ export default function BusinessLandingClient() {
 
         .b2b-btn-small:hover {
           background: rgba(244, 63, 94, 0.22);
-          color: #ffffff;
+          color: #43332b;
           transform: translateX(3px);
         }
 
@@ -1370,7 +1370,7 @@ export default function BusinessLandingClient() {
 
         .preview-phone-frame {
           width: 320px;
-          background: #090a14;
+          background: #f7eee4;
           border-radius: 44px;
           padding: 12px;
           border: 2px solid rgba(255, 255, 255, 0.14);
@@ -1382,7 +1382,7 @@ export default function BusinessLandingClient() {
         }
 
         .phone-screen {
-          background: linear-gradient(180deg, #16182c 0%, #0d0f1e 100%);
+          background: linear-gradient(180deg, #f7eee4 0%, #f7eee4 100%);
           border-radius: 34px;
           padding: 22px 18px;
           min-height: 420px;
@@ -1397,7 +1397,7 @@ export default function BusinessLandingClient() {
           gap: 8px;
           font-size: 0.8rem;
           font-weight: 700;
-          color: #cbd5e1;
+          color: #726157;
           padding-bottom: 14px;
           border-bottom: 1px solid rgba(255, 255, 255, 0.08);
           margin-bottom: 16px;
@@ -1407,7 +1407,7 @@ export default function BusinessLandingClient() {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background: #f43f5e;
+          background: #f7eee4;
           box-shadow: 0 0 12px #f43f5e;
         }
 
@@ -1433,14 +1433,14 @@ export default function BusinessLandingClient() {
         .preview-employee-name {
           font-size: 1.35rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
           margin: 12px 0 4px;
           letter-spacing: -0.02em;
         }
 
         .preview-occasion-text {
           font-size: 0.85rem;
-          color: #94a3b8;
+          color: #79675c;
           margin-bottom: 18px;
         }
 
@@ -1485,7 +1485,7 @@ export default function BusinessLandingClient() {
         .scene-box-cta {
           font-size: 0.76rem;
           font-weight: 700;
-          color: #fda4af;
+          color: #9d382f;
           background: rgba(244, 63, 94, 0.15);
           padding: 4px 10px;
           border-radius: 999px;
@@ -1543,14 +1543,14 @@ export default function BusinessLandingClient() {
         .step-title {
           font-size: 1.18rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #43332b;
           margin-bottom: 10px;
           letter-spacing: -0.01em;
         }
 
         .step-desc {
           font-size: 0.9rem;
-          color: #94a3b8;
+          color: #79675c;
           line-height: 1.65;
         }
 
@@ -1561,7 +1561,7 @@ export default function BusinessLandingClient() {
         }
 
         .mockup-header-bar {
-          background: rgba(10, 12, 22, 0.8);
+          background: rgba(247, 238, 228, 0.96);
           padding: 14px 24px;
           display: flex;
           align-items: center;
@@ -1580,13 +1580,13 @@ export default function BusinessLandingClient() {
           border-radius: 50%;
         }
 
-        .dot.red { background: #f43f5e; box-shadow: 0 0 6px #f43f5e; }
+        .dot.red { background: #f7eee4; box-shadow: 0 0 6px #f7eee4; }
         .dot.yellow { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
         .dot.green { background: #10b981; box-shadow: 0 0 6px #10b981; }
 
         .mockup-address {
           font-size: 0.8rem;
-          color: #94a3b8;
+          color: #79675c;
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.08);
           padding: 4px 16px;
@@ -1601,7 +1601,7 @@ export default function BusinessLandingClient() {
         }
 
         .mockup-sidebar {
-          background: rgba(10, 12, 22, 0.4);
+          background: rgba(247, 238, 228, 0.96);
           padding: 24px 18px;
           border-right: 1px solid rgba(255, 255, 255, 0.06);
           display: flex;
@@ -1612,7 +1612,7 @@ export default function BusinessLandingClient() {
         .mockup-brand {
           font-size: 0.92rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
           margin-bottom: 20px;
           display: flex;
           align-items: center;
@@ -1621,7 +1621,7 @@ export default function BusinessLandingClient() {
 
         .mockup-nav-item {
           font-size: 0.84rem;
-          color: #94a3b8;
+          color: #79675c;
           padding: 9px 14px;
           border-radius: 8px;
           font-weight: 500;
@@ -1631,7 +1631,7 @@ export default function BusinessLandingClient() {
         .mockup-nav-item.active {
           background: rgba(244, 63, 94, 0.15);
           border: 1px solid rgba(244, 63, 94, 0.3);
-          color: #fda4af;
+          color: #9d382f;
           font-weight: 700;
         }
 
@@ -1666,7 +1666,7 @@ export default function BusinessLandingClient() {
 
         .stat-label {
           font-size: 0.72rem;
-          color: #94a3b8;
+          color: #79675c;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -1675,7 +1675,7 @@ export default function BusinessLandingClient() {
         .stat-val {
           font-size: 1.4rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
         }
 
         .mockup-queue-card {
@@ -1695,7 +1695,7 @@ export default function BusinessLandingClient() {
         .queue-header h4 {
           font-size: 0.98rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #43332b;
           margin: 0;
         }
 
@@ -1738,20 +1738,20 @@ export default function BusinessLandingClient() {
         }
 
         .queue-info strong {
-          color: #f1f5f9;
+          color: #57463d;
           font-weight: 700;
         }
 
         .queue-info span {
-          color: #94a3b8;
+          color: #79675c;
           font-size: 0.74rem;
         }
 
         .queue-btn {
           font-size: 0.76rem;
           font-weight: 800;
-          color: #ffffff;
-          background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+          color: #43332b;
+          background: linear-gradient(135deg, #f7eee4 0%, #f7eee4 100%);
           padding: 6px 14px;
           border-radius: 8px;
           cursor: pointer;
@@ -1792,14 +1792,14 @@ export default function BusinessLandingClient() {
         .benefit-title {
           font-size: 1.12rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #43332b;
           margin-bottom: 10px;
           letter-spacing: -0.01em;
         }
 
         .benefit-desc {
           font-size: 0.88rem;
-          color: #94a3b8;
+          color: #79675c;
           line-height: 1.65;
         }
 
@@ -1812,7 +1812,7 @@ export default function BusinessLandingClient() {
         .corporate-plan-card {
           max-width: 960px;
           margin: 0 auto;
-          background: linear-gradient(180deg, rgba(244, 63, 94, 0.08) 0%, rgba(15, 17, 30, 0.85) 100%);
+          background: linear-gradient(180deg, rgba(244, 63, 94, 0.08) 0%, rgba(247, 238, 228, 0.96) 100%);
           border: 1.5px solid rgba(244, 63, 94, 0.4);
           border-radius: 28px;
           padding: 48px;
@@ -1831,8 +1831,8 @@ export default function BusinessLandingClient() {
         }
 
         .pricing-popular-badge-static {
-          background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
-          color: #ffffff;
+          background: linear-gradient(135deg, #f7eee4 0%, #f7eee4 100%);
+          color: #43332b;
           font-size: 0.8rem;
           font-weight: 800;
           letter-spacing: 0.04em;
@@ -1844,7 +1844,7 @@ export default function BusinessLandingClient() {
         .plan-billing-badge {
           background: rgba(255, 255, 255, 0.06);
           border: 1px solid rgba(255, 255, 255, 0.12);
-          color: #94a3b8;
+          color: #79675c;
           font-size: 0.8rem;
           font-weight: 700;
           padding: 5px 14px;
@@ -1871,27 +1871,27 @@ export default function BusinessLandingClient() {
         .price-number-row .currency {
           font-size: 2.2rem;
           font-weight: 800;
-          color: #fda4af;
+          color: #9d382f;
         }
 
         .price-number-row .price-amount {
           font-size: 3.8rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
           line-height: 1;
           letter-spacing: -0.03em;
         }
 
         .price-number-row .price-period {
           font-size: 1rem;
-          color: #94a3b8;
+          color: #79675c;
           font-weight: 600;
         }
 
         .price-subtext {
           margin: 10px 0 0;
           font-size: 1.05rem;
-          color: #cbd5e1;
+          color: #726157;
         }
 
         .price-subtext strong {
@@ -1912,7 +1912,7 @@ export default function BusinessLandingClient() {
         .pill-label {
           font-size: 0.76rem;
           font-weight: 700;
-          color: #fda4af;
+          color: #9d382f;
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
@@ -1920,12 +1920,12 @@ export default function BusinessLandingClient() {
         .pill-value {
           font-size: 1.6rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
         }
 
         .pill-desc {
           font-size: 0.8rem;
-          color: #94a3b8;
+          color: #79675c;
         }
 
         .plan-inclusions-grid {
@@ -1958,7 +1958,7 @@ export default function BusinessLandingClient() {
 
         .inclusion-item strong {
           display: block;
-          color: #ffffff;
+          color: #43332b;
           font-size: 1.02rem;
           font-weight: 800;
           margin-bottom: 4px;
@@ -1967,13 +1967,13 @@ export default function BusinessLandingClient() {
         .inclusion-item p {
           margin: 0;
           font-size: 0.88rem;
-          color: #94a3b8;
+          color: #79675c;
           line-height: 1.55;
         }
 
         /* Rules & Billing Example */
         .plan-rules-box {
-          background: rgba(10, 12, 22, 0.6);
+          background: rgba(247, 238, 228, 0.96);
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 20px;
           padding: 24px 28px;
@@ -1983,7 +1983,7 @@ export default function BusinessLandingClient() {
         .rules-heading {
           font-size: 1rem;
           font-weight: 800;
-          color: #ffffff;
+          color: #43332b;
           margin: 0 0 16px;
         }
 
@@ -1998,12 +1998,12 @@ export default function BusinessLandingClient() {
           display: flex;
           gap: 10px;
           font-size: 0.86rem;
-          color: #cbd5e1;
+          color: #726157;
           line-height: 1.5;
         }
 
         .rule-point strong {
-          color: #ffffff;
+          color: #43332b;
         }
 
         .rule-icon {
@@ -2022,7 +2022,7 @@ export default function BusinessLandingClient() {
           display: inline-block;
           font-size: 0.74rem;
           font-weight: 800;
-          color: #fda4af;
+          color: #9d382f;
           margin-bottom: 6px;
           text-transform: uppercase;
           letter-spacing: 0.04em;
@@ -2031,12 +2031,12 @@ export default function BusinessLandingClient() {
         .billing-example-banner p {
           margin: 0;
           font-size: 0.92rem;
-          color: #e2e8f0;
+          color: #62534a;
           line-height: 1.6;
         }
 
         .billing-example-banner code {
-          background: rgba(0, 0, 0, 0.4);
+          background: rgba(247, 238, 228, 0.96);
           padding: 2px 8px;
           border-radius: 6px;
           color: #fb7185;
@@ -2059,7 +2059,7 @@ export default function BusinessLandingClient() {
 
         .form-card {
           padding: 48px;
-          background: rgba(15, 17, 30, 0.75);
+          background: rgba(247, 238, 228, 0.96);
           border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
@@ -2084,7 +2084,7 @@ export default function BusinessLandingClient() {
         .form-group label {
           font-size: 0.85rem;
           font-weight: 700;
-          color: #cbd5e1;
+          color: #726157;
           letter-spacing: 0.01em;
         }
 
@@ -2095,7 +2095,7 @@ export default function BusinessLandingClient() {
           border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: 12px;
           padding: 13px 16px;
-          color: #ffffff;
+          color: #43332b;
           font-size: 0.96rem;
           font-family: inherit;
           outline: none;
@@ -2104,8 +2104,8 @@ export default function BusinessLandingClient() {
         }
 
         .form-group select option {
-          background: #111322;
-          color: #ffffff;
+          background: #f7eee4;
+          color: #43332b;
         }
 
         .form-group input::placeholder,
@@ -2137,13 +2137,13 @@ export default function BusinessLandingClient() {
           padding: 10px 14px;
           border-radius: 10px;
           cursor: pointer;
-          color: #94a3b8;
+          color: #79675c;
           transition: all 0.2s ease;
         }
 
         .checkbox-pill:hover {
           background: rgba(255, 255, 255, 0.07);
-          color: #f1f5f9;
+          color: #57463d;
           border-color: rgba(255, 255, 255, 0.16);
         }
 
@@ -2152,7 +2152,7 @@ export default function BusinessLandingClient() {
           align-items: center;
           gap: 12px;
           font-size: 0.85rem;
-          color: #94a3b8;
+          color: #79675c;
           cursor: pointer;
         }
 
@@ -2198,12 +2198,12 @@ export default function BusinessLandingClient() {
         .success-title {
           font-size: 1.8rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
           margin-bottom: 12px;
         }
 
         .success-desc {
-          color: #cbd5e1;
+          color: #726157;
           font-size: 1.05rem;
           line-height: 1.7;
           max-width: 520px;
@@ -2243,7 +2243,7 @@ export default function BusinessLandingClient() {
           padding: 22px 28px;
           background: transparent;
           border: none;
-          color: #ffffff;
+          color: #43332b;
           font-weight: 700;
           font-size: 1.05rem;
           text-align: left;
@@ -2261,7 +2261,7 @@ export default function BusinessLandingClient() {
 
         .faq-answer {
           padding: 0 28px 24px;
-          color: #cbd5e1;
+          color: #726157;
           font-size: 0.95rem;
           line-height: 1.75;
         }
@@ -2270,7 +2270,7 @@ export default function BusinessLandingClient() {
         .modal-backdrop {
           position: fixed;
           inset: 0;
-          background: rgba(4, 5, 12, 0.85);
+          background: rgba(247, 238, 228, 0.96);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           z-index: 10000;
@@ -2286,7 +2286,7 @@ export default function BusinessLandingClient() {
           max-height: 90vh;
           overflow-y: auto;
           padding: 40px;
-          background: #0f1122;
+          background: #f7eee4;
           border: 1px solid rgba(244, 63, 94, 0.3);
           border-radius: 28px;
           box-shadow: 
@@ -2320,7 +2320,7 @@ export default function BusinessLandingClient() {
         .modal-header h3 {
           font-size: 1.55rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
           margin: 0;
           letter-spacing: -0.02em;
         }
@@ -2328,7 +2328,7 @@ export default function BusinessLandingClient() {
         .close-btn {
           background: rgba(255, 255, 255, 0.08);
           border: 1px solid rgba(255, 255, 255, 0.12);
-          color: #94a3b8;
+          color: #79675c;
           font-size: 1.1rem;
           cursor: pointer;
           width: 36px;
@@ -2343,7 +2343,7 @@ export default function BusinessLandingClient() {
 
         .close-btn:hover {
           background: rgba(244, 63, 94, 0.2);
-          color: #ffffff;
+          color: #43332b;
           border-color: rgba(244, 63, 94, 0.4);
         }
 
@@ -2366,13 +2366,13 @@ export default function BusinessLandingClient() {
         .demo-success h4 {
           font-size: 1.6rem;
           font-weight: 900;
-          color: #ffffff;
+          color: #43332b;
           margin-bottom: 12px;
         }
 
         .demo-success p {
           font-size: 1rem;
-          color: #cbd5e1;
+          color: #726157;
           line-height: 1.7;
           margin-bottom: 28px;
         }
@@ -2459,6 +2459,188 @@ export default function BusinessLandingClient() {
           }
           .showcase-card {
             padding: 28px 20px;
+          }
+        }
+
+        /* LovelyCrafts shared warm public-site theme */
+        .b2b-wrapper {
+          background-color: #f8f3eb;
+          background-image:
+            radial-gradient(ellipse 90% 55% at 50% -10%, rgba(190, 92, 66, 0.12), transparent 70%),
+            radial-gradient(circle 650px at 100% 20%, rgba(215, 165, 126, 0.12), transparent 62%),
+            radial-gradient(circle 750px at 0% 65%, rgba(190, 92, 66, 0.07), transparent 62%);
+          color: #46342b;
+          font-family: var(--font-playfair), 'Inter', sans-serif;
+        }
+
+        .b2b-wrapper::before {
+          background-image:
+            linear-gradient(to right, rgba(94, 63, 45, 0.035) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(94, 63, 45, 0.035) 1px, transparent 1px);
+          mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, #000 5%, transparent 100%);
+          -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, #000 5%, transparent 100%);
+        }
+
+        .b2b-hero-title,
+        .section-heading,
+        .showcase-title,
+        .benefit-title,
+        .step-title,
+        .rules-heading,
+        .modal-header h3,
+        .demo-success h4,
+        .success-title {
+          color: #432e24;
+          font-family: var(--font-playfair), Georgia, serif;
+          text-shadow: none;
+        }
+
+        .b2b-hero-subtitle,
+        .section-desc,
+        .showcase-text,
+        .benefit-desc,
+        .step-desc,
+        .price-subtext,
+        .demo-success p { color: #746258; }
+
+        .hero-badge-pill,
+        .section-tag,
+        .highlight-pill,
+        .showcase-badge,
+        .preview-badge-row {
+          background: #f7e9df;
+          border-color: #e8cdbb;
+          color: #8e4437;
+          box-shadow: 0 8px 22px rgba(91, 58, 39, 0.06);
+        }
+
+        .gradient-text {
+          background-image: linear-gradient(115deg, #a64036 0%, #d36b4f 48%, #e3a052 100%);
+        }
+
+        .b2b-btn-primary,
+        .b2b-btn-small,
+        .queue-btn {
+          background: linear-gradient(135deg, #a64036 0%, #c75443 100%);
+          border-color: #96382f;
+          color: #fffaf5;
+          box-shadow: 0 8px 22px rgba(131, 51, 46, 0.2);
+        }
+
+        .b2b-btn-primary,
+        .b2b-btn-small,
+        .queue-btn,
+        .b2b-btn-primary:hover,
+        .b2b-btn-small:hover,
+        .queue-btn:hover { color: #fffaf5; }
+
+        .b2b-btn-primary:hover,
+        .b2b-btn-small:hover,
+        .queue-btn:hover { box-shadow: 0 12px 28px rgba(131, 51, 46, 0.25); }
+
+        .b2b-btn-secondary {
+          background: #fffdf9;
+          border-color: #e5d5c7;
+          color: #61483b;
+        }
+
+        .value-strip,
+        .glass-panel,
+        .showcase-card,
+        .benefit-card,
+        .step-card,
+        .corporate-plan-card,
+        .form-card,
+        .faq-item,
+        .dashboard-hero-mockup {
+          background: rgba(255, 253, 249, 0.94);
+          border-color: #eadfd2;
+          box-shadow: 0 18px 48px rgba(91, 58, 39, 0.08);
+          color: #46342b;
+        }
+
+        .value-item,
+        .value-item strong,
+        .pill-label,
+        .pill-value,
+        .showcase-content,
+        .showcase-highlights,
+        .faq-question,
+        .faq-answer,
+        .inclusion-item,
+        .rule-point,
+        .form-card label,
+        .billing-example-banner { color: #5d493e; }
+
+        .showcase-tabs { background: #efe4d9; border-color: #e5d5c7; }
+        .showcase-tab { color: #715c50; }
+        .showcase-tab.active { background: #fffdf9; color: #43332b; box-shadow: 0 4px 14px rgba(91, 58, 39, 0.1); }
+
+        .form-card input,
+        .form-card select,
+        .form-card textarea,
+        .demo-modal input,
+        .demo-modal select,
+        .demo-modal textarea {
+          background: #fffdf9;
+          border-color: #dfd0c3;
+          color: #46342b;
+        }
+
+        .form-card input:focus,
+        .form-card select:focus,
+        .form-card textarea:focus,
+        .demo-modal input:focus,
+        .demo-modal select:focus,
+        .demo-modal textarea:focus { border-color: #a64036; box-shadow: 0 0 0 3px rgba(166, 64, 54, 0.12); }
+
+        .preview-phone-frame { background: #eadfd2; border-color: #d8c5b3; box-shadow: 0 24px 54px rgba(91, 58, 39, 0.18); }
+        .phone-screen { background: linear-gradient(180deg, #fffdf9 0%, #f8efe5 100%); border-color: #eadfd2; }
+        .preview-top-bar { color: #746258; border-color: #eadfd2; }
+        .preview-employee-name { color: #432e24; }
+        .preview-occasion-text { color: #746258; }
+        .preview-interactive-scene { background: #f5e9dd; border-color: #ead6c6; }
+        .preview-footer-note { color: #78695f; }
+
+        .form-group label,
+        .checkbox-inline,
+        .checkbox-pill { color: #5d493e; }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+          background: #fffdf9;
+          border-color: #dfd0c3;
+          color: #46342b;
+          box-shadow: none;
+        }
+        .form-group select option { background: #fffdf9; color: #43332b; }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: #8a786c; }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus { background: #fffdf9; box-shadow: 0 0 0 3px rgba(166, 64, 54, 0.12); }
+        .checkbox-pill { background: #fffdf9; border-color: #eadfd2; }
+        .checkbox-pill:hover { background: #f7e9df; color: #43332b; border-color: #d8bba6; }
+        .form-alert.error { background: #fff1ed; border-color: #efc2b4; color: #43332b; }
+
+        .modal-backdrop { background: rgba(247, 238, 228, 0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .demo-modal { border-color: #ead8c8; }
+        .demo-modal .form-group label { color: #5d493e; }
+
+        .demo-modal { background: #fffaf3; border-color: #ead8c8; box-shadow: 0 28px 90px rgba(247, 238, 228, 0.96); }
+        .modal-header h3,
+        .demo-success h4 { color: #432e24; }
+        .demo-success p { color: #746258; }
+        .close-btn { background: #f4e8dc; border-color: #e5d5c7; color: #43332b; }
+        .close-btn:hover { background: #ead6c6; color: #43332b; border-color: #d4b6a1; }
+        .b2b-wrapper :focus-visible { outline: 3px solid #a64036; outline-offset: 3px; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .b2b-wrapper *, .b2b-wrapper *::before, .b2b-wrapper *::after {
+            scroll-behavior: auto !important;
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: .01ms !important;
           }
         }
       `}</style>

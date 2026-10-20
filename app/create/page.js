@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { doc, serverTimestamp, setDoc, getDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db } from '@/lib/firebase';
@@ -62,9 +62,9 @@ export default function CreatePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#080810]">
-          <div className="w-10 h-10 rounded-full border-2 border-rose-500 border-t-transparent animate-spin mb-4" />
-          <p className="text-slate-400 text-sm">Loading Studio...</p>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#f8f3eb]">
+          <div className="w-10 h-10 rounded-full border-2 border-[#a83d46] border-t-transparent animate-spin mb-4" />
+          <p className="text-[#746258] text-sm">Loading Studio...</p>
         </div>
       }
     >
@@ -81,6 +81,7 @@ function CreatePageContent() {
   const searchParams = useSearchParams();
   const templateParam = searchParams.get('template');
   const couponParam = searchParams.get('coupon');
+  const editNoteParam = searchParams.get('noteId');
 
   useEffect(() => {
     if (couponParam && typeof window !== 'undefined') {
@@ -143,6 +144,45 @@ function CreatePageContent() {
 
   // Crafting screen note id
   const [createdId, setCreatedId] = useState(null);
+  const [editingNoteId, setEditingNoteId] = useState(null);
+
+  useEffect(() => {
+    if (!editNoteParam) return;
+    let active = true;
+    getDoc(doc(db, 'notes', editNoteParam)).then((snapshot) => {
+      if (!active) return;
+      if (!snapshot.exists()) { setError('This draft could not be found.'); return; }
+      const note = snapshot.data();
+      if (note.is_paid) { router.replace(`/success?id=${encodeURIComponent(editNoteParam)}`); return; }
+      const details = note.custom_details || {};
+      const fill = (values, length) => Array.from({ length }, (_, index) => values?.[index] || '');
+      setSelectedId(note.template || templateParam || 'proposal');
+      setEditingNoteId(editNoteParam);
+      setForm((current) => ({
+        ...current,
+        recipientName: note.recipient_name || '',
+        senderName: details.sender_name || '',
+        relationshipType: details.relationship_type || '',
+        quotation: details.quotation || '',
+        turningAge: details.turning_age || '',
+        birthdayDate: details.birthday_date || '',
+        balloonMessages: fill(details.balloon_messages, 5),
+        anniversaryDate: details.anniversary_date || '',
+        firstMetDate: details.first_met_date || '',
+        journey: details.journey?.length ? details.journey : current.journey,
+        reasons: fill(details.reasons, 5),
+        whatHappenedType: details.what_happened_type || '',
+        originCity: details.origin_city || '',
+        destinationCity: details.destination_city || '',
+        distanceKm: details.distance_km || '',
+        cassettes: details.cassettes?.length ? details.cassettes : current.cassettes,
+        letter: details.letter || note.custom_message || '',
+        images: Array.isArray(note.image_urls) ? note.image_urls : [],
+      }));
+      setScreen('wizard');
+    }).catch(() => { if (active) setError('Unable to load this gift for editing.'); });
+    return () => { active = false; };
+  }, [editNoteParam, router, templateParam]);
 
   // ── SELECT TEMPLATE ──
   const handleSelectTemplate = (id) => {
@@ -205,7 +245,7 @@ function CreatePageContent() {
     setBusy(true);
     setError('');
     try {
-      const docId = nanoid(32);
+      const docId = editingNoteId || nanoid(32);
 
       // Build custom_details per template
       let customDetails = {};
@@ -260,21 +300,29 @@ function CreatePageContent() {
         if (customDetails[k] === '' || customDetails[k] === null) delete customDetails[k];
       });
 
-      await setDoc(doc(db, 'notes', docId), {
-        creator_uid: getDeviceId(),
+      const noteUpdate = {
         recipient_name: form.recipientName.trim(),
         custom_message: form.letter.trim(),
         image_urls: Array.isArray(form.images) ? form.images.filter((img) => typeof img === 'string') : [],
         custom_details: Object.keys(customDetails).length > 0 ? customDetails : null,
-        is_paid: false,
         template: selectedId,
-        custom_slug: null,
         voice_note_url: null,
-        created_at: serverTimestamp(),
-        expires_at: null,
-      });
+        updated_at: serverTimestamp(),
+      };
+      if (editingNoteId) {
+        await updateDoc(doc(db, 'notes', docId), noteUpdate);
+      } else {
+        await setDoc(doc(db, 'notes', docId), {
+          ...noteUpdate,
+          creator_uid: getDeviceId(),
+          is_paid: false,
+          custom_slug: null,
+          created_at: serverTimestamp(),
+          expires_at: null,
+        });
+      }
 
-      if (typeof window !== 'undefined') {
+      if (!editingNoteId && typeof window !== 'undefined') {
         const ids = JSON.parse(localStorage.getItem('created_note_ids') || '[]');
         ids.push(docId);
         localStorage.setItem('created_note_ids', JSON.stringify(ids));
@@ -296,7 +344,7 @@ function CreatePageContent() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ fontFamily: "'Inter', sans-serif", background: 'linear-gradient(180deg, #fff5f8 0%, #fff0f5 50%, #faf0f7 100%)' }}>
+    <div className="lc-create-page relative overflow-hidden" style={{ fontFamily: "'Inter', sans-serif", background: 'linear-gradient(180deg, #fbf7f0 0%, #f8f3eb 55%, #f3e9dd 100%)' }}>
       {/* ── Background Ambient Glows ── */}
       <div
         style={{
@@ -306,7 +354,7 @@ function CreatePageContent() {
           transform: 'translateX(-50%)',
           width: '600px',
           height: '400px',
-          background: 'radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(168, 61, 70, 0.12) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -317,7 +365,7 @@ function CreatePageContent() {
           right: '-5%',
           width: '500px',
           height: '500px',
-          background: 'radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(184, 145, 104, 0.12) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -327,7 +375,7 @@ function CreatePageContent() {
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Dancing+Script:wght@700&display=swap');
         * { box-sizing: border-box; }
         input, textarea, select { outline: none; }
-        input::placeholder, textarea::placeholder { color: #94a3b8; }
+        input::placeholder, textarea::placeholder { color: #79675c; }
         input:focus, textarea:focus { border-color: #f43f5e !important; box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12) !important; }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -353,6 +401,7 @@ function CreatePageContent() {
             error={error}
             setError={setError}
             isLastStep={stepIndex === totalSteps - 1}
+            isEditing={Boolean(editingNoteId)}
           />
         )}
         {screen === 'crafting' && (
@@ -365,6 +414,21 @@ function CreatePageContent() {
           />
         )}
       </AnimatePresence>
+      <style jsx global>{`
+        .lc-create-page { min-height: 70vh; isolation: isolate; color: #43332b; }
+        .lc-create-page .lc-flow-stage { min-height: 70vh; }
+        .lc-create-page input, .lc-create-page textarea, .lc-create-page select {
+          color: #43332b !important; background-color: #fffdf9 !important; border-color: #dfd0c3 !important;
+        }
+        .lc-create-page input::placeholder, .lc-create-page textarea::placeholder { color: #8a786c !important; }
+        .lc-create-page :focus-visible { outline: 3px solid #a83d46; outline-offset: 3px; }
+        @media (max-width: 640px) { .lc-create-page .lc-flow-stage { min-height: 72vh; } }
+        @media (prefers-reduced-motion: reduce) {
+          .lc-create-page *, .lc-create-page *::before, .lc-create-page *::after {
+            animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
@@ -379,7 +443,7 @@ function SelectScreen({ templates, onSelect }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4 }}
-      className="min-h-screen flex flex-col relative z-10"
+      className="lc-flow-stage flex flex-col relative z-10"
     >
       {/* Header */}
       <div className="text-center pt-12 pb-8 px-5">
@@ -454,7 +518,7 @@ function SelectScreen({ templates, onSelect }) {
 
 function TemplateCard({ template, index, onSelect }) {
   return (
-    <motion.button
+          <motion.button
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 + index * 0.08, type: 'spring', stiffness: 260, damping: 20 }}
@@ -547,7 +611,7 @@ function TemplateCard({ template, index, onSelect }) {
 /* ─────────────────────────────────────────────────────────
    SCREEN 2: WIZARD
 ───────────────────────────────────────────────────────── */
-function WizardScreen({ template, steps, stepIndex, direction, form, setField, onNext, onBack, busy, error, setError, isLastStep }) {
+function WizardScreen({ template, steps, stepIndex, direction, form, setField, onNext, onBack, busy, error, setError, isLastStep, isEditing }) {
   const currentStep = steps[stepIndex];
   const accent = template.accentColor;
 
@@ -563,7 +627,7 @@ function WizardScreen({ template, steps, stepIndex, direction, form, setField, o
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.35 }}
-      className="min-h-screen flex flex-col relative z-10"
+      className="lc-flow-stage flex flex-col relative z-10"
     >
       {/* Top Bar */}
       <div
@@ -715,7 +779,7 @@ function WizardScreen({ template, steps, stepIndex, direction, form, setField, o
               Crafting...
             </>
           ) : isLastStep ? (
-            <>✨ Craft My Experience</>
+            <>{isEditing ? '✨ Update My Gift' : '✨ Craft My Experience'}</>
           ) : (
             <>Continue →</>
           )}
@@ -892,7 +956,7 @@ function StepPersonDetails({ templateId, form, setField, accent }) {
           </>
         )}
         {templateId === 'anniversary' && (
-          <div style={{ padding: '14px 16px', borderRadius: '14px', background: 'rgba(255,255,255,0.8)', border: '1px solid #e2e8f0', fontSize: '0.85rem', color: '#475569', fontWeight: 500, boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
+          <div style={{ padding: '14px 16px', borderRadius: '14px', background: 'rgba(255,255,255,0.8)', border: '1px solid #e2e8f0', fontSize: '0.85rem', color: '#43332b', fontWeight: 500, boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
             💡 You'll enter your anniversary dates in the next steps.
           </div>
         )}
@@ -1047,7 +1111,7 @@ function StepBalloons({ form, setField, accent }) {
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
-                background: [accent, '#f43f5e', '#f59e0b', '#a855f7', '#06b6d4'][i % 5] + '20',
+                background: [accent, '#a64036', '#f59e0b', '#f8f3eb', '#06b6d4'][i % 5] + '20',
                 border: `1.5px solid ${[accent, '#f43f5e', '#f59e0b', '#a855f7', '#06b6d4'][i % 5]}`,
                 display: 'flex',
                 alignItems: 'center',
@@ -1099,7 +1163,7 @@ function StepSpecialDates({ form, setField, accent }) {
           <FieldLabel>The Day You First Met (optional)</FieldLabel>
           <TextInput value={form.firstMetDate} onChange={(v) => setField('firstMetDate', v)} placeholder="e.g. June 5, 2020..." />
         </div>
-        <div style={{ padding: '14px 16px', borderRadius: '14px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', fontSize: '0.85rem', color: '#b45309', fontWeight: 600 }}>
+        <div style={{ padding: '14px 16px', borderRadius: '14px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', fontSize: '0.85rem', color: '#a64036', fontWeight: 600 }}>
           🥂 The experience will show a live countdown — years, months, days, hours, minutes & seconds since your anniversary.
         </div>
       </div>
@@ -1152,14 +1216,14 @@ function StepJourney({ form, setField, accent }) {
               value={event.date}
               onChange={(e) => updateJourney(i, 'date', e.target.value)}
               placeholder="Date (e.g. March 2021)"
-              style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#0f172a', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}
+              style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#43332b', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}
             />
             <input
               type="text"
               value={event.memory}
               onChange={(e) => updateJourney(i, 'memory', e.target.value)}
               placeholder="Memory (e.g. Our first road trip)"
-              style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#0f172a', fontSize: '0.9rem', fontWeight: 500 }}
+              style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#43332b', fontSize: '0.9rem', fontWeight: 500 }}
             />
           </motion.div>
         ))}
@@ -1300,7 +1364,7 @@ function StepMemories({ form, setField, accent, templateId }) {
         maxImages={maxPhotos}
       />
       {form.images.length === 0 && (
-        <div style={{ marginTop: '1rem', padding: '14px 16px', borderRadius: '14px', background: 'rgba(255,255,255,0.8)', border: '1px dashed #cbd5e1', color: '#64748b', fontSize: '0.85rem', textAlign: 'center', fontWeight: 500 }}>
+        <div style={{ marginTop: '1rem', padding: '14px 16px', borderRadius: '14px', background: 'rgba(255,255,255,0.8)', border: '1px dashed #cbd5e1', color: '#43332b', fontSize: '0.85rem', textAlign: 'center', fontWeight: 500 }}>
           Photos are optional but they make the experience so much more personal 💫
         </div>
       )}
@@ -1378,7 +1442,7 @@ function CraftingScreen({ template, recipientName, noteId, router }) {
       style={{
         position: 'fixed',
         inset: 0,
-        background: '#060610',
+        background: '#f8f3eb',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -1434,18 +1498,18 @@ function CraftingScreen({ template, recipientName, noteId, router }) {
       <AnimatePresence mode="wait">
         {phase === 0 && (
           <motion.p key="p0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ color: '#94a3b8', fontSize: '1rem', textAlign: 'center' }}>
+            style={{ color: '#746258', fontSize: '1rem', textAlign: 'center' }}>
             Preparing...
           </motion.p>
         )}
         {phase === 1 && (
           <motion.div key="p1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             style={{ textAlign: 'center', padding: '0 2rem' }}>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Crafting something beautiful</p>
-            <h2 style={{ fontFamily: "'Dancing Script', cursive", fontSize: '2.2rem', color: '#fff', margin: '0 0 0.5rem' }}>
+            <p style={{ color: '#746258', fontSize: '0.85rem', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Crafting something beautiful</p>
+            <h2 style={{ fontFamily: "'Dancing Script', cursive", fontSize: '2.2rem', color: '#a64036', margin: '0 0 0.5rem' }}>
               For {recipientName || 'them'}...
             </h2>
-            <p style={{ color: '#94a3b8', fontSize: '0.88rem' }}>{template.title}</p>
+            <p style={{ color: '#746258', fontSize: '0.88rem' }}>{template.title}</p>
           </motion.div>
         )}
         {phase === 2 && (
@@ -1458,10 +1522,10 @@ function CraftingScreen({ template, recipientName, noteId, router }) {
             >
               ✨
             </motion.div>
-            <h2 style={{ color: '#fff', fontWeight: 800, fontSize: '1.3rem', marginBottom: '0.4rem' }}>
+            <h2 style={{ color: '#43332b', fontWeight: 800, fontSize: '1.3rem', marginBottom: '0.4rem' }}>
               Experience Ready!
             </h2>
-            <p style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Opening your private preview...</p>
+            <p style={{ color: '#746258', fontSize: '0.88rem' }}>Opening your private preview...</p>
           </motion.div>
         )}
       </AnimatePresence>

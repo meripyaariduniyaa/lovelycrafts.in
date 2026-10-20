@@ -148,7 +148,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="shell" style={{ padding: '2rem 1rem 5rem' }}>
+    <main className="shell lc-page-shell" style={{ padding: '2rem 1rem 5rem' }}>
       <div className="bg-glow bg-glow--top" aria-hidden="true" />
 
       <div className="main-content" style={{ maxWidth: '1000px', margin: '0 auto' }}>
@@ -366,7 +366,7 @@ export default function ProfilePage() {
                         fontSize: '0.85rem',
                         textDecoration: 'none',
                         padding: '0.55rem',
-                        background: note.is_paid ? 'linear-gradient(135deg, #16a34a, #15803d)' : 'linear-gradient(135deg, #f43f5e, #be185d)',
+                        background: note.is_paid ? 'linear-gradient(135deg, #16a34a, #f8f3eb)' : 'linear-gradient(135deg, #a64036, #a64036)',
                         borderRadius: '12px',
                       }}
                     >

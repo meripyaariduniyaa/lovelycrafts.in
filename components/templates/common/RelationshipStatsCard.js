@@ -36,7 +36,7 @@ export default function RelationshipStatsCard({ stats = [] }) {
             transition={{ delay: idx * 0.08 }}
             whileHover={{ scale: 1.03, y: -2 }}
             style={{
-              background: 'rgba(15, 23, 42, 0.7)',
+              background: 'rgba(247, 238, 228, 0.96)',
               borderRadius: '20px',
               padding: '16px 14px',
               border: '1px solid rgba(255, 255, 255, 0.12)',

@@ -164,8 +164,8 @@ export default function PasscodeLock({ passcode, secretQuestion, recipientName, 
           font-weight: 700;
           border-radius: 14px;
           border: none;
-          background: linear-gradient(135deg, #f43f5e, #be185d);
-          color: #ffffff;
+          background: linear-gradient(135deg, #a64036, #a64036);
+          color: #43332b;
           cursor: pointer;
           box-shadow: 0 8px 20px rgba(190, 24, 93, 0.3);
           transition: all 0.2s ease;

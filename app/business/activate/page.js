@@ -21,7 +21,7 @@ function ActivationRedirect() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#090d16',
+      background: '#f8f3eb',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

@@ -45,7 +45,7 @@ export default function BirthdayExperience({ note, isPreview = false, onReachEnd
   const goNext = () => setScene((s) => s + 1);
 
   return (
-    <div style={{ background: '#080810', minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
+    <div style={{ background: '#f8f3eb', minHeight: isPreview ? '100%' : '100vh', height: isPreview ? '100%' : 'auto', fontFamily: "'Inter', sans-serif", overflow: 'hidden', position: 'relative' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Dancing+Script:wght@600;700&family=Caveat:wght@500;700&display=swap');
         @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
@@ -100,7 +100,7 @@ function SceneSplash({ name, onNext, isPreview = false }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(circle at 50% 40%, #1e0915 0%, #080309 70%, #000000 100%)',
+        background: 'radial-gradient(circle at 50% 40%, #f8f3eb 0%, #f8f3eb 70%, #f8f3eb 100%)',
         padding: isPreview ? '1.25rem 1rem' : '2rem 1rem',
         position: 'relative',
         overflow: 'hidden',
@@ -296,7 +296,7 @@ function SceneGoldTree({ name, onNext }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(ellipse at 50% 60%, #1c0e03 0%, #080810 100%)',
+        background: 'radial-gradient(ellipse at 50% 60%, #f8f3eb 0%, #f8f3eb 100%)',
         position: 'relative',
         overflow: 'hidden',
         padding: '2rem 1rem',
@@ -393,7 +393,7 @@ function SceneNameReveal({ name, turningAge, onNext }) {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #1a1000 0%, #080810 100%)', padding: '2rem' }}
+      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}
     >
       <div style={{ textAlign: 'center' }}>
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, delay: 0.2 }} style={{ fontSize: '3rem', marginBottom: '1rem' }}>✨</motion.div>
@@ -462,7 +462,7 @@ function SceneVideo({ name, onNext }) {
         width: '100vw',
         height: '100vh',
         height: '100dvh',
-        background: '#000000',
+        background: '#f8f3eb',
         zIndex: 9999,
         overflow: 'hidden',
       }}
@@ -489,7 +489,7 @@ function SceneVideo({ name, onNext }) {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 40%, rgba(0,0,0,0.7) 100%)',
+          background: 'linear-gradient(to bottom, rgba(247, 238, 228, 0.96) 0%, transparent 40%, rgba(247, 238, 228, 0.96) 100%)',
           pointerEvents: 'none',
         }}
       />
@@ -503,7 +503,7 @@ function SceneVideo({ name, onNext }) {
           top: '24px',
           right: '24px',
           zIndex: 100,
-          background: 'rgba(0, 0, 0, 0.6)',
+          background: 'rgba(247, 238, 228, 0.96)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
           border: '1px solid rgba(255, 255, 255, 0.3)',
@@ -574,7 +574,7 @@ function SceneWish({ name, onNext }) {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #05051a 0%, #080810 100%)', padding: '2rem', position: 'relative', overflow: 'hidden' }}
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 30%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem', position: 'relative', overflow: 'hidden' }}
     >
       {/* Stars */}
       {Array.from({ length: 30 }, (_, i) => (
@@ -661,7 +661,7 @@ function SceneBalloons({ messages, onNext }) {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #0d051a 0%, #080810 100%)', padding: '2rem' }}
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}
     >
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ color: '#94a3b8', fontSize: '0.85rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
         <span>🎈</span>
@@ -734,7 +734,7 @@ function SceneMemories({ photos, name, onNext }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(ellipse at 50% 35%, #1a1005 0%, #080810 100%)',
+        background: 'radial-gradient(ellipse at 50% 35%, #f8f3eb 0%, #f8f3eb 100%)',
         padding: '2rem 1.25rem',
       }}
     >
@@ -821,7 +821,7 @@ function SceneEnvelope({ onOpen }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #1a0a00 0%, #080810 100%)', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 50%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem' }}>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} style={{ color: '#94a3b8', fontSize: '0.85rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
         A special letter for you 💌
       </motion.p>
@@ -857,9 +857,9 @@ function SceneLetter({ letter, senderName, name, onNext }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#080810', padding: '2rem' }}>
+      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f3eb', padding: '2rem' }}>
       <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} style={{ maxWidth: '400px', width: '100%' }}>
-        <div style={{ background: 'linear-gradient(180deg,#fef9f0,#fdf6e8)', borderRadius: '4px', padding: '1.75rem', boxShadow: '0 8px 40px rgba(0,0,0,0.5)', minHeight: '260px', position: 'relative' }}>
+        <div style={{ background: 'linear-gradient(180deg,#fef9f0,#fdf6e8)', borderRadius: '4px', padding: '1.75rem', boxShadow: '0 8px 40px rgba(247, 238, 228, 0.96)', minHeight: '260px', position: 'relative' }}>
           {Array.from({ length: 12 }, (_, i) => <div key={i} style={{ position: 'absolute', left: '1.75rem', right: '1.75rem', top: `${3 + i * 1.8}rem`, height: 1, background: 'rgba(120,80,40,0.1)' }} />)}
           <p style={{ fontFamily: "'Caveat', cursive", fontSize: '0.9rem', color: '#92400e', margin: '0 0 0.75rem', position: 'relative' }}>Happy Birthday, {name}!</p>
           <div style={{ position: 'relative' }}>
@@ -898,7 +898,7 @@ function SceneFinal({ name, turningAge, onEnd }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #1a1000 0%, #080810 100%)', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
+      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse at 50% 40%, #f8f3eb 0%, #f8f3eb 100%)', padding: '2rem', position: 'relative', overflow: 'hidden' }}>
       {confetti.map((c) => (
         <div key={c.id} style={{ position: 'absolute', top: 0, left: c.left, fontSize: c.size, color: c.color, animation: `confettiFall ${c.dur} ${c.delay} ease-in infinite`, pointerEvents: 'none' }}>
           {['■', '●', '★'][c.id % 3]}

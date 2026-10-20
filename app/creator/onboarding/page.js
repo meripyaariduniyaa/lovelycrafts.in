@@ -101,7 +101,7 @@ export default function CreatorOnboardingPage() {
 
   if (authLoading || loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #f8f3eb 0%, #f8f3eb 100%)' }}>
         <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#ec4899', animation: 'spin 0.8s linear infinite' }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
@@ -109,7 +109,7 @@ export default function CreatorOnboardingPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', fontFamily: "'Inter', -apple-system, sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8f3eb 0%, #f8f3eb 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', fontFamily: "'Inter', -apple-system, sans-serif" }}>
       
       <div style={{ width: '100%', maxWidth: '620px' }}>
         
@@ -145,10 +145,10 @@ export default function CreatorOnboardingPage() {
         </div>
 
         {/* Card */}
-        <div style={{ background: '#fff', borderRadius: '20px', padding: '32px', boxShadow: '0 25px 60px rgba(0,0,0,0.3)' }}>
+        <div style={{ background: '#fff', borderRadius: '20px', padding: '32px', boxShadow: '0 25px 60px rgba(247, 238, 228, 0.96)' }}>
           
           {error && (
-            <div style={{ background: '#fee2e2', border: '1px solid #fecaca', color: '#991b1b', padding: '10px 14px', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '20px' }}>
+            <div style={{ background: '#fee2e2', border: '1px solid #fecaca', color: '#a64036', padding: '10px 14px', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '20px' }}>
               {error}
             </div>
           )}
@@ -193,7 +193,7 @@ export default function CreatorOnboardingPage() {
                     <select
                       value={personalInfo.state}
                       onChange={(e) => setPersonalInfo({ ...personalInfo, state: e.target.value })}
-                      style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.88rem', outline: 'none', background: '#fff', color: '#0f172a' }}
+                      style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.88rem', outline: 'none', background: '#fff', color: '#43332b' }}
                     >
                       <option value="">Select state</option>
                       {INDIAN_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -204,7 +204,7 @@ export default function CreatorOnboardingPage() {
                     <select
                       value={personalInfo.language}
                       onChange={(e) => setPersonalInfo({ ...personalInfo, language: e.target.value })}
-                      style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.88rem', outline: 'none', background: '#fff', color: '#0f172a' }}
+                      style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.88rem', outline: 'none', background: '#fff', color: '#43332b' }}
                     >
                       <option value="">Select language</option>
                       {['Hindi', 'English', 'Marathi', 'Bengali', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Gujarati', 'Punjabi', 'Other'].map((l) => <option key={l} value={l}>{l}</option>)}
@@ -216,7 +216,7 @@ export default function CreatorOnboardingPage() {
               <button
                 type="button"
                 onClick={() => { if (!personalInfo.phone) { setError('Phone number is required.'); return; } setError(''); setStep(1); }}
-                style={{ marginTop: '24px', width: '100%', padding: '12px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
+                style={{ marginTop: '24px', width: '100%', padding: '12px', background: '#f8f3eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
               >
                 Continue →
               </button>
@@ -250,11 +250,11 @@ export default function CreatorOnboardingPage() {
               </div>
 
               <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-                <button type="button" onClick={() => setStep(0)} style={{ flex: 1, padding: '12px', background: '#f8fafc', color: '#64748b', border: '1px solid #e2e8f0', borderRadius: '10px', fontWeight: 600, cursor: 'pointer' }}>← Back</button>
+                <button type="button" onClick={() => setStep(0)} style={{ flex: 1, padding: '12px', background: '#f8fafc', color: '#43332b', border: '1px solid #e2e8f0', borderRadius: '10px', fontWeight: 600, cursor: 'pointer' }}>← Back</button>
                 <button
                   type="button"
                   onClick={() => { if (!bankInfo.bank_account_holder || !bankInfo.bank_account_number || !bankInfo.bank_ifsc) { setError('Account holder name, account number and IFSC are required.'); return; } setError(''); setStep(2); }}
-                  style={{ flex: 2, padding: '12px', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}
+                  style={{ flex: 2, padding: '12px', background: '#f8f3eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}
                 >
                   Continue →
                 </button>
@@ -282,7 +282,7 @@ export default function CreatorOnboardingPage() {
               <button
                 type="button"
                 onClick={() => setShowTerms(true)}
-                style={{ width: '100%', padding: '10px', background: '#f1f5f9', color: '#0284c7', border: '1px solid #e2e8f0', borderRadius: '8px', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', marginBottom: '16px' }}
+                style={{ width: '100%', padding: '10px', background: '#f1f5f9', color: '#43332b', border: '1px solid #e2e8f0', borderRadius: '8px', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', marginBottom: '16px' }}
               >
                 📄 Read Full Creator Club Terms
               </button>
@@ -300,7 +300,7 @@ export default function CreatorOnboardingPage() {
               </label>
 
               <div style={{ display: 'flex', gap: '12px' }}>
-                <button type="button" onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: '#f8fafc', color: '#64748b', border: '1px solid #e2e8f0', borderRadius: '10px', fontWeight: 600, cursor: 'pointer' }}>← Back</button>
+                <button type="button" onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: '#f8fafc', color: '#43332b', border: '1px solid #e2e8f0', borderRadius: '10px', fontWeight: 600, cursor: 'pointer' }}>← Back</button>
                 <button
                   type="button"
                   onClick={handleSubmit}

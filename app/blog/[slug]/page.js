@@ -462,7 +462,7 @@ export default async function BlogPostPage({ params }) {
   };
 
   return (
-    <main style={{ minHeight: '100vh', background: '#ffffff', color: '#0f172a', paddingBottom: '100px' }}>
+    <main className="lc-page-shell" style={{ minHeight: '100vh', background: '#ffffff', color: '#43332b', paddingBottom: '100px' }}>
       
       {/* JSON-LD Schema */}
       <script

@@ -143,7 +143,7 @@ export default function ReactionSenderClient({ note }) {
             <span style={{ fontSize: '1.1rem' }}>💌</span>
             <span style={{ fontWeight: 900, fontSize: '0.92rem', color: '#0f172a' }}>LovelyCrafts</span>
           </div>
-          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#be185d', background: '#ffe4e6', padding: '3px 10px', borderRadius: '50px' }}>
+          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#43332b', background: '#ffe4e6', padding: '3px 10px', borderRadius: '50px' }}>
             Reaction
           </span>
         </div>

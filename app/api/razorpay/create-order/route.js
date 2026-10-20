@@ -8,14 +8,23 @@ import { getTemplatePrice } from '@/lib/pricing';
 export async function POST(request) {
   try {
     const adminDb = getAdminDb();
-    const { apologyId, couponCode } = await request.json();
+    const { apologyId, couponCode, buyerName, buyerEmail, buyerPhone } = await request.json();
+    if (typeof apologyId !== 'string' || !apologyId.trim()) {
+      return NextResponse.json({ error: 'Gift identifier is required.' }, { status: 400 });
+    }
 
     const snap = await adminDb.collection('notes').doc(apologyId).get();
     if (!snap.exists) return NextResponse.json({ error: 'Note not found.' }, { status: 404 });
 
     const raw = snap.data();
+    if (raw.is_paid) {
+      return NextResponse.json({ error: 'This gift has already been paid.' }, { status: 409 });
+    }
     const templateId = raw.template || 'proposal';
     const priceInfo = await getTemplatePrice(templateId);
+    if (!priceInfo.enabled) {
+      return NextResponse.json({ error: 'This gift is currently unavailable.' }, { status: 409 });
+    }
     const baseAmount = priceInfo.pricePaise || 19900;
     const totalAmount = baseAmount;
 
@@ -67,9 +76,14 @@ export async function POST(request) {
 
       const discountRatio = discountPercent / 100;
       const discountedAmount = Math.max(100, Math.round(totalAmount * (1 - discountRatio))); // Amount in paise
+      const keyId = process.env.RAZORPAY_KEY_ID;
+      const keySecret = process.env.RAZORPAY_KEY_SECRET;
+      if (!keyId || !keySecret) {
+        return NextResponse.json({ error: 'Payment creation is not configured.' }, { status: 503 });
+      }
       const razorpay = new Razorpay({
-        key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder',
-        key_secret: process.env.RAZORPAY_KEY_SECRET || 'rzp_secret_placeholder',
+        key_id: keyId,
+        key_secret: keySecret,
       });
 
       const order = await razorpay.orders.create({
@@ -86,6 +100,9 @@ export async function POST(request) {
           discountPercent,
           baseAmount,
           finalAmount: discountedAmount,
+          buyerName: buyerName || '',
+          buyerEmail: buyerEmail || '',
+          buyerPhone: buyerPhone || '',
         }
       });
 
@@ -105,10 +122,12 @@ export async function POST(request) {
     }
 
     // No coupon applied
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder',
-      key_secret: process.env.RAZORPAY_KEY_SECRET || 'rzp_secret_placeholder',
-    });
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    if (!keyId || !keySecret) {
+      return NextResponse.json({ error: 'Payment creation is not configured.' }, { status: 503 });
+    }
+    const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
 
     const order = await razorpay.orders.create({
       amount: totalAmount,
@@ -122,6 +141,9 @@ export async function POST(request) {
         discountPercent: 0,
         baseAmount,
         finalAmount: totalAmount,
+        buyerName: buyerName || '',
+        buyerEmail: buyerEmail || '',
+        buyerPhone: buyerPhone || '',
       }
     });
 

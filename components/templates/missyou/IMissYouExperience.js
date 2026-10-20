@@ -49,8 +49,8 @@ export default function IMissYouExperience({ note, isPreview = false, onReachEnd
       <style>{`
         .miss-you-viewport {
           min-height: 100vh;
-          background: radial-gradient(circle at 50% 15%, #18153a 0%, #080918 60%, #03040c 100%);
-          color: #f1f5f9;
+          background: radial-gradient(circle at 50% 15%, #f8f3eb 0%, #f8f3eb 60%, #f8f3eb 100%);
+          color: #57463d;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
           position: relative;
           overflow-x: hidden;
@@ -108,7 +108,7 @@ export default function IMissYouExperience({ note, isPreview = false, onReachEnd
 
         /* Glassmorphism Card Style */
         .celestial-card {
-          background: rgba(15, 23, 42, 0.65);
+          background: rgba(247, 238, 228, 0.96);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
           border: 1px solid rgba(129, 140, 248, 0.22);
@@ -119,8 +119,8 @@ export default function IMissYouExperience({ note, isPreview = false, onReachEnd
 
         /* Glowing Action Button */
         .btn-celestial {
-          background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-          color: #ffffff;
+          background: linear-gradient(135deg, #f8f3eb 0%, #f8f3eb 100%);
+          color: #43332b;
           border: none;
           border-radius: 999px;
           padding: 14px 28px;
@@ -288,7 +288,7 @@ function Chapter1Radar({ recipientName, originCity, destinationCity, distanceKm,
       </p>
 
       {/* Flight Radar Visualizer */}
-      <div style={{ position: 'relative', padding: '24px 16px', background: 'rgba(6, 9, 24, 0.6)', borderRadius: '18px', border: '1px solid rgba(99, 102, 241, 0.2)', marginBottom: '24px' }}>
+      <div style={{ position: 'relative', padding: '24px 16px', background: 'rgba(247, 238, 228, 0.96)', borderRadius: '18px', border: '1px solid rgba(99, 102, 241, 0.2)', marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div style={{ textAlign: 'left' }}>
             <span style={{ fontSize: '0.72rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Origin</span>
@@ -409,7 +409,7 @@ function Chapter2Cassettes({ recipientName, cassettes, onNext }) {
                 padding: '10px 14px',
                 borderRadius: '14px',
                 border: isSelected ? '1.5px solid #a855f7' : '1px solid rgba(255,255,255,0.1)',
-                background: isSelected ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.25))' : 'rgba(15, 23, 42, 0.4)',
+                background: isSelected ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.25))' : 'rgba(247, 238, 228, 0.96)',
                 color: isSelected ? '#ffffff' : '#94a3b8',
                 cursor: 'pointer',
                 textAlign: 'left',
@@ -429,7 +429,7 @@ function Chapter2Cassettes({ recipientName, cassettes, onNext }) {
 
       {/* Active 3D Styled Cassette Body */}
       <div style={{
-        background: 'linear-gradient(145deg, #1e1b4b, #0f172a)',
+        background: 'linear-gradient(145deg, #f8f3eb, #f8f3eb)',
         borderRadius: '20px',
         border: '2px solid rgba(129, 140, 248, 0.35)',
         padding: '20px',
@@ -472,7 +472,7 @@ function Chapter2Cassettes({ recipientName, cassettes, onNext }) {
 
         {/* Cassette Tape Spools Window */}
         <div style={{
-          background: '#090d16',
+          background: '#f8f3eb',
           borderRadius: '12px',
           padding: '16px',
           display: 'flex',
@@ -490,7 +490,7 @@ function Chapter2Cassettes({ recipientName, cassettes, onNext }) {
               height: '42px',
               borderRadius: '50%',
               border: '4px dashed #818cf8',
-              background: '#1e1b4b',
+              background: '#f8f3eb',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -501,7 +501,7 @@ function Chapter2Cassettes({ recipientName, cassettes, onNext }) {
 
           {/* Magnetic Ribbon Window */}
           <div style={{ textAlign: 'center' }}>
-            <div style={{ width: '90px', height: '18px', background: '#312e81', borderRadius: '4px', margin: '0 auto 6px auto' }} />
+            <div style={{ width: '90px', height: '18px', background: '#f8f3eb', borderRadius: '4px', margin: '0 auto 6px auto' }} />
             <div className="waveform-container">
               {[14, 22, 10, 18, 24, 12, 16, 20].map((h, i) => (
                 <div
@@ -522,7 +522,7 @@ function Chapter2Cassettes({ recipientName, cassettes, onNext }) {
               height: '42px',
               borderRadius: '50%',
               border: '4px dashed #c084fc',
-              background: '#1e1b4b',
+              background: '#f8f3eb',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

@@ -28,7 +28,7 @@ const EFFECTIVE_DATE = 'September 13, 2026';
 
 export default function CookiePolicyPage() {
   return (
-    <main className="shell" style={{ padding: '3rem 1rem' }}>
+    <main className="shell lc-page-shell" style={{ padding: '3rem 1rem' }}>
       <div style={{ maxWidth: '820px', margin: '0 auto' }}>
 
         {/* Breadcrumb */}
@@ -48,7 +48,7 @@ export default function CookiePolicyPage() {
             <strong>Effective Date:</strong> {EFFECTIVE_DATE} &nbsp;|&nbsp;
             <strong>Platform:</strong> {SITE_NAME} ({SITE_URL})
           </p>
-          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fef9c3', border: '1px solid #fde68a', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#78350f' }}>
+          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#fef9c3', border: '1px solid #fde68a', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#43332b' }}>
             🍪 This policy explains what cookies and similar tracking technologies we use on {SITE_NAME}, why we use them, and how you can control them.
           </div>
         </div>
@@ -150,6 +150,7 @@ export default function CookiePolicyPage() {
               ['Google Analytics', 'Usage analytics', 'https://policies.google.com/technologies/cookies'],
               ['Google AdSense', 'Advertising', 'https://policies.google.com/technologies/ads'],
               ['Razorpay', 'Payment processing (checkout session)', 'https://razorpay.com/privacy/'],
+              ['Cashfree Payments', 'Payment processing (checkout session)', 'https://www.cashfree.com/privacy-policy/'],
             ]} />
           </Section>
 
@@ -240,7 +241,7 @@ function CookieCard({ category, badge, badgeColor, badgeBg, icon, cookies }) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center', marginBottom: '0.4rem' }}>
             <strong style={{ fontSize: '0.875rem', color: '#111' }}>{c.name}</strong>
             {c.thirdParty && (
-              <span style={{ fontSize: '0.75rem', color: '#6b7280', background: '#f3f4f6', borderRadius: '4px', padding: '0.1rem 0.4rem' }}>{c.thirdParty}</span>
+              <span style={{ fontSize: '0.75rem', color: '#43332b', background: '#f3f4f6', borderRadius: '4px', padding: '0.1rem 0.4rem' }}>{c.thirdParty}</span>
             )}
           </div>
           <p style={{ margin: '0 0 0.4rem 0', fontSize: '0.875rem', color: '#374151' }}>{c.purpose}</p>

@@ -39,20 +39,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: enInAlternates('/blog'),
     },
     {
-      url: `${SITE_URL}/create`,
-      lastModified: TEMPLATES_UPDATED,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-      alternates: enInAlternates('/create'),
-    },
-    {
-      url: `${SITE_URL}/profile`,
-      lastModified: TEMPLATES_UPDATED,
-      changeFrequency: 'monthly',
-      priority: 0.4,
-      alternates: enInAlternates('/profile'),
-    },
-    {
       url: `${SITE_URL}/arcade`,
       lastModified: TEMPLATES_UPDATED,
       changeFrequency: 'weekly',

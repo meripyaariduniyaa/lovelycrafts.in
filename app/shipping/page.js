@@ -28,7 +28,7 @@ const EFFECTIVE_DATE = 'September 13, 2026';
 
 export default function ShippingPolicyPage() {
   return (
-    <main className="shell" style={{ padding: '3rem 1rem' }}>
+    <main className="shell lc-page-shell" style={{ padding: '3rem 1rem' }}>
       <div style={{ maxWidth: '820px', margin: '0 auto' }}>
 
         {/* Breadcrumb */}
@@ -48,7 +48,7 @@ export default function ShippingPolicyPage() {
             <strong>Effective Date:</strong> {EFFECTIVE_DATE} &nbsp;|&nbsp;
             <strong>Platform:</strong> {SITE_NAME} ({SITE_URL})
           </p>
-          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#14532d' }}>
+          <div style={{ marginTop: '1rem', padding: '1rem 1.25rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.75rem', fontSize: '0.9rem', color: '#43332b' }}>
             ✅ <strong>Good news!</strong> {SITE_NAME} delivers 100% digital gifts — no physical shipping is required. Your surprise is ready the moment payment is confirmed.
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function ShippingPolicyPage() {
             <p style={{ marginBottom: '1rem' }}>Here is how the delivery process works:</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <DeliveryStep step="1" icon="🎨" label="You personalize" description="Choose a template, add photos, write your message, and optionally record a voice note." />
-              <DeliveryStep step="2" icon="💳" label="You pay" description="Complete the secure checkout via Razorpay (UPI, card, net banking, wallet)." />
+              <DeliveryStep step="2" icon="💳" label="You pay" description="Complete secure checkout via Razorpay or Cashfree (UPI, card, net banking, wallet)." />
               <DeliveryStep step="3" icon="⚡" label="Instant generation" description="Your interactive gift page is generated immediately after payment is confirmed — no waiting." />
               <DeliveryStep step="4" icon="🔗" label="Share the link" description="You receive a private, shareable link. Send it to your recipient on WhatsApp, Instagram, or any messaging platform." />
               <DeliveryStep step="5" icon="🎁" label="They open it anywhere" description="Your recipient opens the link on any device, anywhere in the world, and experiences the surprise in real time." />

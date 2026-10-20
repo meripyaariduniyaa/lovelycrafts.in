@@ -95,7 +95,7 @@ export function BubuSticker({ src, caption, size = 110, className = '', animate 
             fontSize: '0.78rem',
             fontWeight: 700,
             color: '#fde68a',
-            background: 'rgba(0,0,0,0.45)',
+            background: 'rgba(247, 238, 228, 0.96)',
             border: '1px solid rgba(255,255,255,0.15)',
             padding: '3px 10px',
             borderRadius: '999px',
@@ -146,7 +146,7 @@ export function SvgSticker({ name, src, size = 64, caption, animate = true, clas
           fontSize: '0.75rem',
           fontWeight: 700,
           color: '#fde68a',
-          background: 'rgba(0,0,0,0.45)',
+          background: 'rgba(247, 238, 228, 0.96)',
           padding: '2px 8px',
           borderRadius: '999px',
         }}>

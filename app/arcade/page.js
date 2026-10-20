@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import ArcadeAdBanner from '@/components/ArcadeAdBanner';
+
 import { useAuth } from '@/components/AuthProvider';
 
 const GAMES = [
@@ -70,7 +70,7 @@ export default function ArcadeLobby() {
   }, []);
 
   return (
-    <main className="shell" style={{ padding: '2rem 1rem 4rem' }}>
+    <main className="shell lc-page-shell" style={{ padding: '2rem 1rem 4rem' }}>
       <div style={{ maxWidth: '960px', margin: '0 auto' }}>
         
         {/* Arcade Header */}
@@ -231,7 +231,7 @@ export default function ArcadeLobby() {
                       padding: '0.75rem',
                       fontSize: '0.95rem',
                       fontWeight: 800,
-                      background: `linear-gradient(135deg, ${game.color}, #be185d)`,
+                      background: `linear-gradient(135deg, ${game.color}, #a64036)`,
                       boxShadow: `0 6px 18px ${game.color}35`,
                       borderRadius: '14px',
                     }}
@@ -244,8 +244,6 @@ export default function ArcadeLobby() {
           })}
         </div>
 
-        {/* Monetization Ad Unit */}
-        <ArcadeAdBanner slot="arcade-lobby-middle" />
 
         {/* How Duels Work Card */}
         <div
@@ -269,7 +267,7 @@ export default function ArcadeLobby() {
           <Link
             href="/arcade/heart-rush"
             className="btn-primary"
-            style={{ padding: '0.85rem 2.2rem', fontSize: '1rem', fontWeight: 800, background: 'linear-gradient(135deg, #ec4899, #be185d)', borderRadius: '999px', boxShadow: '0 8px 24px rgba(236,72,153,0.35)' }}
+            style={{ padding: '0.85rem 2.2rem', fontSize: '1rem', fontWeight: 800, background: 'linear-gradient(135deg, #ec4899, #be185d)', borderRadius: '999px', boxShadow: '0 8px 24px rgba(166, 64, 54, 0.96)' }}
           >
             🔥 Start a Quick Game Now
           </Link>

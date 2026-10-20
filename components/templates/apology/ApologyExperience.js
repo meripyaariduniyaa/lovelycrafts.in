@@ -48,7 +48,7 @@ export default function ApologyExperience({ note, isPreview = false, onReachEnd 
   return (
     <div
       style={{
-        background: '#070a12',
+        background: '#f8f3eb',
         minHeight: '100vh',
         fontFamily: "'Inter', sans-serif",
         overflow: 'hidden',
@@ -223,7 +223,7 @@ function SceneEnvelopeLetter({ recipientName, senderName, whatHappenedType, lett
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem 1.25rem',
-        background: 'radial-gradient(ellipse at 50% 35%, #0f1c24 0%, #070a12 100%)',
+        background: 'radial-gradient(ellipse at 50% 35%, #f8f3eb 0%, #f8f3eb 100%)',
       }}
     >
       {!isOpened ? (
@@ -278,7 +278,7 @@ function SceneEnvelopeLetter({ recipientName, senderName, whatHappenedType, lett
             style={{
               width: '100%',
               height: '210px',
-              background: 'linear-gradient(145deg, #182632, #0e1720)',
+              background: 'linear-gradient(145deg, #f8f3eb, #f8f3eb)',
               borderRadius: '20px',
               border: '1px solid rgba(94, 234, 212, 0.25)',
               position: 'relative',
@@ -301,7 +301,7 @@ function SceneEnvelopeLetter({ recipientName, senderName, whatHappenedType, lett
                 height: '110px',
                 borderBottom: '1px solid rgba(94, 234, 212, 0.2)',
                 clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-                background: 'linear-gradient(180deg, #1f3343, #152431)',
+                background: 'linear-gradient(180deg, #f8f3eb, #f8f3eb)',
               }}
             />
 
@@ -313,7 +313,7 @@ function SceneEnvelopeLetter({ recipientName, senderName, whatHappenedType, lett
                 width: '68px',
                 height: '68px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, #0d9488 0%, #0f766e 60%, #115e59 100%)',
+                background: 'radial-gradient(circle, #0d9488 0%, #f8f3eb 60%, #f8f3eb 100%)',
                 border: '3px solid #5eead4',
                 boxShadow: '0 0 25px rgba(94, 234, 212, 0.5), inset 0 2px 4px rgba(255,255,255,0.4)',
                 display: 'flex',
@@ -432,7 +432,7 @@ function SceneEnvelopeLetter({ recipientName, senderName, whatHappenedType, lett
                     display: 'inline-block',
                     width: '2px',
                     height: '1.2em',
-                    background: '#0f766e',
+                    background: '#f8f3eb',
                     marginLeft: '2px',
                     verticalAlign: 'middle',
                     animation: 'typewriterCursor 0.8s infinite',
@@ -473,7 +473,7 @@ function SceneEnvelopeLetter({ recipientName, senderName, whatHappenedType, lett
               marginTop: '1.5rem',
               padding: '16px',
               borderRadius: '16px',
-              background: 'linear-gradient(135deg, #0d9488, #0f766e)',
+              background: 'linear-gradient(135deg, #0d9488, #f8f3eb)',
               border: 'none',
               color: '#fff',
               fontSize: '1rem',
@@ -543,7 +543,7 @@ function SceneForgiveness({ recipientName, senderName, onYes }) {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem 1.5rem',
-        background: 'radial-gradient(ellipse at 50% 40%, #162a2d 0%, #070a12 100%)',
+        background: 'radial-gradient(ellipse at 50% 40%, #f8f3eb 0%, #f8f3eb 100%)',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
@@ -721,7 +721,7 @@ function SceneMemories({ photos, recipientName, senderName, onNext }) {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem 1.25rem',
-        background: 'radial-gradient(ellipse at 50% 40%, #0d1e24 0%, #070a12 100%)',
+        background: 'radial-gradient(ellipse at 50% 40%, #f8f3eb 0%, #f8f3eb 100%)',
         textAlign: 'center',
       }}
     >
@@ -817,7 +817,7 @@ function SceneMemories({ photos, recipientName, senderName, onNext }) {
                 style={{
                   padding: '10px 24px',
                   borderRadius: '999px',
-                  background: 'linear-gradient(135deg, #0d9488, #0f766e)',
+                  background: 'linear-gradient(135deg, #0d9488, #f8f3eb)',
                   border: 'none',
                   color: '#fff',
                   cursor: 'pointer',
@@ -833,7 +833,7 @@ function SceneMemories({ photos, recipientName, senderName, onNext }) {
                 style={{
                   padding: '12px 28px',
                   borderRadius: '999px',
-                  background: 'linear-gradient(135deg, #0d9488, #0f766e)',
+                  background: 'linear-gradient(135deg, #0d9488, #f8f3eb)',
                   border: 'none',
                   color: '#fff',
                   cursor: 'pointer',
@@ -886,7 +886,7 @@ function SceneMemories({ photos, recipientName, senderName, onNext }) {
               marginTop: '1rem',
               padding: '14px',
               borderRadius: '16px',
-              background: 'linear-gradient(135deg, #0d9488, #0f766e)',
+              background: 'linear-gradient(135deg, #0d9488, #f8f3eb)',
               border: 'none',
               color: '#fff',
               fontSize: '1rem',
@@ -930,7 +930,7 @@ function SceneThankYou({ recipientName, senderName, onReplay }) {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem 1.5rem',
-        background: 'radial-gradient(ellipse at 50% 35%, #133330 0%, #070a12 100%)',
+        background: 'radial-gradient(ellipse at 50% 35%, #f8f3eb 0%, #f8f3eb 100%)',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',

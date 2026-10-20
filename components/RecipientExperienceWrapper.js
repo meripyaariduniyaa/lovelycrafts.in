@@ -235,9 +235,9 @@ export default function RecipientExperienceWrapper({ note }) {
           align-items: center;
           gap: 8px;
           padding: 13px 28px;
-          background: linear-gradient(135deg, #f43f5e, #be185d);
+          background: linear-gradient(135deg, #a64036, #a64036);
           border: 1px solid rgba(244, 63, 94, 0.5);
-          color: #ffffff;
+          color: #43332b;
           border-radius: 999px;
           font-weight: 800;
           font-size: 0.95rem;

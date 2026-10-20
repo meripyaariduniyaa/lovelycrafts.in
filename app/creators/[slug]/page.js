@@ -65,7 +65,7 @@ export default function PublicCreatorPage() {
 
   if (loading) {
     return (
-      <main style={{ minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at 50% 20%, #ffe4e6 0%, #fafafa 100%)' }}>
+      <main className="lc-page-shell" style={{ minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at 50% 20%, #ffe4e6 0%, #fafafa 100%)' }}>
         <div style={{ textAlign: 'center', color: '#6b7280' }}>
           <div style={{ fontSize: '3rem', animation: 'bounce 1s infinite' }}>💖</div>
           <p style={{ marginTop: '14px', fontWeight: 700, fontSize: '1rem', color: '#111827' }}>Loading Creator Storefront...</p>
@@ -76,12 +76,12 @@ export default function PublicCreatorPage() {
 
   if (error || !creator) {
     return (
-      <main style={{ minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', background: '#fafafa' }}>
+      <main className="lc-page-shell" style={{ minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', background: '#fafafa' }}>
         <div style={{ textAlign: 'center', background: '#fff', padding: '40px 28px', borderRadius: '24px', border: '1px solid #fecdd3', maxWidth: '480px', boxShadow: '0 12px 32px rgba(225,29,72,0.06)' }}>
           <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🔍</div>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#111827', marginBottom: '8px' }}>Creator Profile Not Found</h1>
           <p style={{ color: '#6b7280', fontSize: '0.95rem', lineHeight: 1.5, marginBottom: '24px' }}>This creator link might be inactive or does not exist.</p>
-          <Link href="/creators" style={{ background: '#e11d48', color: '#fff', padding: '12px 24px', borderRadius: '12px', textDecoration: 'none', fontWeight: 700, boxShadow: '0 4px 14px rgba(225,29,72,0.2)' }}>
+          <Link href="/creators" style={{ background: '#e11d48', color: '#fff', padding: '12px 24px', borderRadius: '12px', textDecoration: 'none', fontWeight: 700, boxShadow: '0 4px 14px rgba(166, 64, 54, 0.96)' }}>
             Explore Verified Creators 🚀
           </Link>
         </div>
@@ -96,7 +96,7 @@ export default function PublicCreatorPage() {
   const discountPercent = creator.primaryCoupon?.discount_percent || creator.discount_rate || 10;
 
   return (
-    <main style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #fff1f2 0%, #ffffff 25%, #fafafa 100%)', padding: '24px 16px 80px' }}>
+    <main className="lc-page-shell" style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #fff1f2 0%, #ffffff 25%, #fafafa 100%)', padding: '24px 16px 80px' }}>
       <div style={{ maxWidth: '980px', margin: '0 auto' }}>
 
         {/* TOP BRAND BAR */}
@@ -108,11 +108,11 @@ export default function PublicCreatorPage() {
             <button
               type="button"
               onClick={shareCreatorPage}
-              style={{ background: '#fff', color: '#374151', border: '1px solid #e5e7eb', padding: '8px 16px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 2px 6px rgba(0,0,0,0.03)' }}
+              style={{ background: '#fff', color: '#43332b', border: '1px solid #e5e7eb', padding: '8px 16px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 2px 6px rgba(0,0,0,0.03)' }}
             >
               <span>📲 Share Page</span>
             </button>
-            <Link href="/creators" style={{ background: '#ffe4e6', color: '#be123c', padding: '8px 16px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none' }}>
+            <Link href="/creators" style={{ background: '#ffe4e6', color: '#a64036', padding: '8px 16px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 700, textDecoration: 'none' }}>
               ⭐ All Creators
             </Link>
           </div>
@@ -163,10 +163,10 @@ export default function PublicCreatorPage() {
 
           {/* BADGES */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
-            <span style={{ background: '#ecfdf5', color: '#065f46', border: '1px solid #a7f3d0', padding: '3px 10px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <span style={{ background: '#ecfdf5', color: '#43332b', border: '1px solid #a7f3d0', padding: '3px 10px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
               ✓ Verified Partner
             </span>
-            <span style={{ background: '#fff1f2', color: '#be123c', border: '1px solid #fecdd3', padding: '3px 10px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 800, textTransform: 'capitalize' }}>
+            <span style={{ background: '#fff1f2', color: '#a64036', border: '1px solid #fecdd3', padding: '3px 10px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 800, textTransform: 'capitalize' }}>
               {creator.tier ? `${creator.tier} Creator` : 'Official Creator'}
             </span>
           </div>
@@ -194,7 +194,7 @@ export default function PublicCreatorPage() {
                   href={creator.instagram_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 18px', borderRadius: '12px', background: '#fdf2f8', color: '#be185d', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', border: '1px solid #fbcfe8', transition: 'transform 0.15s' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 18px', borderRadius: '12px', background: '#fdf2f8', color: '#a64036', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', border: '1px solid #fbcfe8', transition: 'transform 0.15s' }}
                 >
                   📷 Instagram Channel ↗
                 </a>
@@ -204,7 +204,7 @@ export default function PublicCreatorPage() {
                   href={creator.youtube_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 18px', borderRadius: '12px', background: '#fef2f2', color: '#b91c1c', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', border: '1px solid #fecaca', transition: 'transform 0.15s' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 18px', borderRadius: '12px', background: '#fef2f2', color: '#a64036', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', border: '1px solid #fecaca', transition: 'transform 0.15s' }}
                 >
                   ▶️ YouTube Channel ↗
                 </a>
@@ -301,7 +301,7 @@ export default function PublicCreatorPage() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                     <div style={{ fontSize: '2.5rem' }}>{template.icon || '🎁'}</div>
-                    <span style={{ background: '#ffe4e6', color: '#be123c', padding: '3px 10px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 800 }}>
+                    <span style={{ background: '#ffe4e6', color: '#a64036', padding: '3px 10px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 800 }}>
                       Recommended ✨
                     </span>
                   </div>
@@ -320,7 +320,7 @@ export default function PublicCreatorPage() {
                       <span style={{ fontSize: '0.78rem', color: '#be123c', fontWeight: 700 }}>
                         🏷️ Auto-Apply Code:
                       </span>
-                      <code style={{ fontSize: '0.88rem', fontWeight: 900, color: '#881337', background: '#ffe4e6', padding: '2px 8px', borderRadius: '6px' }}>
+                      <code style={{ fontSize: '0.88rem', fontWeight: 900, color: '#43332b', background: '#ffe4e6', padding: '2px 8px', borderRadius: '6px' }}>
                         {couponCode} (-{discountPercent}%)
                       </code>
                     </div>
