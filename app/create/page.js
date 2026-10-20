@@ -134,6 +134,7 @@ function CreatePageContent() {
     // Shared
     letter: '',
     images: [],
+    passcode: '',
   });
 
   const setField = (key, val) => setForm((prev) => ({ ...prev, [key]: val }));
@@ -178,6 +179,7 @@ function CreatePageContent() {
         cassettes: details.cassettes?.length ? details.cassettes : current.cassettes,
         letter: details.letter || note.custom_message || '',
         images: Array.isArray(note.image_urls) ? note.image_urls : [],
+        passcode: details.passcode || '',
       }));
       setScreen('wizard');
     }).catch(() => { if (active) setError('Unable to load this gift for editing.'); });
@@ -231,6 +233,9 @@ function CreatePageContent() {
       if (!form.destinationCity?.trim()) return 'Please enter their destination city.';
     }
     if (stepId === 'letter' && !form.letter.trim()) return 'Please write your heartfelt message.';
+    if (stepId === 'memories' && form.passcode && !/^\d{4}$/.test(form.passcode)) {
+      return 'Your passcode must contain exactly 4 digits.';
+    }
     return null;
   };
 
@@ -294,6 +299,8 @@ function CreatePageContent() {
           letter: form.letter.trim(),
         };
       }
+
+      if (form.passcode) customDetails.passcode = form.passcode;
 
       // Clean empty values
       Object.keys(customDetails).forEach((k) => {
@@ -1368,6 +1375,31 @@ function StepMemories({ form, setField, accent, templateId }) {
           Photos are optional but they make the experience so much more personal 💫
         </div>
       )}
+      <div className="lc-passcode-field">
+        <label htmlFor="gift-passcode">Add a 4-digit passcode (optional)</label>
+        <p>Recipients will enter this before opening the envelope.</p>
+        <input
+          id="gift-passcode"
+          type="password"
+          inputMode="numeric"
+          autoComplete="new-password"
+          pattern="[0-9]{4}"
+          maxLength={4}
+          placeholder="Enter 4 digits"
+          value={form.passcode || ''}
+          onChange={(event) => setField('passcode', event.target.value.replace(/\D/g, '').slice(0, 4))}
+          aria-describedby="gift-passcode-help"
+        />
+        <span id="gift-passcode-help" className="lc-passcode-hint">Leave blank to send without a passcode.</span>
+      </div>
+      <style jsx>{`
+        .lc-passcode-field { margin-top: 1.25rem; padding: 1rem; border-radius: 18px; background: linear-gradient(145deg, #fffaf4, #f0e3d7); border: 1px solid #e5d3c3; box-shadow: 7px 7px 16px rgba(109, 77, 55, .1), -5px -5px 14px rgba(255,255,255,.85); }
+        .lc-passcode-field label { display:block; color:#49372e; font-weight:800; font-size:.95rem; }
+        .lc-passcode-field p { color:#74645a; font-size:.82rem; margin:.35rem 0 .75rem; }
+        .lc-passcode-field input { width:100%; box-sizing:border-box; padding:.8rem 1rem; border:1px solid #dfcdbc; border-radius:12px; background:#fffdf9; color:#49372e; font-size:1.1rem; letter-spacing:.35em; text-align:center; }
+        .lc-passcode-hint { display:block; color:#74645a; margin-top:.45rem; font-size:.75rem; }
+        .lc-passcode-field input:focus-visible { outline:3px solid #a83d46; outline-offset:2px; }
+      `}</style>
     </div>
   );
 }

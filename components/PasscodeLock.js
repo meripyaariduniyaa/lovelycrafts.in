@@ -7,6 +7,7 @@ export default function PasscodeLock({ passcode, secretQuestion, recipientName, 
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
   const [success, setSuccess] = useState(false);
+  const isFourDigitCode = /^\d{4}$/.test(String(passcode || ''));
 
   const handleSubmit = (e) => {
     e?.preventDefault();
@@ -46,6 +47,8 @@ export default function PasscodeLock({ passcode, secretQuestion, recipientName, 
         <form onSubmit={handleSubmit} className="passcode-form">
           <input
             type="text"
+            inputMode={isFourDigitCode ? 'numeric' : 'text'}
+            maxLength={isFourDigitCode ? 4 : undefined}
             className={`passcode-input ${error ? 'input-error' : ''}`}
             placeholder="Type answer or code…"
             value={input}

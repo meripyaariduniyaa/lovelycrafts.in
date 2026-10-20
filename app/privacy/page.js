@@ -84,7 +84,7 @@ export default function PrivacyPolicyPage() {
           </Section>
 
           <Section title="3. AI Assistant & Message Generator">
-            <p>Our platform includes optional AI-assisted writing tools to help draft romantic, apology, or birthday messages. The prompts you input into the AI assistant are processed in real-time to generate text suggestions. We <strong>do not</strong> use your private personal messages or photos to train third-party foundation models.</p>
+            <p>LovelyCrafts offers Anya, an optional AI gift helper. When you chat with Anya, the recent chat text you submit is sent to Hugging Face Inference Providers to generate a response. Anya receives the chat text and public catalog and policy information only; it does not receive private gift notes, photos, account information, or order records. Anya conversations are held in your browser session and are not saved to a LovelyCrafts chat-history database. Hugging Face processes requests under its own <a href="https://huggingface.co/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#ec4899' }}>privacy policy</a>. LovelyCrafts does not use your private messages or photos to train third-party models.</p>
           </Section>
 
           <Section title="4. How We Use Your Information">
@@ -114,6 +114,7 @@ export default function PrivacyPolicyPage() {
               ['Cashfree Payments', 'Payment processing and payment status verification', 'https://www.cashfree.com/privacy-policy/'],
               ['Firebase (Google)', 'Authentication and cloud database', 'https://firebase.google.com/support/privacy'],
               ['Cloudinary', 'Encrypted media storage & CDN delivery', 'https://cloudinary.com/privacy'],
+              ['Hugging Face', 'AI gift-assistant inference', 'https://huggingface.co/privacy'],
               ['Google AdSense', 'Monetization on public pages', 'https://policies.google.com/technologies/ads'],
               ['Vercel', 'Edge hosting and compute infrastructure', 'https://vercel.com/legal/privacy-policy'],
             ]} />

@@ -1,24 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import PasscodeLock from '@/components/PasscodeLock';
 
-export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
+export default function WaxSealEnvelope({ recipientName, onOpen, senderName, isLocked = false, passcode, secretQuestion, onUnlocked }) {
   const [isOpening, setIsOpening] = useState(false);
+  const envelopeRef = useRef(null);
+  const flapRef = useRef(null);
+  const sealRef = useRef(null);
+  const letterRef = useRef(null);
+  const burstRef = useRef(null);
+  const timelineRef = useRef(null);
   const initial = (recipientName || 'You').trim().charAt(0).toUpperCase();
 
+  useEffect(() => () => timelineRef.current?.kill(), []);
+
   const handleBreakSeal = () => {
-    if (isOpening) return;
+    if (isOpening || isLocked) return;
     setIsOpening(true);
-    setTimeout(() => {
+
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
       onOpen?.();
-    }, 900);
+      return;
+    }
+
+    const timeline = gsap.timeline({ onComplete: () => onOpen?.() });
+    timelineRef.current = timeline;
+    timeline
+      .to(sealRef.current, { scale: 0.2, rotation: 32, opacity: 0, duration: 0.28, ease: 'back.in(2)' })
+      .to(flapRef.current, { rotationX: -165, duration: 0.6, ease: 'power3.inOut', transformOrigin: '50% 0%' }, '-=0.08')
+      .to(letterRef.current, { y: -128, scale: 1.06, opacity: 1, duration: 0.75, ease: 'back.out(1.35)' }, '-=0.18')
+      .fromTo(burstRef.current, { scale: 0.2, opacity: 0 }, { scale: 1.25, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.1')
+      .to(burstRef.current, { scale: 1.8, opacity: 0, duration: 0.45, ease: 'power2.in' })
+      .to(envelopeRef.current, { y: -24, scale: 1.04, opacity: 0, duration: 0.45, ease: 'power2.in' }, '-=0.25');
   };
 
   return (
     <div className="wax-seal-wrapper">
-      <div className={`envelope-container ${isOpening ? 'is-opening' : ''}`}>
+      <div ref={envelopeRef} className={`envelope-container ${isOpening ? 'is-opening' : ''}`}>
         {/* Envelope Top Flap */}
-        <div className="envelope-flap" />
+        <div ref={flapRef} className="envelope-flap" />
 
         {/* Envelope Body */}
         <div className="envelope-body">
@@ -31,11 +53,22 @@ export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
           </div>
         </div>
 
+        <div ref={letterRef} className="envelope-letter" aria-hidden="true">
+          <span>✉</span>
+          <strong>A little note, made just for you</strong>
+        </div>
+
+        <div ref={burstRef} className="envelope-burst" aria-hidden="true">
+          <span>✦</span><span>♡</span><span>✧</span><span>✦</span><span>♡</span><span>✧</span>
+        </div>
+
         {/* 3D Wax Seal Button */}
         <button
+          ref={sealRef}
           type="button"
           className="wax-seal-stamp"
           onClick={handleBreakSeal}
+          disabled={isOpening || isLocked}
           aria-label="Break wax seal to open envelope"
         >
           <div className="wax-seal-inner">
@@ -53,8 +86,20 @@ export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
         </p>
       </div>
 
+      {isLocked && (
+        <div className="envelope-lock-overlay">
+          <PasscodeLock
+            passcode={passcode}
+            secretQuestion={secretQuestion}
+            recipientName={recipientName}
+            onUnlocked={onUnlocked}
+          />
+        </div>
+      )}
+
       <style jsx>{`
         .wax-seal-wrapper {
+          position: relative;
           min-height: 85vh;
           display: flex;
           align-items: center;
@@ -76,11 +121,7 @@ export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
           align-items: center;
           justify-content: center;
           transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
-        }
-
-        .envelope-container.is-opening {
-          transform: scale(1.08) translateY(-20px) rotateX(15deg);
-          opacity: 0;
+          transform-style: preserve-3d;
         }
 
         .envelope-flap {
@@ -94,6 +135,7 @@ export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
           border-top-left-radius: 20px;
           border-top-right-radius: 20px;
           z-index: 2;
+          backface-visibility: hidden;
           box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
 
@@ -170,6 +212,75 @@ export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
           animation: gentlePulse 2.8s ease-in-out infinite;
         }
 
+        .envelope-letter {
+          position: absolute;
+          z-index: 3;
+          left: 10%;
+          right: 10%;
+          bottom: 24px;
+          min-height: 112px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 8px;
+          padding: 14px;
+          box-sizing: border-box;
+          border: 1px solid #e7d5c4;
+          border-radius: 10px;
+          background: linear-gradient(145deg, #fffdf8, #f5eadc);
+          box-shadow: 0 8px 20px rgba(86, 57, 38, .16);
+          color: #5b4033;
+          text-align: center;
+          opacity: 0;
+          transform: translateY(35px);
+        }
+
+        .envelope-letter span { color: #a64036; font-size: 2rem; }
+        .envelope-letter strong { font: 600 0.85rem/1.4 'Playfair Display', Georgia, serif; }
+
+        .envelope-burst {
+          position: absolute;
+          z-index: 12;
+          left: 50%;
+          top: 46%;
+          width: 180px;
+          height: 180px;
+          margin: -90px;
+          display: grid;
+          grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+          place-items: center;
+          color: #b66b53;
+          font-size: 1.6rem;
+          pointer-events: none;
+          opacity: 0;
+        }
+
+        .envelope-burst span:nth-child(1) { transform: translate(-55px, -42px); }
+        .envelope-burst span:nth-child(2) { transform: translate(0, -68px); }
+        .envelope-burst span:nth-child(3) { transform: translate(58px, -38px); }
+        .envelope-burst span:nth-child(4) { transform: translate(-68px, 28px); }
+        .envelope-burst span:nth-child(5) { transform: translate(0, 60px); }
+        .envelope-burst span:nth-child(6) { transform: translate(64px, 34px); }
+
+        .envelope-lock-overlay {
+          position: absolute;
+          z-index: 20;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          border-radius: 22px;
+          background: rgba(247, 240, 232, .74);
+          backdrop-filter: blur(5px);
+        }
+
+        .envelope-lock-overlay :global(.passcode-lock-wrapper) { width: 100%; min-height: 0; }
+        .envelope-lock-overlay :global(.passcode-card) { width: min(92%, 420px); }
+
+        @media (max-width: 520px) {
+          .envelope-container { height: 280px; }
+          .envelope-lock-overlay :global(.passcode-card) { padding: 28px 20px; }
+        }
+
         .wax-seal-stamp:hover {
           transform: scale(1.12);
           box-shadow: 0 14px 30px rgba(136, 19, 55, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.5);
@@ -189,6 +300,21 @@ export default function WaxSealEnvelope({ recipientName, onOpen, senderName }) {
           align-items: center;
           justify-content: center;
         }
+
+        .wax-seal-inner::after {
+          content: '';
+          position: absolute;
+          inset: 4px;
+          border-radius: 50%;
+          opacity: 0;
+          background:
+            linear-gradient(126deg, transparent 46%, rgba(255,255,255,.92) 48%, transparent 51%),
+            linear-gradient(52deg, transparent 47%, rgba(72,24,28,.72) 49%, transparent 52%);
+          clip-path: polygon(49% 0, 56% 35%, 100% 45%, 62% 53%, 57% 100%, 45% 62%, 0 55%, 42% 46%);
+          transition: opacity .08s linear;
+        }
+
+        .envelope-container.is-opening .wax-seal-inner::after { opacity: 1; }
 
         .wax-initial {
           font-family: 'Playfair Display', Georgia, serif;

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 const REACTION_OPTIONS = [
   { emoji: '🥺', label: 'Touched & emotional', tag: 'Happy Tears' },
@@ -23,6 +23,7 @@ const PROMPT_SUGGESTIONS = [
 ];
 
 export default function ReactionSenderClient({ note }) {
+  const reduceMotion = useReducedMotion();
   const [selected, setSelected] = useState(null);
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(Boolean(note.recipient_reaction));
@@ -57,7 +58,7 @@ export default function ReactionSenderClient({ note }) {
   };
 
   return (
-    <div style={{
+    <div className="lc-reaction-page" style={{
       minHeight: '100vh',
       background: 'linear-gradient(180deg, #fff5f8 0%, #fff0f5 50%, #faf0f7 100%)',
       color: '#0f172a',
@@ -106,6 +107,23 @@ export default function ReactionSenderClient({ note }) {
         .reaction-card-pill.active .pill-emoji {
           animation: pop-emoji 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
+        .lc-reaction-page { background: radial-gradient(ellipse at 15% 8%, #fffaf3 0, transparent 42%), linear-gradient(145deg, #f7f0e8, #efe3d7) !important; color: #44352e !important; }
+        .lc-reaction-page header { background: rgba(255,250,244,.92) !important; border-color: #e6d6c7 !important; box-shadow: 0 5px 18px rgba(104,74,53,.08) !important; }
+        .lc-reaction-page header a, .lc-reaction-page header span { color: #63483c !important; }
+        .lc-reaction-page .reaction-confirmation-card,
+        .lc-reaction-page .reaction-form-card { background: linear-gradient(145deg,#fffaf4,#f0e4d8) !important; border: 1px solid #e4d1c1 !important; border-radius: 28px !important; box-shadow: 12px 12px 28px rgba(104,74,53,.14), -7px -7px 20px rgba(255,255,255,.8) !important; color: #44352e !important; }
+        .lc-reaction-page h1, .lc-reaction-page p, .lc-reaction-page label { color: #44352e !important; }
+        .lc-reaction-page .reaction-card-pill { background: linear-gradient(145deg,#fffaf4,#f1e6db); border-color: #e4d5c7; color: #44352e; box-shadow: 5px 5px 12px rgba(104,74,53,.1), -4px -4px 12px rgba(255,255,255,.8); }
+        .lc-reaction-page .reaction-card-pill:hover, .lc-reaction-page .reaction-card-pill.active { background: linear-gradient(145deg,#fbe8df,#f0d6c8); border-color: #d4a28e; }
+        .lc-reaction-page .reaction-card-pill div[style*="flex: 1"] div:first-child { color: #44352e !important; }
+        .lc-reaction-page .reaction-card-pill div[style*="flex: 1"] div:last-child { color: #806b5f !important; }
+        .lc-reaction-page .reaction-suggestion { color: #63483c !important; background: linear-gradient(145deg,#fffaf4,#efe2d6) !important; border-color: #e4d2c2 !important; }
+        .lc-reaction-page textarea { color: #44352e !important; background: #fffaf4 !important; border: 1px solid #dfcdbc !important; box-shadow: inset 3px 3px 7px rgba(104,74,53,.08), inset -3px -3px 7px rgba(255,255,255,.9); }
+        .lc-reaction-page .reaction-submit,
+        .lc-reaction-page .reaction-primary-action { color: #563c34 !important; background: linear-gradient(145deg,#fffaf4,#ead9ca) !important; border: 1px solid #dfc9b8 !important; box-shadow: 6px 6px 14px rgba(104,74,53,.14), -5px -5px 14px rgba(255,255,255,.85) !important; }
+        .lc-reaction-page .reaction-secondary-action { color: #63483c !important; background: linear-gradient(145deg,#fffaf4,#efe4d9) !important; border: 1px solid #e3d3c5 !important; box-shadow: 5px 5px 12px rgba(104,74,53,.1), -4px -4px 12px rgba(255,255,255,.85) !important; }
+        .lc-reaction-page button:focus-visible, .lc-reaction-page a:focus-visible, .lc-reaction-page textarea:focus-visible { outline: 3px solid #a45b4e !important; outline-offset: 3px; }
+        @media (prefers-reduced-motion: reduce) { .lc-reaction-page *, .lc-reaction-page *::before, .lc-reaction-page *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; } }
       `}</style>
 
       {/* Top Header */}
@@ -156,7 +174,8 @@ export default function ReactionSenderClient({ note }) {
             /* ── SUCCESS / CONFIRMATION SCREEN ── */
             <motion.div
               key="submitted-state"
-              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              className="reaction-confirmation-card"
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ type: 'spring', stiffness: 280, damping: 24 }}
@@ -218,6 +237,7 @@ export default function ReactionSenderClient({ note }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <Link
                   href={`/p/${encodeURIComponent(note.id)}`}
+                  className="reaction-secondary-action"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -240,6 +260,7 @@ export default function ReactionSenderClient({ note }) {
 
                 <Link
                   href={`/create?template=${encodeURIComponent(note.template || 'proposal')}`}
+                  className="reaction-primary-action"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -264,7 +285,8 @@ export default function ReactionSenderClient({ note }) {
             /* ── REACTION SENDER FORM ── */
             <motion.div
               key="reaction-form"
-              initial={{ opacity: 0, y: 20 }}
+              className="reaction-form-card"
+              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
               style={{
@@ -344,6 +366,7 @@ export default function ReactionSenderClient({ note }) {
                     <button
                       key={i}
                       type="button"
+                      className="reaction-suggestion"
                       onClick={() => setMessage(sug)}
                       style={{
                         background: message === sug ? '#fff1f2' : '#f8fafc',
@@ -396,6 +419,7 @@ export default function ReactionSenderClient({ note }) {
 
               {/* Send Button */}
               <motion.button
+                className="reaction-submit"
                 whileHover={{ scale: selected ? 1.02 : 1 }}
                 whileTap={{ scale: selected ? 0.98 : 1 }}
                 onClick={handleSendReaction}
