@@ -1,5 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
+import { toReactionClientNote } from '../lib/reaction-note.js';
 
 describe('Recipient Experience & Reaction Page Navigation', () => {
   test('resolves reaction URL accurately from slug, custom_slug or doc id', () => {
@@ -25,5 +26,23 @@ describe('Recipient Experience & Reaction Page Navigation', () => {
       buildReactUrl({ slug: 'love & forever' }),
       '/p/love%20%26%20forever/react'
     );
+  });
+
+  test('serializes only JSON-safe reaction page fields', () => {
+    const firestoreTimestamp = { toDate: () => new Date('2026-01-01T00:00:00Z') };
+    const result = toReactionClientNote('note-1', {
+      recipient_name: 'Anjali',
+      custom_details: { sender_name: 'Aman' },
+      recipient_reaction: { emoji: '❤️', createdAt: firestoreTimestamp },
+    });
+
+    assert.deepEqual(result, {
+      id: 'note-1',
+      recipient_name: 'Anjali',
+      sender_name: 'Aman',
+      template: 'proposal',
+      custom_slug: null,
+      recipient_reaction: true,
+    });
   });
 });

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import ReactionSenderClient from './ReactionSenderClient';
 import { resolveNoteSlug } from '@/lib/resolve-note-slug';
+import { toReactionClientNote } from '@/lib/reaction-note';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,7 +21,16 @@ export async function generateMetadata({ params }) {
 
 export default async function ReactionPage({ params }) {
   const { slug } = await params;
-  const decodedSlug = typeof slug === 'string' ? decodeURIComponent(slug) : slug;
+  // Next already decodes route params. Avoid throwing on a literal malformed
+  // percent sequence that can still appear in a legacy/custom slug.
+  let decodedSlug = slug;
+  if (typeof slug === 'string') {
+    try {
+      decodedSlug = decodeURIComponent(slug);
+    } catch {
+      decodedSlug = slug;
+    }
+  }
   const resolvedNote = await resolveNoteSlug(decodedSlug);
   const apology = resolvedNote?.data || null;
 
@@ -45,14 +55,8 @@ export default async function ReactionPage({ params }) {
     );
   }
 
-  const serializableNote = {
-    id: resolvedNote.id,
-    recipient_name: apology.recipient_name || '',
-    sender_name: apology.custom_details?.sender_name || '',
-    template: apology.template || 'proposal',
-    custom_slug: apology.custom_slug || null,
-    recipient_reaction: apology.recipient_reaction || null,
-  };
+  // Keep Firestore-specific values outside the React Server Components boundary.
+  const serializableNote = toReactionClientNote(resolvedNote.id, apology);
 
   return (
     <ReactionSenderClient note={serializableNote} />
