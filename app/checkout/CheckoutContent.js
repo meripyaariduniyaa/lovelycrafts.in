@@ -137,7 +137,7 @@ export default function CheckoutContent() {
     router.push(`/success?id=${encodeURIComponent(noteId)}`);
   }
 
-  async function payWithRazorpay() {
+  async function payWithRazorpay(preferredMethod) {
     if (!window.Razorpay) throw new Error('Razorpay is still loading. Please try again.');
     const response = await fetch('/api/razorpay/create-order', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -154,6 +154,8 @@ export default function CheckoutContent() {
       name: 'LovelyCrafts',
       description: `Private gift${note?.recipient_name ? ` for ${note.recipient_name}` : ''}`,
       order_id: order.orderId,
+      prefill: { name: buyerName || undefined, email: buyerEmail || undefined, contact: phone || undefined },
+      ...(preferredMethod ? { method: preferredMethod } : {}),
       theme: { color: '#a83d46' },
       handler: async (payment) => {
         try {
@@ -192,12 +194,12 @@ export default function CheckoutContent() {
     await cashfree.checkout({ paymentSessionId: order.paymentSessionId, redirectTarget: '_self' });
   }
 
-  async function continueToPayment() {
+  async function continueToPayment(preferredMethod) {
     setBusy(true); setError('');
     try {
       if (!quote) await fetchQuote(couponCode.trim());
       if (quote?.free) return await unlockFreeGift();
-      if (gateway === 'razorpay') await payWithRazorpay();
+      if (gateway === 'razorpay') await payWithRazorpay(preferredMethod);
       else await payWithCashfree();
     } catch (err) { setError(err.message || 'Unable to start payment.'); setBusy(false); }
   }
@@ -284,10 +286,38 @@ export default function CheckoutContent() {
 
             {message && <p className="checkout-message" role="status">{message}</p>}
             {error && <p className="checkout-error" role="alert">{error}</p>}
-            <button className="pay-button" type="button" disabled={busy || couponBusy || !quote || (gateway === 'cashfree' && !cashfreeAvailable && !quote?.free)}
-              onClick={continueToPayment}>
-              {busy ? 'Confirming securely…' : quote?.free ? 'Unlock gift for free' : `Continue to ${gateway === 'razorpay' ? 'Razorpay' : 'Cashfree'} · ${formatRupees(quote?.amount)}`}
-            </button>
+            {gateway === 'razorpay' && !quote?.free ? (
+              <div className="razorpay-methods" aria-label="Razorpay payment methods">
+                <div className="upi-method-card">
+                  <div className="upi-method-heading">
+                    <span className="upi-method-icon" aria-hidden="true">⌁</span>
+                    <div><h3>Pay with UPI</h3><p>Choose an app in Razorpay’s secure checkout.</p></div>
+                    <span className="instant-badge">INSTANT</span>
+                  </div>
+                  <div className="upi-app-list" aria-label="Popular UPI apps supported">
+                    <span className="upi-app upi-app-gpay"><b>G</b> Google Pay</span>
+                    <span className="upi-app upi-app-phonepe"><b>पे</b> PhonePe</span>
+                    <span className="upi-app upi-app-paytm"><b>₹</b> Paytm</span>
+                    <span className="upi-app upi-app-more">+ more UPI apps</span>
+                  </div>
+                  <button className="upi-launch-button" type="button" disabled={busy || couponBusy || !quote}
+                    onClick={() => continueToPayment('upi')}>
+                    {busy ? 'Opening secure checkout…' : `Continue with UPI · ${formatRupees(quote?.amount)}`}
+                  </button>
+                </div>
+                <button className="card-method-button" type="button" disabled={busy || couponBusy || !quote}
+                  onClick={() => continueToPayment('card')}>
+                  <span className="card-method-icon" aria-hidden="true">▣</span>
+                  <span><strong>Card, netbanking or wallet</strong><small>Opens Razorpay’s secure checkout</small></span>
+                  <span className="card-method-arrow" aria-hidden="true">›</span>
+                </button>
+              </div>
+            ) : (
+              <button className="pay-button" type="button" disabled={busy || couponBusy || !quote || (gateway === 'cashfree' && !cashfreeAvailable && !quote?.free)}
+                onClick={() => continueToPayment()}>
+                {busy ? 'Confirming securely…' : quote?.free ? 'Unlock gift for free' : `Continue to ${gateway === 'razorpay' ? 'Razorpay' : 'Cashfree'} · ${formatRupees(quote?.amount)}`}
+              </button>
+            )}
             <p className="privacy-note"><span aria-hidden="true">♧</span> Payments are processed securely by {gateway === 'razorpay' ? 'Razorpay' : 'Cashfree'}. LovelyCrafts never sees your card details or UPI PIN.</p>
           </div>
           <div className="checkout-back-links"><Link href={`/preview?id=${encodeURIComponent(noteId)}`}>Return to preview</Link><span> · </span><Link href="/refund">Payment help</Link></div>
@@ -341,6 +371,26 @@ export default function CheckoutContent() {
         .checkout-message { color:#39734b; }.checkout-error { color:#a32e2e; }
         .pay-button { width:100%; min-height:56px; margin-top:1.1rem; border:0; border-radius:16px; background:#332a29; color:#fffaf5; font-size:1rem; font-weight:800; cursor:pointer; transition:transform .18s, background .18s; }
         .pay-button:hover:not(:disabled) { transform:translateY(-1px); background:#4a3430; }.pay-button:disabled { opacity:.65; cursor:wait; }
+        .razorpay-methods { display:grid; gap:.8rem; margin-top:1.1rem; }
+        .upi-method-card,.card-method-button { border:1px solid #eadfd2; border-radius:20px; background:#fffdf9; }
+        .upi-method-card { padding:1.15rem; }
+        .upi-method-heading { display:flex; align-items:center; gap:.75rem; }
+        .upi-method-heading h3 { margin:0; color:#3f3029; font:500 1.3rem/1.2 var(--font-playfair),Georgia,serif; }
+        .upi-method-heading p { margin:.25rem 0 0; color:#78695f; font-size:.8rem; }
+        .upi-method-icon { width:42px; height:42px; display:grid; place-items:center; border-radius:14px; background:#f7e9df; color:#a64036; font-size:1.5rem; }
+        .instant-badge { margin-left:auto; padding:.35rem .55rem; border-radius:999px; background:#e7f0e5; color:#386d47; font-size:.61rem; font-weight:800; letter-spacing:.07em; }
+        .upi-app-list { display:flex; flex-wrap:wrap; gap:.45rem; margin:1rem 0; }
+        .upi-app { display:inline-flex; align-items:center; gap:.35rem; min-height:34px; padding:.35rem .55rem; border:1px solid #efe3d7; border-radius:999px; background:#fff; color:#514238; font-size:.7rem; font-weight:700; }
+        .upi-app b { width:19px; height:19px; display:grid; place-items:center; border-radius:50%; font-size:.68rem; }
+        .upi-app-gpay b { color:#4285f4; }.upi-app-phonepe b { background:#5f259f; color:#fff; }.upi-app-paytm b { background:#e8f5ff; color:#1677b8; }
+        .upi-app-more { color:#78695f; background:#f8f3eb; }
+        .upi-launch-button { width:100%; min-height:52px; border:0; border-radius:15px; background:#332a29; color:#fffaf5; font:800 .95rem/1.3 var(--font-bold); cursor:pointer; }
+        .upi-launch-button:hover:not(:disabled) { background:#4a3430; }.upi-launch-button:disabled { opacity:.65; cursor:wait; }
+        .card-method-button { width:100%; min-height:68px; display:flex; align-items:center; gap:.8rem; padding:.75rem .9rem; text-align:left; color:#43332b; cursor:pointer; }
+        .card-method-button:hover:not(:disabled) { background:#fcf8f2; border-color:#d9c6b5; }.card-method-button:disabled { opacity:.65; cursor:wait; }
+        .card-method-button > span:nth-child(2) { display:grid; gap:.2rem; flex:1; }.card-method-button strong { font-size:.84rem; }.card-method-button small { color:#78695f; font-size:.74rem; }
+        .card-method-icon { width:42px; height:42px; display:grid; place-items:center; border-radius:13px; background:#f5e9c2; font-size:1.15rem; }
+        .card-method-arrow { color:#78695f; font-size:1.5rem; }
         .privacy-note { display:flex; gap:.6rem; align-items:flex-start; margin:1rem 0 0; color:#78695f; font-size:.76rem; line-height:1.55; }.privacy-note span { color:#3b8054; }
         .checkout-back-links { margin-top:1rem; text-align:center; color:#a5907d; font-size:.86rem; }
         .checkout-loading,.checkout-state { min-height:58vh; display:grid; align-content:center; justify-items:center; gap:.75rem; padding:2rem; text-align:center; color:#43332b; }
