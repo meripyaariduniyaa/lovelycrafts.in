@@ -26,8 +26,11 @@ export default function ReactionSenderClient({ note }) {
   const reduceMotion = useReducedMotion();
   const [selected, setSelected] = useState(null);
   const [message, setMessage] = useState('');
-  const [submitted, setSubmitted] = useState(Boolean(note.recipient_reaction));
+  // Opening the reaction link should always invite a reaction. A previous
+  // saved reaction must not skip the form and look like this visit sent one.
+  const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const recipientName = note.recipient_name || 'You';
   const senderName = note.sender_name || 'the sender';
@@ -35,6 +38,7 @@ export default function ReactionSenderClient({ note }) {
   const handleSendReaction = async () => {
     if (!note.id || sending || !selected) return;
     setSending(true);
+    setSubmitError('');
     try {
       const res = await fetch('/api/reactions', {
         method: 'POST',
@@ -47,11 +51,12 @@ export default function ReactionSenderClient({ note }) {
           reactionMessage: message.trim(),
         }),
       });
-      if (res.ok) {
-        setSubmitted(true);
-      }
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(result.error || 'Your reaction could not be sent. Please try again.');
+      setSubmitted(true);
     } catch (err) {
       console.error('Error sending reaction:', err);
+      setSubmitError(err.message || 'Your reaction could not be sent. Please try again.');
     } finally {
       setSending(false);
     }
@@ -204,7 +209,7 @@ export default function ReactionSenderClient({ note }) {
                 transition={{ type: 'spring', stiffness: 320, damping: 18, delay: 0.1 }}
                 style={{ fontSize: '4.5rem', marginBottom: '1rem', display: 'inline-block' }}
               >
-                {selected?.emoji || note.recipient_reaction?.emoji || '💖'}
+                {selected?.emoji || '💖'}
               </motion.div>
 
               <h1 style={{ fontFamily: "'Dancing Script', cursive", fontSize: '2.4rem', color: '#0f172a', margin: '0 0 0.4rem', lineHeight: 1.15 }}>
@@ -217,19 +222,33 @@ export default function ReactionSenderClient({ note }) {
                   : 'The person who created this surprise will see your heartfelt response on their dashboard.'}
               </p>
 
-              {(message || note.recipient_reaction?.message) && (
+              {selected && (
                 <div style={{
-                  background: '#fff1f5',
-                  border: '1px solid #fecdd3',
+                  background: '#f7eee4',
+                  border: '1px solid #e4d1c1',
+                  borderRadius: '16px',
+                  padding: '0.85rem 1rem',
+                  marginBottom: message.trim() ? '0.75rem' : '1.75rem',
+                  color: '#563c34',
+                  fontWeight: 800,
+                }}>
+                  You sent: {selected.emoji} {selected.label}
+                </div>
+              )}
+
+              {message.trim() && (
+                <div style={{
+                  background: '#fffaf4',
+                  border: '1px solid #e4d1c1',
                   borderRadius: '16px',
                   padding: '1rem 1.25rem',
                   fontSize: '0.9rem',
-                  color: '#be185d',
+                  color: '#63483c',
                   fontStyle: 'italic',
                   marginBottom: '1.75rem',
                   lineHeight: 1.5,
                 }}>
-                  &ldquo;{message || note.recipient_reaction?.message}&rdquo;
+                  &ldquo;{message.trim()}&rdquo;
                 </div>
               )}
 
@@ -416,6 +435,8 @@ export default function ReactionSenderClient({ note }) {
                   onBlur={(e) => (e.target.style.borderColor = '#cbd5e1')}
                 />
               </div>
+
+              {submitError && <p role="alert" style={{ color: '#9b3f38', fontSize: '0.85rem', margin: '-0.75rem 0 1rem' }}>{submitError}</p>}
 
               {/* Send Button */}
               <motion.button
