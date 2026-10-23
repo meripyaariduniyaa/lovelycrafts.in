@@ -2,7 +2,7 @@ import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 export const metadata = {
   title: 'Couple & Friends Mini-Game Arcade — Play & Duel | LovelyCrafts',
-  description: 'Play fun 30-second romantic reflex and memory mini-games with your partner or bestie! Set high scores and send a 1-click WhatsApp challenge link to see who wins.',
+  description: 'Play quick couple and best-friend games online, compare scores, and send a WhatsApp challenge. Try LovelyCrafts mini-games together on any device.',
   keywords: [
     'couples games online',
     'partner challenge games',
@@ -14,7 +14,7 @@ export const metadata = {
   alternates: { canonical: `${SITE_URL}/arcade` },
   openGraph: {
     title: 'Couples & Besties Mini-Game Arcade | LovelyCrafts',
-    description: 'Play fun 30s mini-games, set high scores, and send 1-click WhatsApp challenge duels to your partner!',
+    description: 'Play free couple and best-friend mini-games online, then share a WhatsApp challenge link.',
     url: `${SITE_URL}/arcade`,
     type: 'website',
     siteName: SITE_NAME,

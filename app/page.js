@@ -6,9 +6,9 @@ import { templates } from '@/lib/templates';
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 export const metadata = {
-  title: 'LovelyCrafts — Interactive Digital Gifts & Personalized Surprises India',
+  title: 'Personalized Digital Gifts & Surprise Links in India | LovelyCrafts',
   description:
-    'Create a personal digital surprise with your photos and words. Explore interactive birthday, proposal, anniversary, apology, and long-distance gifts, then share a private link.',
+    'Make a personalized digital gift in minutes with your photos, message, and music. Explore birthday, proposal, anniversary, apology, and long-distance surprises to share on WhatsApp.',
   keywords: [
     'personalized digital gift India',
     'interactive birthday card India',
@@ -27,8 +27,8 @@ export const metadata = {
   openGraph: {
     type: 'website',
     siteName: SITE_NAME,
-    title: 'LovelyCrafts — Interactive Digital Gifts & Personalized Surprises India',
-    description: 'Create a personal digital surprise with photos, messages, and interactive moments.',
+    title: 'Personalized Digital Gifts & Surprise Links in India | LovelyCrafts',
+    description: 'Make a personal birthday, proposal, anniversary, or apology gift with your photos and words, then share its private link on WhatsApp.',
     url: SITE_URL,
     locale: 'en_IN',
     images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: 'LovelyCrafts — Personalized Digital Surprises' }],
@@ -60,12 +60,12 @@ export default function Home() {
         <section className="lc-hero" aria-labelledby="home-title">
           <div className="lc-hero-copy">
             <p className="lc-eyebrow"><span aria-hidden="true">✦</span> Little things, made unforgettable</p>
-            <h1 id="home-title">Give them a moment <em>made just for them.</em></h1>
+            <h1 id="home-title">A digital gift made personal <em>for their moment.</em></h1>
             <p className="lc-hero-description">
-              Turn your photos, stories, and inside jokes into an interactive digital gift they can open anywhere.
+              Create an interactive birthday, anniversary, proposal, or apology gift with your photos and words. Share the finished link on WhatsApp in minutes.
             </p>
             <div className="lc-hero-actions">
-              <Link href="/templates" className="lc-button lc-button-primary">Find a gift <span aria-hidden="true">→</span></Link>
+              <Link href="/templates" data-analytics-event="view_gift_templates" className="lc-button lc-button-primary">Find a gift <span aria-hidden="true">→</span></Link>
               <Link href="/templates#how-your-gift-is-made" className="lc-button lc-button-secondary">How it works</Link>
             </div>
             <div className="lc-hero-notes" aria-label="Gift highlights">
@@ -110,7 +110,7 @@ export default function Home() {
               <p className="lc-eyebrow">Start with the moment</p>
               <h2 id="occasion-title">What would you like to celebrate?</h2>
             </div>
-            <Link href="/templates" className="lc-text-link">Explore all gifts <span aria-hidden="true">→</span></Link>
+            <Link href="/templates" data-analytics-event="view_gift_templates" className="lc-text-link">Explore all gifts <span aria-hidden="true">→</span></Link>
           </div>
           <nav className="lc-occasion-list" aria-label="Browse gifts by occasion">
             {categories.map((category) => (
@@ -199,7 +199,7 @@ export default function Home() {
           <p className="lc-eyebrow">Make their next notification special</p>
           <h2 id="final-cta-title">Some feelings deserve more than a text.</h2>
           <p>Find a digital gift, add your own touch, and send a moment they can keep coming back to.</p>
-          <Link href="/templates" className="lc-button lc-button-primary">Explore the gifts <span aria-hidden="true">→</span></Link>
+          <Link href="/templates" data-analytics-event="view_gift_templates" className="lc-button lc-button-primary">Explore the gifts <span aria-hidden="true">→</span></Link>
         </section>
       </div>
     </main>

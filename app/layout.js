@@ -3,13 +3,13 @@ import './mobile-compact.css';
 import { AuthProvider } from '@/components/AuthProvider';
 import SiteChrome from '@/components/SiteChrome';
 import Oneko from '@/components/Oneko';
-import Script from 'next/script';
 import { siteMetadata, SITE_URL, SITE_NAME, DEFAULT_DESCRIPTION, CONTACT_EMAIL, INSTAGRAM_URL, X_URL } from '@/lib/seo';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 // ─── Google Analytics 4 ────────────────────────────────────────────────────
 // TODO: Replace GA_MEASUREMENT_ID with your real ID (e.g. G-XXXXXXXXXX)
 // Get it at: https://analytics.google.com → Admin → Data Streams → Web stream → Measurement ID
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX';
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || '';
 
 export const metadata = siteMetadata;
 
@@ -27,14 +27,6 @@ export default function RootLayout({ children }) {
     name: SITE_NAME,
     url: SITE_URL,
     description: DEFAULT_DESCRIPTION,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${SITE_URL}/templates?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
   };
 
   const organizationSchema = {
@@ -92,23 +84,7 @@ export default function RootLayout({ children }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema).replace(/</g, '\\u003c') }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationSchema).replace(/</g, '\\u003c') }} />
 
-        {/* Google Analytics 4 */}
-        {GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX' && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
-              `}
-            </Script>
-          </>
-        )}
+        <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
       </body>
     </html>
   );

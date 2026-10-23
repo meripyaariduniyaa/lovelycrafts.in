@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState, useCallback } from 'react';
+import { Suspense, useEffect, useState, useCallback, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { doc, onSnapshot } from 'firebase/firestore';
@@ -36,6 +36,7 @@ function SuccessContent() {
   const [downloadingQr, setDownloadingQr] = useState(false);
   const [downloadingKeepsake, setDownloadingKeepsake] = useState(false);
   const [copied, setCopied] = useState(false);
+  const purchaseTracked = useRef('');
 
   useEffect(() => {
     if (!id) {
@@ -82,6 +83,25 @@ function SuccessContent() {
       .then(setQrCodeUrl)
       .catch(() => setQrCodeUrl(''));
   }, [note, getShareUrl]);
+
+  useEffect(() => {
+    if (!note?.is_paid || purchaseTracked.current === note.id) return;
+    purchaseTracked.current = note.id;
+    const storageKey = `lc_purchase_tracked_${note.id}`;
+    try {
+      if (window.localStorage.getItem(storageKey)) return;
+      window.localStorage.setItem(storageKey, '1');
+    } catch {
+      // Keep tracking available if browser storage is disabled.
+    }
+    // Do not pass the recipient, note id, custom slug, or current URL to GA4.
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
+    window.gtag('event', 'purchase', {
+      currency: 'INR',
+      items: [{ item_id: note.template || 'digital-gift', item_name: 'LovelyCrafts digital gift', quantity: 1 }],
+    });
+  }, [note]);
 
   const getWhatsAppUrl = () => {
     const link = getShareUrl();

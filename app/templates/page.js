@@ -110,7 +110,7 @@ export default function TemplatesPage() {
             <span className="cursive" style={{ color: 'var(--accent-primary)', fontSize: '1.05em' }}>Digital Gift Experience</span>
           </h1>
           <p className="hero-copy text-muted" style={{ maxWidth: '660px', margin: '0.75rem auto 1.25rem', fontSize: 'clamp(0.95rem, 2vw, 1.05rem)', lineHeight: 1.6 }}>
-            Turn your favorite memories, photos, letters, and songs into stunning interactive web cards they open directly on WhatsApp in under 3 minutes.
+            Turn your favorite memories, photos, letters, and songs into an interactive digital gift. Create it in minutes, then share its private link through WhatsApp.
           </p>
 
           <div className="hero-social-proof" style={{ marginTop: '0.5rem', paddingTop: '0.85rem' }}>

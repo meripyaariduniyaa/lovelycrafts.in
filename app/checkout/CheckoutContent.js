@@ -300,12 +300,12 @@ export default function CheckoutContent() {
                     <span className="upi-app upi-app-paytm"><b>₹</b> Paytm</span>
                     <span className="upi-app upi-app-more">+ more UPI apps</span>
                   </div>
-                  <button className="upi-launch-button" type="button" disabled={busy || couponBusy || !quote}
+                  <button className="upi-launch-button" data-analytics-event="begin_checkout" type="button" disabled={busy || couponBusy || !quote}
                     onClick={() => continueToPayment('upi')}>
                     {busy ? 'Opening secure checkout…' : `Continue with UPI · ${formatRupees(quote?.amount)}`}
                   </button>
                 </div>
-                <button className="card-method-button" type="button" disabled={busy || couponBusy || !quote}
+                <button className="card-method-button" data-analytics-event="begin_checkout" type="button" disabled={busy || couponBusy || !quote}
                   onClick={() => continueToPayment('card')}>
                   <span className="card-method-icon" aria-hidden="true">▣</span>
                   <span><strong>Card, netbanking or wallet</strong><small>Opens Razorpay’s secure checkout</small></span>
@@ -313,7 +313,7 @@ export default function CheckoutContent() {
                 </button>
               </div>
             ) : (
-              <button className="pay-button" type="button" disabled={busy || couponBusy || !quote || (gateway === 'cashfree' && !cashfreeAvailable && !quote?.free)}
+              <button className="pay-button" data-analytics-event="begin_checkout" type="button" disabled={busy || couponBusy || !quote || (gateway === 'cashfree' && !cashfreeAvailable && !quote?.free)}
                 onClick={() => continueToPayment()}>
                 {busy ? 'Confirming securely…' : quote?.free ? 'Unlock gift for free' : `Continue to ${gateway === 'razorpay' ? 'Razorpay' : 'Cashfree'} · ${formatRupees(quote?.amount)}`}
               </button>

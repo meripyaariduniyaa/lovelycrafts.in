@@ -8,20 +8,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: [
-          '/profile',
-          '/dashboard',
-          '/api/',
-          '/preview',
-          '/p/',
-          '/create',
-          '/success',
-          '/creator',
-          '/sorry/',
-          '/login',
-          '/signup',
-          '/admin/',
-        ],
+        // The pages below return noindex metadata. Leave them crawlable so
+        // search engines can read that directive; API routes remain blocked.
+        disallow: ['/api/'],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

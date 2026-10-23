@@ -199,6 +199,7 @@ export default function TemplatesCatalog({ templates }) {
                       {isAvailable ? (
                         <Link
                           href={`/create?template=${template.id}`}
+                          data-analytics-event="start_gift_creation"
                           className="btn-primary template-create-link"
                           style={{ flex: 1, textAlign: 'center', padding: '0.6rem 1rem', fontSize: '0.84rem', borderRadius: '999px', fontWeight: 800 }}
                         >
