@@ -3,9 +3,19 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // ── 1. Notes & Surprises (Client + Recipient Access) ──
-    // Allows reading notes, creating new ones, and updating view counts / reactions
     match /notes/{token} {
-      allow read, create, update: if true;
+      allow read, create: if true;
+      allow update: if
+        // 1. Authenticated owner can update their own notes without altering ownership
+        (request.auth != null && resource.data.creator_uid == request.auth.uid && request.resource.data.creator_uid == resource.data.creator_uid) ||
+        // 2. Unauthenticated pre-checkout editing cannot tamper with creator_uid, payment status, or claimed notes
+        (
+          request.resource.data.creator_uid == resource.data.creator_uid &&
+          request.resource.data.is_paid == resource.data.is_paid &&
+          (!('claimed_at' in resource.data))
+        ) ||
+        // 3. Recipient interactions (reaction counts, views)
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views', 'reactions', 'reaction_counts', 'last_viewed_at']);
       allow delete: if request.auth != null && resource.data.creator_uid == request.auth.uid;
     }
 

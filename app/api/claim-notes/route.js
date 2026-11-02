@@ -8,13 +8,17 @@ export async function POST(request) {
 
     const adminAuth = getAdminAuth();
     const decoded = await adminAuth.verifyIdToken(bearer);
-    const { deviceId } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const { deviceId, noteIds } = body;
 
-    if (!deviceId) return NextResponse.json({ ok: true, message: 'No device ID provided' });
+    // Strict deviceId format validation (nanoid length 21-64)
+    if (!deviceId || typeof deviceId !== 'string' || !/^[a-zA-Z0-9_-]{21,64}$/.test(deviceId)) {
+      return NextResponse.json({ ok: true, message: 'Invalid or missing device ID' });
+    }
 
     const adminDb = getAdminDb();
     
-    // Find all apologies created by this deviceId
+    // Find all notes created by this deviceId
     const snapshot = await adminDb.collection('notes').where('creator_uid', '==', deviceId).get();
     
     if (snapshot.empty) {
@@ -22,14 +26,31 @@ export async function POST(request) {
     }
 
     const batch = adminDb.batch();
+    const allowedNoteIds = Array.isArray(noteIds) ? new Set(noteIds.filter(id => typeof id === 'string')) : null;
+    let claimedCount = 0;
     
     snapshot.forEach(doc => {
-      batch.update(doc.ref, { creator_uid: decoded.uid });
+      // If noteIds were specified by browser storage, scope to those specific notes
+      if (allowedNoteIds && !allowedNoteIds.has(doc.id)) {
+        return;
+      }
+      const data = doc.data();
+      // Safety: Never steal notes that have already been claimed by a user account
+      if (data.creator_uid && data.creator_uid !== deviceId) {
+        return;
+      }
+      batch.update(doc.ref, {
+        creator_uid: decoded.uid,
+        claimed_at: new Date().toISOString(),
+      });
+      claimedCount++;
     });
 
-    await batch.commit();
+    if (claimedCount > 0) {
+      await batch.commit();
+    }
 
-    return NextResponse.json({ ok: true, count: snapshot.size });
+    return NextResponse.json({ ok: true, count: claimedCount });
   } catch (error) {
     console.error('Error claiming notes:', error);
     return NextResponse.json({ error: error.message || 'Unable to claim notes.' }, { status: 500 });
