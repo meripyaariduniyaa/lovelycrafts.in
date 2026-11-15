@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { springs } from '@/lib/motion';
 import LiveTemplatePreviewModal from '@/components/LiveTemplatePreviewModal';
 
 /**
@@ -19,9 +21,12 @@ export default function PreviewDemoButton({
 
   return (
     <>
-      <button
+      <motion.button
         type="button"
         className={className}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.96 }}
+        transition={springs.snappy}
         style={{
           cursor: 'pointer',
           display: 'inline-flex',
@@ -37,14 +42,17 @@ export default function PreviewDemoButton({
         }}
       >
         {children || '👁️ Live Preview'}
-      </button>
+      </motion.button>
 
-      {showModal && (
-        <LiveTemplatePreviewModal
-          templateId={templateId}
-          onClose={() => setShowModal(false)}
-        />
-      )}
+      <AnimatePresence>
+        {showModal && (
+          <LiveTemplatePreviewModal
+            key={`live-preview-modal-${templateId}`}
+            templateId={templateId}
+            onClose={() => setShowModal(false)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

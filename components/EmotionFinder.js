@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'motion/react';
+import { springs } from '@/lib/motion';
 import { templates } from '@/lib/templates';
 
 const MOODS = [
@@ -96,29 +98,48 @@ export default function EmotionFinder() {
         {MOODS.map((mood) => {
           const isSelected = selectedMoodId === mood.id;
           return (
-            <button
+            <motion.button
               key={mood.id}
               type="button"
               onClick={() => setSelectedMoodId(mood.id)}
+              whileTap={{ scale: 0.95 }}
+              transition={springs.snappy}
               style={{
-                border: isSelected ? '2px solid #e11d48' : '1px solid #fecdd3',
+                position: 'relative',
+                border: isSelected ? '2px solid transparent' : '1px solid #fecdd3',
                 borderRadius: '999px',
                 padding: '8px 18px',
-                background: isSelected ? 'linear-gradient(135deg, #a64036 0%, #a64036 100%)' : '#ffffff',
+                background: isSelected ? 'transparent' : '#ffffff',
                 color: isSelected ? '#ffffff' : '#475569',
                 fontWeight: 800,
                 fontSize: '0.88rem',
                 cursor: 'pointer',
-                boxShadow: isSelected ? '0 6px 20px rgba(244, 63, 94, 0.3)' : '0 2px 6px rgba(0,0,0,0.02)',
-                transition: 'all 0.2s ease',
+                boxShadow: isSelected ? 'none' : '0 2px 6px rgba(0,0,0,0.02)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
               }}
             >
-              <span>{mood.icon}</span>
-              <span>{mood.label}</span>
-            </button>
+              {isSelected && (
+                <motion.div
+                  layoutId="moodFilterIndicator"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '999px',
+                    background: 'linear-gradient(135deg, #a64036 0%, #a64036 100%)',
+                    boxShadow: '0 6px 20px rgba(244, 63, 94, 0.3)',
+                    border: '2px solid #e11d48',
+                    zIndex: 0,
+                  }}
+                  transition={springs.smooth}
+                />
+              )}
+              <span style={{ position: 'relative', zIndex: 1, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <span>{mood.icon}</span>
+                <span>{mood.label}</span>
+              </span>
+            </motion.button>
           );
         })}
       </div>
@@ -129,98 +150,105 @@ export default function EmotionFinder() {
       </div>
 
       {/* Responsive Cards Grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '16px',
-          textAlign: 'left',
-        }}
-      >
-        {recommendedTemplates.map((template) => (
-          <div
-            key={template.id}
-            style={{
-              background: '#ffffff',
-              borderRadius: '20px',
-              border: '1.5px solid #fce7f3',
-              boxShadow: '0 8px 24px -4px rgba(244, 63, 94, 0.08)',
-              padding: '1.25rem',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-            }}
-          >
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                <span style={{ fontSize: '2rem' }}>{template.icon}</span>
-                <span
-                  style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 800,
-                    background: '#fff1f2',
-                    color: '#be185d',
-                    border: '1px solid #fecdd3',
-                    padding: '3px 8px',
-                    borderRadius: '999px',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {template.badge}
-                </span>
-              </div>
-
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a', margin: '0 0 6px' }}>
-                {template.title}
-              </h3>
-
-              <p style={{ color: '#64748b', fontSize: '0.84rem', margin: '0 0 12px', lineHeight: 1.5 }}>
-                {template.description}
-              </p>
-
-              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
-                {template.features.slice(0, 3).map((feat, i) => (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={selectedMoodId}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={springs.smooth}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '16px',
+            textAlign: 'left',
+          }}
+        >
+          {recommendedTemplates.map((template) => (
+            <div
+              key={template.id}
+              style={{
+                background: '#ffffff',
+                borderRadius: '20px',
+                border: '1.5px solid #fce7f3',
+                boxShadow: '0 8px 24px -4px rgba(244, 63, 94, 0.08)',
+                padding: '1.25rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '2rem' }}>{template.icon}</span>
                   <span
-                    key={i}
                     style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      color: '#475569',
-                      background: '#f8fafc',
-                      border: '1px solid #e2e8f0',
-                      padding: '2px 7px',
-                      borderRadius: '6px',
+                      fontSize: '0.7rem',
+                      fontWeight: 800,
+                      background: '#fff1f2',
+                      color: '#be185d',
+                      border: '1px solid #fecdd3',
+                      padding: '3px 8px',
+                      borderRadius: '999px',
+                      textTransform: 'uppercase',
                     }}
                   >
-                    ✨ {feat}
+                    {template.badge}
                   </span>
-                ))}
+                </div>
+
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a', margin: '0 0 6px' }}>
+                  {template.title}
+                </h3>
+
+                <p style={{ color: '#64748b', fontSize: '0.84rem', margin: '0 0 12px', lineHeight: 1.5 }}>
+                  {template.description}
+                </p>
+
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
+                  {template.features.slice(0, 3).map((feat, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: '#475569',
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        padding: '2px 7px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      ✨ {feat}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
+                <Link
+                  href={`/create?template=${template.id}`}
+                  style={{
+                    width: '100%',
+                    textAlign: 'center',
+                    background: 'linear-gradient(135deg, #f43f5e 0%, #be185d 100%)',
+                    color: '#ffffff',
+                    fontWeight: 800,
+                    fontSize: '0.86rem',
+                    padding: '9px 16px',
+                    borderRadius: '999px',
+                    textDecoration: 'none',
+                    boxShadow: '0 3px 10px rgba(244, 63, 94, 0.25)',
+                  }}
+                >
+                  ✨ Personalize This Experience ➔
+                </Link>
               </div>
             </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
-              <Link
-                href={`/create?template=${template.id}`}
-                style={{
-                  width: '100%',
-                  textAlign: 'center',
-                  background: 'linear-gradient(135deg, #f43f5e 0%, #be185d 100%)',
-                  color: '#ffffff',
-                  fontWeight: 800,
-                  fontSize: '0.86rem',
-                  padding: '9px 16px',
-                  borderRadius: '999px',
-                  textDecoration: 'none',
-                  boxShadow: '0 3px 10px rgba(244, 63, 94, 0.25)',
-                }}
-              >
-                ✨ Personalize This Experience ➔
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
       <div style={{ marginTop: '2rem' }}>
         <Link

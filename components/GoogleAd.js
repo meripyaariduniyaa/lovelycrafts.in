@@ -32,7 +32,8 @@ export default function GoogleAd({
     pathname.startsWith('/create') ||
     pathname.startsWith('/preview') ||
     pathname.startsWith('/p/') ||
-    pathname.startsWith('/c/');
+    pathname.startsWith('/c/') ||
+    pathname.startsWith('/tools');
 
   useEffect(() => {
     if (isExcludedRoute || !adsenseClientId || !slot) return;

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import TemplatesCatalog from '@/components/TemplatesCatalog';
 import EmotionFinder from '@/components/EmotionFinder';
 import PreviewDemoButton from '@/components/PreviewDemoButton';
+import HomeScrollChoreography from '@/components/HomeScrollChoreography';
 import { templates } from '@/lib/templates';
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
@@ -56,6 +57,7 @@ export default function Home() {
 
   return (
     <main className="shell lc-home">
+      <HomeScrollChoreography />
       <div className="main-content lc-home-content">
         <section className="lc-hero" aria-labelledby="home-title">
           <div className="lc-hero-copy">

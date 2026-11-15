@@ -5,6 +5,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import StickyCtaBar from '@/components/StickyCtaBar';
 import AnyaAssistant from '@/components/AnyaAssistant';
+import PetalOverlay from '@/components/PetalOverlay';
+import ScrollReveal from '@/components/ScrollReveal';
 
 const immersiveFlowRoutes = ['/create', '/preview', '/checkout', '/success', '/invoice'];
 const privateOrAccountRoutes = ['/p', '/creator', '/profile', '/business'];
@@ -25,6 +27,8 @@ export default function SiteChrome({ children }) {
       {!hideSiteChrome && <Footer />}
       {!hideSiteChrome && <StickyCtaBar />}
       {!hideAnya && <AnyaAssistant />}
+      {!hideSiteChrome && <PetalOverlay />}
+      <ScrollReveal />
     </>
   );
 }

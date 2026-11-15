@@ -3,6 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'motion/react';
+import { springs } from '@/lib/motion';
+
+const MotionLink = motion.create(Link);
 
 export default function StickyCtaBar() {
   const [show, setShow] = useState(false);
@@ -53,64 +57,72 @@ export default function StickyCtaBar() {
     };
   }, [pathname]);
 
-  if (!show) return null;
-
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '1rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 900,
-        width: 'calc(100% - 2rem)',
-        maxWidth: '540px',
-        animation: 'sorryStepFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-      }}
-    >
-      <div
-        style={{
-          background: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1.5px solid #fecdd3',
-          borderRadius: '999px',
-          padding: '0.5rem 0.65rem 0.5rem 1.1rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '0.75rem',
-          boxShadow: '0 12px 36px rgba(190, 24, 93, 0.2)'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-          <span style={{ fontSize: '1.25rem' }}>🎁</span>
-          <div style={{ minWidth: 0 }}>
-            <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 800, color: '#1f2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              Craft an Interactive Surprise
-            </p>
-            <p style={{ margin: 0, fontSize: '0.7rem', color: '#be185d', fontWeight: 700 }}>
-              ⚡ Ready in 2 mins • Instant WhatsApp Share
-            </p>
-          </div>
-        </div>
-
-        <Link
-          href="/templates"
-          className="btn-primary"
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ y: 50, opacity: 0, scale: 0.95, x: '-50%' }}
+          animate={{ y: 0, opacity: 1, scale: 1, x: '-50%' }}
+          exit={{ y: 50, opacity: 0, scale: 0.95, x: '-50%' }}
+          transition={springs.smooth}
           style={{
-            padding: '0.5rem 1.1rem',
-            fontSize: '0.82rem',
-            fontWeight: 800,
-            whiteSpace: 'nowrap',
-            borderRadius: '999px',
-            background: 'linear-gradient(135deg, #f43f5e, #be185d)',
-            boxShadow: '0 4px 14px rgba(244, 63, 94, 0.3)'
+            position: 'fixed',
+            bottom: '1rem',
+            left: '50%',
+            zIndex: 900,
+            width: 'calc(100% - 2rem)',
+            maxWidth: '540px',
           }}
         >
-          Start Now ➔
-        </Link>
-      </div>
-    </div>
+          <div
+            style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1.5px solid #fecdd3',
+              borderRadius: '999px',
+              padding: '0.5rem 0.65rem 0.5rem 1.1rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '0.75rem',
+              boxShadow: '0 12px 36px rgba(190, 24, 93, 0.2)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+              <span style={{ fontSize: '1.25rem' }}>🎁</span>
+              <div style={{ minWidth: 0 }}>
+                <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 800, color: '#1f2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  Craft an Interactive Surprise
+                </p>
+                <p style={{ margin: 0, fontSize: '0.7rem', color: '#be185d', fontWeight: 700 }}>
+                  ⚡ Ready in 2 mins • Instant WhatsApp Share
+                </p>
+              </div>
+            </div>
+
+            <MotionLink
+              href="/templates"
+              className="btn-primary"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
+              transition={springs.snappy}
+              style={{
+                padding: '0.5rem 1.1rem',
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                whiteSpace: 'nowrap',
+                borderRadius: '999px',
+                background: 'linear-gradient(135deg, #f43f5e, #be185d)',
+                boxShadow: '0 4px 14px rgba(244, 63, 94, 0.3)',
+                textDecoration: 'none',
+              }}
+            >
+              Start Now ➔
+            </MotionLink>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

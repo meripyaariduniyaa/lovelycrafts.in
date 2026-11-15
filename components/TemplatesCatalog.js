@@ -3,6 +3,8 @@
 import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'motion/react';
+import { springs } from '@/lib/motion';
 import PreviewDemoButton from '@/components/PreviewDemoButton';
 
 const ALL_CATEGORY = 'All experiences';
@@ -106,18 +108,44 @@ export default function TemplatesCatalog({ templates }) {
     <div className="templates-catalog">
       <div className="templates-toolbar" aria-label="Find a template">
         <div className="template-filters" role="group" aria-label="Filter by occasion">
-          {categories.map((category) => (
-            <button
-              key={category}
-              type="button"
-              aria-pressed={activeCategory === category}
-              className={`template-filter ${activeCategory === category ? 'template-filter--active' : ''}`}
-              onClick={() => setActiveCategory(category)}
-            >
-              <span style={{ marginRight: '4px' }}>{categoryIcons[category] || '🎁'}</span>
-              {category}
-            </button>
-          ))}
+          {categories.map((category) => {
+            const isSelected = activeCategory === category;
+            return (
+              <motion.button
+                key={category}
+                type="button"
+                aria-pressed={isSelected}
+                className={`template-filter ${isSelected ? 'template-filter--active' : ''}`}
+                onClick={() => setActiveCategory(category)}
+                whileTap={{ scale: 0.96 }}
+                transition={springs.snappy}
+                style={{
+                  position: 'relative',
+                  background: isSelected ? 'transparent' : undefined,
+                  borderColor: isSelected ? 'transparent' : undefined,
+                }}
+              >
+                {isSelected && (
+                  <motion.div
+                    layoutId="categoryFilterIndicator"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '999px',
+                      background: '#f7eee4',
+                      border: '1px solid #3b0f1b',
+                      zIndex: 0,
+                    }}
+                    transition={springs.smooth}
+                  />
+                )}
+                <span style={{ position: 'relative', zIndex: 1, display: 'inline-flex', alignItems: 'center' }}>
+                  <span style={{ marginRight: '4px' }}>{categoryIcons[category] || '🎁'}</span>
+                  {category}
+                </span>
+              </motion.button>
+            );
+          })}
         </div>
         <div className="template-controls">
           <label className="template-search">
@@ -157,7 +185,12 @@ export default function TemplatesCatalog({ templates }) {
             const isAvailable = pricing.enabled !== false;
 
             return (
-              <article key={template.id} className="template-card template-card--catalog">
+              <motion.article
+                key={template.id}
+                layout
+                transition={springs.smooth}
+                className="template-card template-card--catalog"
+              >
                 <div className="template-card-art" style={{ background: template.gradient }}>
                   <span className="template-card-art-icon" aria-hidden="true">{template.emoji}</span>
                   <span className="template-card-badge">{activeBadge}</span>
@@ -213,7 +246,7 @@ export default function TemplatesCatalog({ templates }) {
                     </div>
                   </div>
                 </div>
-              </article>
+              </motion.article>
             );
           })}
         </div>

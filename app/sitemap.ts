@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { templates } from '@/lib/templates';
+import { tools } from '@/lib/tools';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { getPublicCreatorSitemapEntries } from '@/lib/public-creators';
 
@@ -43,6 +44,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
       alternates: enInAlternates('/templates'),
+    },
+    {
+      url: `${SITE_URL}/tools`,
+      lastModified: SITE_CONTENT_UPDATED,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+      alternates: enInAlternates('/tools'),
     },
     {
       url: `${SITE_URL}/blog`,
@@ -179,6 +187,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: enInAlternates(`/arcade/${id}`),
   }));
 
+  const toolPages: MetadataRoute.Sitemap = tools.map((tool) => ({
+    url: `${SITE_URL}/tools/${encodeURIComponent(tool.slug)}`,
+    lastModified: SITE_CONTENT_UPDATED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+    alternates: enInAlternates(`/tools/${encodeURIComponent(tool.slug)}`),
+  }));
+
   let creatorPages: MetadataRoute.Sitemap = [];
   try {
     creatorPages = (await getPublicCreatorSitemapEntries()).map(({ slug, lastModified }) => ({
@@ -192,5 +208,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Omit dynamic creator pages when the public profile collection is unavailable.
   }
 
-  return [...staticPages, ...templatePages, ...arcadeGamePages, ...blogPages, ...creatorPages];
+  return [...staticPages, ...templatePages, ...arcadeGamePages, ...blogPages, ...toolPages, ...creatorPages];
 }

@@ -103,6 +103,7 @@ export default function Footer() {
           <div className="footer-col">
             <h4 className="footer-heading">Quick Links</h4>
             <ul className="footer-list">
+              <li><Link href="/tools">🧰 Free Tools Hub</Link></li>
               <li><Link href="/blog">📝 Blog &amp; Gift Guides</Link></li>
               <li><Link href="/templates">All Gift Templates</Link></li>
               <li><Link href="/arcade/heart-rush">⚡ Heart Rush Game</Link></li>
@@ -149,6 +150,8 @@ export default function Footer() {
             <Link href="/contact">Contact</Link>
             <span>•</span>
             <Link href="/faq">FAQ</Link>
+            <span>•</span>
+            <Link href="/tools">Tools</Link>
             <span>•</span>
             <Link href="/blog">Blog</Link>
             <span>•</span>

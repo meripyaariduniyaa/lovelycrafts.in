@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'motion/react';
+import { springs } from '@/lib/motion';
 import LiveTemplatePreviewModal from '@/components/LiveTemplatePreviewModal';
 
 const INITIAL_MESSAGE = {
@@ -108,78 +110,92 @@ export default function AnyaAssistant() {
   return (
     <>
       <div className="anya-widget-root">
-        {isOpen && (
-          <section className="anya-panel" id="anya-chat-panel" role="dialog" aria-label="Chat with Anya" aria-modal="false">
-            <header className="anya-header">
-              <AnyaAvatar />
-              <div className="anya-header-copy">
-                <div className="anya-title">Anya <span>from LovelyCrafts</span></div>
-                <div className="anya-status"><i /> Your gift helper · replies instantly</div>
-              </div>
-              <button className="anya-close" type="button" onClick={() => setIsOpen(false)} aria-label="Close Anya chat">×</button>
-            </header>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.section
+              key="anya-chat-panel"
+              className="anya-panel"
+              id="anya-chat-panel"
+              role="dialog"
+              aria-label="Chat with Anya"
+              aria-modal="false"
+              style={{ transformOrigin: 'bottom right' }}
+              initial={{ opacity: 0, scale: 0.92, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 15 }}
+              transition={springs.smooth}
+            >
+              <header className="anya-header">
+                <AnyaAvatar />
+                <div className="anya-header-copy">
+                  <div className="anya-title">Anya <span>from LovelyCrafts</span></div>
+                  <div className="anya-status"><i /> Your gift helper · replies instantly</div>
+                </div>
+                <button className="anya-close" type="button" onClick={() => setIsOpen(false)} aria-label="Close Anya chat">×</button>
+              </header>
 
-            <div className="anya-messages" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Conversation with Anya">
-              {messages.map((message, index) => (
-                <div className={`anya-message-row ${message.role === 'user' ? 'anya-user-row' : ''}`} key={`${index}-${message.role}`}>
-                  {message.role === 'assistant' && <AnyaAvatar small />}
-                  <div className={`anya-bubble ${message.role === 'user' ? 'anya-user-bubble' : ''}`}>
-                    <p>{message.content}</p>
-                    {message.recommendations?.length > 0 && (
-                      <div className="anya-recommendations" aria-label="Gift recommendations">
-                        {message.recommendations.map((item) => (
-                          <article className="anya-gift-card" key={item.id}>
-                            <div className="anya-gift-art" aria-hidden="true"><span>{item.emoji}</span><small>{item.category}</small></div>
-                            <div className="anya-gift-copy">
-                              <h3>{item.title}</h3>
-                              <strong>₹{item.price}</strong>
-                              <div className="anya-gift-actions">
-                                <button type="button" onClick={() => setPreviewTemplateId(item.id)}>Try it</button>
-                                <Link href={`/create?template=${encodeURIComponent(item.id)}`} onClick={() => setIsOpen(false)}>Make it</Link>
+              <div className="anya-messages" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Conversation with Anya">
+                {messages.map((message, index) => (
+                  <div className={`anya-message-row ${message.role === 'user' ? 'anya-user-row' : ''}`} key={`${index}-${message.role}`}>
+                    {message.role === 'assistant' && <AnyaAvatar small />}
+                    <div className={`anya-bubble ${message.role === 'user' ? 'anya-user-bubble' : ''}`}>
+                      <p>{message.content}</p>
+                      {message.recommendations?.length > 0 && (
+                        <div className="anya-recommendations" aria-label="Gift recommendations">
+                          {message.recommendations.map((item) => (
+                            <article className="anya-gift-card" key={item.id}>
+                              <div className="anya-gift-art" aria-hidden="true"><span>{item.emoji}</span><small>{item.category}</small></div>
+                              <div className="anya-gift-copy">
+                                <h3>{item.title}</h3>
+                                <strong>₹{item.price}</strong>
+                                <div className="anya-gift-actions">
+                                  <button type="button" onClick={() => setPreviewTemplateId(item.id)}>Try it</button>
+                                  <Link href={`/create?template=${encodeURIComponent(item.id)}`} onClick={() => setIsOpen(false)}>Make it</Link>
+                                </div>
                               </div>
-                            </div>
-                          </article>
-                        ))}
-                      </div>
-                    )}
+                            </article>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-              {messages.length === 1 && (
-                <div className="anya-quick-prompts" aria-label="Suggested questions">
-                  {QUICK_PROMPTS.map((prompt) => (
-                    <button type="button" key={prompt.label} disabled={isSending} onClick={() => sendMessage(prompt.message)}>{prompt.label}</button>
-                  ))}
-                </div>
-              )}
+                {messages.length === 1 && (
+                  <div className="anya-quick-prompts" aria-label="Suggested questions">
+                    {QUICK_PROMPTS.map((prompt) => (
+                      <button type="button" key={prompt.label} disabled={isSending} onClick={() => sendMessage(prompt.message)}>{prompt.label}</button>
+                    ))}
+                  </div>
+                )}
 
-              {isSending && <div className="anya-typing"><AnyaAvatar small /><span>Anya is typing<span className="anya-dots">…</span></span></div>}
-              {requestError && <p className="anya-error" role="status">{requestError}</p>}
-              <div ref={conversationEndRef} />
-            </div>
+                {isSending && <div className="anya-typing"><AnyaAvatar small /><span>Anya is typing<span className="anya-dots">…</span></span></div>}
+                {requestError && <p className="anya-error" role="status">{requestError}</p>}
+                <div ref={conversationEndRef} />
+              </div>
 
-            <div className="anya-composer-wrap">
-              <form className="anya-composer" onSubmit={(event) => { event.preventDefault(); sendMessage(input); }}>
-                <label className="anya-sr-only" htmlFor="anya-message-input">Ask Anya anything</label>
-                <input
-                  id="anya-message-input"
-                  ref={inputRef}
-                  value={input}
-                  maxLength={800}
-                  onChange={(event) => setInput(event.target.value)}
-                  placeholder="Ask Anya anything…"
-                  disabled={isSending}
-                />
-                <button type="submit" aria-label="Send message" disabled={!input.trim() || isSending}>↑</button>
-              </form>
-              <p className="anya-disclosure">Chat text is sent to our AI provider to answer you. Please don’t share private gift or payment details.</p>
-              <div className="anya-footer">Made with <span>♥</span> by LovelyCrafts · <Link href="/contact" onClick={() => setIsOpen(false)}>Contact support</Link></div>
-            </div>
-          </section>
-        )}
+              <div className="anya-composer-wrap">
+                <form className="anya-composer" onSubmit={(event) => { event.preventDefault(); sendMessage(input); }}>
+                  <label className="anya-sr-only" htmlFor="anya-message-input">Ask Anya anything</label>
+                  <input
+                    id="anya-message-input"
+                    ref={inputRef}
+                    value={input}
+                    maxLength={800}
+                    onChange={(event) => setInput(event.target.value)}
+                    placeholder="Ask Anya anything…"
+                    disabled={isSending}
+                  />
+                  <button type="submit" aria-label="Send message" disabled={!input.trim() || isSending}>↑</button>
+                </form>
+                <p className="anya-disclosure">Chat text is sent to our AI provider to answer you. Please don’t share private gift or payment details.</p>
+                <div className="anya-footer">Made with <span>♥</span> by LovelyCrafts · <Link href="/contact" onClick={() => setIsOpen(false)}>Contact support</Link></div>
+              </div>
+            </motion.section>
+          )}
+        </AnimatePresence>
 
-        <button
+        <motion.button
           ref={launcherRef}
           className={`anya-launcher ${isOpen ? 'anya-launcher-open' : ''}`}
           type="button"
@@ -188,17 +204,19 @@ export default function AnyaAssistant() {
           aria-controls="anya-chat-panel"
           aria-haspopup="dialog"
           onClick={() => setIsOpen((open) => !open)}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.92 }}
+          transition={springs.snappy}
         >
           {isOpen ? '×' : <><AnyaAvatar small /><span className="anya-launcher-label">Ask Anya</span><span className="anya-launcher-sparkle">✦</span></>}
-        </button>
+        </motion.button>
       </div>
 
       {previewTemplateId && <LiveTemplatePreviewModal templateId={previewTemplateId} onClose={() => setPreviewTemplateId(null)} />}
 
       <style jsx>{`
         .anya-widget-root { --anya-ink:#40332c; --anya-muted:#796c63; --anya-border:#eadbcd; --anya-paper:#fffaf4; --anya-clay:#f1e5d9; --anya-rose:#bd7779; position:fixed; z-index:1200; right:24px; bottom:24px; font-family:Inter,system-ui,sans-serif; color:var(--anya-ink); }
-        .anya-panel { width:min(390px,calc(100vw - 32px)); height:min(640px,calc(100dvh - 120px)); min-height:420px; display:flex; flex-direction:column; overflow:hidden; border:1px solid rgba(226,207,189,.9); border-radius:28px; background:var(--anya-paper); box-shadow:0 22px 70px rgba(66,45,32,.2),0 3px 12px rgba(66,45,32,.08); animation:anya-enter .25s cubic-bezier(.2,.8,.2,1) both; }
-        @keyframes anya-enter { from { opacity:0; transform:translateY(12px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+        .anya-panel { width:min(390px,calc(100vw - 32px)); height:min(640px,calc(100dvh - 120px)); min-height:420px; display:flex; flex-direction:column; overflow:hidden; border:1px solid rgba(226,207,189,.9); border-radius:28px; background:var(--anya-paper); box-shadow:0 22px 70px rgba(66,45,32,.2),0 3px 12px rgba(66,45,32,.08); }
         .anya-header { display:flex; align-items:center; gap:12px; padding:14px 15px; background:linear-gradient(110deg,#f9eee8,#fbf1dc); border-bottom:1px solid var(--anya-border); flex:none; }
         .anya-avatar { width:54px; height:54px; position:relative; display:inline-flex; align-items:center; justify-content:center; flex:none; border:3px solid white; border-radius:50%; background:#f7e5d9; box-shadow:0 4px 10px rgba(77,52,38,.12); }
         .anya-avatar svg { width:100%; height:100%; }
@@ -250,8 +268,8 @@ export default function AnyaAssistant() {
         .anya-footer a { color:#75554b; text-decoration:underline; text-underline-offset:2px; }
         .anya-sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
         .anya-widget-root button:focus-visible,.anya-widget-root a:focus-visible,.anya-widget-root input:focus-visible { outline:3px solid #ac6b60; outline-offset:3px; }
-        .anya-launcher { min-width:66px; min-height:66px; display:flex; align-items:center; justify-content:center; gap:8px; margin:14px 0 0 auto; padding:8px 12px; border:3px solid #fffaf4; border-radius:999px; background:#302a2a; color:white; font-size:1.7rem; line-height:1; cursor:pointer; box-shadow:0 8px 24px rgba(51,39,32,.25); transition:transform .2s ease,box-shadow .2s ease; }
-        .anya-launcher:hover { transform:translateY(-2px); box-shadow:0 11px 28px rgba(51,39,32,.3); }
+        .anya-launcher { min-width:66px; min-height:66px; display:flex; align-items:center; justify-content:center; gap:8px; margin:14px 0 0 auto; padding:8px 12px; border:3px solid #fffaf4; border-radius:999px; background:#302a2a; color:white; font-size:1.7rem; line-height:1; cursor:pointer; box-shadow:0 8px 24px rgba(51,39,32,.25); transition:box-shadow .2s ease; }
+        .anya-launcher:hover { box-shadow:0 11px 28px rgba(51,39,32,.3); }
         .anya-launcher .anya-avatar { width:42px; height:42px; }
         .anya-launcher-label { color:#fffaf4; font:700 .86rem/1 Inter,system-ui,sans-serif; }
         .anya-launcher-sparkle { color:#e7bf83; font-size:.85rem; }
