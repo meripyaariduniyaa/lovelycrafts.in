@@ -486,8 +486,31 @@ function CreatePageContent() {
       </div>
 
       {/* ── 2. Studio Header ── */}
-      <header className="sticky top-0 z-40 backdrop-blur-2xl bg-white/85 border-b border-stone-200/70 shadow-[0_2px_12px_rgba(0,0,0,0.03)] px-4 sm:px-6 py-2.5 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <header
+        className="lc-studio-header"
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          background: 'rgba(255, 255, 255, 0.88)',
+          borderBottom: '1px solid rgba(226, 232, 240, 0.85)',
+          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.03)',
+          padding: '10px 16px',
+        }}
+      >
+        <div
+          className="lc-studio-header-inner"
+          style={{
+            maxWidth: '1240px',
+            margin: '0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+          }}
+        >
           {/* Back Button with tactile press */}
           <motion.button
             type="button"
@@ -502,7 +525,22 @@ function CreatePageContent() {
                 router.push('/templates');
               }
             }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-stone-200/80 text-stone-700 hover:text-stone-900 text-xs sm:text-sm font-semibold shadow-xs transition-colors"
+            className="lc-studio-back-btn"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '7px 16px',
+              borderRadius: '999px',
+              background: 'rgba(255, 255, 255, 0.95)',
+              border: '1px solid rgba(203, 213, 225, 0.8)',
+              color: '#334155',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.04)',
+              fontFamily: "'Inter', sans-serif",
+            }}
             aria-label="Back"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -513,9 +551,25 @@ function CreatePageContent() {
           </motion.button>
 
           {/* Center: Template badge with icon */}
-          <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/90 border border-stone-200/70 shadow-xs backdrop-blur-md">
-            <span className="text-base sm:text-lg leading-none">{activeTemplate.emoji}</span>
-            <span className="text-xs sm:text-sm font-bold text-stone-800 tracking-tight truncate max-w-[140px] sm:max-w-none">
+          <div
+            className="lc-studio-template-pill"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 16px',
+              borderRadius: '999px',
+              background: 'rgba(255, 255, 255, 0.92)',
+              border: '1px solid rgba(226, 232, 240, 0.85)',
+              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.03)',
+              fontWeight: 700,
+              fontSize: '0.88rem',
+              color: '#0f172a',
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>{activeTemplate.emoji}</span>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
               {activeTemplate.title}
             </span>
           </div>
@@ -527,16 +581,26 @@ function CreatePageContent() {
             whileTap={{ scale: 0.92 }}
             transition={springs.snappy}
             onClick={toggleSound}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs ${
-              isMuted
-                ? 'bg-stone-100 border-stone-300 text-stone-500'
-                : 'bg-rose-50/90 border-rose-200 text-rose-700'
-            }`}
+            className="lc-studio-sound-btn"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '7px 14px',
+              borderRadius: '999px',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              background: isMuted ? '#f1f5f9' : '#fff1f2',
+              border: isMuted ? '1px solid #cbd5e1' : '1px solid #fecdd3',
+              color: isMuted ? '#64748b' : '#be123c',
+              fontFamily: "'Inter', sans-serif",
+            }}
             title={isMuted ? 'Sound effects muted (tap to enable)' : 'Sound effects active (tap to mute)'}
             aria-label={isMuted ? 'Unmute sound effects' : 'Mute sound effects'}
           >
-            <span className="text-sm">{isMuted ? '🔇' : '🔊'}</span>
-            <span className="hidden sm:inline">{isMuted ? 'Muted' : 'Sound'}</span>
+            <span>{isMuted ? '🔇' : '🔊'}</span>
+            <span>{isMuted ? 'Muted' : 'Sound'}</span>
           </motion.button>
         </div>
       </header>
@@ -554,10 +618,10 @@ function CreatePageContent() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={springs.smooth}
-            className="w-full relative z-10"
+            style={{ width: '100%', position: 'relative', zIndex: 10 }}
           >
             {/* ── 3. Apple Segmented Step Ribbon ── */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4 pb-2">
+            <div className="lc-studio-ribbon-container">
               <AppleStepRibbon
                 steps={steps}
                 currentIndex={stepIndex}
@@ -568,12 +632,12 @@ function CreatePageContent() {
             </div>
 
             {/* ── 4. Split-Screen Studio Desk (Desktop) & Wizard (Mobile) ── */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
-              <div className="lg:grid lg:grid-cols-12 lg:gap-10 items-start">
+            <div className="lc-studio-desk-wrapper">
+              <div className="lc-studio-split">
                 
                 {/* Left Column: Interactive Wizard Desk */}
-                <div className="lg:col-span-7 xl:col-span-7 flex flex-col justify-start">
-                  <div className="bg-white/90 backdrop-blur-xl border border-stone-200/80 rounded-[28px] p-5 sm:p-7 shadow-[0_12px_40px_-10px_rgba(0,0,0,0.06)] relative overflow-hidden">
+                <div className="lc-studio-form-col">
+                  <div className="lc-studio-card">
                     
                     <AnimatePresence custom={direction} mode="wait">
                       <motion.div
@@ -606,7 +670,20 @@ function CreatePageContent() {
                           initial={{ opacity: 0, y: -8 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0 }}
-                          className="mt-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-rose-700 text-sm font-semibold flex items-center gap-2"
+                          style={{
+                            marginTop: '16px',
+                            padding: '12px 16px',
+                            borderRadius: '14px',
+                            background: '#fff1f2',
+                            border: '1px solid #fecdd3',
+                            color: '#e11d48',
+                            fontSize: '0.88rem',
+                            fontWeight: 600,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            fontFamily: "'Inter', sans-serif",
+                          }}
                         >
                           <span>⚠️</span>
                           <span>{error}</span>
@@ -615,7 +692,7 @@ function CreatePageContent() {
                     </AnimatePresence>
 
                     {/* Bottom Wizard Actions */}
-                    <div className="mt-8 pt-5 border-t border-stone-100 flex items-center justify-between gap-3">
+                    <div className="lc-studio-actions">
                       {stepIndex > 0 ? (
                         <motion.button
                           type="button"
@@ -626,7 +703,19 @@ function CreatePageContent() {
                             playSfx('pop');
                             goBack();
                           }}
-                          className="px-5 py-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-700 text-sm font-bold transition-colors"
+                          className="lc-studio-prev-btn"
+                          style={{
+                            padding: '11px 20px',
+                            borderRadius: '14px',
+                            border: '1.5px solid #cbd5e1',
+                            background: '#f8fafc',
+                            color: '#334155',
+                            fontSize: '0.88rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            fontFamily: "'Inter', sans-serif",
+                          }}
                         >
                           ← Previous
                         </motion.button>
@@ -642,14 +731,27 @@ function CreatePageContent() {
                         onClick={handleNext}
                         disabled={busy}
                         style={{
+                          marginLeft: 'auto',
+                          padding: '12px 28px',
+                          borderRadius: '14px',
+                          border: 'none',
                           background: activeTemplate.gradient,
-                          boxShadow: `0 6px 20px ${activeTemplate.glowColor}`,
+                          color: '#ffffff',
+                          fontSize: '0.95rem',
+                          fontWeight: 700,
+                          cursor: busy ? 'not-allowed' : 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          boxShadow: `0 8px 24px ${activeTemplate.glowColor}`,
+                          opacity: busy ? 0.7 : 1,
+                          fontFamily: "'Inter', sans-serif",
                         }}
-                        className="ml-auto px-7 py-3 rounded-xl text-white font-bold text-sm sm:text-base flex items-center gap-2 shadow-md hover:brightness-105 active:brightness-95 transition-all"
+                        className="lc-studio-next-btn"
                       >
                         {busy ? (
                           <>
-                            <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                            <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid #ffffff', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }} />
                             <span>Crafting...</span>
                           </>
                         ) : stepIndex === totalSteps - 1 ? (
@@ -670,7 +772,7 @@ function CreatePageContent() {
                 </div>
 
                 {/* Right Column: LiveStudioPreview (Desktop Split Screen) */}
-                <div className="hidden lg:flex lg:col-span-5 xl:col-span-5 flex-col items-center sticky top-20 pt-1">
+                <div className="lc-studio-preview-col">
                   <LiveStudioPreview
                     template={activeTemplate}
                     form={form}
@@ -682,7 +784,7 @@ function CreatePageContent() {
             </div>
 
             {/* ── 4. Mobile Floating Glass Pill '👁️ Peek Live Gift' ── */}
-            <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+            <div className="lc-studio-mobile-peek-trigger">
               <motion.button
                 type="button"
                 onClick={() => {
@@ -692,13 +794,29 @@ function CreatePageContent() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.95 }}
                 transition={springs.snappy}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/95 backdrop-blur-2xl border border-stone-300/80 text-stone-900 text-xs font-bold tracking-wide transition-all shadow-[0_12px_32px_rgba(0,0,0,0.18)]"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 20px',
+                  borderRadius: '999px',
+                  background: 'rgba(255, 255, 255, 0.96)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(203, 213, 225, 0.9)',
+                  color: '#0f172a',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  boxShadow: '0 12px 32px rgba(0,0,0,0.18)',
+                  cursor: 'pointer',
+                  fontFamily: "'Inter', sans-serif",
+                }}
               >
-                <span className="text-sm">👁️</span>
+                <span style={{ fontSize: '0.95rem' }}>👁️</span>
                 <span>Peek Live Gift</span>
-                <span className="relative flex h-2 w-2 ml-1">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                <span style={{ position: 'relative', display: 'flex', width: '8px', height: '8px', marginLeft: '4px' }}>
+                  <span style={{ position: 'absolute', width: '100%', height: '100%', borderRadius: '50%', background: '#34d399', opacity: 0.75 }} />
+                  <span style={{ position: 'relative', width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }} />
                 </span>
               </motion.button>
             </div>
@@ -706,14 +824,29 @@ function CreatePageContent() {
             {/* ── 4. Mobile Bottom Sheet Peek Preview ── */}
             <AnimatePresence>
               {showMobilePeek && (
-                <div className="fixed inset-0 z-50 flex items-end justify-center lg:hidden">
+                <div
+                  style={{
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: 100,
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                  }}
+                >
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                     onClick={() => setShowMobilePeek(false)}
-                    className="fixed inset-0 bg-black/60 backdrop-blur-md"
+                    style={{
+                      position: 'fixed',
+                      inset: 0,
+                      background: 'rgba(0, 0, 0, 0.65)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                    }}
                   />
 
                   <motion.div
@@ -721,13 +854,43 @@ function CreatePageContent() {
                     animate={{ y: 0 }}
                     exit={{ y: '100%' }}
                     transition={springs.smooth}
-                    className="relative w-full max-h-[92vh] bg-stone-900/95 backdrop-blur-3xl rounded-t-[34px] border-t border-white/15 p-4 sm:p-6 overflow-y-auto z-10 flex flex-col items-center shadow-2xl"
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      maxHeight: '92vh',
+                      background: 'rgba(23, 23, 23, 0.98)',
+                      backdropFilter: 'blur(24px)',
+                      WebkitBackdropFilter: 'blur(24px)',
+                      borderTopLeftRadius: '32px',
+                      borderTopRightRadius: '32px',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+                      padding: '20px 16px 32px',
+                      overflowY: 'auto',
+                      zIndex: 10,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      boxShadow: '0 -20px 50px rgba(0,0,0,0.5)',
+                      boxSizing: 'border-box',
+                    }}
                   >
                     {/* Header with Grab Handle & Close */}
-                    <div className="w-full flex items-center justify-between pb-3 mb-2 border-b border-white/10">
-                      <div className="flex items-center gap-2">
-                        <span className="text-base">{activeTemplate.emoji}</span>
-                        <span className="text-sm font-bold text-white">Live Gift Preview</span>
+                    <div
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingBottom: '12px',
+                        marginBottom: '8px',
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '1.1rem' }}>{activeTemplate.emoji}</span>
+                        <span style={{ fontSize: '0.92rem', fontWeight: 700, color: '#ffffff', fontFamily: "'Inter', sans-serif" }}>
+                          Live Gift Preview
+                        </span>
                       </div>
                       <button
                         type="button"
@@ -735,7 +898,20 @@ function CreatePageContent() {
                           playSfx('pop');
                           setShowMobilePeek(false);
                         }}
-                        className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm font-bold transition-colors"
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          background: 'rgba(255, 255, 255, 0.15)',
+                          color: '#ffffff',
+                          border: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.85rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                        }}
                         aria-label="Close Preview"
                       >
                         ✕
@@ -743,7 +919,7 @@ function CreatePageContent() {
                     </div>
 
                     {/* Phone Mockup Preview Inside Sheet */}
-                    <div className="w-full py-2 flex justify-center">
+                    <div style={{ width: '100%', padding: '8px 0', display: 'flex', justifyContent: 'center' }}>
                       <LiveStudioPreview
                         template={activeTemplate}
                         form={form}
@@ -792,11 +968,25 @@ function CreatePageContent() {
 ───────────────────────────────────────────────────────── */
 function AppleStepRibbon({ steps, currentIndex, maxStepReached, onSelectStep, accentColor }) {
   return (
-    <div className="w-full flex justify-center">
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <nav
         aria-label="Studio steps ribbon"
-        className="relative flex items-center gap-1 sm:gap-1.5 p-1.5 bg-white/80 backdrop-blur-xl border border-stone-200/80 rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.03)] overflow-x-auto max-w-full"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        className="lc-studio-ribbon"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '6px 10px',
+          background: 'rgba(255, 255, 255, 0.88)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          border: '1px solid rgba(226, 232, 240, 0.9)',
+          borderRadius: '999px',
+          boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+          maxWidth: '100%',
+          overflowX: 'auto',
+          boxSizing: 'border-box',
+        }}
       >
         {steps.map((step, idx) => {
           const isActive = idx === currentIndex;
@@ -812,27 +1002,48 @@ function AppleStepRibbon({ steps, currentIndex, maxStepReached, onSelectStep, ac
               whileHover={isClickable && !isActive ? { scale: 1.02 } : {}}
               whileTap={isClickable ? { scale: 0.95 } : {}}
               transition={springs.snappy}
-              className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors duration-200 ${
-                isActive
-                  ? 'text-stone-900 font-bold'
-                  : isCompleted
-                  ? 'text-stone-700 hover:text-stone-900 cursor-pointer'
-                  : 'text-stone-400 cursor-not-allowed opacity-60'
-              }`}
+              className="lc-studio-ribbon-tab"
+              style={{
+                position: 'relative',
+                zIndex: 10,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '7px 14px',
+                borderRadius: '999px',
+                fontSize: '0.82rem',
+                fontWeight: isActive ? 700 : 600,
+                color: isActive ? '#0f172a' : isCompleted ? '#334155' : '#94a3b8',
+                border: 'none',
+                background: 'transparent',
+                cursor: isClickable ? 'pointer' : 'not-allowed',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease',
+                fontFamily: "'Inter', sans-serif",
+                opacity: !isClickable && !isActive ? 0.6 : 1,
+              }}
             >
               {/* Apple gliding active pill indicator */}
               {isActive && (
                 <motion.div
                   layoutId="activeStepRibbon"
-                  className="absolute inset-0 rounded-full bg-white shadow-sm border border-stone-200/90 -z-10"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '999px',
+                    background: '#ffffff',
+                    border: '1px solid rgba(203, 213, 225, 0.9)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    zIndex: -1,
+                  }}
                   transition={springs.gliding}
                 />
               )}
 
-              <span className="text-sm leading-none">{step.icon || '✨'}</span>
+              <span style={{ fontSize: '0.95rem', lineHeight: 1 }}>{step.icon || '✨'}</span>
               <span>{step.label}</span>
               {isCompleted && !isActive && (
-                <span className="text-[10px] text-emerald-600 font-bold ml-0.5">✓</span>
+                <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 800, marginLeft: '2px' }}>✓</span>
               )}
             </motion.button>
           );
@@ -852,14 +1063,38 @@ function SelectScreen({ templates, onSelect }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.35 }}
-      className="max-w-4xl mx-auto px-4 sm:px-6 pt-10 pb-16 flex flex-col items-center relative z-10"
+      style={{
+        maxWidth: '860px',
+        margin: '0 auto',
+        padding: '40px 16px 64px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+        zIndex: 10,
+        boxSizing: 'border-box',
+        fontFamily: "'Inter', sans-serif",
+      }}
     >
-      <div className="text-center mb-8">
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
-          className="inline-block text-xs font-bold tracking-widest uppercase text-rose-700 bg-rose-50 border border-rose-200 px-4 py-1 rounded-full mb-3 shadow-xs"
+          style={{
+            display: 'inline-block',
+            fontSize: '0.72rem',
+            fontWeight: 800,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: '#be123c',
+            background: 'rgba(244,63,94,0.1)',
+            border: '1px solid rgba(244,63,94,0.25)',
+            padding: '6px 16px',
+            borderRadius: '999px',
+            marginBottom: '12px',
+            boxShadow: '0 2px 8px rgba(244,63,94,0.08)',
+          }}
         >
           ✨ LovelyCrafts Studio
         </motion.div>
@@ -867,8 +1102,16 @@ function SelectScreen({ templates, onSelect }) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          style={{ fontFamily: "'Dancing Script', cursive" }}
-          className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600 bg-clip-text text-transparent pb-2"
+          style={{
+            fontFamily: "'Dancing Script', cursive",
+            fontSize: 'clamp(2.4rem, 6vw, 3.8rem)',
+            fontWeight: 700,
+            background: 'linear-gradient(135deg, #e11d48 0%, #db2777 50%, #d97706 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            margin: '0 0 8px',
+            lineHeight: 1.25,
+          }}
         >
           What would you like to craft?
         </motion.h1>
@@ -876,14 +1119,22 @@ function SelectScreen({ templates, onSelect }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-stone-600 text-sm sm:text-base max-w-md mx-auto mt-2"
+          style={{ color: '#64748b', fontSize: '0.95rem', maxWidth: '440px', margin: '0 auto', lineHeight: 1.6 }}
         >
           Choose an occasion. We'll help you sculpt an unforgettable personalized experience.
         </motion.p>
       </div>
 
       {/* Grid of templates */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '16px',
+          width: '100%',
+          maxWidth: '580px',
+        }}
+      >
         {templates.map((tmpl, i) => (
           <motion.button
             key={tmpl.id}
@@ -893,20 +1144,45 @@ function SelectScreen({ templates, onSelect }) {
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => onSelect(tmpl.id)}
-            className="flex flex-col items-center text-center p-6 rounded-3xl bg-white/90 backdrop-blur-xl border border-stone-200/90 hover:border-rose-300 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(244,63,94,0.12)] transition-all cursor-pointer relative overflow-hidden group"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '24px 20px',
+              borderRadius: '24px',
+              background: 'rgba(255, 255, 255, 0.92)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '1.5px solid rgba(226, 232, 240, 0.9)',
+              boxShadow: '0 8px 30px rgba(0,0,0,0.04)',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              fontFamily: "'Inter', sans-serif",
+            }}
           >
-            <div className="text-4xl mb-3 filter drop-shadow-sm group-hover:scale-110 transition-transform">
+            <div style={{ fontSize: '2.5rem', marginBottom: '10px', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.08))' }}>
               {tmpl.emoji}
             </div>
-            <h3 className="font-bold text-stone-900 text-base mb-1">{tmpl.title}</h3>
-            <p className="text-stone-500 text-xs mb-3">{tmpl.time}</p>
+            <h3 style={{ fontWeight: 800, color: '#0f172a', fontSize: '1rem', margin: '0 0 4px', lineHeight: 1.3 }}>
+              {tmpl.title}
+            </h3>
+            <p style={{ color: '#64748b', fontSize: '0.78rem', margin: '0 0 12px' }}>
+              {tmpl.time}
+            </p>
             <span
               style={{
                 backgroundColor: `${tmpl.accentColor}15`,
                 color: tmpl.accentColor,
-                borderColor: `${tmpl.accentColor}30`,
+                border: `1px solid ${tmpl.accentColor}35`,
+                padding: '4px 12px',
+                borderRadius: '999px',
+                fontSize: '0.72rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
               }}
-              className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border"
             >
               ✨ Tap to craft
             </span>
@@ -959,17 +1235,55 @@ function StepContent({ stepId, templateId, form, setField, accent, setError }) {
 ───────────────────────────────────────────────────────── */
 function StepHeader({ icon, title, subtitle }) {
   return (
-    <div className="mb-5">
-      <div className="text-3xl mb-1.5 filter drop-shadow-sm">{icon}</div>
-      <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight mb-1">{title}</h2>
-      {subtitle && <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">{subtitle}</p>}
+    <div style={{ marginBottom: '20px' }}>
+      <div style={{ fontSize: '2.2rem', marginBottom: '6px', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.06))' }}>{icon}</div>
+      <h2
+        className="lc-studio-header-title"
+        style={{
+          fontSize: '1.45rem',
+          fontWeight: 800,
+          color: '#0f172a',
+          margin: '0 0 4px',
+          lineHeight: 1.3,
+          fontFamily: "'Inter', sans-serif",
+          letterSpacing: '-0.02em',
+        }}
+      >
+        {title}
+      </h2>
+      {subtitle && (
+        <p
+          className="lc-studio-header-subtitle"
+          style={{
+            color: '#64748b',
+            fontSize: '0.88rem',
+            margin: 0,
+            lineHeight: 1.55,
+            fontFamily: "'Inter', sans-serif",
+          }}
+        >
+          {subtitle}
+        </p>
+      )}
     </div>
   );
 }
 
 function FieldLabel({ children }) {
   return (
-    <label className="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-1.5">
+    <label
+      className="lc-studio-label"
+      style={{
+        display: 'block',
+        fontSize: '0.78rem',
+        fontWeight: 700,
+        color: '#475569',
+        textTransform: 'uppercase',
+        letterSpacing: '0.06em',
+        marginBottom: '6px',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
       {children}
     </label>
   );
@@ -982,7 +1296,21 @@ function TextInput({ value, onChange, placeholder, type = 'text' }) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm font-medium focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 transition-all shadow-xs"
+      className="lc-studio-input"
+      style={{
+        width: '100%',
+        padding: '13px 16px',
+        borderRadius: '14px',
+        border: '1.5px solid #cbd5e1',
+        background: '#ffffff',
+        fontSize: '0.92rem',
+        fontWeight: 500,
+        color: '#0f172a',
+        outline: 'none',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+        boxSizing: 'border-box',
+        fontFamily: "'Inter', sans-serif",
+      }}
     />
   );
 }
@@ -994,7 +1322,23 @@ function TextArea({ value, onChange, placeholder, rows = 5 }) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm font-medium focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 transition-all shadow-xs resize-none leading-relaxed"
+      className="lc-studio-textarea"
+      style={{
+        width: '100%',
+        padding: '13px 16px',
+        borderRadius: '14px',
+        border: '1.5px solid #cbd5e1',
+        background: '#ffffff',
+        fontSize: '0.92rem',
+        fontWeight: 500,
+        color: '#0f172a',
+        outline: 'none',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+        boxSizing: 'border-box',
+        resize: 'none',
+        lineHeight: 1.6,
+        fontFamily: "'Inter', sans-serif",
+      }}
     />
   );
 }
@@ -1012,7 +1356,7 @@ function StepPersonDetails({ templateId, form, setField, accent }) {
         title="Tell us about you both"
         subtitle="These names will appear throughout your customized experience."
       />
-      <div className="flex flex-col gap-4">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div>
           <FieldLabel>Their Name *</FieldLabel>
           <TextInput
@@ -1050,7 +1394,18 @@ function StepPersonDetails({ templateId, form, setField, accent }) {
           </>
         )}
         {templateId === 'anniversary' && (
-          <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/70 text-xs text-amber-900 font-medium">
+          <div
+            style={{
+              padding: '14px 16px',
+              borderRadius: '14px',
+              background: 'rgba(245, 158, 11, 0.08)',
+              border: '1px solid rgba(245, 158, 11, 0.25)',
+              fontSize: '0.85rem',
+              color: '#92400e',
+              fontWeight: 600,
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
             💡 You will set your anniversary timeline and milestone dates in the following steps.
           </div>
         )}
@@ -1068,7 +1423,7 @@ function StepWhoAreThey({ form, setField, accent }) {
         title="Who are they to you?"
         subtitle="This helps tailor the interactive reveal and tone."
       />
-      <div className="grid grid-cols-2 gap-3">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
         {RELATIONSHIP_OPTIONS.map((opt) => {
           const isSelected = form.relationshipType === opt.id;
           return (
@@ -1083,15 +1438,25 @@ function StepWhoAreThey({ form, setField, accent }) {
                 setField('relationshipType', opt.id);
               }}
               style={{
-                borderColor: isSelected ? accent : undefined,
+                padding: '16px 12px',
+                borderRadius: '16px',
+                border: isSelected ? `2px solid ${accent}` : '1.5px solid #e2e8f0',
                 backgroundColor: isSelected ? `${accent}12` : '#ffffff',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '6px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                color: isSelected ? '#0f172a' : '#334155',
+                fontWeight: isSelected ? 800 : 600,
+                boxShadow: isSelected ? `0 4px 14px ${accent}25` : '0 1px 3px rgba(0,0,0,0.02)',
+                transition: 'all 0.2s ease',
               }}
-              className={`p-4 rounded-2xl border flex flex-col items-center gap-1.5 text-center transition-all shadow-xs ${
-                isSelected ? 'border-2 text-stone-900 font-bold' : 'border-stone-200 text-stone-700 font-semibold'
-              }`}
             >
-              <span className="text-2xl">{opt.emoji}</span>
-              <span className="text-sm">{opt.label}</span>
+              <span style={{ fontSize: '1.6rem' }}>{opt.emoji}</span>
+              <span style={{ fontSize: '0.88rem' }}>{opt.label}</span>
             </motion.button>
           );
         })}
@@ -1109,7 +1474,7 @@ function StepQuotation({ form, setField, accent, templateId }) {
         title="A confession quote"
         subtitle="Choose a meaningful quote or write one straight from your heart."
       />
-      <div className="flex flex-col gap-2.5 mb-4">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
         {PROPOSAL_QUOTES.map((q) => {
           const isSelected = form.quotation === q;
           return (
@@ -1122,12 +1487,19 @@ function StepQuotation({ form, setField, accent, templateId }) {
                 setField('quotation', isSelected ? '' : q);
               }}
               style={{
-                borderColor: isSelected ? accent : undefined,
+                textAlign: 'left',
+                padding: '14px 16px',
+                borderRadius: '14px',
+                border: isSelected ? `2px solid ${accent}` : '1.5px solid #cbd5e1',
                 backgroundColor: isSelected ? `${accent}10` : '#ffffff',
+                color: isSelected ? '#0f172a' : '#334155',
+                fontSize: '0.88rem',
+                fontWeight: isSelected ? 700 : 500,
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+                transition: 'all 0.2s ease',
               }}
-              className={`text-left p-3.5 rounded-xl border text-xs sm:text-sm transition-all shadow-xs ${
-                isSelected ? 'border-2 text-stone-900 font-bold' : 'border-stone-200 text-stone-700 font-medium'
-              }`}
             >
               {q}
             </motion.button>
@@ -1164,7 +1536,7 @@ function StepCake({ form, setField, accent }) {
         title="Choose their celebration cake"
         subtitle="This virtual cake will be presented with interactive sparklers."
       />
-      <div className="flex flex-col gap-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {CAKE_OPTIONS.map((cake) => {
           const isSelected = form.cakeType === cake.id;
           return (
@@ -1179,20 +1551,29 @@ function StepCake({ form, setField, accent }) {
                 setField('cakeType', cake.id);
               }}
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                padding: '14px 16px',
+                borderRadius: '16px',
+                border: isSelected ? `2px solid ${cake.accent}` : '1.5px solid #e2e8f0',
                 backgroundColor: isSelected ? cake.bg : '#ffffff',
-                borderColor: isSelected ? cake.accent : '#e2e8f0',
                 color: isSelected ? '#ffffff' : '#0f172a',
+                textAlign: 'left',
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                boxShadow: isSelected ? '0 8px 24px rgba(0,0,0,0.18)' : '0 1px 3px rgba(0,0,0,0.02)',
+                transition: 'all 0.2s ease',
               }}
-              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all shadow-xs ${
-                isSelected ? 'border-2 shadow-md' : ''
-              }`}
             >
-              <span className="text-3xl">{cake.emoji}</span>
-              <div className="flex-1">
-                <div className="font-bold text-sm sm:text-base">{cake.label}</div>
-                <div className={`text-xs ${isSelected ? 'text-white/80' : 'text-stone-500'}`}>{cake.desc}</div>
+              <span style={{ fontSize: '2rem' }}>{cake.emoji}</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>{cake.label}</div>
+                <div style={{ fontSize: '0.78rem', color: isSelected ? 'rgba(255,255,255,0.85)' : '#64748b' }}>
+                  {cake.desc}
+                </div>
               </div>
-              {isSelected && <span className="text-lg font-bold">✓</span>}
+              {isSelected && <span style={{ fontSize: '1.2rem', fontWeight: 800 }}>✓</span>}
             </motion.button>
           );
         })}
@@ -1228,10 +1609,23 @@ function StepBalloons({ form, setField, accent }) {
         subtitle="Add up to 5 surprise messages — one per balloon. They will pop with sound effects!"
       />
 
-      <div className="flex flex-col gap-2.5">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-sm flex-shrink-0">
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: '#fff1f2',
+                border: '1px solid #fecdd3',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '14px',
+                flexShrink: 0,
+              }}
+            >
               🎈
             </div>
             <input
@@ -1239,7 +1633,18 @@ function StepBalloons({ form, setField, accent }) {
               value={form.balloonMessages[i] || ''}
               onChange={(e) => updateBalloon(i, e.target.value)}
               placeholder={`Message ${i + 1}... (e.g. "You light up my life")`}
-              className="flex-1 px-3.5 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 shadow-xs"
+              style={{
+                flex: 1,
+                padding: '11px 14px',
+                borderRadius: '12px',
+                border: '1.5px solid #cbd5e1',
+                background: '#ffffff',
+                fontSize: '0.88rem',
+                color: '#0f172a',
+                outline: 'none',
+                fontFamily: "'Inter', sans-serif",
+                boxSizing: 'border-box',
+              }}
             />
           </div>
         ))}
@@ -1264,7 +1669,7 @@ function StepSpecialDates({ form, setField, accent }) {
         title="Your special dates"
         subtitle="These dates anchor the live anniversary odometer."
       />
-      <div className="flex flex-col gap-4">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div>
           <FieldLabel>Anniversary Date *</FieldLabel>
           <TextInput
@@ -1281,7 +1686,18 @@ function StepSpecialDates({ form, setField, accent }) {
             placeholder="e.g. June 5, 2020..."
           />
         </div>
-        <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/70 text-xs text-amber-900 font-semibold">
+        <div
+          style={{
+            padding: '14px 16px',
+            borderRadius: '14px',
+            background: 'rgba(245, 158, 11, 0.08)',
+            border: '1px solid rgba(245, 158, 11, 0.25)',
+            fontSize: '0.85rem',
+            color: '#92400e',
+            fontWeight: 600,
+            fontFamily: "'Inter', sans-serif",
+          }}
+        >
           🥂 The gift will display a live timer counting every year, month, day, and second since you fell in love.
         </div>
       </div>
@@ -1317,16 +1733,30 @@ function StepJourney({ form, setField, accent }) {
         title="Your story roadmap"
         subtitle="Add memorable milestones to build a visual relationship timeline."
       />
-      <div className="flex flex-col gap-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {form.journey.map((event, i) => (
-          <div key={i} className="p-3.5 rounded-2xl bg-white border border-stone-200 shadow-xs flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-stone-500">Milestone {i + 1}</span>
+          <div
+            key={i}
+            style={{
+              padding: '14px 16px',
+              borderRadius: '16px',
+              background: '#ffffff',
+              border: '1.5px solid #e2e8f0',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#64748b' }}>
+                Milestone {i + 1}
+              </span>
               {form.journey.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeEvent(i)}
-                  className="text-stone-400 hover:text-rose-600 text-sm font-bold"
+                  style={{ color: '#94a3b8', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700 }}
                 >
                   ✕
                 </button>
@@ -1337,14 +1767,34 @@ function StepJourney({ form, setField, accent }) {
               value={event.date}
               onChange={(e) => updateJourney(i, 'date', e.target.value)}
               placeholder="Date (e.g. March 2021)"
-              className="w-full px-3 py-2 rounded-lg border border-stone-200 bg-stone-50 text-xs font-medium"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '10px',
+                border: '1px solid #cbd5e1',
+                background: '#f8fafc',
+                fontSize: '0.82rem',
+                fontFamily: "'Inter', sans-serif",
+                boxSizing: 'border-box',
+                outline: 'none',
+              }}
             />
             <input
               type="text"
               value={event.memory}
               onChange={(e) => updateJourney(i, 'memory', e.target.value)}
               placeholder="Memory (e.g. Our first road trip to the hills)"
-              className="w-full px-3 py-2 rounded-lg border border-stone-200 bg-stone-50 text-xs font-medium"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '10px',
+                border: '1px solid #cbd5e1',
+                background: '#f8fafc',
+                fontSize: '0.82rem',
+                fontFamily: "'Inter', sans-serif",
+                boxSizing: 'border-box',
+                outline: 'none',
+              }}
             />
           </div>
         ))}
@@ -1356,7 +1806,18 @@ function StepJourney({ form, setField, accent }) {
             whileTap={{ scale: 0.97 }}
             transition={springs.snappy}
             onClick={addEvent}
-            className="w-full py-2.5 rounded-xl border border-dashed border-rose-300 text-rose-600 font-bold text-xs bg-rose-50/50 hover:bg-rose-50"
+            style={{
+              width: '100%',
+              padding: '11px',
+              borderRadius: '12px',
+              border: '1.5px dashed #fda4af',
+              color: '#e11d48',
+              fontWeight: 700,
+              fontSize: '0.82rem',
+              background: 'rgba(255, 241, 242, 0.5)',
+              cursor: 'pointer',
+              fontFamily: "'Inter', sans-serif",
+            }}
           >
             + Add Another Milestone
           </motion.button>
@@ -1392,10 +1853,25 @@ function StepReasons({ form, setField, accent }) {
         title="Why you love them"
         subtitle="Up to 5 reasons that will burst out of floating heart balloons."
       />
-      <div className="flex flex-col gap-2.5">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-bold flex items-center justify-center text-xs flex-shrink-0">
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '50%',
+                background: '#fff1f2',
+                border: '1px solid #fecdd3',
+                color: '#e11d48',
+                fontWeight: 800,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '12px',
+                flexShrink: 0,
+              }}
+            >
               {i + 1}
             </div>
             <input
@@ -1403,7 +1879,18 @@ function StepReasons({ form, setField, accent }) {
               value={form.reasons[i] || ''}
               onChange={(e) => updateReason(i, e.target.value)}
               placeholder={`Reason ${i + 1}... (e.g. "The way your laugh makes me feel")`}
-              className="flex-1 px-3.5 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 shadow-xs"
+              style={{
+                flex: 1,
+                padding: '11px 14px',
+                borderRadius: '12px',
+                border: '1.5px solid #cbd5e1',
+                background: '#ffffff',
+                fontSize: '0.88rem',
+                color: '#0f172a',
+                outline: 'none',
+                fontFamily: "'Inter', sans-serif",
+                boxSizing: 'border-box',
+              }}
             />
           </div>
         ))}
@@ -1428,7 +1915,7 @@ function StepWhatHappened({ form, setField, accent }) {
         title="What happened?"
         subtitle="Vulnerability and sincerity are the fastest path to healing."
       />
-      <div className="flex flex-col gap-2.5">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {WHAT_HAPPENED_OPTIONS.map((opt) => {
           const isSelected = form.whatHappenedType === opt.id;
           return (
@@ -1441,16 +1928,25 @@ function StepWhatHappened({ form, setField, accent }) {
                 setField('whatHappenedType', opt.id);
               }}
               style={{
-                borderColor: isSelected ? accent : undefined,
+                textAlign: 'left',
+                padding: '14px 16px',
+                borderRadius: '16px',
+                border: isSelected ? `2px solid ${accent}` : '1.5px solid #cbd5e1',
                 backgroundColor: isSelected ? `${accent}12` : '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+                transition: 'all 0.2s ease',
               }}
-              className={`text-left p-3.5 rounded-2xl border flex items-center gap-3 transition-all shadow-xs ${
-                isSelected ? 'border-2 text-stone-900 font-bold' : 'border-stone-200 text-stone-700 font-medium'
-              }`}
             >
-              <span className="text-2xl">{opt.emoji}</span>
-              <span className="flex-1 text-sm">{opt.label}</span>
-              {isSelected && <span className="font-bold">✓</span>}
+              <span style={{ fontSize: '1.6rem' }}>{opt.emoji}</span>
+              <span style={{ flex: 1, fontSize: '0.88rem', fontWeight: isSelected ? 800 : 600, color: isSelected ? '#0f172a' : '#334155' }}>
+                {opt.label}
+              </span>
+              {isSelected && <span style={{ fontWeight: 800, fontSize: '1.1rem', color: accent }}>✓</span>}
             </motion.button>
           );
         })}
@@ -1476,17 +1972,39 @@ function StepMemories({ form, setField, accent, templateId }) {
         maxImages={maxPhotos}
       />
       {form.images.length === 0 && (
-        <div className="mt-3 p-3 rounded-xl bg-stone-50 border border-dashed border-stone-300 text-stone-600 text-xs text-center font-medium">
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            borderRadius: '12px',
+            background: '#f8fafc',
+            border: '1.5px dashed #cbd5e1',
+            color: '#64748b',
+            fontSize: '0.8rem',
+            textAlign: 'center',
+            fontWeight: 500,
+            fontFamily: "'Inter', sans-serif",
+          }}
+        >
           Photos are optional, but adding them makes the reveal 10x more magical 💫
         </div>
       )}
 
       {/* Optional Passcode Shield */}
-      <div className="mt-5 p-4 rounded-2xl bg-gradient-to-br from-stone-50 to-rose-50/30 border border-stone-200/80 shadow-xs">
-        <label htmlFor="gift-passcode" className="block text-stone-800 font-bold text-sm">
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '16px',
+          borderRadius: '16px',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #fff1f2 100%)',
+          border: '1.5px solid #e2e8f0',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
+        }}
+      >
+        <label htmlFor="gift-passcode" style={{ display: 'block', color: '#0f172a', fontWeight: 800, fontSize: '0.88rem', fontFamily: "'Inter', sans-serif" }}>
           Add a 4-digit secret passcode (optional)
         </label>
-        <p className="text-stone-500 text-xs mt-1 mb-2">
+        <p style={{ color: '#64748b', fontSize: '0.78rem', margin: '4px 0 10px', fontFamily: "'Inter', sans-serif" }}>
           Your recipient will need to enter this secret code before opening the envelope.
         </p>
         <input
@@ -1499,9 +2017,24 @@ function StepMemories({ form, setField, accent, templateId }) {
           placeholder="••••"
           value={form.passcode || ''}
           onChange={(e) => setField('passcode', e.target.value.replace(/\D/g, '').slice(0, 4))}
-          className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-900 text-center tracking-[0.4em] font-mono text-base focus:border-rose-500 shadow-xs"
+          style={{
+            width: '100%',
+            padding: '10px 16px',
+            borderRadius: '12px',
+            border: '1.5px solid #cbd5e1',
+            background: '#ffffff',
+            color: '#0f172a',
+            textAlign: 'center',
+            letterSpacing: '0.4em',
+            fontFamily: 'monospace',
+            fontSize: '1.1rem',
+            outline: 'none',
+            boxSizing: 'border-box',
+          }}
         />
-        <span className="block text-[11px] text-stone-500 mt-1">Leave blank to allow opening without a code.</span>
+        <span style={{ display: 'block', fontSize: '0.72rem', color: '#94a3b8', marginTop: '4px', fontFamily: "'Inter', sans-serif" }}>
+          Leave blank to allow opening without a code.
+        </span>
       </div>
     </div>
   );
@@ -1516,7 +2049,7 @@ function StepDistanceRadar({ form, setField, accent }) {
         title="Orbital Distance Radar"
         subtitle="Connect your two cities across the celestial map."
       />
-      <div className="flex flex-col gap-4">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div>
           <FieldLabel>Where are you right now? (Origin City)</FieldLabel>
           <TextInput
@@ -1563,12 +2096,25 @@ function StepCassettes({ form, setField, accent }) {
         title="5 Cassette Memory Tapes"
         subtitle="Add a memory or dedicate a soundtrack song to each tape."
       />
-      <div className="flex flex-col gap-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {cassettes.map((c, i) => (
-          <div key={c.id || i} className="p-3.5 rounded-2xl border border-stone-200 bg-white shadow-xs">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-indigo-600">TAPE 0{i + 1}</span>
-              <span className="text-xs text-stone-500 font-medium">{c.track}</span>
+          <div
+            key={c.id || i}
+            style={{
+              padding: '14px 16px',
+              borderRadius: '16px',
+              border: '1.5px solid #e2e8f0',
+              background: '#ffffff',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#4f46e5', letterSpacing: '0.05em' }}>
+                TAPE 0{i + 1}
+              </span>
+              <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
+                {c.track}
+              </span>
             </div>
             <TextInput
               value={c.note}
@@ -1602,14 +2148,14 @@ function StepLetter({ templateId, form, setField, accent }) {
         subtitle="This letter will be revealed line-by-line in their ceremonial keepsake."
       />
 
-      <div className="relative">
+      <div style={{ position: 'relative' }}>
         <TextArea
           value={form.letter}
           onChange={(v) => setField('letter', v)}
           placeholder={prompts[templateId] || "Write your heartfelt message here..."}
           rows={7}
         />
-        <div className="text-right text-xs text-stone-500 mt-1 font-medium">
+        <div style={{ textAlign: 'right', fontSize: '0.75rem', color: '#64748b', marginTop: '4px', fontWeight: 500, fontFamily: "'Inter', sans-serif" }}>
           {charCount} characters
         </div>
       </div>

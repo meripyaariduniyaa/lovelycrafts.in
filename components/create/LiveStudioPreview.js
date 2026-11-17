@@ -52,19 +52,71 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
   }, [template, form]);
 
   return (
-    <div className="live-studio-preview-wrapper flex flex-col items-center justify-start w-full select-none">
+    <div
+      className="live-studio-preview-wrapper"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '100%',
+        userSelect: 'none',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
       {/* Top Status & Live Indicator */}
-      <div className="flex items-center justify-between w-full max-w-[330px] mb-2 px-1">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold tracking-wide backdrop-blur-md">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          maxWidth: '330px',
+          marginBottom: '8px',
+          padding: '0 4px',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            borderRadius: '999px',
+            background: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            color: '#065f46',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            letterSpacing: '0.02em',
+          }}
+        >
+          <span
+            style={{
+              display: 'inline-block',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: '#10b981',
+              boxShadow: '0 0 6px rgba(16, 185, 129, 0.6)',
+            }}
+          />
           <span>Live Preview</span>
         </div>
 
         {template?.title && (
-          <span className="text-[11px] font-medium text-stone-500 truncate max-w-[150px]">
+          <span
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              color: '#64748b',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: '150px',
+            }}
+          >
             {template.title}
           </span>
         )}
@@ -72,34 +124,82 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
 
       {/* Realistic Smartphone Mockup Frame */}
       <div
-        className="relative w-full max-w-[330px] rounded-[38px] p-2.5 bg-gradient-to-b from-stone-800 via-stone-900 to-black shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.12),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-300 ease-out"
         style={{
-          boxShadow: '0 25px 60px -15px rgba(28, 25, 23, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.15)',
+          position: 'relative',
+          width: '100%',
+          maxWidth: '330px',
+          borderRadius: '38px',
+          padding: '10px',
+          background: 'linear-gradient(180deg, #262626 0%, #171717 50%, #0a0a0a 100%)',
+          boxShadow: '0 25px 60px -15px rgba(28, 25, 23, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.2)',
+          boxSizing: 'border-box',
         }}
       >
         {/* Subtle Outer Bezel Edge */}
-        <div className="relative w-full rounded-[30px] overflow-hidden bg-[#f8f3eb] border border-black/10">
-          
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            borderRadius: '28px',
+            overflow: 'hidden',
+            background: '#f8f3eb',
+            border: '1px solid rgba(0, 0, 0, 0.15)',
+          }}
+        >
           {/* Dynamic Island / Top Camera Notch */}
-          <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center pointer-events-none">
-            <div className="h-[20px] w-[88px] bg-black rounded-full flex items-center justify-end pr-2 gap-1.5 shadow-sm">
-              <span className="w-2.5 h-2.5 rounded-full bg-stone-900 border border-stone-800" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#151522] border border-[#22223b]" />
+          <div
+            style={{
+              position: 'absolute',
+              top: '10px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 30,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+            }}
+          >
+            <div
+              style={{
+                height: '20px',
+                width: '88px',
+                background: '#000000',
+                borderRadius: '999px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                paddingRight: '8px',
+                gap: '6px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
+              }}
+            >
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#1c1917', border: '1px solid #292524' }} />
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#172554', border: '1px solid #1e3a8a' }} />
             </div>
           </div>
 
           {/* Screen Viewport Container (Fixed Height 580px, View-Only Template Content) */}
           <div
-            className="w-full h-[580px] overflow-hidden relative bg-[#f8f3eb] flex flex-col justify-start"
             style={{
+              width: '100%',
+              height: '580px',
+              overflow: 'hidden',
+              position: 'relative',
+              background: '#f8f3eb',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
               contain: 'paint layout',
               WebkitFontSmoothing: 'antialiased',
             }}
           >
             {/* View-Only Template Content Wrapper with pointer-events: none */}
             <div
-              className="w-full h-full relative"
               style={{
+                width: '100%',
+                height: '100%',
+                position: 'relative',
                 pointerEvents: 'none',
                 userSelect: 'none',
               }}
@@ -108,20 +208,29 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
             </div>
 
             {/* Bottom iOS Home Indicator Bar */}
-            <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
-              <div className="w-28 h-1 bg-stone-400/50 rounded-full backdrop-blur-xs" />
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '6px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 30,
+                pointerEvents: 'none',
+              }}
+            >
+              <div style={{ width: '110px', height: '4px', background: 'rgba(0, 0, 0, 0.25)', borderRadius: '999px' }} />
             </div>
           </div>
         </div>
 
-        {/* Side Button Accents (Left Volume & Right Power subtle styling) */}
-        <div className="absolute -left-[3px] top-24 w-[3px] h-9 bg-stone-700/60 rounded-l-sm" />
-        <div className="absolute -left-[3px] top-36 w-[3px] h-9 bg-stone-700/60 rounded-l-sm" />
-        <div className="absolute -right-[3px] top-28 w-[3px] h-14 bg-stone-700/60 rounded-r-sm" />
+        {/* Side Button Accents */}
+        <div style={{ position: 'absolute', left: '-3px', top: '96px', width: '3px', height: '36px', background: 'rgba(68, 64, 60, 0.8)', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px' }} />
+        <div style={{ position: 'absolute', left: '-3px', top: '144px', width: '3px', height: '36px', background: 'rgba(68, 64, 60, 0.8)', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px' }} />
+        <div style={{ position: 'absolute', right: '-3px', top: '112px', width: '3px', height: '54px', background: 'rgba(68, 64, 60, 0.8)', borderTopRightRadius: '2px', borderBottomRightRadius: '2px' }} />
       </div>
 
-      {/* Subtle Bottom Caption */}
-      <p className="mt-2.5 text-[11px] text-stone-600 text-center tracking-tight">
+      {/* Bottom Caption */}
+      <p style={{ marginTop: '10px', fontSize: '11px', color: '#64748b', textAlign: 'center', letterSpacing: '-0.01em', fontWeight: 500 }}>
         Updates automatically as you customize
       </p>
     </div>

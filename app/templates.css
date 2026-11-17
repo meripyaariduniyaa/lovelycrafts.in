@@ -2059,3 +2059,336 @@
   0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
+
+/* ==========================================================================
+   LOVELYCRAFTS CREATE STUDIO - Apple-Grade Tactile Experience
+   ========================================================================== */
+
+.lc-studio-page {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  color: #1e293b;
+}
+
+.lc-studio-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  padding: 10px 16px;
+  transition: background 0.3s ease;
+}
+
+.lc-studio-header-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lc-studio-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.lc-studio-back-btn:hover {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+.lc-studio-template-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #0f172a;
+}
+
+.lc-studio-sound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  font-family: inherit;
+}
+
+.lc-studio-ribbon-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 16px 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.lc-studio-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 999px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.lc-studio-ribbon::-webkit-scrollbar {
+  display: none;
+}
+
+.lc-studio-ribbon-tab {
+  position: relative;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: none;
+  background: transparent;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.lc-studio-desk-wrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 20px 48px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lc-studio-split {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.lc-studio-form-col {
+  flex: 1 1 540px;
+  max-width: 620px;
+  min-width: 0;
+  width: 100%;
+}
+
+.lc-studio-preview-col {
+  flex: 0 0 350px;
+  position: sticky;
+  top: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lc-studio-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 28px;
+  padding: 28px 28px 32px;
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.07), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.lc-studio-header-title {
+  font-size: 1.45rem !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  margin: 0 0 6px !important;
+  line-height: 1.3 !important;
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: -0.02em !important;
+}
+
+.lc-studio-header-subtitle {
+  color: #64748b !important;
+  font-size: 0.88rem !important;
+  margin: 0 !important;
+  line-height: 1.55 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.lc-studio-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  font-family: 'Inter', sans-serif;
+}
+
+.lc-studio-input {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+.lc-studio-input:focus {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12) !important;
+}
+
+.lc-studio-textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+  resize: none;
+  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+}
+
+.lc-studio-textarea:focus {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12) !important;
+}
+
+.lc-studio-actions {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lc-studio-prev-btn {
+  padding: 11px 20px;
+  border-radius: 14px;
+  border: 1.5px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.lc-studio-prev-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.lc-studio-next-btn {
+  margin-left: auto;
+  padding: 12px 28px;
+  border-radius: 14px;
+  border: none;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.lc-studio-mobile-peek-trigger {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1023px) {
+  .lc-studio-split {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .lc-studio-preview-col {
+    display: none !important;
+  }
+  .lc-studio-form-col {
+    max-width: 540px !important;
+  }
+  .lc-studio-mobile-peek-trigger {
+    display: block !important;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 45;
+  }
+}
+
+@media (max-width: 640px) {
+  .lc-studio-card {
+    padding: 20px 18px 24px !important;
+    border-radius: 22px !important;
+  }
+  .lc-studio-header {
+    padding: 8px 12px !important;
+  }
+  .lc-studio-desk-wrapper {
+    padding: 12px 14px 40px !important;
+  }
+  .lc-studio-ribbon-container {
+    padding: 12px 12px 4px !important;
+  }
+}
+
