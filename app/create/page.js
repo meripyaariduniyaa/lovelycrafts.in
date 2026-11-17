@@ -13,6 +13,7 @@ import { playSfx, sfx } from '@/lib/sfx';
 import LiveStudioPreview from '@/components/create/LiveStudioPreview';
 import InspirationVault from '@/components/create/InspirationVault';
 import CraftingCeremony from '@/components/create/CraftingCeremony';
+import JourneyStepper from '@/components/JourneyStepper';
 
 /* ─────────────────────────────────────────────────────────
    TEMPLATE CONFIG
@@ -484,6 +485,9 @@ function CreatePageContent() {
           }}
         />
       </div>
+
+      {/* ── 1.5 Shared Journey Stepper ── */}
+      <JourneyStepper currentStep={1} noteId={editingNoteId} templateId={selectedId} />
 
       {/* ── 2. Studio Header ── */}
       <header

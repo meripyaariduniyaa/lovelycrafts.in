@@ -7,6 +7,7 @@ import Script from 'next/script';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { templates } from '@/lib/templates';
+import JourneyStepper from '@/components/JourneyStepper';
 
 const formatRupees = (paise) => new Intl.NumberFormat('en-IN', {
   style: 'currency', currency: 'INR', maximumFractionDigits: 0,
@@ -210,30 +211,49 @@ export default function CheckoutContent() {
   if (!noteId || !note) return <main className="checkout-state"><h1>Gift not found</h1><p>Return to the studio and create a new gift.</p><Link href="/create">Create a gift</Link></main>;
 
   return (
-    <main className="checkout-page">
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
-      <Script src="https://sdk.cashfree.com/js/v3/cashfree.js" strategy="afterInteractive" />
-      <div className="checkout-heading">
-        <span className="checkout-kicker">Almost ready to share</span>
-        <h1>Secure checkout</h1>
-        <p>Your gift stays private until payment is confirmed.</p>
-      </div>
-      <div className="checkout-grid">
-        <section className="gift-summary" aria-label="Gift summary">
-          <span className="summary-label">YOUR GIFT</span>
-          <div className="summary-art">{template?.emoji || '🎁'}</div>
-          <h2>{template?.title || 'A LovelyCrafts gift'}</h2>
-          <p className="summary-to">Made for <strong>{note.recipient_name || 'someone special'}</strong></p>
-          <div className="summary-divider" />
-          <div className="summary-price"><span>To pay</span><strong>{formatRupees(quote?.amount)}</strong></div>
-          {quote?.discountPercent > 0 && <p className="summary-saved">{quote.discountPercent}% discount applied</p>}
-          <ul className="summary-points">
-            <li>Private gift link unlocks after verified payment</li>
-            <li>Your personal message and photos stay with this gift</li>
-            <li>Share the unlocked gift by link or WhatsApp</li>
-          </ul>
-          <Link className="edit-gift-link" href={`/preview?id=${encodeURIComponent(noteId)}`}>← Back to preview</Link>
-        </section>
+    <div className="min-h-screen bg-[#faf6f0]">
+      <JourneyStepper currentStep={3} noteId={noteId} templateId={note?.template} />
+      <main className="checkout-page">
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+        <Script src="https://sdk.cashfree.com/js/v3/cashfree.js" strategy="afterInteractive" />
+        <div className="checkout-heading">
+          <span className="checkout-kicker">STEP 3 OF 4 · SECURE CHECKOUT</span>
+          <h1>Unlock & Share Your Keepsake</h1>
+          <p>Your gift stays 100% private. Once unlocked, you receive your permanent link and WhatsApp share pass.</p>
+        </div>
+        <div className="checkout-grid">
+          <section className="gift-summary" aria-label="Gift summary">
+            <span className="summary-label">YOUR GIFT</span>
+            <div className="summary-art">{template?.emoji || '🎁'}</div>
+            <h2>{template?.title || 'A LovelyCrafts gift'}</h2>
+            <p className="summary-to">Made for <strong>{note.recipient_name || 'someone special'}</strong></p>
+            <div className="summary-divider" />
+            <div className="summary-price"><span>Total to pay</span><strong>{formatRupees(quote?.amount)}</strong></div>
+            {quote?.discountPercent > 0 && <p className="summary-saved">{quote.discountPercent}% discount applied</p>}
+            <ul className="summary-points">
+              <li>Private gift link unlocks immediately upon payment</li>
+              <li>Your personal message and photos stay with this gift</li>
+              <li>Share the unlocked gift by link, QR, or WhatsApp</li>
+              <li>Includes interactive reactions & recipient dashboard</li>
+            </ul>
+            <div className="trust-badges-grid mb-4">
+              <div className="trust-badge-item">
+                <span className="trust-badge-icon">🔒</span>
+                <div>
+                  <strong>256-Bit SSL</strong>
+                  <p>Bank-grade encryption</p>
+                </div>
+              </div>
+              <div className="trust-badge-item">
+                <span className="trust-badge-icon">⚡</span>
+                <div>
+                  <strong>Instant Delivery</strong>
+                  <p>Link ready at once</p>
+                </div>
+              </div>
+            </div>
+            <Link className="edit-gift-link" href={`/preview?id=${encodeURIComponent(noteId)}`}>← Back to preview</Link>
+          </section>
 
         <section className="payment-section" aria-label="Payment options">
           <div className="gateway-tabs" role="tablist" aria-label="Choose payment gateway">
@@ -395,9 +415,15 @@ export default function CheckoutContent() {
         .checkout-back-links { margin-top:1rem; text-align:center; color:#a5907d; font-size:.86rem; }
         .checkout-loading,.checkout-state { min-height:58vh; display:grid; align-content:center; justify-items:center; gap:.75rem; padding:2rem; text-align:center; color:#43332b; }
         .checkout-state p { color:#78695f; }.checkout-state a { color:#963b35; font-weight:700; }
+        .trust-badges-grid { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; padding:.8rem; border-radius:14px; background:#f9f4ec; border:1px solid #ebdcd0; }
+        .trust-badge-item { display:flex; align-items:center; gap:.5rem; }
+        .trust-badge-icon { font-size:1.1rem; }
+        .trust-badge-item strong { display:block; font-size:.74rem; color:#3a2e28; }
+        .trust-badge-item p { margin:0; font-size:.65rem; color:#78695f; }
         @media(max-width:760px) { .checkout-page { padding-top:2rem; }.checkout-grid { grid-template-columns:1fr; }.gift-summary { order:0; }.payment-section { order:1; } }
         @media(prefers-reduced-motion:reduce) { .pay-button { transition:none; } }
       `}</style>
     </main>
+  </div>
   );
 }

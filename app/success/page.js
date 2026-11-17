@@ -8,6 +8,7 @@ import QRCode from 'qrcode';
 import { motion } from 'framer-motion';
 import { db } from '@/lib/firebase';
 import { createKeepsakePoster } from '@/components/KeepsakePoster';
+import JourneyStepper from '@/components/JourneyStepper';
 
 export default function SuccessPage() {
   return (
@@ -182,6 +183,9 @@ function SuccessContent() {
         @keyframes float-slow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
         @keyframes pulse-ring { 0%{transform:scale(0.95);opacity:0.8} 50%{transform:scale(1.05);opacity:0.4} 100%{transform:scale(0.95);opacity:0.8} }
       `}</style>
+
+      {/* ── Journey Stepper (Step 4) ── */}
+      <JourneyStepper currentStep={4} noteId={id} templateId={note?.template} />
 
       {/* Top Brand Bar */}
       <header style={{
