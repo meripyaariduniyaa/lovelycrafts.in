@@ -1,21 +1,67 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useRef, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { doc, serverTimestamp, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { db } from '@/lib/firebase';
 import CloudinaryUpload from '@/components/CloudinaryUpload';
 import { templates } from '@/lib/templates';
+import { springs } from '@/lib/motion';
+import { playSfx, sfx } from '@/lib/sfx';
+import LiveStudioPreview from '@/components/create/LiveStudioPreview';
+import InspirationVault from '@/components/create/InspirationVault';
+import CraftingCeremony from '@/components/create/CraftingCeremony';
 
 /* ─────────────────────────────────────────────────────────
    TEMPLATE CONFIG
 ───────────────────────────────────────────────────────── */
-const TEMPLATES = templates; // 4 clean templates from lib
+const TEMPLATES = templates;
 
 /* ─────────────────────────────────────────────────────────
-   QUOTE OPTIONS FOR PROPOSAL
+   DYNAMIC ATMOSPHERES PER TEMPLATE
+───────────────────────────────────────────────────────── */
+const ATMOSPHERES = {
+  proposal: {
+    name: 'Rose Gold Romance',
+    primaryGlow: 'radial-gradient(circle at 25% 15%, rgba(244, 63, 94, 0.20) 0%, rgba(251, 113, 133, 0.10) 40%, transparent 70%)',
+    secondaryGlow: 'radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.14) 0%, rgba(244, 63, 94, 0.06) 50%, transparent 75%)',
+    accent: '#f43f5e',
+    pageBg: 'linear-gradient(180deg, #fff7f7 0%, #fdf2f4 50%, #fbf0ee 100%)',
+  },
+  birthday: {
+    name: 'Golden Celebration',
+    primaryGlow: 'radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.22) 0%, rgba(234, 88, 12, 0.10) 45%, transparent 70%)',
+    secondaryGlow: 'radial-gradient(circle at 85% 75%, rgba(225, 29, 72, 0.14) 0%, rgba(245, 158, 11, 0.08) 50%, transparent 75%)',
+    accent: '#f59e0b',
+    pageBg: 'linear-gradient(180deg, #fffcf5 0%, #fef8eb 50%, #fbf1de 100%)',
+  },
+  anniversary: {
+    name: 'Champagne Warmth',
+    primaryGlow: 'radial-gradient(circle at 30% 15%, rgba(217, 119, 6, 0.18) 0%, rgba(245, 208, 140, 0.12) 45%, transparent 70%)',
+    secondaryGlow: 'radial-gradient(circle at 75% 85%, rgba(225, 29, 72, 0.12) 0%, rgba(217, 119, 6, 0.06) 50%, transparent 75%)',
+    accent: '#d97706',
+    pageBg: 'linear-gradient(180deg, #fdfbf7 0%, #fbf5eb 50%, #f5ecdc 100%)',
+  },
+  'emotional-apology': {
+    name: 'Lavender Sanctuary',
+    primaryGlow: 'radial-gradient(circle at 25% 20%, rgba(168, 85, 247, 0.18) 0%, rgba(139, 92, 246, 0.10) 45%, transparent 70%)',
+    secondaryGlow: 'radial-gradient(circle at 80% 80%, rgba(244, 63, 94, 0.12) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 75%)',
+    accent: '#8b5cf6',
+    pageBg: 'linear-gradient(180deg, #faf7fc 0%, #f5eff9 50%, #efe7f4 100%)',
+  },
+  'i-miss-you': {
+    name: 'Cosmic Nebula',
+    primaryGlow: 'radial-gradient(circle at 25% 15%, rgba(99, 102, 241, 0.22) 0%, rgba(168, 85, 247, 0.12) 45%, transparent 70%)',
+    secondaryGlow: 'radial-gradient(circle at 85% 75%, rgba(14, 165, 233, 0.16) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 75%)',
+    accent: '#6366f1',
+    pageBg: 'linear-gradient(180deg, #f7f7fc 0%, #eff1fa 50%, #e6eaf5 100%)',
+  },
+};
+
+/* ─────────────────────────────────────────────────────────
+   OPTIONS CONSTANTS
 ───────────────────────────────────────────────────────── */
 const PROPOSAL_QUOTES = [
   "Every moment with you feels like home. 🏡",
@@ -26,18 +72,12 @@ const PROPOSAL_QUOTES = [
   "Being with you is the best decision I ever made. ❤️",
 ];
 
-/* ─────────────────────────────────────────────────────────
-   CAKE OPTIONS FOR BIRTHDAY
-───────────────────────────────────────────────────────── */
 const CAKE_OPTIONS = [
   { id: 'chocolate', label: 'Midnight Chocolate', emoji: '🍫', desc: 'Dark, rich & decadent', bg: '#3b1f0a', accent: '#92400e' },
   { id: 'strawberry', label: 'Strawberry Blush', emoji: '🍓', desc: 'Sweet, light & rosy', bg: '#4a0020', accent: '#be123c' },
   { id: 'vanilla', label: 'Vanilla Gold', emoji: '✨', desc: 'Classic, elegant & golden', bg: '#422006', accent: '#b45309' },
 ];
 
-/* ─────────────────────────────────────────────────────────
-   WHAT HAPPENED OPTIONS FOR APOLOGY
-───────────────────────────────────────────────────────── */
 const WHAT_HAPPENED_OPTIONS = [
   { id: 'hurtful', label: 'I said something hurtful', emoji: '😔' },
   { id: 'fight', label: 'We had a fight', emoji: '💔' },
@@ -45,9 +85,6 @@ const WHAT_HAPPENED_OPTIONS = [
   { id: 'other', label: 'Another reason', emoji: '✍️' },
 ];
 
-/* ─────────────────────────────────────────────────────────
-   RELATIONSHIP OPTIONS FOR PROPOSAL
-───────────────────────────────────────────────────────── */
 const RELATIONSHIP_OPTIONS = [
   { id: 'girlfriend', label: 'Girlfriend', emoji: '👩' },
   { id: 'boyfriend', label: 'Boyfriend', emoji: '👨' },
@@ -64,7 +101,7 @@ export default function CreatePage() {
       fallback={
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#f8f3eb]">
           <div className="w-10 h-10 rounded-full border-2 border-[#a83d46] border-t-transparent animate-spin mb-4" />
-          <p className="text-[#746258] text-sm">Loading Studio...</p>
+          <p className="text-[#746258] text-sm font-medium">Opening Crafting Studio...</p>
         </div>
       }
     >
@@ -74,7 +111,7 @@ export default function CreatePage() {
 }
 
 /* ─────────────────────────────────────────────────────────
-   MAIN STATE MACHINE
+   MAIN CRAFTING STUDIO COMPONENT
 ───────────────────────────────────────────────────────── */
 function CreatePageContent() {
   const router = useRouter();
@@ -82,6 +119,30 @@ function CreatePageContent() {
   const templateParam = searchParams.get('template');
   const couponParam = searchParams.get('coupon');
   const editNoteParam = searchParams.get('noteId');
+
+  // Sound Mute State with localStorage persistence
+  const [isMuted, setIsMuted] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedMute = localStorage.getItem('lc_sfx_muted');
+      const muted = storedMute === 'true';
+      setIsMuted(muted);
+      sfx.setMuted(muted);
+    }
+  }, []);
+
+  const toggleSound = () => {
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    sfx.setMuted(nextMuted);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lc_sfx_muted', String(nextMuted));
+    }
+    if (!nextMuted) {
+      playSfx('pop');
+    }
+  };
 
   useEffect(() => {
     if (couponParam && typeof window !== 'undefined') {
@@ -94,12 +155,22 @@ function CreatePageContent() {
     TEMPLATES.some((t) => t.id === templateParam) ? 'wizard' : 'select'
   );
   const [selectedId, setSelectedId] = useState(
-    TEMPLATES.some((t) => t.id === templateParam) ? templateParam : null
+    TEMPLATES.some((t) => t.id === templateParam) ? templateParam : 'proposal'
   );
   const [stepIndex, setStepIndex] = useState(0);
+  const [maxStepReached, setMaxStepReached] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
 
-  const activeTemplate = TEMPLATES.find((t) => t.id === selectedId) || TEMPLATES[0];
+  // Mobile peek sheet state
+  const [showMobilePeek, setShowMobilePeek] = useState(false);
+
+  const activeTemplate = useMemo(() => {
+    return TEMPLATES.find((t) => t.id === selectedId) || TEMPLATES[0];
+  }, [selectedId]);
+
+  const activeAtmosphere = useMemo(() => {
+    return ATMOSPHERES[activeTemplate.id] || ATMOSPHERES.proposal;
+  }, [activeTemplate.id]);
 
   // ── FORM DATA ──
   const [form, setForm] = useState({
@@ -188,8 +259,10 @@ function CreatePageContent() {
 
   // ── SELECT TEMPLATE ──
   const handleSelectTemplate = (id) => {
+    playSfx('sparkle');
     setSelectedId(id);
     setStepIndex(0);
+    setMaxStepReached(0);
     setError('');
     setScreen('wizard');
   };
@@ -197,11 +270,14 @@ function CreatePageContent() {
   // ── NAVIGATION ──
   const steps = activeTemplate?.steps || [];
   const totalSteps = steps.length;
+  const currentStep = steps[stepIndex];
 
   const goNext = () => {
     if (stepIndex < totalSteps - 1) {
       setDirection(1);
-      setStepIndex((s) => s + 1);
+      const nextIndex = stepIndex + 1;
+      setStepIndex(nextIndex);
+      setMaxStepReached((prev) => Math.max(prev, nextIndex));
       setError('');
     } else {
       handleSubmit();
@@ -215,6 +291,14 @@ function CreatePageContent() {
       setError('');
     } else {
       setScreen('select');
+    }
+  };
+
+  const jumpToStep = (index) => {
+    if (index >= 0 && index < totalSteps) {
+      setDirection(index > stepIndex ? 1 : -1);
+      setStepIndex(index);
+      setError('');
     }
   };
 
@@ -241,7 +325,12 @@ function CreatePageContent() {
 
   const handleNext = () => {
     const err = validateStep();
-    if (err) { setError(err); return; }
+    if (err) {
+      setError(err);
+      playSfx('waxSeal');
+      return;
+    }
+    playSfx('sparkle');
     goNext();
   };
 
@@ -290,7 +379,7 @@ function CreatePageContent() {
           origin_city: form.originCity.trim(),
           destination_city: form.destinationCity.trim(),
           distance_km: form.distanceKm.trim() || '7,192 km',
-          cassettes: form.cassettes.map((c, i) => ({
+          cassettes: form.cassettes.map((c) => ({
             id: c.id,
             title: c.title,
             track: c.track,
@@ -351,68 +440,327 @@ function CreatePageContent() {
   };
 
   return (
-    <div className="lc-create-page relative overflow-hidden" style={{ fontFamily: "'Inter', sans-serif", background: 'linear-gradient(180deg, #fbf7f0 0%, #f8f3eb 55%, #f3e9dd 100%)' }}>
-      {/* ── Background Ambient Glows ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-10%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '600px',
-          height: '400px',
-          background: 'radial-gradient(circle, rgba(168, 61, 70, 0.12) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '10%',
-          right: '-5%',
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(circle, rgba(184, 145, 104, 0.12) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
-      />
+    <div
+      className="lc-create-page relative min-h-screen overflow-x-hidden selection:bg-rose-200"
+      style={{
+        fontFamily: "'Inter', sans-serif",
+        background: activeAtmosphere.pageBg,
+        transition: 'background 0.8s ease',
+      }}
+    >
+      {/* ── 1. Dynamic Atmosphere Glows ── */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden -z-0">
+        <motion.div
+          key={`glow-top-${activeTemplate.id}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          style={{
+            position: 'absolute',
+            top: '-12%',
+            left: '25%',
+            transform: 'translateX(-50%)',
+            width: '720px',
+            height: '520px',
+            background: activeAtmosphere.primaryGlow,
+            filter: 'blur(50px)',
+          }}
+        />
+        <motion.div
+          key={`glow-bottom-${activeTemplate.id}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          style={{
+            position: 'absolute',
+            bottom: '5%',
+            right: '-10%',
+            width: '680px',
+            height: '620px',
+            background: activeAtmosphere.secondaryGlow,
+            filter: 'blur(60px)',
+          }}
+        />
+      </div>
 
-      {/* ── Styles ── */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Dancing+Script:wght@700&display=swap');
-        * { box-sizing: border-box; }
-        input, textarea, select { outline: none; }
-        input::placeholder, textarea::placeholder { color: #79675c; }
-        input:focus, textarea:focus { border-color: #f43f5e !important; box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12) !important; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
-      `}</style>
+      {/* ── 2. Studio Header ── */}
+      <header className="sticky top-0 z-40 backdrop-blur-2xl bg-white/85 border-b border-stone-200/70 shadow-[0_2px_12px_rgba(0,0,0,0.03)] px-4 sm:px-6 py-2.5 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Back Button with tactile press */}
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.95 }}
+            transition={springs.snappy}
+            onClick={() => {
+              playSfx('pop');
+              if (screen === 'wizard') {
+                goBack();
+              } else {
+                router.push('/templates');
+              }
+            }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-stone-200/80 text-stone-700 hover:text-stone-900 text-xs sm:text-sm font-semibold shadow-xs transition-colors"
+            aria-label="Back"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            <span>{screen === 'wizard' && stepIndex > 0 ? 'Back' : 'Templates'}</span>
+          </motion.button>
 
+          {/* Center: Template badge with icon */}
+          <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/90 border border-stone-200/70 shadow-xs backdrop-blur-md">
+            <span className="text-base sm:text-lg leading-none">{activeTemplate.emoji}</span>
+            <span className="text-xs sm:text-sm font-bold text-stone-800 tracking-tight truncate max-w-[140px] sm:max-w-none">
+              {activeTemplate.title}
+            </span>
+          </div>
+
+          {/* Right: Sound toggle (🔊 / 🔇) */}
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.92 }}
+            transition={springs.snappy}
+            onClick={toggleSound}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs ${
+              isMuted
+                ? 'bg-stone-100 border-stone-300 text-stone-500'
+                : 'bg-rose-50/90 border-rose-200 text-rose-700'
+            }`}
+            title={isMuted ? 'Sound effects muted (tap to enable)' : 'Sound effects active (tap to mute)'}
+            aria-label={isMuted ? 'Unmute sound effects' : 'Mute sound effects'}
+          >
+            <span className="text-sm">{isMuted ? '🔇' : '🔊'}</span>
+            <span className="hidden sm:inline">{isMuted ? 'Muted' : 'Sound'}</span>
+          </motion.button>
+        </div>
+      </header>
+
+      {/* ── Main Screen Router ── */}
       <AnimatePresence mode="wait">
         {screen === 'select' && (
           <SelectScreen key="select" templates={TEMPLATES} onSelect={handleSelectTemplate} />
         )}
+
         {screen === 'wizard' && selectedId && (
-          <WizardScreen
+          <motion.div
             key="wizard"
-            template={activeTemplate}
-            steps={steps}
-            stepIndex={stepIndex}
-            direction={direction}
-            form={form}
-            setField={setField}
-            onNext={handleNext}
-            onBack={goBack}
-            busy={busy}
-            error={error}
-            setError={setError}
-            isLastStep={stepIndex === totalSteps - 1}
-            isEditing={Boolean(editingNoteId)}
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={springs.smooth}
+            className="w-full relative z-10"
+          >
+            {/* ── 3. Apple Segmented Step Ribbon ── */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4 pb-2">
+              <AppleStepRibbon
+                steps={steps}
+                currentIndex={stepIndex}
+                maxStepReached={maxStepReached}
+                onSelectStep={jumpToStep}
+                accentColor={activeTemplate.accentColor}
+              />
+            </div>
+
+            {/* ── 4. Split-Screen Studio Desk (Desktop) & Wizard (Mobile) ── */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
+              <div className="lg:grid lg:grid-cols-12 lg:gap-10 items-start">
+                
+                {/* Left Column: Interactive Wizard Desk */}
+                <div className="lg:col-span-7 xl:col-span-7 flex flex-col justify-start">
+                  <div className="bg-white/90 backdrop-blur-xl border border-stone-200/80 rounded-[28px] p-5 sm:p-7 shadow-[0_12px_40px_-10px_rgba(0,0,0,0.06)] relative overflow-hidden">
+                    
+                    <AnimatePresence custom={direction} mode="wait">
+                      <motion.div
+                        key={currentStep?.id || stepIndex}
+                        custom={direction}
+                        variants={{
+                          enter: (dir) => ({ x: dir > 0 ? 30 : -30, opacity: 0 }),
+                          center: { x: 0, opacity: 1, transition: springs.snappy },
+                          exit: (dir) => ({ x: dir > 0 ? -25 : 25, opacity: 0, transition: { duration: 0.16 } }),
+                        }}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                      >
+                        <StepContent
+                          stepId={currentStep?.id}
+                          templateId={activeTemplate.id}
+                          form={form}
+                          setField={setField}
+                          accent={activeTemplate.accentColor}
+                          setError={setError}
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+
+                    {/* Validation Error Message */}
+                    <AnimatePresence>
+                      {error && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          className="mt-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-rose-700 text-sm font-semibold flex items-center gap-2"
+                        >
+                          <span>⚠️</span>
+                          <span>{error}</span>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Bottom Wizard Actions */}
+                    <div className="mt-8 pt-5 border-t border-stone-100 flex items-center justify-between gap-3">
+                      {stepIndex > 0 ? (
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.96 }}
+                          transition={springs.snappy}
+                          onClick={() => {
+                            playSfx('pop');
+                            goBack();
+                          }}
+                          className="px-5 py-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-700 text-sm font-bold transition-colors"
+                        >
+                          ← Previous
+                        </motion.button>
+                      ) : (
+                        <div />
+                      )}
+
+                      <motion.button
+                        type="button"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.96 }}
+                        transition={springs.snappy}
+                        onClick={handleNext}
+                        disabled={busy}
+                        style={{
+                          background: activeTemplate.gradient,
+                          boxShadow: `0 6px 20px ${activeTemplate.glowColor}`,
+                        }}
+                        className="ml-auto px-7 py-3 rounded-xl text-white font-bold text-sm sm:text-base flex items-center gap-2 shadow-md hover:brightness-105 active:brightness-95 transition-all"
+                      >
+                        {busy ? (
+                          <>
+                            <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                            <span>Crafting...</span>
+                          </>
+                        ) : stepIndex === totalSteps - 1 ? (
+                          <>
+                            <span>✨</span>
+                            <span>{editingNoteId ? 'Update My Gift' : 'Craft My Experience'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Continue</span>
+                            <span>→</span>
+                          </>
+                        )}
+                      </motion.button>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Right Column: LiveStudioPreview (Desktop Split Screen) */}
+                <div className="hidden lg:flex lg:col-span-5 xl:col-span-5 flex-col items-center sticky top-20 pt-1">
+                  <LiveStudioPreview
+                    template={activeTemplate}
+                    form={form}
+                    currentStepId={currentStep?.id}
+                  />
+                </div>
+
+              </div>
+            </div>
+
+            {/* ── 4. Mobile Floating Glass Pill '👁️ Peek Live Gift' ── */}
+            <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+              <motion.button
+                type="button"
+                onClick={() => {
+                  playSfx('pop');
+                  setShowMobilePeek(true);
+                }}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.95 }}
+                transition={springs.snappy}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/95 backdrop-blur-2xl border border-stone-300/80 text-stone-900 text-xs font-bold tracking-wide transition-all shadow-[0_12px_32px_rgba(0,0,0,0.18)]"
+              >
+                <span className="text-sm">👁️</span>
+                <span>Peek Live Gift</span>
+                <span className="relative flex h-2 w-2 ml-1">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+              </motion.button>
+            </div>
+
+            {/* ── 4. Mobile Bottom Sheet Peek Preview ── */}
+            <AnimatePresence>
+              {showMobilePeek && (
+                <div className="fixed inset-0 z-50 flex items-end justify-center lg:hidden">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={() => setShowMobilePeek(false)}
+                    className="fixed inset-0 bg-black/60 backdrop-blur-md"
+                  />
+
+                  <motion.div
+                    initial={{ y: '100%' }}
+                    animate={{ y: 0 }}
+                    exit={{ y: '100%' }}
+                    transition={springs.smooth}
+                    className="relative w-full max-h-[92vh] bg-stone-900/95 backdrop-blur-3xl rounded-t-[34px] border-t border-white/15 p-4 sm:p-6 overflow-y-auto z-10 flex flex-col items-center shadow-2xl"
+                  >
+                    {/* Header with Grab Handle & Close */}
+                    <div className="w-full flex items-center justify-between pb-3 mb-2 border-b border-white/10">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">{activeTemplate.emoji}</span>
+                        <span className="text-sm font-bold text-white">Live Gift Preview</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          playSfx('pop');
+                          setShowMobilePeek(false);
+                        }}
+                        className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm font-bold transition-colors"
+                        aria-label="Close Preview"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    {/* Phone Mockup Preview Inside Sheet */}
+                    <div className="w-full py-2 flex justify-center">
+                      <LiveStudioPreview
+                        template={activeTemplate}
+                        form={form}
+                        currentStepId={currentStep?.id}
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
+
+          </motion.div>
         )}
+
+        {/* ── 6. Screen 3: Crafting Ceremony Integration ── */}
         {screen === 'crafting' && (
-          <CraftingScreen
+          <CraftingCeremony
             key="crafting"
             template={activeTemplate}
             recipientName={form.recipientName}
@@ -421,21 +769,75 @@ function CreatePageContent() {
           />
         )}
       </AnimatePresence>
+
       <style jsx global>{`
         .lc-create-page { min-height: 70vh; isolation: isolate; color: #43332b; }
-        .lc-create-page .lc-flow-stage { min-height: 70vh; }
         .lc-create-page input, .lc-create-page textarea, .lc-create-page select {
-          color: #43332b !important; background-color: #fffdf9 !important; border-color: #dfd0c3 !important;
+          color: #43332b !important; background-color: #ffffff !important; border-color: #e2e8f0 !important;
         }
         .lc-create-page input::placeholder, .lc-create-page textarea::placeholder { color: #8a786c !important; }
-        .lc-create-page :focus-visible { outline: 3px solid #a83d46; outline-offset: 3px; }
-        @media (max-width: 640px) { .lc-create-page .lc-flow-stage { min-height: 72vh; } }
+        .lc-create-page :focus-visible { outline: 3px solid #f43f5e; outline-offset: 2px; }
         @media (prefers-reduced-motion: reduce) {
           .lc-create-page *, .lc-create-page *::before, .lc-create-page *::after {
             animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important;
           }
         }
       `}</style>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────
+   APPLE SEGMENTED STEP RIBBON
+───────────────────────────────────────────────────────── */
+function AppleStepRibbon({ steps, currentIndex, maxStepReached, onSelectStep, accentColor }) {
+  return (
+    <div className="w-full flex justify-center">
+      <nav
+        aria-label="Studio steps ribbon"
+        className="relative flex items-center gap-1 sm:gap-1.5 p-1.5 bg-white/80 backdrop-blur-xl border border-stone-200/80 rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.03)] overflow-x-auto max-w-full"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {steps.map((step, idx) => {
+          const isActive = idx === currentIndex;
+          const isCompleted = idx < currentIndex;
+          const isClickable = idx <= maxStepReached;
+
+          return (
+            <motion.button
+              key={step.id}
+              type="button"
+              disabled={!isClickable}
+              onClick={() => onSelectStep(idx)}
+              whileHover={isClickable && !isActive ? { scale: 1.02 } : {}}
+              whileTap={isClickable ? { scale: 0.95 } : {}}
+              transition={springs.snappy}
+              className={`relative z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors duration-200 ${
+                isActive
+                  ? 'text-stone-900 font-bold'
+                  : isCompleted
+                  ? 'text-stone-700 hover:text-stone-900 cursor-pointer'
+                  : 'text-stone-400 cursor-not-allowed opacity-60'
+              }`}
+            >
+              {/* Apple gliding active pill indicator */}
+              {isActive && (
+                <motion.div
+                  layoutId="activeStepRibbon"
+                  className="absolute inset-0 rounded-full bg-white shadow-sm border border-stone-200/90 -z-10"
+                  transition={springs.gliding}
+                />
+              )}
+
+              <span className="text-sm leading-none">{step.icon || '✨'}</span>
+              <span>{step.label}</span>
+              {isCompleted && !isActive && (
+                <span className="text-[10px] text-emerald-600 font-bold ml-0.5">✓</span>
+              )}
+            </motion.button>
+          );
+        })}
+      </nav>
     </div>
   );
 }
@@ -448,382 +850,70 @@ function SelectScreen({ templates, onSelect }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4 }}
-      className="lc-flow-stage flex flex-col relative z-10"
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35 }}
+      className="max-w-4xl mx-auto px-4 sm:px-6 pt-10 pb-16 flex flex-col items-center relative z-10"
     >
-      {/* Header */}
-      <div className="text-center pt-12 pb-8 px-5">
+      <div className="text-center mb-8">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          style={{
-            display: 'inline-block',
-            fontSize: '0.75rem',
-            fontWeight: 800,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: '#be185d',
-            background: 'rgba(244,63,94,0.1)',
-            border: '1px solid rgba(244,63,94,0.2)',
-            padding: '6px 16px',
-            borderRadius: '999px',
-            marginBottom: '1rem',
-            boxShadow: '0 4px 12px rgba(244,63,94,0.08)',
-          }}
+          transition={springs.snappy}
+          className="inline-block text-xs font-bold tracking-widest uppercase text-rose-700 bg-rose-50 border border-rose-200 px-4 py-1 rounded-full mb-3 shadow-xs"
         >
           ✨ LovelyCrafts Studio
         </motion.div>
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          style={{
-            fontFamily: "'Dancing Script', cursive",
-            fontSize: 'clamp(2.2rem, 7vw, 3.4rem)',
-            color: '#be185d',
-            background: 'linear-gradient(135deg, #be185d 0%, #e11d48 50%, #9333ea 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            margin: '0 0 0.75rem',
-            lineHeight: 1.25,
-            fontWeight: 700,
-          }}
+          transition={{ delay: 0.1 }}
+          style={{ fontFamily: "'Dancing Script', cursive" }}
+          className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600 bg-clip-text text-transparent pb-2"
         >
           What would you like to craft?
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          style={{ color: '#475569', fontSize: '0.98rem', fontWeight: 500, maxWidth: '400px', margin: '0 auto', lineHeight: 1.6 }}
+          transition={{ delay: 0.2 }}
+          className="text-stone-600 text-sm sm:text-base max-w-md mx-auto mt-2"
         >
-          Choose a moment. We'll help you turn it into something they'll never forget.
+          Choose an occasion. We'll help you sculpt an unforgettable personalized experience.
         </motion.p>
       </div>
 
-      {/* Template Cards */}
-      <div
-        className="lc-template-choice-grid"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '1.1rem',
-          padding: '0 1.25rem 5rem',
-          maxWidth: '520px',
-          margin: '0 auto',
-          width: '100%',
-        }}
-      >
+      {/* Grid of templates */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">
         {templates.map((tmpl, i) => (
-          <TemplateCard key={tmpl.id} template={tmpl} index={i} onSelect={onSelect} />
+          <motion.button
+            key={tmpl.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + i * 0.06, ...springs.snappy }}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={() => onSelect(tmpl.id)}
+            className="flex flex-col items-center text-center p-6 rounded-3xl bg-white/90 backdrop-blur-xl border border-stone-200/90 hover:border-rose-300 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(244,63,94,0.12)] transition-all cursor-pointer relative overflow-hidden group"
+          >
+            <div className="text-4xl mb-3 filter drop-shadow-sm group-hover:scale-110 transition-transform">
+              {tmpl.emoji}
+            </div>
+            <h3 className="font-bold text-stone-900 text-base mb-1">{tmpl.title}</h3>
+            <p className="text-stone-500 text-xs mb-3">{tmpl.time}</p>
+            <span
+              style={{
+                backgroundColor: `${tmpl.accentColor}15`,
+                color: tmpl.accentColor,
+                borderColor: `${tmpl.accentColor}30`,
+              }}
+              className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border"
+            >
+              ✨ Tap to craft
+            </span>
+          </motion.button>
         ))}
       </div>
     </motion.div>
-  );
-}
-
-function TemplateCard({ template, index, onSelect }) {
-  return (
-          <motion.button
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 + index * 0.08, type: 'spring', stiffness: 260, damping: 20 }}
-      whileHover={{ scale: 1.03, y: -4 }}
-      whileTap={{ scale: 0.96 }}
-      onClick={() => onSelect(template.id)}
-      style={{
-        background: 'rgba(255, 255, 255, 0.9)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1.5px solid rgba(244, 63, 94, 0.15)',
-        borderRadius: '24px',
-        padding: '1.6rem 1rem',
-        textAlign: 'center',
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '0.65rem',
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: '0 10px 30px -5px rgba(225, 29, 72, 0.08), 0 4px 12px rgba(0,0,0,0.02)',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = template.accentColor;
-        e.currentTarget.style.boxShadow = `0 18px 40px -10px ${template.glowColor}`;
-        e.currentTarget.style.background = '#ffffff';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(244, 63, 94, 0.15)';
-        e.currentTarget.style.boxShadow = '0 10px 30px -5px rgba(225, 29, 72, 0.08), 0 4px 12px rgba(0,0,0,0.02)';
-        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
-      }}
-    >
-      {/* Glow blob */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: `radial-gradient(circle at 50% 0%, ${template.glowColor} 0%, transparent 70%)`,
-          opacity: 0.4,
-          pointerEvents: 'none',
-        }}
-      />
-      <div style={{ fontSize: '2.6rem', lineHeight: 1, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.08))' }}>{template.emoji}</div>
-      <div
-        style={{
-          fontSize: '0.92rem',
-          fontWeight: 800,
-          color: '#0f172a',
-          lineHeight: 1.3,
-          position: 'relative',
-        }}
-      >
-        {template.title}
-      </div>
-      <div
-        style={{
-          fontSize: '0.75rem',
-          fontWeight: 600,
-          color: '#64748b',
-          lineHeight: 1.4,
-          position: 'relative',
-        }}
-      >
-        {template.time}
-      </div>
-      <div
-        style={{
-          marginTop: '0.25rem',
-          padding: '5px 12px',
-          borderRadius: '999px',
-          background: `${template.accentColor}18`,
-          color: template.accentColor,
-          border: `1px solid ${template.accentColor}35`,
-          fontSize: '0.72rem',
-          fontWeight: 800,
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          position: 'relative',
-        }}
-      >
-        ✨ Tap to craft
-      </div>
-    </motion.button>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────
-   SCREEN 2: WIZARD
-───────────────────────────────────────────────────────── */
-function WizardScreen({ template, steps, stepIndex, direction, form, setField, onNext, onBack, busy, error, setError, isLastStep, isEditing }) {
-  const currentStep = steps[stepIndex];
-  const accent = template.accentColor;
-
-  const stepVariants = {
-    enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-    center: { x: 0, opacity: 1, transition: { type: 'spring', stiffness: 280, damping: 28 } },
-    exit: (dir) => ({ x: dir > 0 ? '-60%' : '60%', opacity: 0, transition: { duration: 0.2 } }),
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.35 }}
-      className="lc-flow-stage flex flex-col relative z-10"
-    >
-      {/* Top Bar */}
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          background: 'rgba(255, 255, 255, 0.88)',
-          borderBottom: '1px solid rgba(226, 232, 240, 0.8)',
-          padding: '0.85rem 1.25rem',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '480px',
-            margin: '0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <button
-            onClick={onBack}
-            style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '50px',
-              padding: '7px 16px',
-              color: '#334155',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-              transition: 'all 0.2s',
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-            </svg>
-            Back
-          </button>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.2rem' }}>{template.emoji}</span>
-            <span style={{ fontWeight: 800, fontSize: '0.92rem', color: '#0f172a' }}>{template.title}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Step Progress */}
-      <StepProgressBar steps={steps} currentIndex={stepIndex} accent={accent} />
-
-      {/* Step Content */}
-      <div
-        style={{
-          flex: 1,
-          maxWidth: '480px',
-          margin: '0 auto',
-          width: '100%',
-          padding: '1.5rem 1.25rem 0',
-          overflow: 'hidden',
-        }}
-      >
-        <AnimatePresence custom={direction} mode="wait">
-          <motion.div
-            key={currentStep?.id || stepIndex}
-            custom={direction}
-            variants={stepVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-          >
-            <StepContent
-              stepId={currentStep?.id}
-              templateId={template.id}
-              form={form}
-              setField={setField}
-              accent={accent}
-              setError={setError}
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Error */}
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              style={{
-                marginTop: '1rem',
-                padding: '12px 16px',
-                borderRadius: '14px',
-                background: 'rgba(239,68,68,0.1)',
-                border: '1px solid rgba(239,68,68,0.3)',
-                color: '#dc2626',
-                fontSize: '0.88rem',
-                fontWeight: 600,
-              }}
-            >
-              ⚠️ {error}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Bottom CTA */}
-      <div
-        style={{
-          maxWidth: '480px',
-          margin: '0 auto',
-          width: '100%',
-          padding: '1.5rem 1.25rem 2.5rem',
-        }}
-      >
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={onNext}
-          disabled={busy}
-          style={{
-            width: '100%',
-            padding: '16px',
-            borderRadius: '16px',
-            background: template.gradient,
-            border: 'none',
-            color: '#fff',
-            fontSize: '1.05rem',
-            fontWeight: 800,
-            cursor: busy ? 'not-allowed' : 'pointer',
-            opacity: busy ? 0.7 : 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            boxShadow: `0 6px 24px ${template.glowColor}`,
-          }}
-        >
-          {busy ? (
-            <>
-              <div className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
-              Crafting...
-            </>
-          ) : isLastStep ? (
-            <>{isEditing ? '✨ Update My Gift' : '✨ Craft My Experience'}</>
-          ) : (
-            <>Continue →</>
-          )}
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-}
-
-function StepProgressBar({ steps, currentIndex, accent }) {
-  return (
-    <div
-      style={{
-        maxWidth: '480px',
-        margin: '0 auto',
-        width: '100%',
-        padding: '1rem 1.25rem 0',
-        display: 'flex',
-        gap: '6px',
-        alignItems: 'center',
-      }}
-    >
-      {steps.map((step, i) => (
-        <div
-          key={step.id}
-          style={{
-            flex: 1,
-            height: '5px',
-            borderRadius: '4px',
-            background: i <= currentIndex ? accent : 'rgba(0,0,0,0.08)',
-            boxShadow: i <= currentIndex ? `0 0 10px ${accent}60` : 'none',
-            transition: 'all 0.4s ease',
-          }}
-        />
-      ))}
-    </div>
   );
 }
 
@@ -837,7 +927,7 @@ function StepContent({ stepId, templateId, form, setField, accent, setError }) {
     case 'who_are_they':
       return <StepWhoAreThey form={form} setField={setField} accent={accent} />;
     case 'quotation':
-      return <StepQuotation form={form} setField={setField} accent={accent} />;
+      return <StepQuotation form={form} setField={setField} accent={accent} templateId={templateId} />;
     case 'cake':
       return <StepCake form={form} setField={setField} accent={accent} />;
     case 'balloons':
@@ -869,17 +959,17 @@ function StepContent({ stepId, templateId, form, setField, accent, setError }) {
 ───────────────────────────────────────────────────────── */
 function StepHeader({ icon, title, subtitle }) {
   return (
-    <div style={{ marginBottom: '1.5rem' }}>
-      <div style={{ fontSize: '2.4rem', marginBottom: '0.5rem', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.06))' }}>{icon}</div>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: '0 0 0.35rem', lineHeight: 1.25 }}>{title}</h2>
-      {subtitle && <p style={{ color: '#475569', fontSize: '0.9rem', margin: 0, lineHeight: 1.55 }}>{subtitle}</p>}
+    <div className="mb-5">
+      <div className="text-3xl mb-1.5 filter drop-shadow-sm">{icon}</div>
+      <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight mb-1">{title}</h2>
+      {subtitle && <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">{subtitle}</p>}
     </div>
   );
 }
 
 function FieldLabel({ children }) {
   return (
-    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.45rem' }}>
+    <label className="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-1.5">
       {children}
     </label>
   );
@@ -892,18 +982,7 @@ function TextInput({ value, onChange, placeholder, type = 'text' }) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      style={{
-        width: '100%',
-        padding: '13px 16px',
-        borderRadius: '14px',
-        border: '1.5px solid #cbd5e1',
-        background: '#ffffff',
-        color: '#0f172a',
-        fontSize: '1rem',
-        fontWeight: '500',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-        transition: 'all 0.2s',
-      }}
+      className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm font-medium focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 transition-all shadow-xs"
     />
   );
 }
@@ -915,57 +994,64 @@ function TextArea({ value, onChange, placeholder, rows = 5 }) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      style={{
-        width: '100%',
-        padding: '13px 16px',
-        borderRadius: '14px',
-        border: '1.5px solid #cbd5e1',
-        background: '#ffffff',
-        color: '#0f172a',
-        fontSize: '1rem',
-        fontWeight: '500',
-        lineHeight: 1.7,
-        resize: 'none',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-        transition: 'all 0.2s',
-      }}
+      className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm font-medium focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 transition-all shadow-xs resize-none leading-relaxed"
     />
   );
 }
 
 /* ─────────────────────────────────────────────────────────
-   STEP COMPONENTS
+   STEP COMPONENTS WITH INSPIRATION VAULT & AUDIO FEEDBACK
 ───────────────────────────────────────────────────────── */
 
-// STEP: Person Details (shared by all)
+// STEP: Person Details
 function StepPersonDetails({ templateId, form, setField, accent }) {
   return (
     <div>
-      <StepHeader icon="👤" title="Tell me about you both" subtitle="These names will appear throughout their experience." />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+      <StepHeader
+        icon="👤"
+        title="Tell us about you both"
+        subtitle="These names will appear throughout your customized experience."
+      />
+      <div className="flex flex-col gap-4">
         <div>
           <FieldLabel>Their Name *</FieldLabel>
-          <TextInput value={form.recipientName} onChange={(v) => setField('recipientName', v)} placeholder="e.g. Priya, Alex, Bestie..." />
+          <TextInput
+            value={form.recipientName}
+            onChange={(v) => setField('recipientName', v)}
+            placeholder="e.g. Priya, Alex, Bestie..."
+          />
         </div>
         <div>
           <FieldLabel>Your Name *</FieldLabel>
-          <TextInput value={form.senderName} onChange={(v) => setField('senderName', v)} placeholder="e.g. Rahul, Your name..." />
+          <TextInput
+            value={form.senderName}
+            onChange={(v) => setField('senderName', v)}
+            placeholder="e.g. Rahul, Your name..."
+          />
         </div>
         {templateId === 'birthday' && (
           <>
             <div>
               <FieldLabel>Turning Age *</FieldLabel>
-              <TextInput value={form.turningAge} onChange={(v) => setField('turningAge', v)} placeholder="e.g. 22, 25, 30..." type="text" />
+              <TextInput
+                value={form.turningAge}
+                onChange={(v) => setField('turningAge', v)}
+                placeholder="e.g. 21, 25, 30..."
+              />
             </div>
             <div>
               <FieldLabel>Their Birthday</FieldLabel>
-              <TextInput value={form.birthdayDate} onChange={(v) => setField('birthdayDate', v)} placeholder="e.g. 15 March, August 7..." />
+              <TextInput
+                value={form.birthdayDate}
+                onChange={(v) => setField('birthdayDate', v)}
+                placeholder="e.g. 15 March, August 7..."
+              />
             </div>
           </>
         )}
         {templateId === 'anniversary' && (
-          <div style={{ padding: '14px 16px', borderRadius: '14px', background: 'rgba(255,255,255,0.8)', border: '1px solid #e2e8f0', fontSize: '0.85rem', color: '#43332b', fontWeight: 500, boxShadow: '0 2px 6px rgba(0,0,0,0.02)' }}>
-            💡 You'll enter your anniversary dates in the next steps.
+          <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/70 text-xs text-amber-900 font-medium">
+            💡 You will set your anniversary timeline and milestone dates in the following steps.
           </div>
         )}
       </div>
@@ -977,34 +1063,35 @@ function StepPersonDetails({ templateId, form, setField, accent }) {
 function StepWhoAreThey({ form, setField, accent }) {
   return (
     <div>
-      <StepHeader icon="💞" title="Who are they to you?" subtitle="This helps us personalize their experience." />
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+      <StepHeader
+        icon="💞"
+        title="Who are they to you?"
+        subtitle="This helps tailor the interactive reveal and tone."
+      />
+      <div className="grid grid-cols-2 gap-3">
         {RELATIONSHIP_OPTIONS.map((opt) => {
           const isSelected = form.relationshipType === opt.id;
           return (
             <motion.button
               key={opt.id}
+              type="button"
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setField('relationshipType', opt.id)}
-              style={{
-                padding: '1.2rem 0.85rem',
-                borderRadius: '18px',
-                border: isSelected ? `2px solid ${accent}` : '1.5px solid #e2e8f0',
-                background: isSelected ? `${accent}12` : '#ffffff',
-                color: isSelected ? '#0f172a' : '#334155',
-                fontWeight: isSelected ? 800 : 600,
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0.4rem',
-                fontSize: '0.92rem',
-                boxShadow: isSelected ? `0 6px 20px ${accent}25` : '0 2px 6px rgba(0,0,0,0.02)',
-                transition: 'all 0.2s',
+              transition={springs.snappy}
+              onClick={() => {
+                playSfx('pop');
+                setField('relationshipType', opt.id);
               }}
+              style={{
+                borderColor: isSelected ? accent : undefined,
+                backgroundColor: isSelected ? `${accent}12` : '#ffffff',
+              }}
+              className={`p-4 rounded-2xl border flex flex-col items-center gap-1.5 text-center transition-all shadow-xs ${
+                isSelected ? 'border-2 text-stone-900 font-bold' : 'border-stone-200 text-stone-700 font-semibold'
+              }`}
             >
-              <span style={{ fontSize: '2rem' }}>{opt.emoji}</span>
-              {opt.label}
+              <span className="text-2xl">{opt.emoji}</span>
+              <span className="text-sm">{opt.label}</span>
             </motion.button>
           );
         })}
@@ -1014,44 +1101,55 @@ function StepWhoAreThey({ form, setField, accent }) {
 }
 
 // STEP: Quotation (Proposal)
-function StepQuotation({ form, setField, accent }) {
+function StepQuotation({ form, setField, accent, templateId }) {
   return (
     <div>
-      <StepHeader icon="💬" title="A message for them" subtitle="Pick one that feels right or write your own below." />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.25rem' }}>
+      <StepHeader
+        icon="💬"
+        title="A confession quote"
+        subtitle="Choose a meaningful quote or write one straight from your heart."
+      />
+      <div className="flex flex-col gap-2.5 mb-4">
         {PROPOSAL_QUOTES.map((q) => {
           const isSelected = form.quotation === q;
           return (
             <motion.button
               key={q}
+              type="button"
               whileTap={{ scale: 0.98 }}
-              onClick={() => setField('quotation', isSelected ? '' : q)}
-              style={{
-                textAlign: 'left',
-                padding: '13px 16px',
-                borderRadius: '14px',
-                border: isSelected ? `2px solid ${accent}` : '1.5px solid #e2e8f0',
-                background: isSelected ? `${accent}12` : '#ffffff',
-                color: isSelected ? '#0f172a' : '#334155',
-                fontWeight: isSelected ? 700 : 500,
-                fontSize: '0.9rem',
-                lineHeight: 1.5,
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-                transition: 'all 0.2s',
+              onClick={() => {
+                playSfx('pop');
+                setField('quotation', isSelected ? '' : q);
               }}
+              style={{
+                borderColor: isSelected ? accent : undefined,
+                backgroundColor: isSelected ? `${accent}10` : '#ffffff',
+              }}
+              className={`text-left p-3.5 rounded-xl border text-xs sm:text-sm transition-all shadow-xs ${
+                isSelected ? 'border-2 text-stone-900 font-bold' : 'border-stone-200 text-stone-700 font-medium'
+              }`}
             >
               {q}
             </motion.button>
           );
         })}
       </div>
-      <FieldLabel>Or write your own</FieldLabel>
+
+      <FieldLabel>Or write your own quote</FieldLabel>
       <TextArea
         rows={3}
         value={PROPOSAL_QUOTES.includes(form.quotation) ? '' : form.quotation}
         onChange={(v) => setField('quotation', v)}
-        placeholder="Write something from your heart..."
+        placeholder="Write something heartfelt..."
+      />
+
+      {/* Inspiration Vault for quotation */}
+      <InspirationVault
+        templateId={templateId || 'proposal'}
+        stepId="quotation"
+        onSelectPrompt={(prompt) => {
+          setField('quotation', prompt);
+        }}
       />
     </div>
   );
@@ -1061,37 +1159,40 @@ function StepQuotation({ form, setField, accent }) {
 function StepCake({ form, setField, accent }) {
   return (
     <div>
-      <StepHeader icon="🎂" title="Pick the perfect cake" subtitle="This is the cake we'll bake and present to them." />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+      <StepHeader
+        icon="🎂"
+        title="Choose their celebration cake"
+        subtitle="This virtual cake will be presented with interactive sparklers."
+      />
+      <div className="flex flex-col gap-3">
         {CAKE_OPTIONS.map((cake) => {
           const isSelected = form.cakeType === cake.id;
           return (
             <motion.button
               key={cake.id}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => setField('cakeType', cake.id)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-                padding: '1.1rem 1.2rem',
-                borderRadius: '18px',
-                border: isSelected ? `2px solid ${accent}` : '1.5px solid #e2e8f0',
-                background: isSelected ? cake.bg : '#ffffff',
-                color: isSelected ? '#ffffff' : '#0f172a',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                boxShadow: isSelected ? `0 8px 24px ${cake.accent}40` : '0 2px 6px rgba(0,0,0,0.02)',
+              type="button"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.96 }}
+              transition={springs.snappy}
+              onClick={() => {
+                playSfx('pop');
+                setField('cakeType', cake.id);
               }}
+              style={{
+                backgroundColor: isSelected ? cake.bg : '#ffffff',
+                borderColor: isSelected ? cake.accent : '#e2e8f0',
+                color: isSelected ? '#ffffff' : '#0f172a',
+              }}
+              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all shadow-xs ${
+                isSelected ? 'border-2 shadow-md' : ''
+              }`}
             >
-              <span style={{ fontSize: '2.4rem' }}>{cake.emoji}</span>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontWeight: 800, color: isSelected ? '#ffffff' : '#0f172a', fontSize: '0.98rem' }}>{cake.label}</div>
-                <div style={{ fontSize: '0.8rem', color: isSelected ? 'rgba(255,255,255,0.8)' : '#64748b', marginTop: '2px' }}>{cake.desc}</div>
+              <span className="text-3xl">{cake.emoji}</span>
+              <div className="flex-1">
+                <div className="font-bold text-sm sm:text-base">{cake.label}</div>
+                <div className={`text-xs ${isSelected ? 'text-white/80' : 'text-stone-500'}`}>{cake.desc}</div>
               </div>
-              {isSelected && (
-                <div style={{ marginLeft: 'auto', color: '#ffffff', fontSize: '1.3rem', fontWeight: 800 }}>✓</div>
-              )}
+              {isSelected && <span className="text-lg font-bold">✓</span>}
             </motion.button>
           );
         })}
@@ -1100,7 +1201,7 @@ function StepCake({ form, setField, accent }) {
   );
 }
 
-// STEP: Balloon Messages (Birthday)
+// STEP: Balloons (Birthday) with InspirationVault
 function StepBalloons({ form, setField, accent }) {
   const updateBalloon = (index, val) => {
     const updated = [...form.balloonMessages];
@@ -1108,51 +1209,48 @@ function StepBalloons({ form, setField, accent }) {
     setField('balloonMessages', updated);
   };
 
+  const handleSelectBalloonPrompt = (prompt) => {
+    const updated = [...form.balloonMessages];
+    const emptyIndex = updated.findIndex((m) => !m?.trim());
+    if (emptyIndex !== -1) {
+      updated[emptyIndex] = prompt;
+    } else {
+      updated[0] = prompt;
+    }
+    setField('balloonMessages', updated);
+  };
+
   return (
     <div>
-      <StepHeader icon="🎈" title="Balloon pop reveals!" subtitle="Add up to 5 surprise messages — one per balloon. They'll pop and reveal your words!" />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <StepHeader
+        icon="🎈"
+        title="Balloon pop reveals"
+        subtitle="Add up to 5 surprise messages — one per balloon. They will pop with sound effects!"
+      />
+
+      <div className="flex flex-col gap-2.5">
         {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: [accent, '#a64036', '#f59e0b', '#f8f3eb', '#06b6d4'][i % 5] + '20',
-                border: `1.5px solid ${[accent, '#f43f5e', '#f59e0b', '#a855f7', '#06b6d4'][i % 5]}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1rem',
-                flexShrink: 0,
-              }}
-            >
+          <div key={i} className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-sm flex-shrink-0">
               🎈
             </div>
             <input
               type="text"
               value={form.balloonMessages[i] || ''}
               onChange={(e) => updateBalloon(i, e.target.value)}
-              placeholder={`Message ${i + 1}... (e.g. "You light up my world")`}
-              style={{
-                flex: 1,
-                padding: '12px 15px',
-                borderRadius: '14px',
-                border: '1.5px solid #cbd5e1',
-                background: '#ffffff',
-                color: '#0f172a',
-                fontSize: '0.92rem',
-                fontWeight: 500,
-                boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-              }}
+              placeholder={`Message ${i + 1}... (e.g. "You light up my life")`}
+              className="flex-1 px-3.5 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 shadow-xs"
             />
           </div>
         ))}
-        <p style={{ color: '#64748b', fontSize: '0.8rem', marginTop: '0.35rem', fontWeight: 500 }}>
-          💡 At least 1 message required. The rest are optional.
-        </p>
       </div>
+
+      {/* ── 5. Integrated InspirationVault for Balloons ── */}
+      <InspirationVault
+        templateId="birthday"
+        stepId="balloons"
+        onSelectPrompt={handleSelectBalloonPrompt}
+      />
     </div>
   );
 }
@@ -1161,18 +1259,30 @@ function StepBalloons({ form, setField, accent }) {
 function StepSpecialDates({ form, setField, accent }) {
   return (
     <div>
-      <StepHeader icon="📅" title="Your special dates" subtitle="These dates will anchor the live anniversary timer." />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+      <StepHeader
+        icon="📅"
+        title="Your special dates"
+        subtitle="These dates anchor the live anniversary odometer."
+      />
+      <div className="flex flex-col gap-4">
         <div>
           <FieldLabel>Anniversary Date *</FieldLabel>
-          <TextInput value={form.anniversaryDate} onChange={(v) => setField('anniversaryDate', v)} placeholder="e.g. 12 February 2022, Feb 12 2022..." />
+          <TextInput
+            value={form.anniversaryDate}
+            onChange={(v) => setField('anniversaryDate', v)}
+            placeholder="e.g. 12 February 2022, Feb 12 2022..."
+          />
         </div>
         <div>
           <FieldLabel>The Day You First Met (optional)</FieldLabel>
-          <TextInput value={form.firstMetDate} onChange={(v) => setField('firstMetDate', v)} placeholder="e.g. June 5, 2020..." />
+          <TextInput
+            value={form.firstMetDate}
+            onChange={(v) => setField('firstMetDate', v)}
+            placeholder="e.g. June 5, 2020..."
+          />
         </div>
-        <div style={{ padding: '14px 16px', borderRadius: '14px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)', fontSize: '0.85rem', color: '#a64036', fontWeight: 600 }}>
-          🥂 The experience will show a live countdown — years, months, days, hours, minutes & seconds since your anniversary.
+        <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/70 text-xs text-amber-900 font-semibold">
+          🥂 The gift will display a live timer counting every year, month, day, and second since you fell in love.
         </div>
       </div>
     </div>
@@ -1182,41 +1292,44 @@ function StepSpecialDates({ form, setField, accent }) {
 // STEP: Journey Together (Anniversary)
 function StepJourney({ form, setField, accent }) {
   const updateJourney = (index, field, val) => {
-    const updated = form.journey.map((j, i) => i === index ? { ...j, [field]: val } : j);
+    const updated = form.journey.map((j, i) => (i === index ? { ...j, [field]: val } : j));
     setField('journey', updated);
   };
 
   const addEvent = () => {
-    if (form.journey.length < 5) setField('journey', [...form.journey, { date: '', memory: '' }]);
+    if (form.journey.length < 5) {
+      playSfx('pop');
+      setField('journey', [...form.journey, { date: '', memory: '' }]);
+    }
   };
 
   const removeEvent = (index) => {
-    if (form.journey.length > 1) setField('journey', form.journey.filter((_, i) => i !== index));
+    if (form.journey.length > 1) {
+      playSfx('pop');
+      setField('journey', form.journey.filter((_, i) => i !== index));
+    }
   };
 
   return (
     <div>
-      <StepHeader icon="🗺️" title="Your journey together" subtitle="Add key moments — these form a beautiful timeline in the experience." />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <StepHeader
+        icon="🗺️"
+        title="Your story roadmap"
+        subtitle="Add memorable milestones to build a visual relationship timeline."
+      />
+      <div className="flex flex-col gap-3">
         {form.journey.map((event, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{
-              padding: '1.1rem',
-              borderRadius: '16px',
-              background: '#ffffff',
-              border: '1.5px solid #e2e8f0',
-              boxShadow: '0 4px 14px rgba(0,0,0,0.03)',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Event {i + 1}
-              </span>
+          <div key={i} className="p-3.5 rounded-2xl bg-white border border-stone-200 shadow-xs flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-stone-500">Milestone {i + 1}</span>
               {form.journey.length > 1 && (
-                <button onClick={() => removeEvent(i)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '1.2rem', fontWeight: 700 }}>×</button>
+                <button
+                  type="button"
+                  onClick={() => removeEvent(i)}
+                  className="text-stone-400 hover:text-rose-600 text-sm font-bold"
+                >
+                  ✕
+                </button>
               )}
             </div>
             <input
@@ -1224,41 +1337,36 @@ function StepJourney({ form, setField, accent }) {
               value={event.date}
               onChange={(e) => updateJourney(i, 'date', e.target.value)}
               placeholder="Date (e.g. March 2021)"
-              style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#43332b', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}
+              className="w-full px-3 py-2 rounded-lg border border-stone-200 bg-stone-50 text-xs font-medium"
             />
             <input
               type="text"
               value={event.memory}
               onChange={(e) => updateJourney(i, 'memory', e.target.value)}
-              placeholder="Memory (e.g. Our first road trip)"
-              style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1px solid #cbd5e1', background: '#f8fafc', color: '#43332b', fontSize: '0.9rem', fontWeight: 500 }}
+              placeholder="Memory (e.g. Our first road trip to the hills)"
+              className="w-full px-3 py-2 rounded-lg border border-stone-200 bg-stone-50 text-xs font-medium"
             />
-          </motion.div>
+          </div>
         ))}
+
         {form.journey.length < 5 && (
-          <button
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.97 }}
+            transition={springs.snappy}
             onClick={addEvent}
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '14px',
-              border: `1.5px dashed ${accent}`,
-              background: `${accent}08`,
-              color: accent,
-              fontWeight: 800,
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-            }}
+            className="w-full py-2.5 rounded-xl border border-dashed border-rose-300 text-rose-600 font-bold text-xs bg-rose-50/50 hover:bg-rose-50"
           >
-            + Add another moment
-          </button>
+            + Add Another Milestone
+          </motion.button>
         )}
       </div>
     </div>
   );
 }
 
-// STEP: Reasons (Anniversary)
+// STEP: Reasons (Anniversary) with InspirationVault
 function StepReasons({ form, setField, accent }) {
   const updateReason = (i, val) => {
     const updated = [...form.reasons];
@@ -1266,50 +1374,47 @@ function StepReasons({ form, setField, accent }) {
     setField('reasons', updated);
   };
 
+  const handleSelectReasonPrompt = (prompt) => {
+    const updated = [...form.reasons];
+    const emptyIndex = updated.findIndex((r) => !r?.trim());
+    if (emptyIndex !== -1) {
+      updated[emptyIndex] = prompt;
+    } else {
+      updated[0] = prompt;
+    }
+    setField('reasons', updated);
+  };
+
   return (
     <div>
-      <StepHeader icon="❤️" title="Why do you love them?" subtitle="5 honest reasons — these will burst out of heart balloons in the experience." />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <StepHeader
+        icon="❤️"
+        title="Why you love them"
+        subtitle="Up to 5 reasons that will burst out of floating heart balloons."
+      />
+      <div className="flex flex-col gap-2.5">
         {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                background: 'rgba(244,63,94,0.12)',
-                border: '1.5px solid rgba(244,63,94,0.3)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.88rem',
-                fontWeight: 800,
-                color: '#e11d48',
-                flexShrink: 0,
-              }}
-            >
+          <div key={i} className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-bold flex items-center justify-center text-xs flex-shrink-0">
               {i + 1}
             </div>
             <input
               type="text"
               value={form.reasons[i] || ''}
               onChange={(e) => updateReason(i, e.target.value)}
-              placeholder={`Reason ${i + 1}... (e.g. "Your laugh is contagious")`}
-              style={{
-                flex: 1,
-                padding: '12px 15px',
-                borderRadius: '14px',
-                border: '1.5px solid #cbd5e1',
-                background: '#ffffff',
-                color: '#0f172a',
-                fontSize: '0.92rem',
-                fontWeight: 500,
-                boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-              }}
+              placeholder={`Reason ${i + 1}... (e.g. "The way your laugh makes me feel")`}
+              className="flex-1 px-3.5 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 shadow-xs"
             />
           </div>
         ))}
       </div>
+
+      {/* ── 5. Integrated InspirationVault for Reasons ── */}
+      <InspirationVault
+        templateId="anniversary"
+        stepId="reasons"
+        onSelectPrompt={handleSelectReasonPrompt}
+      />
     </div>
   );
 }
@@ -1318,35 +1423,34 @@ function StepReasons({ form, setField, accent }) {
 function StepWhatHappened({ form, setField, accent }) {
   return (
     <div>
-      <StepHeader icon="💔" title="What happened?" subtitle="Being honest is the first step to making things right." />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+      <StepHeader
+        icon="💔"
+        title="What happened?"
+        subtitle="Vulnerability and sincerity are the fastest path to healing."
+      />
+      <div className="flex flex-col gap-2.5">
         {WHAT_HAPPENED_OPTIONS.map((opt) => {
           const isSelected = form.whatHappenedType === opt.id;
           return (
             <motion.button
               key={opt.id}
+              type="button"
               whileTap={{ scale: 0.97 }}
-              onClick={() => setField('whatHappenedType', opt.id)}
-              style={{
-                textAlign: 'left',
-                padding: '1.1rem 1.2rem',
-                borderRadius: '18px',
-                border: isSelected ? `2px solid ${accent}` : '1.5px solid #e2e8f0',
-                background: isSelected ? `${accent}12` : '#ffffff',
-                color: isSelected ? '#0f172a' : '#334155',
-                fontWeight: isSelected ? 800 : 500,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.85rem',
-                fontSize: '0.98rem',
-                transition: 'all 0.2s',
-                boxShadow: isSelected ? `0 6px 20px ${accent}20` : '0 2px 6px rgba(0,0,0,0.02)',
+              onClick={() => {
+                playSfx('pop');
+                setField('whatHappenedType', opt.id);
               }}
+              style={{
+                borderColor: isSelected ? accent : undefined,
+                backgroundColor: isSelected ? `${accent}12` : '#ffffff',
+              }}
+              className={`text-left p-3.5 rounded-2xl border flex items-center gap-3 transition-all shadow-xs ${
+                isSelected ? 'border-2 text-stone-900 font-bold' : 'border-stone-200 text-stone-700 font-medium'
+              }`}
             >
-              <span style={{ fontSize: '1.8rem' }}>{opt.emoji}</span>
-              {opt.label}
-              {isSelected && <span style={{ marginLeft: 'auto', color: accent, fontWeight: 800 }}>✓</span>}
+              <span className="text-2xl">{opt.emoji}</span>
+              <span className="flex-1 text-sm">{opt.label}</span>
+              {isSelected && <span className="font-bold">✓</span>}
             </motion.button>
           );
         })}
@@ -1355,7 +1459,7 @@ function StepWhatHappened({ form, setField, accent }) {
   );
 }
 
-// STEP: Memories / Photos (shared)
+// STEP: Memories / Photos (Shared)
 function StepMemories({ form, setField, accent, templateId }) {
   const maxPhotos = templateId === 'birthday' ? 5 : templateId === 'anniversary' ? 5 : 3;
 
@@ -1363,8 +1467,8 @@ function StepMemories({ form, setField, accent, templateId }) {
     <div>
       <StepHeader
         icon="📸"
-        title="Add your memories"
-        subtitle={`Upload up to ${maxPhotos} photos — they'll be beautifully presented in the experience.`}
+        title="Cherished memories"
+        subtitle={`Upload up to ${maxPhotos} photos — they will be presented as polaroids with heartfelt captions.`}
       />
       <CloudinaryUpload
         images={form.images}
@@ -1372,13 +1476,19 @@ function StepMemories({ form, setField, accent, templateId }) {
         maxImages={maxPhotos}
       />
       {form.images.length === 0 && (
-        <div style={{ marginTop: '1rem', padding: '14px 16px', borderRadius: '14px', background: 'rgba(255,255,255,0.8)', border: '1px dashed #cbd5e1', color: '#43332b', fontSize: '0.85rem', textAlign: 'center', fontWeight: 500 }}>
-          Photos are optional but they make the experience so much more personal 💫
+        <div className="mt-3 p-3 rounded-xl bg-stone-50 border border-dashed border-stone-300 text-stone-600 text-xs text-center font-medium">
+          Photos are optional, but adding them makes the reveal 10x more magical 💫
         </div>
       )}
-      <div className="lc-passcode-field">
-        <label htmlFor="gift-passcode">Add a 4-digit passcode (optional)</label>
-        <p>Recipients will enter this before opening the envelope.</p>
+
+      {/* Optional Passcode Shield */}
+      <div className="mt-5 p-4 rounded-2xl bg-gradient-to-br from-stone-50 to-rose-50/30 border border-stone-200/80 shadow-xs">
+        <label htmlFor="gift-passcode" className="block text-stone-800 font-bold text-sm">
+          Add a 4-digit secret passcode (optional)
+        </label>
+        <p className="text-stone-500 text-xs mt-1 mb-2">
+          Your recipient will need to enter this secret code before opening the envelope.
+        </p>
         <input
           id="gift-passcode"
           type="password"
@@ -1386,199 +1496,18 @@ function StepMemories({ form, setField, accent, templateId }) {
           autoComplete="new-password"
           pattern="[0-9]{4}"
           maxLength={4}
-          placeholder="Enter 4 digits"
+          placeholder="••••"
           value={form.passcode || ''}
-          onChange={(event) => setField('passcode', event.target.value.replace(/\D/g, '').slice(0, 4))}
-          aria-describedby="gift-passcode-help"
+          onChange={(e) => setField('passcode', e.target.value.replace(/\D/g, '').slice(0, 4))}
+          className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-900 text-center tracking-[0.4em] font-mono text-base focus:border-rose-500 shadow-xs"
         />
-        <span id="gift-passcode-help" className="lc-passcode-hint">Leave blank to send without a passcode.</span>
-      </div>
-      <style jsx>{`
-        .lc-passcode-field { margin-top: 1.25rem; padding: 1rem; border-radius: 18px; background: linear-gradient(145deg, #fffaf4, #f0e3d7); border: 1px solid #e5d3c3; box-shadow: 7px 7px 16px rgba(109, 77, 55, .1), -5px -5px 14px rgba(255,255,255,.85); }
-        .lc-passcode-field label { display:block; color:#49372e; font-weight:800; font-size:.95rem; }
-        .lc-passcode-field p { color:#74645a; font-size:.82rem; margin:.35rem 0 .75rem; }
-        .lc-passcode-field input { width:100%; box-sizing:border-box; padding:.8rem 1rem; border:1px solid #dfcdbc; border-radius:12px; background:#fffdf9; color:#49372e; font-size:1.1rem; letter-spacing:.35em; text-align:center; }
-        .lc-passcode-hint { display:block; color:#74645a; margin-top:.45rem; font-size:.75rem; }
-        .lc-passcode-field input:focus-visible { outline:3px solid #a83d46; outline-offset:2px; }
-      `}</style>
-    </div>
-  );
-}
-
-// STEP: Letter (shared)
-function StepLetter({ templateId, form, setField, accent }) {
-  const prompts = {
-    proposal: "Write from your heart — this will be typewritten on a parchment letter after they click YES...",
-    birthday: "Write a heartfelt birthday letter — it will appear line by line in a beautiful envelope...",
-    anniversary: "A love letter to close the experience — take your time, it will be presented beautifully...",
-    'emotional-apology': "Pour your heart out — this becomes the handwritten letter they'll read...",
-  };
-
-  const charCount = form.letter.length;
-
-  return (
-    <div>
-      <StepHeader
-        icon="✉️"
-        title={templateId === 'emotional-apology' ? "Write from your heart" : "Your heartfelt letter"}
-        subtitle="This becomes a beautifully animated handwritten letter in their experience."
-      />
-      <div style={{ position: 'relative' }}>
-        <TextArea
-          value={form.letter}
-          onChange={(v) => setField('letter', v)}
-          placeholder={prompts[templateId] || "Write your heartfelt message here..."}
-          rows={7}
-        />
-        <div style={{ textAlign: 'right', fontSize: '0.78rem', color: '#64748b', marginTop: '0.4rem', fontWeight: 600 }}>
-          {charCount} characters
-        </div>
-      </div>
-      <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <p style={{ color: '#64748b', fontSize: '0.85rem', textAlign: 'center', margin: 0, fontWeight: 500 }}>
-          ✍️ Your exact words will be typewritten line-by-line in their experience
-        </p>
+        <span className="block text-[11px] text-stone-500 mt-1">Leave blank to allow opening without a code.</span>
       </div>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   SCREEN 3: CRAFTING EXPERIENCE ANIMATION
-───────────────────────────────────────────────────────── */
-function CraftingScreen({ template, recipientName, noteId, router }) {
-  const [phase, setPhase] = useState(0); // 0: sparkle in, 1: typing, 2: done
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setPhase(1), 600);
-    const t2 = setTimeout(() => setPhase(2), 2000);
-    const t3 = setTimeout(() => {
-      if (noteId) router.push(`/preview?id=${noteId}`);
-    }, 3200);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [noteId, router]);
-
-  const particles = Array.from({ length: 24 }, (_, i) => ({
-    id: i,
-    left: `${(i * 37) % 100}%`,
-    top: `${(i * 61) % 100}%`,
-    delay: `${(i * 0.12).toFixed(2)}s`,
-    size: 8 + (i % 4) * 6,
-    color: [template.accentColor, '#fff', '#fbbf24', '#f43f5e', '#a855f7'][i % 5],
-  }));
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: '#f8f3eb',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 9999,
-        overflow: 'hidden',
-      }}
-    >
-      {/* Particles */}
-      <style>{`
-        @keyframes floatSpark { 0% { transform: translate(0,0) scale(0); opacity: 0; } 20% { opacity: 1; transform: translate(0,0) scale(1); } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
-        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(2); opacity: 0; } }
-      `}</style>
-
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          style={{
-            position: 'absolute',
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            borderRadius: '50%',
-            background: p.color,
-            animation: `floatSpark 3s ${p.delay} infinite`,
-            '--tx': `${((p.id * 17) % 80) - 40}px`,
-            '--ty': `${((p.id * 23) % 80) - 40}px`,
-            opacity: 0,
-          }}
-        />
-      ))}
-
-      {/* Glowing ring */}
-      <div style={{ position: 'relative', marginBottom: '2rem' }}>
-        <div style={{
-          position: 'absolute',
-          inset: '-20px',
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${template.glowColor}, transparent)`,
-          animation: 'pulse-ring 2s ease-out infinite',
-        }} />
-        <motion.div
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 10, -10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ fontSize: '4.5rem', position: 'relative' }}
-        >
-          {template.emoji}
-        </motion.div>
-      </div>
-
-      {/* Text */}
-      <AnimatePresence mode="wait">
-        {phase === 0 && (
-          <motion.p key="p0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ color: '#746258', fontSize: '1rem', textAlign: 'center' }}>
-            Preparing...
-          </motion.p>
-        )}
-        {phase === 1 && (
-          <motion.div key="p1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-            style={{ textAlign: 'center', padding: '0 2rem' }}>
-            <p style={{ color: '#746258', fontSize: '0.85rem', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Crafting something beautiful</p>
-            <h2 style={{ fontFamily: "'Dancing Script', cursive", fontSize: '2.2rem', color: '#a64036', margin: '0 0 0.5rem' }}>
-              For {recipientName || 'them'}...
-            </h2>
-            <p style={{ color: '#746258', fontSize: '0.88rem' }}>{template.title}</p>
-          </motion.div>
-        )}
-        {phase === 2 && (
-          <motion.div key="p2" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
-            style={{ textAlign: 'center', padding: '0 2rem' }}>
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 0.5 }}
-              style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}
-            >
-              ✨
-            </motion.div>
-            <h2 style={{ color: '#43332b', fontWeight: 800, fontSize: '1.3rem', marginBottom: '0.4rem' }}>
-              Experience Ready!
-            </h2>
-            <p style={{ color: '#746258', fontSize: '0.88rem' }}>Opening your private preview...</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Progress bar */}
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'rgba(255,255,255,0.06)' }}>
-        <motion.div
-          initial={{ width: '0%' }}
-          animate={{ width: '100%' }}
-          transition={{ duration: 3, ease: 'linear' }}
-          style={{ height: '100%', background: template.gradient }}
-        />
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────
-   STEP: Distance Radar (I Miss You)
-───────────────────────────────────────────────────────── */
+// STEP: Distance Radar (I Miss You)
 function StepDistanceRadar({ form, setField, accent }) {
   return (
     <div>
@@ -1587,8 +1516,7 @@ function StepDistanceRadar({ form, setField, accent }) {
         title="Orbital Distance Radar"
         subtitle="Connect your two cities across the celestial map."
       />
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="flex flex-col gap-4">
         <div>
           <FieldLabel>Where are you right now? (Origin City)</FieldLabel>
           <TextInput
@@ -1597,7 +1525,6 @@ function StepDistanceRadar({ form, setField, accent }) {
             placeholder="e.g. Mumbai, India"
           />
         </div>
-
         <div>
           <FieldLabel>Where are they? (Destination City)</FieldLabel>
           <TextInput
@@ -1606,13 +1533,12 @@ function StepDistanceRadar({ form, setField, accent }) {
             placeholder="e.g. London, UK"
           />
         </div>
-
         <div>
           <FieldLabel>Approximate Distance (Optional)</FieldLabel>
           <TextInput
             value={form.distanceKm}
             onChange={(val) => setField('distanceKm', val)}
-            placeholder="e.g. 7,192 km (leave blank to calculate)"
+            placeholder="e.g. 7,192 km"
           />
         </div>
       </div>
@@ -1620,9 +1546,7 @@ function StepDistanceRadar({ form, setField, accent }) {
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   STEP: Cassette Tapes (I Miss You)
-───────────────────────────────────────────────────────── */
+// STEP: Cassette Tapes (I Miss You)
 function StepCassettes({ form, setField, accent }) {
   const cassettes = form.cassettes || [];
 
@@ -1637,27 +1561,14 @@ function StepCassettes({ form, setField, accent }) {
       <StepHeader
         icon="📼"
         title="5 Cassette Memory Tapes"
-        subtitle="Add a short memory note or song idea for each tape."
+        subtitle="Add a memory or dedicate a soundtrack song to each tape."
       />
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+      <div className="flex flex-col gap-3">
         {cassettes.map((c, i) => (
-          <div
-            key={c.id || i}
-            style={{
-              padding: '16px',
-              borderRadius: '16px',
-              border: '1.5px solid #e2e8f0',
-              background: '#f8fafc',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: accent }}>
-                TAPE 0{i + 1}
-              </span>
-              <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>
-                {c.track}
-              </span>
+          <div key={c.id || i} className="p-3.5 rounded-2xl border border-stone-200 bg-white shadow-xs">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-indigo-600">TAPE 0{i + 1}</span>
+              <span className="text-xs text-stone-500 font-medium">{c.track}</span>
             </div>
             <TextInput
               value={c.note}
@@ -1671,4 +1582,46 @@ function StepCassettes({ form, setField, accent }) {
   );
 }
 
+// STEP: Letter (Shared) with InspirationVault
+function StepLetter({ templateId, form, setField, accent }) {
+  const prompts = {
+    proposal: "Write from your heart — this will be typewritten on a parchment letter after they click YES...",
+    birthday: "Write a heartfelt birthday letter — it will appear line by line in a beautiful envelope...",
+    anniversary: "A love letter to close the experience — take your time, it will be presented beautifully...",
+    'emotional-apology': "Pour your heart out — this becomes the handwritten letter they will read...",
+    'i-miss-you': "Write your unsent letter across the miles — every word matters...",
+  };
 
+  const charCount = form.letter.length;
+
+  return (
+    <div>
+      <StepHeader
+        icon="✉️"
+        title={templateId === 'emotional-apology' ? 'Write from your heart' : 'Your heartfelt letter'}
+        subtitle="This letter will be revealed line-by-line in their ceremonial keepsake."
+      />
+
+      <div className="relative">
+        <TextArea
+          value={form.letter}
+          onChange={(v) => setField('letter', v)}
+          placeholder={prompts[templateId] || "Write your heartfelt message here..."}
+          rows={7}
+        />
+        <div className="text-right text-xs text-stone-500 mt-1 font-medium">
+          {charCount} characters
+        </div>
+      </div>
+
+      {/* ── 5. Integrated InspirationVault for Letter ── */}
+      <InspirationVault
+        templateId={templateId}
+        stepId="letter"
+        onSelectPrompt={(prompt) => {
+          setField('letter', prompt);
+        }}
+      />
+    </div>
+  );
+}
