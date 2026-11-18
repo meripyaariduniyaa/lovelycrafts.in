@@ -7,7 +7,6 @@ import Script from 'next/script';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { templates } from '@/lib/templates';
-import JourneyStepper from '@/components/JourneyStepper';
 
 const formatRupees = (paise) => new Intl.NumberFormat('en-IN', {
   style: 'currency', currency: 'INR', maximumFractionDigits: 0,
@@ -207,20 +206,46 @@ export default function CheckoutContent() {
 
   const template = templates.find((item) => item.id === note?.template);
 
-  if (loading || !quote && !error) return <div className="checkout-loading">Preparing secure checkout…</div>;
-  if (!noteId || !note) return <main className="checkout-state"><h1>Gift not found</h1><p>Return to the studio and create a new gift.</p><Link href="/create">Create a gift</Link></main>;
+  if (loading || (!quote && !error)) {
+    return (
+      <main className="checkout-loading-screen">
+        <div className="checkout-spinner" />
+        <p>Preparing secure checkout…</p>
+        <style jsx>{`
+          .checkout-loading-screen { min-height: 65vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; color: #43332b; font-family: var(--font-inter), sans-serif; text-align: center; padding: 2rem; }
+          .checkout-spinner { width: 38px; height: 38px; border: 3px solid #eadfd2; border-top-color: #a83d46; border-radius: 50%; animation: spin 0.8s linear infinite; }
+          .checkout-loading-screen p { margin: 0; color: #78695f; font-weight: 600; font-size: 0.95rem; }
+          @keyframes spin { to { transform: rotate(360deg); } }
+        `}</style>
+      </main>
+    );
+  }
+
+  if (!noteId || !note) {
+    return (
+      <main className="checkout-loading-screen">
+        <div style={{ fontSize: '2.5rem' }}>💌</div>
+        <h1 style={{ margin: '0.5rem 0', color: '#3f3029', fontSize: '1.6rem', fontFamily: 'var(--font-playfair), Georgia, serif' }}>Gift not found</h1>
+        <p style={{ color: '#78695f', maxWidth: '360px', margin: '0 auto 1.2rem' }}>This gift may have expired, or return to the studio and create a new gift.</p>
+        <Link href="/create" style={{ display: 'inline-block', background: '#a83d46', color: '#fff', padding: '10px 24px', borderRadius: '50px', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}>
+          Create a gift
+        </Link>
+        <style jsx>{`
+          .checkout-loading-screen { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 2rem; }
+        `}</style>
+      </main>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#faf6f0]">
-      <JourneyStepper currentStep={3} noteId={noteId} templateId={note?.template} />
-      <main className="checkout-page">
-        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
-        <Script src="https://sdk.cashfree.com/js/v3/cashfree.js" strategy="afterInteractive" />
-        <div className="checkout-heading">
-          <span className="checkout-kicker">STEP 3 OF 4 · SECURE CHECKOUT</span>
-          <h1>Unlock & Share Your Keepsake</h1>
-          <p>Your gift stays 100% private. Once unlocked, you receive your permanent link and WhatsApp share pass.</p>
-        </div>
+    <main className="checkout-page">
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+      <Script src="https://sdk.cashfree.com/js/v3/cashfree.js" strategy="afterInteractive" />
+      <div className="checkout-heading">
+        <span className="checkout-kicker">Almost ready to share</span>
+        <h1>Secure checkout</h1>
+        <p>Your gift stays private until payment is confirmed.</p>
+      </div>
         <div className="checkout-grid">
           <section className="gift-summary" aria-label="Gift summary">
             <span className="summary-label">YOUR GIFT</span>
@@ -424,6 +449,5 @@ export default function CheckoutContent() {
         @media(prefers-reduced-motion:reduce) { .pay-button { transition:none; } }
       `}</style>
     </main>
-  </div>
   );
 }
