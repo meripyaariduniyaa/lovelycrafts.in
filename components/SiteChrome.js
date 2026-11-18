@@ -7,6 +7,7 @@ import StickyCtaBar from '@/components/StickyCtaBar';
 import AnyaAssistant from '@/components/AnyaAssistant';
 import PetalOverlay from '@/components/PetalOverlay';
 import ScrollReveal from '@/components/ScrollReveal';
+import InitialPageLoader from '@/components/InitialPageLoader';
 
 const immersiveFlowRoutes = ['/create', '/preview', '/checkout', '/success', '/invoice'];
 const privateOrAccountRoutes = ['/p', '/creator', '/profile', '/business'];
@@ -22,6 +23,7 @@ export default function SiteChrome({ children }) {
 
   return (
     <>
+      <InitialPageLoader />
       {!hideSiteChrome && <Header />}
       <div className={hideSiteChrome ? 'page-content immersive-flow' : 'page-content'}>{children}</div>
       {!hideSiteChrome && <Footer />}

@@ -148,11 +148,17 @@ export default function HeartLoader({
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
+        <circle
+          cx="50"
+          cy="90"
+          r="1.6"
+          className={styles.dot}
+        />
         <path
           ref={pathRef}
           className={styles.heartPath}
           d={HEART_PATH}
-          style={{ '--heart-length': pathLength > 0 ? pathLength : 300 }}
+          style={{ '--heart-length': pathLength > 0 ? pathLength : 268 }}
         />
       </svg>
 
