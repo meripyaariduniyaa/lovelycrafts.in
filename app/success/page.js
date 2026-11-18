@@ -13,10 +13,10 @@ export default function SuccessPage() {
   return (
     <Suspense
       fallback={
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff5f8', flexDirection: 'column', gap: '1rem', fontFamily: 'Inter, sans-serif' }}>
-          <div style={{ width: 36, height: 36, borderRadius: '50%', border: '3px solid #f43f5e', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f3eb', flexDirection: 'column', gap: '1rem', fontFamily: "'Inter', sans-serif" }}>
+          <div style={{ width: 36, height: 36, borderRadius: '50%', border: '3px solid #eadfd2', borderTopColor: '#9d382f', animation: 'spin 0.8s linear infinite' }} />
           <style>{`@keyframes spin { to { transform: rotate(360deg); }}`}</style>
-          <p style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 600 }}>Unlocking your experience...</p>
+          <p style={{ color: '#78695f', fontSize: '0.9rem', fontWeight: 600 }}>Unlocking your experience...</p>
         </div>
       }
     >
@@ -36,6 +36,7 @@ function SuccessContent() {
   const [downloadingQr, setDownloadingQr] = useState(false);
   const [downloadingKeepsake, setDownloadingKeepsake] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
   const purchaseTracked = useRef('');
 
   useEffect(() => {
@@ -78,7 +79,7 @@ function SuccessContent() {
       width: 360,
       margin: 2,
       errorCorrectionLevel: 'H',
-      color: { dark: '#881337', light: '#fffdfd' }
+      color: { dark: '#3f3029', light: '#fffdf9' }
     })
       .then(setQrCodeUrl)
       .catch(() => setQrCodeUrl(''));
@@ -103,28 +104,90 @@ function SuccessContent() {
     });
   }, [note]);
 
-  const getWhatsAppUrl = () => {
+  const getShareText = () => {
     const link = getShareUrl();
     const name = note?.recipient_name || 'you';
-    const text = `Hey ${name}! 🎁 Someone crafted a beautiful private interactive experience just for you...\n\nTap here to unwrap your moment: ${link}\n\n✨ Made with love on LovelyCrafts`;
-    return `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    return `Hey ${name}! 🎁 Someone crafted a beautiful private interactive experience just for you...\n\nTap here to unwrap your moment: ${link}\n\n✨ Made with love on LovelyCrafts`;
+  };
+
+  const getWhatsAppUrl = () => {
+    return `https://api.whatsapp.com/send?text=${encodeURIComponent(getShareText())}`;
+  };
+
+  const shareNative = async () => {
+    const link = getShareUrl();
+    const name = note?.recipient_name || 'Someone Special';
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: `${name}'s Special Surprise`,
+          text: getShareText(),
+          url: link,
+        });
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+    window.open(getWhatsAppUrl(), '_blank', 'noopener,noreferrer');
   };
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(getShareUrl());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+    try {
+      await navigator.clipboard.writeText(getShareUrl());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  const getEmailShareUrl = () => {
+    const name = note?.recipient_name || 'Someone Special';
+    const subject = `A private surprise for ${name} 🎁`;
+    const body = getShareText();
+    return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const getSmsShareUrl = () => {
+    const body = getShareText();
+    return `sms:?&body=${encodeURIComponent(body)}`;
+  };
+
+  const downloadFileFromDataUrl = (dataUrl, filename) => {
+    const arr = dataUrl.split(',');
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    const blob = new Blob([u8arr], { type: mime });
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => {
+      URL.revokeObjectURL(blobUrl);
+    }, 1000);
   };
 
   const downloadQrCode = async () => {
     if (!qrCodeUrl) return;
     setDownloadingQr(true);
+    setDownloadError('');
     try {
       const branded = await createBrandedQrImage(qrCodeUrl);
-      const a = document.createElement('a');
-      a.href = branded;
-      a.download = `lovelycrafts-qr-${(note?.recipient_name || 'moment').toLowerCase().replace(/\s+/g, '-')}.png`;
-      a.click();
+      const filename = `lovelycrafts-qr-${(note?.recipient_name || 'moment').toLowerCase().replace(/\s+/g, '-')}.png`;
+      downloadFileFromDataUrl(branded, filename);
+    } catch (e) {
+      console.error('QR download error:', e);
+      setDownloadError('Failed to download QR code. Please try again.');
     } finally {
       setDownloadingQr(false);
     }
@@ -132,14 +195,14 @@ function SuccessContent() {
 
   const downloadKeepsake = async () => {
     setDownloadingKeepsake(true);
+    setDownloadError('');
     try {
       const posterUrl = await createKeepsakePoster(note, qrCodeUrl);
-      const a = document.createElement('a');
-      a.href = posterUrl;
-      a.download = `lovelycrafts-keepsake-${(note?.recipient_name || 'moment').toLowerCase().replace(/\s+/g, '-')}.png`;
-      a.click();
+      const filename = `lovelycrafts-keepsake-${(note?.recipient_name || 'moment').toLowerCase().replace(/\s+/g, '-')}.png`;
+      downloadFileFromDataUrl(posterUrl, filename);
     } catch (e) {
       console.error('Keepsake error:', e);
+      setDownloadError('Failed to render keepsake poster. Please try again.');
     } finally {
       setDownloadingKeepsake(false);
     }
@@ -147,20 +210,20 @@ function SuccessContent() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff5f8', flexDirection: 'column', gap: '1rem', fontFamily: 'Inter, sans-serif' }}>
-        <div style={{ width: 36, height: 36, borderRadius: '50%', border: '3px solid #f43f5e', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
-        <p style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 600 }}>Loading your moment...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f3eb', flexDirection: 'column', gap: '1rem', fontFamily: "'Inter', sans-serif" }}>
+        <div style={{ width: 36, height: 36, borderRadius: '50%', border: '3px solid #eadfd2', borderTopColor: '#9d382f', animation: 'spin 0.8s linear infinite' }} />
+        <p style={{ color: '#78695f', fontSize: '0.9rem', fontWeight: 600 }}>Loading your moment...</p>
       </div>
     );
   }
 
   if (!note) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff5f8', flexDirection: 'column', gap: '1.5rem', padding: '2rem', fontFamily: 'Inter, sans-serif' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8f3eb', flexDirection: 'column', gap: '1.5rem', padding: '2rem', fontFamily: "'Inter', sans-serif" }}>
         <div style={{ fontSize: '3rem' }}>💔</div>
-        <h1 style={{ color: '#0f172a', fontSize: '1.5rem', textAlign: 'center', margin: 0, fontWeight: 800 }}>Experience Not Found</h1>
-        <p style={{ color: '#64748b', textAlign: 'center', margin: 0 }}>We could not find the experience details.</p>
-        <Link href="/profile" style={{ background: '#f43f5e', color: '#fff', padding: '12px 28px', borderRadius: '50px', textDecoration: 'none', fontWeight: 700 }}>
+        <h1 style={{ color: '#3f3029', fontSize: '1.5rem', textAlign: 'center', margin: 0, fontWeight: 800 }}>Experience Not Found</h1>
+        <p style={{ color: '#78695f', textAlign: 'center', margin: 0 }}>We could not find the experience details.</p>
+        <Link href="/profile" style={{ background: '#9d382f', color: '#fff', padding: '12px 28px', borderRadius: '50px', textDecoration: 'none', fontWeight: 700 }}>
           Go to Dashboard
         </Link>
       </div>
@@ -170,10 +233,10 @@ function SuccessContent() {
   const recipient = note.recipient_name || 'Someone Special';
 
   return (
-    <div style={{
+    <div className="lc-page-shell" style={{
       minHeight: '100vh',
-      background: 'linear-gradient(180deg, #fff5f8 0%, #fff0f5 50%, #faf0f7 100%)',
-      color: '#0f172a',
+      background: 'linear-gradient(180deg, #f8f3eb 0%, #faf6f0 50%, #f4ede4 100%)',
+      color: '#3f3029',
       fontFamily: "'Inter', sans-serif",
       paddingBottom: '5rem',
     }}>
@@ -190,26 +253,26 @@ function SuccessContent() {
         zIndex: 40,
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        background: 'rgba(255, 255, 255, 0.9)',
-        borderBottom: '1px solid #fce7f3',
+        background: 'rgba(255, 252, 246, 0.92)',
+        borderBottom: '1px solid #eadfd2',
         padding: '0.85rem 1.25rem',
-        boxShadow: '0 2px 10px rgba(244, 63, 94, 0.05)',
+        boxShadow: '0 2px 10px rgba(63, 48, 41, 0.04)',
       }}>
         <div style={{ maxWidth: '520px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/profile" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#be185d', textDecoration: 'none', fontSize: '0.84rem', fontWeight: 800 }}>
+          <Link href="/profile" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#9d382f', textDecoration: 'none', fontSize: '0.84rem', fontWeight: 800 }}>
             <span>←</span> Profile &amp; Dashboard
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ fontSize: '1.1rem' }}>💖</span>
-            <span style={{ fontWeight: 900, fontSize: '0.95rem', color: '#0f172a' }}>LovelyCrafts</span>
+            <span style={{ fontWeight: 900, fontSize: '0.95rem', color: '#3f3029' }}>LovelyCrafts</span>
           </div>
-          <span style={{ background: '#dcfce7', border: '1px solid #86efac', color: '#43332b', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '50px' }}>
+          <span style={{ background: '#eaf5eb', border: '1px solid #c7e8cc', color: '#276738', fontSize: '0.72rem', fontWeight: 800, padding: '3px 10px', borderRadius: '50px' }}>
             ✓ Unlocked
           </span>
         </div>
       </header>
 
-      <main className="lc-page-shell" style={{ maxWidth: '520px', margin: '0 auto', padding: '1.5rem 1.25rem' }}>
+      <main style={{ maxWidth: '520px', margin: '0 auto', padding: '1.5rem 1.25rem' }}>
 
         {/* Celebration Hero Card */}
         <motion.div
@@ -217,12 +280,12 @@ function SuccessContent() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ type: 'spring', stiffness: 280, damping: 24 }}
           style={{
-            background: 'linear-gradient(145deg, #ffffff 0%, #fff1f5 100%)',
-            border: '1.5px solid #fecdd3',
+            background: 'linear-gradient(145deg, #fffdf9 0%, #fbf6ef 100%)',
+            border: '1.5px solid #eadfd2',
             borderRadius: '28px',
             padding: '2rem 1.5rem',
             textAlign: 'center',
-            boxShadow: '0 16px 40px rgba(244, 63, 94, 0.12)',
+            boxShadow: '0 16px 40px rgba(63, 48, 41, 0.08)',
             position: 'relative',
             overflow: 'hidden',
             marginBottom: '1.5rem',
@@ -235,7 +298,7 @@ function SuccessContent() {
           <span style={{
             fontSize: '0.72rem',
             fontWeight: 800,
-            color: '#be185d',
+            color: '#9d382f',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
             display: 'block',
@@ -244,29 +307,29 @@ function SuccessContent() {
             Payment Successful • Moment Live
           </span>
 
-          <h1 style={{ fontFamily: "'Dancing Script', cursive", fontSize: '2.4rem', color: '#0f172a', margin: '0 0 0.4rem', lineHeight: 1.15 }}>
+          <h1 style={{ fontFamily: "'Dancing Script', cursive", fontSize: '2.4rem', color: '#3f3029', margin: '0 0 0.4rem', lineHeight: 1.15 }}>
             {recipient}&apos;s Moment is Ready!
           </h1>
 
-          <p style={{ color: '#475569', fontSize: '0.9rem', lineHeight: 1.55, margin: '0 auto 1.25rem', maxWidth: '380px' }}>
+          <p style={{ color: '#78695f', fontSize: '0.9rem', lineHeight: 1.55, margin: '0 auto 1.25rem', maxWidth: '380px' }}>
             Your custom private experience is live and unlocked permanently. Share the surprise using the options below!
           </p>
 
           {/* Shareable Link Box */}
           <div style={{
             background: '#ffffff',
-            border: '1.5px solid #fecdd3',
+            border: '1.5px solid #eadfd2',
             borderRadius: '16px',
             padding: '10px 14px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '8px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+            boxShadow: '0 2px 8px rgba(63, 48, 41, 0.04)',
           }}>
             <span style={{
               fontSize: '0.82rem',
-              color: '#be185d',
+              color: '#9d382f',
               fontFamily: 'monospace',
               fontWeight: 700,
               overflow: 'hidden',
@@ -280,9 +343,9 @@ function SuccessContent() {
             <button
               onClick={copyLink}
               style={{
-                background: copied ? '#ecfdf5' : '#fff1f2',
-                border: copied ? '1px solid #a7f3d0' : '1px solid #fecdd3',
-                color: copied ? '#059669' : '#be185d',
+                background: copied ? '#ecfdf5' : '#f8f3eb',
+                border: copied ? '1px solid #a7f3d0' : '1px solid #eadfd2',
+                color: copied ? '#059669' : '#9d382f',
                 padding: '6px 14px',
                 borderRadius: '10px',
                 fontSize: '0.78rem',
@@ -303,30 +366,30 @@ function SuccessContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
           style={{
-            background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)',
-            border: '1.5px solid #86efac',
+            background: 'linear-gradient(135deg, #f2f9f3 0%, #ebf5ee 100%)',
+            border: '1.5px solid #c7e8cc',
             borderRadius: '24px',
             padding: '1.5rem',
-            boxShadow: '0 8px 30px rgba(34, 197, 94, 0.1)',
+            boxShadow: '0 8px 30px rgba(39, 103, 56, 0.08)',
             marginBottom: '1.5rem',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '1rem' }}>
             <div style={{
               width: '42px', height: '42px', borderRadius: '50%',
-              background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: '#daf0df', display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '1.3rem', flexShrink: 0,
             }}>
               👀
             </div>
             <div>
-              <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#1f6634', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
                 Live Response &amp; Reaction Tracker
               </div>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#065f46', margin: '2px 0 4px' }}>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#164e27', margin: '2px 0 4px' }}>
                 See {recipient}&apos;s Reaction on Your Profile
               </h2>
-              <p style={{ color: '#047857', fontSize: '0.84rem', margin: 0, lineHeight: 1.5 }}>
+              <p style={{ color: '#276738', fontSize: '0.84rem', margin: 0, lineHeight: 1.5 }}>
                 When {recipient} completes their experience and reacts, their emotions, rating, and secret reply will appear live in your dashboard.
               </p>
             </div>
@@ -335,7 +398,7 @@ function SuccessContent() {
           {/* Current Status Pill */}
           <div style={{
             background: '#ffffff',
-            border: '1px solid #bbf7d0',
+            border: '1px solid #c7e8cc',
             borderRadius: '14px',
             padding: '10px 14px',
             display: 'flex',
@@ -346,10 +409,10 @@ function SuccessContent() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{
                 width: 10, height: 10, borderRadius: '50%',
-                background: note.recipient_reaction ? '#f43f5e' : (note.view_count > 0 ? '#16a34a' : '#94a3b8'),
+                background: note.recipient_reaction ? '#9d382f' : (note.view_count > 0 ? '#16a34a' : '#a89d95'),
                 boxShadow: note.recipient_reaction || note.view_count > 0 ? '0 0 8px currentColor' : 'none',
               }} />
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#1f2937' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#3f3029' }}>
                 {note.recipient_reaction
                   ? `💌 ${recipient} reacted with ${note.recipient_reaction.emoji} (${note.recipient_reaction.label})`
                   : (note.view_count > 0 ? `👀 Opened ${note.view_count} time${note.view_count > 1 ? 's' : ''} · Waiting for reaction` : 'Waiting for recipient to open link')}
@@ -367,12 +430,12 @@ function SuccessContent() {
               width: '100%',
               padding: '12px',
               borderRadius: '14px',
-              background: 'linear-gradient(135deg, #16a34a 0%, #f8f3eb 100%)',
+              background: 'linear-gradient(135deg, #276738 0%, #1f6634 100%)',
               color: '#ffffff',
               fontSize: '0.92rem',
               fontWeight: 800,
               textDecoration: 'none',
-              boxShadow: '0 4px 16px rgba(22, 163, 74, 0.25)',
+              boxShadow: '0 4px 16px rgba(39, 103, 56, 0.25)',
               boxSizing: 'border-box',
             }}
           >
@@ -388,23 +451,23 @@ function SuccessContent() {
           transition={{ delay: 0.25 }}
           style={{
             background: '#ffffff',
-            border: '1.5px solid #fecdd3',
+            border: '1.5px solid #eadfd2',
             borderRadius: '24px',
             padding: '1.5rem',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.03)',
+            boxShadow: '0 8px 30px rgba(63, 48, 41, 0.04)',
             marginBottom: '1.5rem',
           }}
         >
-          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.85rem' }}>
+          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#9d382f', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.85rem' }}>
             🚀 Instant Sharing Options
           </div>
 
-          {/* Primary WhatsApp Button */}
-          <a
-            href={getWhatsAppUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
+          {/* Primary Native Share / WhatsApp Button */}
+          <button
+            onClick={shareNative}
+            type="button"
             style={{
+              width: '100%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -413,7 +476,8 @@ function SuccessContent() {
               color: '#ffffff',
               padding: '15px 20px',
               borderRadius: '16px',
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
               fontWeight: 800,
               fontSize: '1rem',
               boxShadow: '0 6px 20px rgba(37, 211, 102, 0.3)',
@@ -424,19 +488,19 @@ function SuccessContent() {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
-            <span>Send to {recipient} via WhatsApp</span>
-          </a>
+            <span>Share Surprise with {recipient}</span>
+          </button>
 
-          {/* Secondary Action Buttons */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          {/* Secondary Action Buttons (Copy Link + View Live) */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '0.75rem' }}>
             <button
               onClick={copyLink}
               style={{
                 padding: '12px',
                 borderRadius: '12px',
-                background: copied ? '#ecfdf5' : '#f8fafc',
-                border: copied ? '1px solid #a7f3d0' : '1px solid #e2e8f0',
-                color: copied ? '#059669' : '#0f172a',
+                background: copied ? '#ecfdf5' : '#fffdf9',
+                border: copied ? '1px solid #a7f3d0' : '1px solid #eadfd2',
+                color: copied ? '#059669' : '#3f3029',
                 fontSize: '0.85rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -451,9 +515,9 @@ function SuccessContent() {
               style={{
                 padding: '12px',
                 borderRadius: '12px',
-                background: '#fff1f2',
-                border: '1px solid #fecdd3',
-                color: '#be185d',
+                background: '#f8f3eb',
+                border: '1px solid #eadfd2',
+                color: '#9d382f',
                 fontSize: '0.85rem',
                 fontWeight: 700,
                 textAlign: 'center',
@@ -467,6 +531,51 @@ function SuccessContent() {
               <span>👁️ View Live</span>
             </Link>
           </div>
+
+          {/* Tertiary Share Options (Email + SMS) */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <a
+              href={getEmailShareUrl()}
+              style={{
+                padding: '10px',
+                borderRadius: '12px',
+                background: '#fffdf9',
+                border: '1px solid #eadfd2',
+                color: '#78695f',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                textAlign: 'center',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+              }}
+            >
+              <span>✉️ Share via Email</span>
+            </a>
+
+            <a
+              href={getSmsShareUrl()}
+              style={{
+                padding: '10px',
+                borderRadius: '12px',
+                background: '#fffdf9',
+                border: '1px solid #eadfd2',
+                color: '#78695f',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                textAlign: 'center',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+              }}
+            >
+              <span>💬 Share via SMS</span>
+            </a>
+          </div>
         </motion.div>
 
         {/* ── HD DOWNLOADS STATION (QR & KEEPSAKE) ── */}
@@ -476,22 +585,38 @@ function SuccessContent() {
           transition={{ delay: 0.35 }}
           style={{
             background: '#ffffff',
-            border: '1.5px solid #fecdd3',
+            border: '1.5px solid #eadfd2',
             borderRadius: '24px',
             padding: '1.5rem',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.03)',
+            boxShadow: '0 8px 30px rgba(63, 48, 41, 0.04)',
             marginBottom: '1.5rem',
           }}
         >
-          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#be185d', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '1rem' }}>
+          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#9d382f', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '1rem' }}>
             🎁 Physical Gifts &amp; Downloads
           </div>
+
+          {downloadError && (
+            <div style={{
+              background: '#fff1f0',
+              border: '1px solid #fed7d7',
+              color: '#9d382f',
+              padding: '8px 12px',
+              borderRadius: '10px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              marginBottom: '1rem',
+              textAlign: 'center',
+            }}>
+              {downloadError}
+            </div>
+          )}
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             {/* QR Card */}
             <div style={{
-              background: '#fff9fb',
-              border: '1px solid #fce7f3',
+              background: '#fffdf9',
+              border: '1px solid #eadfd2',
               borderRadius: '16px',
               padding: '1rem',
               textAlign: 'center',
@@ -504,12 +629,12 @@ function SuccessContent() {
                 <img
                   src={qrCodeUrl}
                   alt="QR Code"
-                  style={{ width: '90px', height: '90px', borderRadius: '10px', border: '1px solid #fecdd3', marginBottom: '0.75rem' }}
+                  style={{ width: '90px', height: '90px', borderRadius: '10px', border: '1px solid #eadfd2', marginBottom: '0.75rem' }}
                 />
               ) : (
-                <div style={{ width: '90px', height: '90px', background: '#f1f5f9', borderRadius: '10px', marginBottom: '0.75rem' }} />
+                <div style={{ width: '90px', height: '90px', background: '#f8f3eb', borderRadius: '10px', marginBottom: '0.75rem' }} />
               )}
-              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#3f3029', marginBottom: '0.5rem' }}>
                 HD QR Card
               </div>
               <button
@@ -519,9 +644,9 @@ function SuccessContent() {
                   width: '100%',
                   padding: '8px 10px',
                   borderRadius: '8px',
-                  background: '#fff1f2',
-                  border: '1px solid #fecdd3',
-                  color: '#be185d',
+                  background: '#f8f3eb',
+                  border: '1px solid #eadfd2',
+                  color: '#9d382f',
                   fontSize: '0.75rem',
                   fontWeight: 700,
                   cursor: downloadingQr ? 'not-allowed' : 'pointer',
@@ -533,8 +658,8 @@ function SuccessContent() {
 
             {/* Keepsake Poster */}
             <div style={{
-              background: '#fffbeb',
-              border: '1px solid #fde68a',
+              background: '#fffbf5',
+              border: '1px solid #eadfd2',
               borderRadius: '16px',
               padding: '1rem',
               textAlign: 'center',
@@ -544,7 +669,7 @@ function SuccessContent() {
               justifyContent: 'space-between',
             }}>
               <div style={{ fontSize: '2.4rem', margin: '10px 0' }}>🖼️ ✨</div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#78350f', marginBottom: '0.5rem' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#3f3029', marginBottom: '0.5rem' }}>
                 Keepsake Poster
               </div>
               <button
@@ -554,9 +679,9 @@ function SuccessContent() {
                   width: '100%',
                   padding: '8px 10px',
                   borderRadius: '8px',
-                  background: '#fef3c7',
-                  border: '1px solid #fde68a',
-                  color: '#92400e',
+                  background: '#f8f3eb',
+                  border: '1px solid #eadfd2',
+                  color: '#9d382f',
                   fontSize: '0.75rem',
                   fontWeight: 700,
                   cursor: downloadingKeepsake ? 'not-allowed' : 'pointer',
@@ -569,9 +694,10 @@ function SuccessContent() {
             {/* Direct Invoice View & Download Card */}
             {note?.is_paid && (
               <div style={{
-                marginTop: '14px',
-                background: '#f8fafc',
-                border: '1.5px solid #e2e8f0',
+                gridColumn: '1 / -1',
+                marginTop: '6px',
+                background: '#fffdf9',
+                border: '1.5px solid #eadfd2',
                 borderRadius: '16px',
                 padding: '12px 18px',
                 display: 'flex',
@@ -583,10 +709,10 @@ function SuccessContent() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <span style={{ fontSize: '1.4rem' }}>🧾</span>
                   <div style={{ textAlign: 'left' }}>
-                    <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#0f172a' }}>
+                    <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#3f3029' }}>
                       Tax Invoice &amp; Payment Receipt
                     </div>
-                    <div style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                    <div style={{ fontSize: '0.74rem', color: '#78695f' }}>
                       Official proof of payment with GST breakdown
                     </div>
                   </div>
@@ -599,14 +725,14 @@ function SuccessContent() {
                     alignItems: 'center',
                     gap: '6px',
                     background: '#ffffff',
-                    border: '1.5px solid #cbd5e1',
-                    color: '#be185d',
+                    border: '1.5px solid #eadfd2',
+                    color: '#9d382f',
                     fontSize: '0.78rem',
                     fontWeight: 800,
                     padding: '8px 16px',
                     borderRadius: '10px',
                     textDecoration: 'none',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                    boxShadow: '0 1px 3px rgba(63, 48, 41, 0.05)',
                     transition: 'all 0.2s',
                   }}
                 >
@@ -622,7 +748,7 @@ function SuccessContent() {
           <Link
             href="/templates"
             style={{
-              color: '#64748b',
+              color: '#78695f',
               fontSize: '0.84rem',
               fontWeight: 600,
               textDecoration: 'none',
@@ -647,35 +773,35 @@ function createBrandedQrImage(qrDataUrl) {
       const ctx = canvas.getContext('2d');
       if (!ctx) return reject(new Error('Canvas error'));
 
-      ctx.fillStyle = '#fff8fb';
+      ctx.fillStyle = '#f8f3eb';
       ctx.fillRect(0, 0, 900, 1080);
 
       const glow = ctx.createRadialGradient(450, 500, 80, 450, 500, 520);
-      glow.addColorStop(0, 'rgba(244,63,94,0.12)');
-      glow.addColorStop(1, 'rgba(255,248,251,0)');
+      glow.addColorStop(0, 'rgba(157, 56, 47, 0.12)');
+      glow.addColorStop(1, 'rgba(248, 243, 235, 0)');
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, 900, 1080);
 
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#be185d';
+      ctx.fillStyle = '#3f3029';
       ctx.font = '800 34px Arial, sans-serif';
       ctx.fillText('LOVELYCRAFTS', 450, 90);
 
       roundedRect(ctx, 155, 130, 590, 590, 32);
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = '#fffdf9';
       ctx.fill();
       ctx.lineWidth = 3;
-      ctx.strokeStyle = '#f43f5e';
+      ctx.strokeStyle = '#eadfd2';
       ctx.stroke();
       ctx.drawImage(qr, 185, 160, 530, 530);
 
-      ctx.fillStyle = '#e11d48';
+      ctx.fillStyle = '#9d382f';
       ctx.font = '800 30px Arial, sans-serif';
       ctx.fillText('Scan to open', 450, 820);
-      ctx.fillStyle = '#334155';
+      ctx.fillStyle = '#3f3029';
       ctx.font = '600 24px Arial, sans-serif';
       ctx.fillText('a private moment made just for them', 450, 860);
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#78695f';
       ctx.font = '600 20px Arial, sans-serif';
       ctx.fillText('lovelycrafts.in', 450, 950);
 

@@ -175,9 +175,14 @@ export async function createKeepsakePoster(note, qrCodeDataUrl) {
 
       // Certificate bottom text
       ctx.fillStyle = '#9ca3af';
-      ctx.font = '13px Arial, sans-serif';
-      ctx.letterSpacing = '1px';
-      ctx.fillText('LOVELYCRAFTS.IN • FOREVER KEEPSAKE EDITION', width / 2, height - 70);
+      ctx.font = 'bold 13px Arial, sans-serif';
+      ctx.letterSpacing = '1.5px';
+      ctx.fillText('LOVELYCRAFTS.IN • FOREVER KEEPSAKE EDITION', width / 2, height - 76);
+
+      ctx.fillStyle = '#b0b7c3';
+      ctx.font = '12px Georgia, serif';
+      ctx.letterSpacing = '0.5px';
+      ctx.fillText("Created with love • lovelycrafts.in • India's Digital Gifting Platform", width / 2, height - 52);
 
       resolve(canvas.toDataURL('image/png', 1.0));
     } catch (err) {

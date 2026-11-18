@@ -124,7 +124,7 @@ export default function RefundPolicyPage() {
             <div style={{ background: '#f9fafb', padding: '1.25rem', borderRadius: '0.75rem', marginTop: '0.75rem', fontSize: '0.95rem', lineHeight: 1.8, border: '1px solid #e5e7eb' }}>
               <strong>LovelyCrafts Support</strong><br />
               📧 Email: <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: '#ec4899' }}>{CONTACT_EMAIL}</a><br />
-              🌐 Website: <a href={SITE_URL} style={{ color: '#ec4899' }}>{SITE_URL}</a>
+              🌐 Website: <Link href="/" style={{ color: '#ec4899' }}>{SITE_URL}</Link>
             </div>
           </Section>
 
