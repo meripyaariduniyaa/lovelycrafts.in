@@ -7,10 +7,11 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import TemplateRenderer from '@/components/templates/TemplateRenderer';
 import { templates } from '@/lib/templates';
+import HeartLoader from '@/components/HeartLoader';
 
 export default function PreviewPage() {
   return (
-    <Suspense fallback={<div className="gift-preview-state"><span className="preview-spinner" />Preparing your preview…</div>}>
+    <Suspense fallback={<HeartLoader message="Preparing your private preview…" />}>
       <PreviewContent />
     </Suspense>
   );
@@ -40,17 +41,7 @@ function PreviewContent() {
   }, [id, router]);
 
   const template = templates.find((item) => item.id === note?.template);
-  if (loading) return (
-    <div className="gift-preview-state">
-      <span className="preview-spinner" />
-      <p style={{ marginTop: '0.75rem', color: '#746258', fontSize: '0.95rem', fontWeight: 600 }}>Preparing your private preview…</p>
-      <style jsx>{`
-        .gift-preview-state { min-height:65vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem; text-align:center; }
-        .preview-spinner { width:36px; height:36px; border:3px solid #eadfd2; border-top-color:#a64036; border-radius:50%; animation:spin .8s linear infinite; }
-        @keyframes spin { to { transform:rotate(360deg); } }
-      `}</style>
-    </div>
-  );
+  if (loading) return <HeartLoader message="Preparing your private preview…" />;
 
   if (!id || !note) return (
     <main className="gift-preview-state">
