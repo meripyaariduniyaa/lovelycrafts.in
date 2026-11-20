@@ -10,6 +10,7 @@ import CloudinaryUpload from '@/components/CloudinaryUpload';
 import { templates } from '@/lib/templates';
 import { springs } from '@/lib/motion';
 import { playSfx, sfx } from '@/lib/sfx';
+import { triggerHaptic } from '@/lib/haptics';
 import LiveStudioPreview from '@/components/create/LiveStudioPreview';
 import InspirationVault from '@/components/create/InspirationVault';
 import CraftingCeremony from '@/components/create/CraftingCeremony';
@@ -273,6 +274,7 @@ function CreatePageContent() {
   const currentStep = steps[stepIndex];
 
   const goNext = () => {
+    triggerHaptic('light');
     if (stepIndex < totalSteps - 1) {
       setDirection(1);
       const nextIndex = stepIndex + 1;
@@ -285,6 +287,7 @@ function CreatePageContent() {
   };
 
   const goBack = () => {
+    triggerHaptic('light');
     if (stepIndex > 0) {
       setDirection(-1);
       setStepIndex((s) => s - 1);
@@ -295,6 +298,7 @@ function CreatePageContent() {
   };
 
   const jumpToStep = (index) => {
+    triggerHaptic('selection');
     if (index >= 0 && index < totalSteps) {
       setDirection(index > stepIndex ? 1 : -1);
       setStepIndex(index);
@@ -327,9 +331,11 @@ function CreatePageContent() {
     const err = validateStep();
     if (err) {
       setError(err);
+      triggerHaptic('warning');
       playSfx('waxSeal');
       return;
     }
+    triggerHaptic('selection');
     playSfx('sparkle');
     goNext();
   };
@@ -620,15 +626,40 @@ function CreatePageContent() {
             transition={springs.smooth}
             style={{ width: '100%', position: 'relative', zIndex: 10 }}
           >
-            {/* ── 3. Apple Segmented Step Ribbon ── */}
+            {/* ── 3. Apple Segmented Step Ribbon & Mobile Progress Indicator ── */}
             <div className="lc-studio-ribbon-container">
-              <AppleStepRibbon
-                steps={steps}
-                currentIndex={stepIndex}
-                maxStepReached={maxStepReached}
-                onSelectStep={jumpToStep}
-                accentColor={activeTemplate.accentColor}
-              />
+              {/* Mobile Step Counter & Progress bar (e.g. 'Step 2 of 5') */}
+              <div className="lc-mobile-step-indicator" style={{ display: 'none', width: '100%', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '1rem' }}>{currentStep?.icon || '✨'}</span>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0f172a' }}>
+                      {currentStep?.label || 'Customize'}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: activeTemplate.accentColor || '#e11d48' }}>
+                    Step {stepIndex + 1} of {totalSteps}
+                  </span>
+                </div>
+                <div style={{ width: '100%', height: '5px', background: '#e2e8f0', borderRadius: '999px', overflow: 'hidden' }}>
+                  <motion.div
+                    initial={false}
+                    animate={{ width: `${((stepIndex + 1) / totalSteps) * 100}%` }}
+                    transition={springs.snappy}
+                    style={{ height: '100%', background: activeTemplate.gradient || '#f43f5e', borderRadius: '999px' }}
+                  />
+                </div>
+              </div>
+
+              <div className="lc-desktop-ribbon-wrapper">
+                <AppleStepRibbon
+                  steps={steps}
+                  currentIndex={stepIndex}
+                  maxStepReached={maxStepReached}
+                  onSelectStep={jumpToStep}
+                  accentColor={activeTemplate.accentColor}
+                />
+              </div>
             </div>
 
             {/* ── 4. Split-Screen Studio Desk (Desktop) & Wizard (Mobile) ── */}
@@ -789,6 +820,7 @@ function CreatePageContent() {
                 type="button"
                 onClick={() => {
                   playSfx('pop');
+                  triggerHaptic('light');
                   setShowMobilePeek(true);
                 }}
                 whileHover={{ scale: 1.04 }}
@@ -819,6 +851,84 @@ function CreatePageContent() {
                   <span style={{ position: 'relative', width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }} />
                 </span>
               </motion.button>
+            </div>
+
+            {/* ── Mobile Sticky Bottom Navigation Bar (Respects keyboard & safe areas) ── */}
+            <div className="lc-mobile-sticky-navbar">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', maxWidth: '540px', margin: '0 auto' }}>
+                <motion.button
+                  type="button"
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => {
+                    playSfx('pop');
+                    goBack();
+                  }}
+                  style={{
+                    flex: '0 0 auto',
+                    minHeight: '48px',
+                    padding: '0 16px',
+                    borderRadius: '14px',
+                    border: '1.5px solid #cbd5e1',
+                    background: '#ffffff',
+                    color: '#334155',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
+                    fontFamily: "'Inter', sans-serif",
+                    touchAction: 'manipulation',
+                  }}
+                >
+                  ← {stepIndex > 0 ? 'Back' : 'Templates'}
+                </motion.button>
+
+                <motion.button
+                  type="button"
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleNext}
+                  disabled={busy}
+                  style={{
+                    flex: 1,
+                    minHeight: '48px',
+                    padding: '0 20px',
+                    borderRadius: '14px',
+                    border: 'none',
+                    background: activeTemplate.gradient,
+                    color: '#ffffff',
+                    fontSize: '0.95rem',
+                    fontWeight: 800,
+                    cursor: busy ? 'not-allowed' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: `0 4px 16px ${activeTemplate.glowColor}`,
+                    opacity: busy ? 0.7 : 1,
+                    fontFamily: "'Inter', sans-serif",
+                    touchAction: 'manipulation',
+                  }}
+                >
+                  {busy ? (
+                    <>
+                      <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid #ffffff', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }} />
+                      <span>Crafting...</span>
+                    </>
+                  ) : stepIndex === totalSteps - 1 ? (
+                    <>
+                      <span>✨</span>
+                      <span>{editingNoteId ? 'Update My Gift' : 'Craft Experience'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Continue</span>
+                      <span>→</span>
+                    </>
+                  )}
+                </motion.button>
+              </div>
             </div>
 
             {/* ── 4. Mobile Bottom Sheet Peek Preview ── */}
@@ -950,9 +1060,44 @@ function CreatePageContent() {
         .lc-create-page { min-height: 70vh; isolation: isolate; color: #43332b; }
         .lc-create-page input, .lc-create-page textarea, .lc-create-page select {
           color: #43332b !important; background-color: #ffffff !important; border-color: #e2e8f0 !important;
+          font-size: 16px !important;
         }
         .lc-create-page input::placeholder, .lc-create-page textarea::placeholder { color: #8a786c !important; }
         .lc-create-page :focus-visible { outline: 3px solid #f43f5e; outline-offset: 2px; }
+        .lc-mobile-sticky-navbar {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .lc-mobile-step-indicator {
+            display: block !important;
+          }
+          .lc-desktop-ribbon-wrapper {
+            display: none !important;
+          }
+          .lc-studio-actions {
+            display: none !important;
+          }
+          .lc-mobile-sticky-navbar {
+            display: block !important;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(226, 232, 240, 0.85);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+          }
+          .lc-studio-desk-wrapper {
+            padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+          }
+          .lc-studio-mobile-peek-trigger {
+            bottom: calc(75px + env(safe-area-inset-bottom, 0px)) !important;
+          }
+        }
         @media (prefers-reduced-motion: reduce) {
           .lc-create-page *, .lc-create-page *::before, .lc-create-page *::after {
             animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important;
@@ -1289,10 +1434,12 @@ function FieldLabel({ children }) {
   );
 }
 
-function TextInput({ value, onChange, placeholder, type = 'text' }) {
+function TextInput({ value, onChange, placeholder, type = 'text', inputMode, pattern }) {
   return (
     <input
       type={type}
+      inputMode={inputMode}
+      pattern={pattern}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
@@ -1303,7 +1450,7 @@ function TextInput({ value, onChange, placeholder, type = 'text' }) {
         borderRadius: '14px',
         border: '1.5px solid #cbd5e1',
         background: '#ffffff',
-        fontSize: '0.92rem',
+        fontSize: '16px',
         fontWeight: 500,
         color: '#0f172a',
         outline: 'none',
@@ -1329,7 +1476,7 @@ function TextArea({ value, onChange, placeholder, rows = 5 }) {
         borderRadius: '14px',
         border: '1.5px solid #cbd5e1',
         background: '#ffffff',
-        fontSize: '0.92rem',
+        fontSize: '16px',
         fontWeight: 500,
         color: '#0f172a',
         outline: 'none',
@@ -1381,6 +1528,8 @@ function StepPersonDetails({ templateId, form, setField, accent }) {
                 value={form.turningAge}
                 onChange={(v) => setField('turningAge', v)}
                 placeholder="e.g. 21, 25, 30..."
+                inputMode="numeric"
+                pattern="[0-9]*"
               />
             </div>
             <div>
@@ -1639,7 +1788,7 @@ function StepBalloons({ form, setField, accent }) {
                 borderRadius: '12px',
                 border: '1.5px solid #cbd5e1',
                 background: '#ffffff',
-                fontSize: '0.88rem',
+                fontSize: '16px',
                 color: '#0f172a',
                 outline: 'none',
                 fontFamily: "'Inter', sans-serif",
@@ -1773,7 +1922,7 @@ function StepJourney({ form, setField, accent }) {
                 borderRadius: '10px',
                 border: '1px solid #cbd5e1',
                 background: '#f8fafc',
-                fontSize: '0.82rem',
+                fontSize: '16px',
                 fontFamily: "'Inter', sans-serif",
                 boxSizing: 'border-box',
                 outline: 'none',
@@ -1790,7 +1939,7 @@ function StepJourney({ form, setField, accent }) {
                 borderRadius: '10px',
                 border: '1px solid #cbd5e1',
                 background: '#f8fafc',
-                fontSize: '0.82rem',
+                fontSize: '16px',
                 fontFamily: "'Inter', sans-serif",
                 boxSizing: 'border-box',
                 outline: 'none',
@@ -1885,7 +2034,7 @@ function StepReasons({ form, setField, accent }) {
                 borderRadius: '12px',
                 border: '1.5px solid #cbd5e1',
                 background: '#ffffff',
-                fontSize: '0.88rem',
+                fontSize: '16px',
                 color: '#0f172a',
                 outline: 'none',
                 fontFamily: "'Inter', sans-serif",
@@ -2072,6 +2221,7 @@ function StepDistanceRadar({ form, setField, accent }) {
             value={form.distanceKm}
             onChange={(val) => setField('distanceKm', val)}
             placeholder="e.g. 7,192 km"
+            inputMode="numeric"
           />
         </div>
       </div>

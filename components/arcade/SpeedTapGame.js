@@ -129,7 +129,7 @@ export default function SpeedTapGame({ onGameOver, challengeTargetScore = null, 
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        touchAction: 'manipulation'
+        touchAction: 'none'
       }}>
         {gameState === 'ready' ? (
           <div>
@@ -200,7 +200,7 @@ export default function SpeedTapGame({ onGameOver, challengeTargetScore = null, 
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto',
-                touchAction: 'manipulation',
+                touchAction: 'none',
                 WebkitTapHighlightColor: 'transparent'
               }}
               aria-label="Tap fast"

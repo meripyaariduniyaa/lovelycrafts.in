@@ -60,6 +60,8 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
         userSelect: 'none',
         fontFamily: "'Inter', sans-serif",
       }}
@@ -71,7 +73,7 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          maxWidth: '330px',
+          maxWidth: 'min(100%, 330px)',
           marginBottom: '8px',
           padding: '0 4px',
           boxSizing: 'border-box',
@@ -90,6 +92,8 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
             fontSize: '0.75rem',
             fontWeight: 700,
             letterSpacing: '0.02em',
+            flexShrink: 0,
+            touchAction: 'manipulation',
           }}
         >
           <span
@@ -115,6 +119,9 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               maxWidth: '150px',
+              minWidth: 0,
+              flexShrink: 1,
+              textAlign: 'right',
             }}
           >
             {template.title}
@@ -127,12 +134,13 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
         style={{
           position: 'relative',
           width: '100%',
-          maxWidth: '330px',
+          maxWidth: 'min(100%, 330px)',
           borderRadius: '38px',
           padding: '10px',
           background: 'linear-gradient(180deg, #262626 0%, #171717 50%, #0a0a0a 100%)',
           boxShadow: '0 25px 60px -15px rgba(28, 25, 23, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.2)',
           boxSizing: 'border-box',
+          touchAction: 'pan-y',
         }}
       >
         {/* Subtle Outer Bezel Edge */}
@@ -144,6 +152,7 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
             overflow: 'hidden',
             background: '#f8f3eb',
             border: '1px solid rgba(0, 0, 0, 0.15)',
+            boxSizing: 'border-box',
           }}
         >
           {/* Dynamic Island / Top Camera Notch */}
@@ -179,11 +188,11 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
             </div>
           </div>
 
-          {/* Screen Viewport Container (Fixed Height 580px, View-Only Template Content) */}
+          {/* Screen Viewport Container (Responsive Height clamp(420px, 65vh, 580px), View-Only Template Content) */}
           <div
             style={{
               width: '100%',
-              height: '580px',
+              height: 'clamp(420px, 65vh, 580px)',
               overflow: 'hidden',
               position: 'relative',
               background: '#f8f3eb',
@@ -192,6 +201,7 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
               justifyContent: 'flex-start',
               contain: 'paint layout',
               WebkitFontSmoothing: 'antialiased',
+              boxSizing: 'border-box',
             }}
           >
             {/* View-Only Template Content Wrapper with pointer-events: none */}
@@ -202,6 +212,7 @@ export default function LiveStudioPreview({ template, form = {}, currentStepId }
                 position: 'relative',
                 pointerEvents: 'none',
                 userSelect: 'none',
+                overflow: 'hidden',
               }}
             >
               <TemplateRenderer note={liveNote} isPreview={true} />

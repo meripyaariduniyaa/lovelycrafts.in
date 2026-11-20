@@ -89,8 +89,9 @@ export default function HomeScrollChoreography() {
           });
         }
 
-        // Interactive 3D tilt on mousemove
-        if (showcaseEl) {
+        // Interactive 3D tilt on mousemove (gated to fine pointer with hover to avoid touch scroll jitter)
+        const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        if (showcaseEl && supportsHover) {
           handlePointerMove = (e) => {
             const rect = showcaseEl.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
@@ -125,8 +126,8 @@ export default function HomeScrollChoreography() {
             });
           };
 
-          showcaseEl.addEventListener('pointermove', handlePointerMove);
-          showcaseEl.addEventListener('pointerleave', handlePointerLeave);
+          showcaseEl.addEventListener('pointermove', handlePointerMove, { passive: true });
+          showcaseEl.addEventListener('pointerleave', handlePointerLeave, { passive: true });
         }
       }
 

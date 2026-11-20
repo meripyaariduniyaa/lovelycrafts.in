@@ -10,7 +10,6 @@ const HEART_PATH =
   'C 22 10, 10 20, 10 35 C 10 60, 50 90, 50 90 Z';
 
 const DRAW_DURATION_MS = 1000;
-const ANIMATION_MIN_MS = 1550; // Minimum display safeguard (drawing + heartbeat)
 const ANIMATION_MAX_MS = 8000; // Safety timeout — never block user indefinitely
 
 /**
@@ -21,7 +20,7 @@ const ANIMATION_MAX_MS = 8000; // Safety timeout — never block user indefinite
  * @param {function} onComplete - Callback executed once fade-out completes
  */
 export default function HeartLoader({
-  message = 'Made with love...',
+  message = 'Made with love from the bottom of Heart',
   loading = true,
   onComplete,
 }) {
@@ -59,20 +58,16 @@ export default function HeartLoader({
 
   // Main animation lifecycle timers
   useEffect(() => {
+    // If not actively loading, exit immediately without artificial blocking delay
+    if (!loadingRef.current) {
+      setPhase('exiting');
+      return;
+    }
+
     // 0ms - 1000ms: drawing phase
     const drawTimer = setTimeout(() => {
       setPhase((prev) => (prev === 'drawing' ? 'heartbeat' : prev));
     }, DRAW_DURATION_MS);
-
-    // 1550ms: minimum display safeguard
-    const minTimer = setTimeout(() => {
-      setPhase((prev) => {
-        if (prev === 'drawing' || prev === 'heartbeat') {
-          return loadingRef.current ? 'waiting' : 'exiting';
-        }
-        return prev;
-      });
-    }, ANIMATION_MIN_MS);
 
     // 8000ms: maximum safety timeout
     const safetyTimer = setTimeout(() => {
@@ -86,14 +81,13 @@ export default function HeartLoader({
 
     return () => {
       clearTimeout(drawTimer);
-      clearTimeout(minTimer);
       clearTimeout(safetyTimer);
     };
   }, []);
 
-  // When loading state resolves after the minimum duration has already passed
+  // When loading state resolves, exit immediately without artificial delay
   useEffect(() => {
-    if (!loading && phase === 'waiting') {
+    if (!loading && phase !== 'done' && phase !== 'exiting') {
       setPhase('exiting');
     }
   }, [loading, phase]);
@@ -141,9 +135,8 @@ export default function HeartLoader({
       aria-label="Loading"
     >
       <svg
-        className={`${styles.heartSvg} ${
-          isHeartbeat ? styles.heartComplete : ''
-        } ${isWaiting ? styles.heartWaiting : ''}`}
+        className={`${styles.heartSvg} ${isHeartbeat ? styles.heartComplete : ''
+          } ${isWaiting ? styles.heartWaiting : ''}`}
         viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"

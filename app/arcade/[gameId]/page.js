@@ -9,6 +9,7 @@ import SpeedTapGame from '@/components/arcade/SpeedTapGame';
 import LoveQuizGame from '@/components/arcade/LoveQuizGame';
 import WordScrambleGame from '@/components/arcade/WordScrambleGame';
 import GameDuelCard from '@/components/arcade/GameDuelCard';
+import { triggerHaptic } from '@/lib/haptics';
 
 import { WhatsAppIcon } from '@/components/AppIcons';
 
@@ -235,7 +236,10 @@ function GameRunner() {
           padding: 'clamp(0.85rem, 2.5vw, 1.75rem)',
           border: '1px solid rgba(254, 205, 211, 0.6)',
           boxShadow: '0 12px 36px rgba(190, 24, 93, 0.07)',
-          width: '100%'
+          width: '100%',
+          touchAction: 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
         }}>
           <GameComponent
             onGameOver={handleGameOver}
@@ -269,14 +273,17 @@ function GameRunner() {
                 onChange={(e) => setPartnerName(e.target.value)}
                 placeholder="Your Name / Nickname"
                 maxLength={40}
-                style={{ textAlign: 'center', fontWeight: 700 }}
+                style={{ textAlign: 'center', fontWeight: 700, fontSize: '16px', minHeight: '46px' }}
               />
               <button
                 type="button"
                 className="btn-primary"
-                onClick={submitPartnerDuelScore}
+                onClick={() => {
+                  triggerHaptic('success');
+                  submitPartnerDuelScore();
+                }}
                 disabled={!partnerName.trim() || submittingDuel}
-                style={{ whiteSpace: 'nowrap', padding: '0.6rem 1.2rem', background: 'linear-gradient(135deg, #f43f5e, #be185d)' }}
+                style={{ whiteSpace: 'nowrap', padding: '0.6rem 1.2rem', minHeight: '46px', touchAction: 'manipulation', background: 'linear-gradient(135deg, #f43f5e, #be185d)' }}
               >
                 {submittingDuel ? 'Submitting…' : '👑 See Winner'}
               </button>
@@ -329,12 +336,13 @@ function GameRunner() {
             </div>
 
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/arcade" className="btn-secondary" style={{ padding: '0.7rem 1.4rem', fontSize: '0.9rem' }}>
+              <Link href="/arcade" className="btn-secondary" style={{ padding: '0.7rem 1.4rem', fontSize: '0.9rem', minHeight: '46px', display: 'inline-flex', alignItems: 'center' }}>
                 🎮 Try Another Game
               </Link>
               <button
                 type="button"
                 onClick={() => {
+                  triggerHaptic('success');
                   const text = `👑 Couple Duel Result on LovelyCrafts:\n${duelResult.creatorName} (${duelResult.creatorScore} pts) vs ${duelResult.partnerName} (${duelResult.partnerScore} pts)!\nWinner: ${duelResult.winner === 'partner' ? duelResult.partnerName : duelResult.creatorName} 🏆✨`;
                   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
                 }}
@@ -350,7 +358,9 @@ function GameRunner() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '8px',
-                  boxShadow: '0 4px 12px rgba(37,211,102,0.3)'
+                  boxShadow: '0 4px 12px rgba(37,211,102,0.3)',
+                  minHeight: '46px',
+                  touchAction: 'manipulation',
                 }}
               >
                 <WhatsAppIcon size={18} color="#ffffff" />

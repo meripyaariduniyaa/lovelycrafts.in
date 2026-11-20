@@ -129,14 +129,209 @@ export default async function ToolPage({ params }) {
 
   return (
     <main className="lc-page-shell tool-detail-page">
+      <style>{`
+        .tool-detail-page {
+          width: 100%;
+          max-width: 860px;
+          margin: 0 auto;
+          padding: 1.5rem 16px 80px;
+          box-sizing: border-box;
+          overflow-x: hidden;
+        }
+        @media (max-width: 360px) {
+          .tool-detail-page {
+            padding: 1rem 12px 70px;
+          }
+        }
+        .tool-breadcrumbs {
+          margin-bottom: 1.75rem;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          overflow: hidden;
+        }
+        .tool-breadcrumbs ol {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 4px 6px;
+          list-style: none;
+          font-size: 0.85rem;
+          color: #94a3b8;
+          padding: 0;
+          margin: 0;
+          max-width: 100%;
+          min-width: 0;
+        }
+        .tool-breadcrumb-link {
+          color: #64748b;
+          text-decoration: none;
+          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          min-height: 44px;
+          min-width: 44px;
+          padding: 0 4px;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+          transition: transform 0.1s ease, color 0.15s ease;
+        }
+        .tool-breadcrumb-link:active {
+          transform: scale(0.95);
+          color: #e11d48;
+        }
+        .tool-breadcrumb-sep {
+          display: inline-flex;
+          align-items: center;
+          user-select: none;
+          opacity: 0.6;
+          min-height: 44px;
+        }
+        .tool-breadcrumb-current {
+          color: #0f172a;
+          font-weight: 700;
+          display: inline-flex;
+          align-items: center;
+          min-height: 44px;
+          min-width: 0;
+          max-width: min(220px, calc(100vw - 150px));
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        @media (max-width: 360px) {
+          .tool-breadcrumb-current {
+            max-width: min(170px, calc(100vw - 130px));
+          }
+        }
+        .tool-detail-title {
+          word-break: break-word;
+          overflow-wrap: break-word;
+        }
+        .tool-detail-desc {
+          word-break: break-word;
+          overflow-wrap: break-word;
+        }
+        .tool-detail-meta-pills {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: center;
+          max-width: 100%;
+        }
+        .tool-card-container {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          overflow: hidden;
+        }
+        @media (max-width: 400px) {
+          .tool-card-container {
+            padding: 18px 14px !important;
+            border-radius: 18px !important;
+          }
+        }
+        /* Mobile touch target and active feedback enforcement */
+        .tool-submit-btn {
+          min-height: 48px;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .tool-submit-btn:active:not(:disabled) {
+          transform: scale(0.97) !important;
+        }
+        .tool-reset-btn {
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .tool-reset-btn:active:not(:disabled) {
+          transform: scale(0.97) !important;
+        }
+        .tool-chip {
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .tool-chip:active {
+          transform: scale(0.96) !important;
+        }
+        .tool-quiz-option {
+          min-height: 48px;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .tool-quiz-option:active {
+          transform: scale(0.98) !important;
+        }
+        .tool-share-btn {
+          min-height: 44px;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .tool-share-btn:active {
+          transform: scale(0.96) !important;
+        }
+        .tool-gift-cta {
+          min-height: 52px;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .tool-gift-cta:active {
+          transform: scale(0.97) !important;
+        }
+        .tool-related-all {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          min-height: 44px;
+          padding: 8px 12px;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+          border-radius: 8px;
+          transition: transform 0.15s ease, color 0.15s ease;
+        }
+        .tool-related-all:active {
+          transform: scale(0.96) !important;
+        }
+        .tool-related-section .tool-card {
+          min-height: 44px;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+          box-sizing: border-box;
+          min-width: 0;
+        }
+        .tool-related-section .tool-card:active {
+          transform: scale(0.97) !important;
+        }
+        .tool-related-section .tool-card-cta {
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+          touch-action: manipulation;
+        }
+        @media (max-width: 360px) {
+          .tool-related-section .tools-grid {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+        }
+      `}</style>
+
       {/* BREADCRUMB */}
       <nav className="tool-breadcrumbs" aria-label="Breadcrumb">
         <ol>
-          <li><Link href="/">Home</Link></li>
-          <li aria-hidden="true">/</li>
-          <li><Link href="/tools">Tools</Link></li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page">{tool.title}</li>
+          <li><Link href="/" className="tool-breadcrumb-link">Home</Link></li>
+          <li aria-hidden="true" className="tool-breadcrumb-sep">/</li>
+          <li><Link href="/tools" className="tool-breadcrumb-link">Tools</Link></li>
+          <li aria-hidden="true" className="tool-breadcrumb-sep">/</li>
+          <li aria-current="page" className="tool-breadcrumb-current" title={tool.title}>{tool.title}</li>
         </ol>
       </nav>
 

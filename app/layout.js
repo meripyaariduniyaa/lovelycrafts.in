@@ -16,7 +16,12 @@ export const metadata = siteMetadata;
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#f6f0e8',
+  viewportFit: 'cover',
+  interactiveWidget: 'resizes-content',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f6f0e8' },
+    { media: '(prefers-color-scheme: dark)', color: '#292521' },
+  ],
 };
 
 export default function RootLayout({ children }) {

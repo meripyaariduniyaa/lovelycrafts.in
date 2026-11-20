@@ -1,13 +1,21 @@
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { springs } from '@/lib/motion';
 import PreviewDemoButton from '@/components/PreviewDemoButton';
+import { triggerHaptic } from '@/lib/haptics';
 
 const ALL_CATEGORY = 'All experiences';
+
+const SORT_OPTIONS = [
+  { value: 'featured', label: 'Featured' },
+  { value: 'price-asc', label: 'Price: Low to High' },
+  { value: 'price-desc', label: 'Price: High to Low' },
+  { value: 'name', label: 'Name: A to Z' },
+];
 
 export default function TemplatesCatalog({ templates }) {
   const pathname = usePathname();
@@ -16,6 +24,7 @@ export default function TemplatesCatalog({ templates }) {
   const [sortBy, setSortBy] = useState('featured');
   const [urlReady, setUrlReady] = useState(false);
   const [dynamicPricing, setDynamicPricing] = useState({});
+  const [showSortSheet, setShowSortSheet] = useState(false);
 
   // Fetch live pricing from API
   useEffect(() => {
@@ -106,8 +115,108 @@ export default function TemplatesCatalog({ templates }) {
 
   return (
     <div className="templates-catalog">
+      {/* Mobile Sort Bottom Sheet */}
+      <AnimatePresence>
+        {showSortSheet && (
+          <>
+            <motion.div
+              key="sort-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => { triggerHaptic('light'); setShowSortSheet(false); }}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 9000,
+                background: 'rgba(41, 37, 33, 0.45)',
+                backdropFilter: 'blur(4px)',
+                WebkitBackdropFilter: 'blur(4px)',
+              }}
+            />
+            <motion.div
+              key="sort-sheet"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 32, stiffness: 320 }}
+              style={{
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 9001,
+                background: '#fffdf9',
+                borderRadius: '20px 20px 0 0',
+                boxShadow: '0 -16px 48px rgba(47, 34, 21, 0.15)',
+                padding: '0 1.25rem calc(env(safe-area-inset-bottom, 0px) + 1.5rem)',
+              }}
+            >
+              {/* Handle */}
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '0.75rem 0 1rem' }}>
+                <div style={{ width: '36px', height: '4px', borderRadius: '99px', background: '#d9c9b9' }} />
+              </div>
+              <div style={{ marginBottom: '1rem', color: '#292521', fontWeight: 800, fontSize: '1rem' }}>Sort by</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {SORT_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      triggerHaptic('selection');
+                      setSortBy(option.value);
+                      setShowSortSheet(false);
+                    }}
+                    style={{
+                      minHeight: '52px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '12px',
+                      border: sortBy === option.value ? '2px solid #a83d46' : '1px solid #e2d6c8',
+                      background: sortBy === option.value ? '#f7eee4' : '#fffdf9',
+                      color: sortBy === option.value ? '#a83d46' : '#43332b',
+                      fontWeight: sortBy === option.value ? 800 : 600,
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      touchAction: 'manipulation',
+                      WebkitTapHighlightColor: 'transparent',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <span>{option.label}</span>
+                    {sortBy === option.value && <span style={{ fontSize: '1rem' }}>✓</span>}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       <div className="templates-toolbar" aria-label="Find a template">
-        <div className="template-filters" role="group" aria-label="Filter by occasion">
+        {/* Mobile Search (16px min-font to prevent iOS zoom) */}
+        <label className="template-search" style={{ width: '100%' }}>
+          <span className="sr-only">Search templates</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Birthday, apology, romance, miles..."
+            aria-label="Search gifts by name, occasion, or feature"
+            style={{ fontSize: '16px' }}
+          />
+        </label>
+
+        {/* Filter Chips — horizontal scroll on mobile */}
+        <div
+          className="template-filters"
+          role="group"
+          aria-label="Filter by occasion"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           {categories.map((category) => {
             const isSelected = activeCategory === category;
             return (
@@ -116,13 +225,19 @@ export default function TemplatesCatalog({ templates }) {
                 type="button"
                 aria-pressed={isSelected}
                 className={`template-filter ${isSelected ? 'template-filter--active' : ''}`}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => {
+                  triggerHaptic('selection');
+                  setActiveCategory(category);
+                }}
                 whileTap={{ scale: 0.96 }}
                 transition={springs.snappy}
                 style={{
                   position: 'relative',
                   background: isSelected ? 'transparent' : undefined,
                   borderColor: isSelected ? 'transparent' : undefined,
+                  minHeight: '44px',
+                  touchAction: 'manipulation',
+                  WebkitTapHighlightColor: 'transparent',
                 }}
               >
                 {isSelected && (
@@ -147,24 +262,43 @@ export default function TemplatesCatalog({ templates }) {
             );
           })}
         </div>
-        <div className="template-controls">
-          <label className="template-search">
-            <span>Search templates</span>
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Birthday, apology, romance, miles..."
-              aria-label="Search gifts by name, occasion, or feature"
-            />
-          </label>
-          <label className="template-sort">
+
+        {/* Sort control — desktop select / mobile "Sort" button triggering bottom sheet */}
+        <div className="template-controls" style={{ marginTop: '0.5rem' }}>
+          <div style={{ flex: 1 }} />
+          {/* Mobile Sort Trigger */}
+          <button
+            type="button"
+            className="template-sort-mobile-trigger"
+            onClick={() => { triggerHaptic('light'); setShowSortSheet(true); }}
+            aria-label="Sort templates"
+            style={{
+              display: 'none',
+              minHeight: '44px',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.5rem 1rem',
+              border: '1px solid #d9c9b9',
+              borderRadius: '999px',
+              background: '#fffdf9',
+              color: '#43332b',
+              fontWeight: 700,
+              fontSize: '0.82rem',
+              cursor: 'pointer',
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            <span>⇅</span>
+            <span>Sort: {SORT_OPTIONS.find(o => o.value === sortBy)?.label}</span>
+          </button>
+          {/* Desktop Sort Select */}
+          <label className="template-sort template-sort-desktop">
             <span>Sort</span>
             <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} aria-label="Sort gifts">
-              <option value="featured">Featured</option>
-              <option value="price-asc">Price: low to high</option>
-              <option value="price-desc">Price: high to low</option>
-              <option value="name">Name: A to Z</option>
+              {SORT_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
             </select>
           </label>
         </div>
@@ -221,25 +355,28 @@ export default function TemplatesCatalog({ templates }) {
                         {isAvailable ? 'One-Time • Instant Access' : 'Currently unavailable'}
                       </span>
                     </div>
+                    {/* Distinct Preview + Personalize actions, mobile 44px minimum touch */}
                     <div className="template-card-actions" style={{ width: '100%', display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
                       <PreviewDemoButton
                         templateId={template.id}
                         className="btn-secondary"
-                        style={{ flex: 1, textAlign: 'center', padding: '0.6rem 0.85rem', fontSize: '0.82rem', borderRadius: '999px', fontWeight: 700 }}
+                        onTrigger={() => triggerHaptic('light')}
+                        style={{ flex: 1, minHeight: '44px', textAlign: 'center', padding: '0.6rem 0.85rem', fontSize: '0.82rem', borderRadius: '999px', fontWeight: 700, touchAction: 'manipulation' }}
                       >
-                        👁️ Preview Demo
+                        👁️ Preview
                       </PreviewDemoButton>
                       {isAvailable ? (
                         <Link
                           href={`/create?template=${template.id}`}
                           data-analytics-event="start_gift_creation"
                           className="btn-primary template-create-link"
-                          style={{ flex: 1, textAlign: 'center', padding: '0.6rem 1rem', fontSize: '0.84rem', borderRadius: '999px', fontWeight: 800 }}
+                          onClick={() => triggerHaptic('light')}
+                          style={{ flex: 1, minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0.6rem 1rem', fontSize: '0.84rem', borderRadius: '999px', fontWeight: 800, touchAction: 'manipulation' }}
                         >
-                          ✨ Craft This ➔
+                          ✨ Personalize
                         </Link>
                       ) : (
-                        <span className="template-create-link" aria-disabled="true" style={{ flex: 1, textAlign: 'center', padding: '0.6rem 1rem', fontSize: '0.84rem', borderRadius: '999px', fontWeight: 700 }}>
+                        <span className="template-create-link" aria-disabled="true" style={{ flex: 1, minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0.6rem 1rem', fontSize: '0.84rem', borderRadius: '999px', fontWeight: 700 }}>
                           Not available right now
                         </span>
                       )}

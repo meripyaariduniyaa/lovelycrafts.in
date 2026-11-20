@@ -9,6 +9,7 @@ import TemplateRenderer from '@/components/templates/TemplateRenderer';
 import { getMockPreviewNote } from '@/lib/mockPreviewNotes';
 import { templates } from '@/lib/templates';
 import { emotionalTemplates } from '@/lib/emotionalTemplates';
+import { triggerHaptic } from '@/lib/haptics';
 
 const MotionLink = motion.create(Link);
 
@@ -65,152 +66,190 @@ export default function LiveTemplatePreviewModal({ templateId, onClose }) {
           transition={{ duration: 0.2 }}
           style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
+            inset: 0,
             zIndex: 999999,
-            background: 'rgba(247, 238, 228, 0.94)',
-            backdropFilter: 'blur(24px) saturate(160%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+            background: 'rgba(41, 37, 33, 0.72)',
+            backdropFilter: 'blur(8px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(8px) saturate(140%)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'flex-start',
+            justifyContent: 'flex-end',
             overflow: 'hidden',
           }}
           onClick={(e) => {
             if (e.target === e.currentTarget) {
+              triggerHaptic('light');
               onClose?.();
             }
           }}
         >
-          {/* Top Floating Control Bar */}
-          <div
+          {/* Mobile Bottom Sheet / Desktop Modal */}
+          <motion.div
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: '100%', opacity: 0 }}
+            transition={{ type: 'spring', damping: 32, stiffness: 300 }}
             style={{
               width: '100%',
-              background: 'rgba(247, 238, 228, 0.96)',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.14)',
-              padding: '0.75rem 1.25rem',
+              maxWidth: '720px',
+              height: '92dvh',
+              maxHeight: '92dvh',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '1rem',
-              zIndex: 1000000,
-              boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-              flexShrink: 0,
+              flexDirection: 'column',
+              background: 'rgba(247, 238, 228, 0.98)',
+              borderRadius: '20px 20px 0 0',
+              overflow: 'hidden',
+              boxShadow: '0 -16px 60px rgba(0,0,0,0.3)',
             }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
-              <span style={{ fontSize: '1.75rem', flexShrink: 0 }}>{templateInfo.icon}</span>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  <h3 style={{ color: '#fff', fontSize: '1.05rem', fontWeight: 800, margin: 0, whiteSpace: 'nowrap' }}>
-                    {templateInfo.title}
-                  </h3>
-                  <span
-                    style={{
-                      background: 'linear-gradient(135deg, #f43f5e, #be185d)',
-                      color: '#fff',
-                      fontSize: '0.65rem',
-                      fontWeight: 800,
-                      padding: '0.15rem 0.55rem',
-                      borderRadius: '999px',
-                      letterSpacing: '0.05em',
-                      textTransform: 'uppercase',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    LIVE DEMO PREVIEW
-                  </span>
+            {/* Drag Handle */}
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '0.65rem 0 0' }}>
+              <div
+                style={{ width: '36px', height: '4px', borderRadius: '99px', background: 'rgba(92, 72, 52, 0.3)', cursor: 'pointer' }}
+                onClick={() => { triggerHaptic('light'); onClose?.(); }}
+              />
+            </div>
+
+            {/* Top Control Bar */}
+            <div
+              style={{
+                width: '100%',
+                borderBottom: '1px solid rgba(92, 72, 52, 0.1)',
+                padding: '0.6rem 1rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.75rem',
+                flexShrink: 0,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0 }}>
+                <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>{templateInfo.icon}</span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <h3 style={{ color: '#292521', fontSize: '0.95rem', fontWeight: 800, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {templateInfo.title}
+                    </h3>
+                    <span
+                      style={{
+                        background: 'linear-gradient(135deg, #f43f5e, #be185d)',
+                        color: '#fff',
+                        fontSize: '0.6rem',
+                        fontWeight: 800,
+                        padding: '0.15rem 0.5rem',
+                        borderRadius: '999px',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        whiteSpace: 'nowrap',
+                        flexShrink: 0,
+                      }}
+                    >
+                      LIVE DEMO
+                    </span>
+                  </div>
+                  <p style={{ color: '#635d56', fontSize: '0.72rem', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    See exactly what your recipient will see
+                  </p>
                 </div>
-                <p style={{ color: '#9ca3af', fontSize: '0.78rem', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  Interactive demo • Experience exactly what your recipient will see
-                </p>
+              </div>
+
+              {/* 44px close button */}
+              <motion.button
+                type="button"
+                onClick={() => { triggerHaptic('light'); onClose?.(); }}
+                aria-label="Close Live Demo"
+                whileTap={{ scale: 0.92 }}
+                transition={springs.snappy}
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'rgba(92, 72, 52, 0.08)',
+                  border: '1px solid rgba(92, 72, 52, 0.12)',
+                  color: '#43332b',
+                  borderRadius: '50%',
+                  fontWeight: 700,
+                  fontSize: '1rem',
+                  cursor: 'pointer',
+                  touchAction: 'manipulation',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                ✕
+              </motion.button>
+            </div>
+
+            {/* Main Interactive Preview Content */}
+            <div
+              style={{
+                flex: 1,
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                padding: '1rem 0.75rem 0.5rem',
+              }}
+            >
+              <div
+                style={{
+                  width: '100%',
+                  maxWidth: '600px',
+                  position: 'relative',
+                  background: '#f8f3eb',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
+                  minHeight: '480px',
+                }}
+              >
+                {mockNote && <TemplateRenderer note={mockNote} isPreview={true} />}
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexShrink: 0 }}>
+            {/* Sticky Bottom CTA */}
+            <div
+              style={{
+                flexShrink: 0,
+                borderTop: '1px solid rgba(92, 72, 52, 0.1)',
+                padding: `0.85rem 1rem calc(env(safe-area-inset-bottom, 0px) + 0.85rem)`,
+                background: 'rgba(247, 238, 228, 0.98)',
+                display: 'flex',
+                gap: '0.65rem',
+                alignItems: 'center',
+              }}
+            >
               <MotionLink
                 href={`/create?template=${templateId}`}
                 className="btn-primary"
-                whileTap={{ scale: 0.94 }}
+                whileTap={{ scale: 0.96 }}
                 transition={springs.snappy}
+                onClick={() => triggerHaptic('light')}
                 style={{
-                  padding: '0.55rem 1.25rem',
-                  fontSize: '0.85rem',
+                  flex: 1,
+                  minHeight: '52px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '0.75rem 1.25rem',
+                  fontSize: '0.95rem',
                   fontWeight: 800,
-                  borderRadius: '999px',
+                  borderRadius: '14px',
                   background: 'linear-gradient(135deg, #f43f5e, #be185d)',
-                  boxShadow: '0 4px 14px rgba(244,63,94,0.4)',
+                  boxShadow: '0 4px 14px rgba(244,63,94,0.35)',
                   textDecoration: 'none',
-                  whiteSpace: 'nowrap',
+                  touchAction: 'manipulation',
                 }}
               >
-                ✨ Customize This
+                ✨ Personalize This Gift
               </MotionLink>
-              <motion.button
-                type="button"
-                onClick={onClose}
-                aria-label="Close Live Demo"
-                whileTap={{ scale: 0.94 }}
-                transition={springs.snappy}
-                style={{
-                  background: 'rgba(255,255,255,0.12)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  color: '#fff',
-                  padding: '0.55rem 1rem',
-                  borderRadius: '999px',
-                  fontWeight: 700,
-                  fontSize: '0.85rem',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                ✕ Close
-              </motion.button>
             </div>
-          </div>
-
-          {/* Main Interactive Screen Container */}
-          <div
-            style={{
-              width: '100%',
-              flex: 1,
-              position: 'relative',
-              overflowY: 'auto',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              padding: '1.25rem 1rem 2.5rem',
-            }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                onClose?.();
-              }
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 14 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 10 }}
-              transition={springs.smooth}
-              style={{
-                width: '100%',
-                maxWidth: '680px',
-                position: 'relative',
-                background: '#f8f3eb',
-                borderRadius: '24px',
-                overflow: 'hidden',
-                boxShadow: '0 25px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.1)',
-                minHeight: '560px',
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {mockNote && <TemplateRenderer note={mockNote} isPreview={true} />}
-            </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

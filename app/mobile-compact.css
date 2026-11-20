@@ -115,6 +115,12 @@
     gap: .75rem !important;
   }
 
+  /* Prevent auto-fit minmax(300px+) grids from overflowing mobile viewports */
+  .lc-responsive-app [style*="minmax(300px"],
+  .lc-responsive-app [style*="minmax(320px"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
   .lc-responsive-app .lc-page-shell table { display: block; width: 100%; max-width: 100%; overflow-x: auto; }
   .lc-responsive-app img,
   .lc-responsive-app video,

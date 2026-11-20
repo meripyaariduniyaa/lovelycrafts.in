@@ -7,6 +7,7 @@ import Script from 'next/script';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { templates } from '@/lib/templates';
+import { triggerHaptic } from '@/lib/haptics';
 
 const formatRupees = (paise) => new Intl.NumberFormat('en-IN', {
   style: 'currency', currency: 'INR', maximumFractionDigits: 0,
@@ -116,14 +117,23 @@ export default function CheckoutContent() {
   }, [note, noteId, router]);
 
   async function applyCoupon() {
+    triggerHaptic('light');
     setCouponBusy(true); setError(''); setMessage('');
     try {
       const data = await fetchQuote(couponCode.trim());
       setCouponCode(data.couponCode || '');
-      if (data.couponCode) localStorage.setItem('lc_saved_coupon', data.couponCode);
-      else localStorage.removeItem('lc_saved_coupon');
+      if (data.couponCode) {
+        localStorage.setItem('lc_saved_coupon', data.couponCode);
+        triggerHaptic('success');
+      } else {
+        localStorage.removeItem('lc_saved_coupon');
+        triggerHaptic('light');
+      }
       setMessage(data.free ? '100% discount applied. Your gift is ready to unlock.' : data.couponCode ? 'Coupon applied to this gift.' : 'Coupon removed.');
-    } catch (err) { setError(err.message); }
+    } catch (err) {
+      triggerHaptic('warning');
+      setError(err.message);
+    }
     finally { setCouponBusy(false); }
   }
 
@@ -445,8 +455,30 @@ export default function CheckoutContent() {
         .trust-badge-icon { font-size:1.1rem; }
         .trust-badge-item strong { display:block; font-size:.74rem; color:#3a2e28; }
         .trust-badge-item p { margin:0; font-size:.65rem; color:#78695f; }
-        @media(max-width:760px) { .checkout-page { padding-top:2rem; }.checkout-grid { grid-template-columns:1fr; }.gift-summary { order:0; }.payment-section { order:1; } }
-        @media(prefers-reduced-motion:reduce) { .pay-button { transition:none; } }
+        @media(max-width:760px) {
+          .checkout-page { padding-top:1.5rem; padding-bottom:calc(100px + env(safe-area-inset-bottom, 0px)); }
+          .checkout-grid { grid-template-columns:1fr; gap:1.25rem; }
+          .gift-summary { order:0; padding:1.25rem; border-radius:20px; }
+          .payment-section { order:1; }
+          .payment-card { padding:1.25rem; border-radius:20px; }
+          .upi-launch-button, .pay-button {
+            position: fixed;
+            bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+            left: 16px;
+            right: 16px;
+            width: calc(100% - 32px);
+            z-index: 50;
+            margin: 0 auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+          }
+        }
+        .pay-button:active:not(:disabled), .upi-launch-button:active:not(:disabled), .card-method-button:active:not(:disabled) {
+          transform: scale(0.98);
+        }
+        .buyer-fields input, .coupon-row input, .phone-entry input {
+          font-size: 16px !important;
+        }
+        @media(prefers-reduced-motion:reduce) { .pay-button, .upi-launch-button, .card-method-button { transition:none; } }
       `}</style>
     </main>
   );

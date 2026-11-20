@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { signInWithGoogle } from '@/lib/firebase';
 import { useAuth } from '@/components/AuthProvider';
 import { CREATOR_TIERS } from '@/lib/creator-club';
+import { triggerHaptic } from '@/lib/haptics';
 
 const SHOWCASE_EXPERIENCES = [
   {
@@ -118,6 +119,17 @@ export default function CreatorsLandingPage() {
   // FAQ open/close state
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
+  // Earnings calculator slider state
+  const [calculatorOrders, setCalculatorOrders] = useState(150);
+
+  const getTierInfo = (orders) => {
+    if (orders >= 1501) return { name: 'Elite', emoji: '👑', rate: 18, color: '#e11d48', bg: '#ffe4e6', minOrders: 1501, range: '1,501+ orders/mo' };
+    if (orders >= 701) return { name: 'Partner', emoji: '💜', rate: 17, color: '#7c3aed', bg: '#f5f3ff', minOrders: 701, range: '701–1,500 orders/mo' };
+    if (orders >= 301) return { name: 'Creator', emoji: '💙', rate: 16, color: '#0284c7', bg: '#f0f9ff', minOrders: 301, range: '301–700 orders/mo' };
+    if (orders >= 101) return { name: 'Rising', emoji: '💚', rate: 15, color: '#16a34a', bg: '#f0fdf4', minOrders: 101, range: '101–300 orders/mo' };
+    return { name: 'Starter', emoji: '🌱', rate: 10, color: '#d97706', bg: '#fffbeb', minOrders: 0, range: '0–100 orders/mo' };
+  };
+
   // Read invite query param & localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -171,11 +183,15 @@ export default function CreatorsLandingPage() {
   }, [user]);
 
   const handleGoogleSignIn = async () => {
+    triggerHaptic('medium');
     setAuthLoading(true);
     setErrorMessage('');
     const { error: authErr } = await signInWithGoogle();
     if (authErr) {
       setErrorMessage(authErr);
+      triggerHaptic('error');
+    } else {
+      triggerHaptic('success');
     }
     setAuthLoading(false);
   };
@@ -528,99 +544,225 @@ export default function CreatorsLandingPage() {
 
 
         {/* =========================================================================
-            PRIORITIES 5 & 6: COMMISSION SYSTEM & REAL MONEY EXAMPLE
+            PRIORITIES 5 & 6: COMPACT MOBILE TIER TABLE & EARNINGS CALCULATOR SLIDER
         ========================================================================= */}
         <section style={{ marginBottom: '70px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
 
-          {/* Priority 5: Tier Breakdown */}
-          <div style={{ background: '#fff', borderRadius: '24px', padding: '32px', border: '1px solid #f3f4f6', boxShadow: '0 8px 24px rgba(0,0,0,0.03)' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#e11d48', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Simple &amp; Transparent
-            </span>
-            <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#111827', margin: '4px 0 8px' }}>
+          {/* Compact Mobile Tier Table */}
+          <div style={{ background: '#fff', borderRadius: '24px', padding: 'clamp(20px, 3.5vw, 32px)', border: '1px solid #f3f4f6', boxShadow: '0 8px 24px rgba(0,0,0,0.03)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#e11d48', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Simple &amp; Transparent
+              </span>
+              <span style={{ fontSize: '0.72rem', background: '#ffe4e6', color: '#be123c', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
+                Automatic Tiers
+              </span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(1.35rem, 3vw, 1.6rem)', fontWeight: 800, color: '#111827', margin: '4px 0 8px' }}>
               Earn more as you grow
             </h2>
-            <p style={{ color: '#6b7280', fontSize: '0.92rem', marginBottom: '20px' }}>
-              Your commission tier automatically advances based on your monthly successful referrals.
+            <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '18px', lineHeight: 1.5 }}>
+              Your commission rate scales automatically every month based on verified paid referrals.
             </p>
 
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                <thead>
-                  <tr style={{ borderBottom: '2px solid #f3f4f6' }}>
-                    <th style={{ padding: '10px 12px', color: '#6b7280', fontSize: '0.85rem' }}>Tier &amp; Monthly Orders</th>
-                    <th style={{ padding: '10px 12px', color: '#6b7280', fontSize: '0.85rem', textAlign: 'right' }}>Commission</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>🌱 Starter (0–100 orders/mo)</td>
-                    <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>10%</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💚 Rising (101–300 orders/mo)</td>
-                    <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>15%</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💙 Creator (301–700 orders/mo)</td>
-                    <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>16%</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid #f9fafb' }}>
-                    <td style={{ padding: '12px', fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>💜 Partner (701–1,500 orders/mo)</td>
-                    <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.05rem', textAlign: 'right' }}>17%</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '12px', fontWeight: 700, color: '#111827', fontSize: '0.95rem' }}>👑 Elite (1,501+ orders/mo)</td>
-                    <td style={{ padding: '12px', fontWeight: 800, color: '#e11d48', fontSize: '1.15rem', textAlign: 'right' }}>18%</td>
-                  </tr>
-                </tbody>
-              </table>
+            {/* Compact Mobile Tier Cards / Table */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                { name: 'Starter', emoji: '🌱', range: '0–100 orders/mo', rate: '10%', color: '#d97706', bg: '#fffbeb', border: '#fde68a', min: 0, max: 100 },
+                { name: 'Rising', emoji: '💚', range: '101–300 orders/mo', rate: '15%', color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0', min: 101, max: 300 },
+                { name: 'Creator', emoji: '💙', range: '301–700 orders/mo', rate: '16%', color: '#0284c7', bg: '#f0f9ff', border: '#bae6fd', min: 301, max: 700 },
+                { name: 'Partner', emoji: '💜', range: '701–1,500 orders/mo', rate: '17%', color: '#7c3aed', bg: '#f5f3ff', border: '#ddd6fe', min: 701, max: 1500 },
+                { name: 'Elite', emoji: '👑', range: '1,501+ orders/mo', rate: '18%', color: '#e11d48', bg: '#ffe4e6', border: '#fecdd3', min: 1501, max: Infinity },
+              ].map((tier) => {
+                const isActive = calculatorOrders >= tier.min && (calculatorOrders <= tier.max || tier.max === Infinity);
+                return (
+                  <div
+                    key={tier.name}
+                    onClick={() => {
+                      setCalculatorOrders(tier.min === 0 ? 50 : tier.min);
+                      triggerHaptic('selection');
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '12px 14px',
+                      borderRadius: '14px',
+                      background: isActive ? tier.bg : '#fafafa',
+                      border: isActive ? `2px solid ${tier.color}` : '1px solid #f1f5f9',
+                      transition: 'all 0.2s ease',
+                      cursor: 'pointer',
+                      boxShadow: isActive ? '0 4px 12px rgba(0,0,0,0.04)' : 'none',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '1.3rem' }}>{tier.emoji}</span>
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <strong style={{ fontSize: '0.92rem', color: '#111827' }}>{tier.name}</strong>
+                          {isActive && (
+                            <span style={{ fontSize: '0.65rem', background: tier.color, color: '#fff', padding: '1px 6px', borderRadius: '999px', fontWeight: 800 }}>
+                              SELECTED
+                            </span>
+                          )}
+                        </div>
+                        <span style={{ fontSize: '0.78rem', color: '#6b7280' }}>{tier.range}</span>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <span style={{ fontSize: '1.15rem', fontWeight: 900, color: tier.color, display: 'block', lineHeight: 1 }}>
+                        {tier.rate}
+                      </span>
+                      <small style={{ fontSize: '0.68rem', color: '#9ca3af', fontWeight: 600 }}>commission</small>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div style={{ marginTop: '16px', padding: '10px 14px', background: '#fdf2f8', borderRadius: '12px', border: '1px solid #fce7f3', fontSize: '0.82rem', color: '#a64036' }}>
-              💡 <strong>Monthly Reset &amp; Fast Payout:</strong> Tiers recalculate on the 1st of every month. Commission balance is paid out to your UPI or bank account upon reaching ₹500.
+
+            <div style={{ marginTop: '14px', padding: '10px 12px', background: '#fdf2f8', borderRadius: '12px', border: '1px solid #fce7f3', fontSize: '0.8rem', color: '#a64036', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>💡</span>
+              <span><strong>Fast Weekly Payouts:</strong> Tiers evaluate monthly. Withdrawable to UPI or bank once balance hits ₹500.</span>
             </div>
           </div>
 
-          {/* Priority 6: Real Money Example */}
-          <div style={{ background: '#fff', borderRadius: '24px', padding: '32px', border: '1px solid #f3f4f6', boxShadow: '0 8px 24px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          {/* Earnings Calculator Slider with Large Touch Thumb */}
+          <div style={{ background: '#fff', borderRadius: '24px', padding: 'clamp(20px, 3.5vw, 32px)', border: '1px solid #fecdd3', boxShadow: '0 8px 24px rgba(225,29,72,0.06)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                How Much Do I Actually Make?
-              </span>
-              <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#111827', margin: '4px 0 8px' }}>
-                Example Earnings Math
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Interactive Simulator
+                </span>
+                <span style={{ fontSize: '0.72rem', background: '#ecfdf5', color: '#059669', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
+                  Live Calculator
+                </span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(1.35rem, 3vw, 1.6rem)', fontWeight: 800, color: '#111827', margin: '4px 0 6px' }}>
+                Earnings Calculator
               </h2>
-              <p style={{ color: '#6b7280', fontSize: '0.92rem', marginBottom: '18px' }}>
-                Here is exactly what happens when your viewer purchases a standard surprise:
+              <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '18px', lineHeight: 1.4 }}>
+                Slide to estimate your monthly payouts based on orders placed with your 10% coupon code.
               </p>
 
-              <div style={{ background: '#f9fafb', borderRadius: '16px', padding: '18px', border: '1px solid #f3f4f6', marginBottom: '14px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem', color: '#4b5563' }}>
-                  <span>Original Experience Price:</span>
-                  <strong>₹199.00</strong>
+              {/* Slider Controls with Large Touch Thumb */}
+              <div style={{ background: '#fff1f2', borderRadius: '18px', padding: '16px 18px', border: '1px solid #fecdd3', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#4b5563' }}>Estimated Monthly Orders:</span>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#fff', border: '1.5px solid #e11d48', padding: '4px 12px', borderRadius: '999px', boxShadow: '0 2px 6px rgba(225,29,72,0.1)' }}>
+                    <span style={{ fontSize: '1.15rem', fontWeight: 900, color: '#e11d48' }}>
+                      {calculatorOrders}
+                    </span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#be123c' }}>orders</span>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.9rem', color: '#e11d48' }}>
-                  <span>With Your 10% Discount:</span>
-                  <strong>Viewer pays ₹179.10</strong>
+
+                {/* Range Slider with large touch target and thumb */}
+                <div style={{ padding: '8px 0', position: 'relative' }}>
+                  <input
+                    type="range"
+                    min="10"
+                    max="2000"
+                    step="10"
+                    value={calculatorOrders}
+                    onChange={(e) => {
+                      setCalculatorOrders(Number(e.target.value));
+                      triggerHaptic('selection');
+                    }}
+                    aria-label="Estimated monthly orders slider"
+                    className="creator-touch-slider"
+                    style={{
+                      width: '100%',
+                      height: '10px',
+                      borderRadius: '999px',
+                      background: 'linear-gradient(90deg, #f43f5e, #be185d)',
+                      outline: 'none',
+                      cursor: 'pointer',
+                      WebkitAppearance: 'none',
+                      touchAction: 'manipulation',
+                      minHeight: '44px',
+                      margin: 0,
+                    }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#9ca3af', marginTop: '2px', fontWeight: 600 }}>
+                    <span>10</span>
+                    <span>500</span>
+                    <span>1,000</span>
+                    <span>2,000+</span>
+                  </div>
                 </div>
-                <div style={{ height: '1px', background: '#e5e7eb', margin: '10px 0' }} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '0.95rem', color: '#111827' }}>
-                  <span>At 10% Starter Tier:</span>
-                  <strong style={{ color: '#059669' }}>You earn ≈ ₹17.91</strong>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '0.95rem', color: '#111827' }}>
-                  <span>At 15% Rising Tier:</span>
-                  <strong style={{ color: '#059669' }}>You earn ≈ ₹26.87</strong>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#111827' }}>
-                  <span>At 18% Elite Tier:</span>
-                  <strong style={{ color: '#059669' }}>You earn ≈ ₹32.24</strong>
+
+                {/* Preset Chips */}
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '10px', paddingTop: '10px', borderTop: '1px dashed #fda4af' }}>
+                  {[30, 100, 250, 500, 1000, 1500].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => {
+                        setCalculatorOrders(num);
+                        triggerHaptic('selection');
+                      }}
+                      style={{
+                        background: calculatorOrders === num ? '#e11d48' : '#fff',
+                        color: calculatorOrders === num ? '#fff' : '#4b5563',
+                        border: calculatorOrders === num ? '1px solid #e11d48' : '1px solid #cbd5e1',
+                        borderRadius: '999px',
+                        padding: '4px 10px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        touchAction: 'manipulation',
+                        minHeight: '32px',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {num}
+                    </button>
+                  ))}
                 </div>
               </div>
+
+              {/* Dynamic Live Earnings Card */}
+              {(() => {
+                const activeTier = getTierInfo(calculatorOrders);
+                const avgPrice = 179.10; // 199 with 10% coupon
+                const monthlyPayout = Math.round(calculatorOrders * avgPrice * (activeTier.rate / 100));
+                const yearlyPayout = monthlyPayout * 12;
+                const fanSavings = Math.round(calculatorOrders * 19.90);
+                return (
+                  <div style={{ background: '#f8fafc', borderRadius: '18px', padding: '16px', border: '1px solid #e2e8f0', marginBottom: '14px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', paddingBottom: '10px', borderBottom: '1px solid #e2e8f0' }}>
+                      <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 700 }}>Achieved Tier:</span>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 800, color: activeTier.color, background: activeTier.bg, padding: '3px 10px', borderRadius: '999px', border: `1px solid ${activeTier.color}40` }}>
+                        {activeTier.emoji} {activeTier.name} ({activeTier.rate}% Commission)
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
+                      <div style={{ background: '#ffffff', borderRadius: '12px', padding: '12px', border: '1px solid #e2e8f0' }}>
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, display: 'block', textTransform: 'uppercase' }}>Monthly Payout</span>
+                        <strong style={{ fontSize: '1.35rem', color: '#059669', fontWeight: 900, display: 'block', marginTop: '2px' }}>
+                          ₹{monthlyPayout.toLocaleString('en-IN')}
+                        </strong>
+                      </div>
+                      <div style={{ background: '#ffffff', borderRadius: '12px', padding: '12px', border: '1px solid #e2e8f0' }}>
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, display: 'block', textTransform: 'uppercase' }}>Annual Potential</span>
+                        <strong style={{ fontSize: '1.35rem', color: '#0f172a', fontWeight: 900, display: 'block', marginTop: '2px' }}>
+                          ₹{yearlyPayout.toLocaleString('en-IN')}
+                        </strong>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#64748b', padding: '4px 2px' }}>
+                      <span>Viewer Savings Generated:</span>
+                      <strong style={{ color: '#e11d48' }}>₹{fanSavings.toLocaleString('en-IN')}</strong>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
-            <p style={{ color: '#9ca3af', fontSize: '0.78rem', margin: 0, lineHeight: 1.4 }}>
-              * Illustrative calculation based on standard ₹199 experience with a 10% coupon applied. Actual earnings depend on qualifying order value, applicable tier, and terms.
+            <p style={{ color: '#9ca3af', fontSize: '0.75rem', margin: 0, lineHeight: 1.4 }}>
+              * Based on average ₹199 experience with your 10% coupon applied (₹179.10 net paid). Commission paid directly to your UPI/Bank.
             </p>
           </div>
 
@@ -957,10 +1099,40 @@ export default function CreatorsLandingPage() {
             ) : (
               <div>
                 {!user ? (
-                  <div style={{ textAlign: 'center', padding: '20px', background: '#fff1f2', borderRadius: '16px', border: '1px dashed #fda4af' }}>
-                    <p style={{ color: '#be123c', fontWeight: 600, marginBottom: '16px' }}>
-                      Step 1: Sign in with your Google account to start your creator application
+                  <div
+                    style={{
+                      background: 'linear-gradient(135deg, #fff1f2 0%, #fff 100%)',
+                      borderRadius: '20px',
+                      border: '1.5px solid #fecdd3',
+                      padding: 'clamp(20px, 4vw, 32px)',
+                      textAlign: 'center',
+                      boxShadow: '0 8px 24px rgba(225,29,72,0.06)',
+                    }}
+                  >
+                    <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>👑</div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827', margin: '0 0 6px' }}>
+                      1-Tap Creator Club Sign-Up
+                    </h3>
+                    <p style={{ color: '#6b7280', fontSize: '0.9rem', maxWidth: '420px', margin: '0 auto 18px', lineHeight: 1.5 }}>
+                      Connect with Google in one tap to instantly lock in your handle and start your creator application.
                     </p>
+
+                    {/* Value highlights */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px', marginBottom: '20px', textAlign: 'left' }}>
+                      <div style={{ background: '#fff', padding: '10px 12px', borderRadius: '12px', border: '1px solid #ffe4e6', fontSize: '0.8rem', color: '#4b5563' }}>
+                        <span style={{ color: '#059669', fontWeight: 800 }}>⚡ Fast Payouts</span>
+                        <div style={{ fontSize: '0.72rem', color: '#9ca3af' }}>Weekly to UPI/Bank</div>
+                      </div>
+                      <div style={{ background: '#fff', padding: '10px 12px', borderRadius: '12px', border: '1px solid #ffe4e6', fontSize: '0.8rem', color: '#4b5563' }}>
+                        <span style={{ color: '#e11d48', fontWeight: 800 }}>🎟️ 10% Code</span>
+                        <div style={{ fontSize: '0.72rem', color: '#9ca3af' }}>For your fans &amp; bio</div>
+                      </div>
+                      <div style={{ background: '#fff', padding: '10px 12px', borderRadius: '12px', border: '1px solid #ffe4e6', fontSize: '0.8rem', color: '#4b5563' }}>
+                        <span style={{ color: '#7c3aed', fontWeight: 800 }}>🎁 VIP Pass</span>
+                        <div style={{ fontSize: '0.72rem', color: '#9ca3af' }}>Free experience pass</div>
+                      </div>
+                    </div>
+
                     <button
                       type="button"
                       onClick={handleGoogleSignIn}
@@ -968,25 +1140,45 @@ export default function CreatorsLandingPage() {
                       style={{
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '10px',
-                        background: '#fff',
-                        color: '#374151',
-                        border: '1px solid #d1d5db',
+                        justifyContent: 'center',
+                        gap: '12px',
+                        width: '100%',
+                        maxWidth: '380px',
+                        minHeight: '52px',
+                        background: '#ffffff',
+                        color: '#1f2937',
+                        border: '1.5px solid #d1d5db',
                         padding: '12px 24px',
-                        borderRadius: '12px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+                        borderRadius: '14px',
+                        fontWeight: 700,
+                        fontSize: '1rem',
+                        cursor: authLoading ? 'not-allowed' : 'pointer',
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.06)',
+                        touchAction: 'manipulation',
+                        transition: 'all 0.15s ease',
                       }}
                     >
-                      <svg width="18" height="18" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                      </svg>
-                      {authLoading ? 'Signing in...' : 'Sign in with Google'}
+                      {authLoading ? (
+                        <>
+                          <span className="live-pulse-dot" style={{ background: '#e11d48' }} />
+                          <span>Connecting Google...</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                          </svg>
+                          <span>Continue with Google</span>
+                        </>
+                      )}
                     </button>
+
+                    <div style={{ marginTop: '12px', fontSize: '0.75rem', color: '#9ca3af' }}>
+                      🔒 Zero spam • No minimum follower count • Free forever
+                    </div>
                   </div>
                 ) : (
                   <form onSubmit={handleApply} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -1007,7 +1199,7 @@ export default function CreatorsLandingPage() {
                         <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
                           Profile Photo (Optional)
                         </div>
-                        <label style={{ background: '#e11d48', color: '#fff', padding: '5px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: uploadingAvatar ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <label style={{ background: '#e11d48', color: '#fff', padding: '6px 14px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: uploadingAvatar ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', minHeight: '34px' }}>
                           <input
                             type="file"
                             accept="image/*"
@@ -1030,7 +1222,7 @@ export default function CreatorsLandingPage() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Maya &amp; Arjun"
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '0.95rem' }}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '16px', minHeight: '46px' }}
                       />
                     </div>
 
@@ -1044,7 +1236,7 @@ export default function CreatorsLandingPage() {
                         value={formData.slug}
                         onChange={(e) => setFormData({ ...formData, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') })}
                         placeholder="e.g. mayavlogs"
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '0.95rem' }}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '16px', minHeight: '46px' }}
                       />
                     </div>
 
@@ -1054,10 +1246,11 @@ export default function CreatorsLandingPage() {
                       </label>
                       <input
                         type="tel"
+                        inputMode="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+91 9876543210"
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '0.95rem' }}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '16px', minHeight: '46px' }}
                       />
                     </div>
 
@@ -1067,10 +1260,11 @@ export default function CreatorsLandingPage() {
                       </label>
                       <input
                         type="url"
+                        inputMode="url"
                         value={formData.instagram_url}
                         onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
                         placeholder="https://instagram.com/yourhandle"
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '0.95rem' }}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '16px', minHeight: '46px' }}
                       />
                     </div>
 
@@ -1080,10 +1274,11 @@ export default function CreatorsLandingPage() {
                       </label>
                       <input
                         type="url"
+                        inputMode="url"
                         value={formData.youtube_url}
                         onChange={(e) => setFormData({ ...formData, youtube_url: e.target.value })}
                         placeholder="https://youtube.com/@yourchannel"
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '0.95rem' }}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '16px', minHeight: '46px' }}
                       />
                     </div>
 
@@ -1096,19 +1291,20 @@ export default function CreatorsLandingPage() {
                         value={formData.bio}
                         onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                         placeholder="Tell us a little about your audience and vibe..."
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '0.95rem', resize: 'vertical' }}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #d1d5db', fontSize: '16px', resize: 'vertical' }}
                       />
                     </div>
 
                     {errorMessage && (
-                      <div style={{ color: '#43332b', background: '#fef2f2', padding: '10px', borderRadius: '8px', fontSize: '0.85rem' }}>
-                        {errorMessage}
+                      <div style={{ color: '#b91c1c', background: '#fef2f2', padding: '10px 14px', borderRadius: '8px', fontSize: '0.85rem', border: '1px solid #fecaca' }}>
+                        ⚠️ {errorMessage}
                       </div>
                     )}
 
                     <button
                       type="submit"
                       disabled={submitting}
+                      onClick={() => triggerHaptic('success')}
                       style={{
                         background: '#e11d48',
                         color: '#fff',
@@ -1120,6 +1316,8 @@ export default function CreatorsLandingPage() {
                         cursor: submitting ? 'not-allowed' : 'pointer',
                         marginTop: '8px',
                         boxShadow: '0 4px 14px rgba(225,29,72,0.2)',
+                        minHeight: '50px',
+                        touchAction: 'manipulation',
                       }}
                     >
                       {submitting ? 'Submitting Application...' : 'Submit Creator Application ✨'}

@@ -2,13 +2,17 @@
 
 import Link from 'next/link';
 import ShareButtons from './ShareButtons';
+import { triggerHaptic } from '@/lib/haptics';
 
 export default function ToolResult({ result, tool }) {
   if (!result) return null;
 
+  const surpriseUrl = tool.giftCta?.href || '/templates';
+  const surpriseText = tool.giftCta?.text || 'Turn this into a surprise';
+
   return (
     <div className="tool-result">
-      <div className="tool-result-card">
+      <div className="tool-result-card" style={{ boxShadow: '0 8px 24px rgba(225, 29, 72, 0.08)' }}>
         {/* Animated percentage (for calculators) */}
         {typeof result.percentage === 'number' && (
           <div className="tool-result-percentage">
@@ -52,13 +56,38 @@ export default function ToolResult({ result, tool }) {
         toolSlug={tool.slug}
       />
 
-      {tool.giftCta && (
-        <Link href={tool.giftCta.href} className="tool-gift-cta">
-          <span className="tool-gift-cta-emoji">🎁</span>
-          <span>{tool.giftCta.text}</span>
-          <span aria-hidden="true">→</span>
+      {/* Prominent 'Turn this into a surprise' CTA */}
+      <div style={{ marginTop: '10px' }}>
+        <Link
+          href={surpriseUrl}
+          className="tool-gift-cta"
+          onClick={() => triggerHaptic('medium')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            background: 'linear-gradient(135deg, #e11d48 0%, #be123c 100%)',
+            color: '#ffffff',
+            textDecoration: 'none',
+            padding: '16px 24px',
+            borderRadius: '16px',
+            fontSize: '1.05rem',
+            fontWeight: 800,
+            boxShadow: '0 8px 24px rgba(225, 29, 72, 0.3)',
+            minHeight: '52px',
+            touchAction: 'manipulation',
+            transition: 'transform 0.15s ease',
+          }}
+        >
+          <span className="tool-gift-cta-emoji" style={{ fontSize: '1.4rem' }}>🎁</span>
+          <span>Turn this into a surprise</span>
+          <span aria-hidden="true" style={{ fontSize: '1.1rem' }}>→</span>
         </Link>
-      )}
+        <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '0.75rem', color: '#9ca3af' }}>
+          Craft an interactive digital card with secret photos &amp; love notes
+        </div>
+      </div>
     </div>
   );
 }

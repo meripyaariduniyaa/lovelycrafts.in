@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import ToolCard from '@/components/tools/ToolCard';
 import { TOOL_CATEGORIES } from '@/lib/tools';
+import { triggerHaptic } from '@/lib/haptics';
 
 export default function ToolsHubClient({ tools }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -33,12 +34,16 @@ export default function ToolsHubClient({ tools }) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search tools"
+            style={{ fontSize: '16px' }}
           />
           {searchQuery && (
             <button
               type="button"
               className="tools-search-clear"
-              onClick={() => setSearchQuery('')}
+              onClick={() => {
+                triggerHaptic('selection');
+                setSearchQuery('');
+              }}
               aria-label="Clear search"
             >
               ✕
@@ -52,7 +57,10 @@ export default function ToolsHubClient({ tools }) {
             role="tab"
             aria-selected={selectedCategory === 'all'}
             className={`tools-category-pill ${selectedCategory === 'all' ? 'active' : ''}`}
-            onClick={() => setSelectedCategory('all')}
+            onClick={() => {
+              triggerHaptic('selection');
+              setSelectedCategory('all');
+            }}
           >
             ✨ All Tools ({tools.length})
           </button>
@@ -65,7 +73,10 @@ export default function ToolsHubClient({ tools }) {
                 role="tab"
                 aria-selected={selectedCategory === cat.id}
                 className={`tools-category-pill ${selectedCategory === cat.id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat.id)}
+                onClick={() => {
+                  triggerHaptic('selection');
+                  setSelectedCategory(cat.id);
+                }}
               >
                 <span>{cat.emoji}</span>
                 <span>{cat.label}</span>

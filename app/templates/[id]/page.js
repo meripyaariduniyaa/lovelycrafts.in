@@ -4,6 +4,7 @@ import { templates } from '@/lib/templates';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 import PreviewDemoButton from '@/components/PreviewDemoButton';
+import TemplateDetailInteractive from '@/components/TemplateDetailInteractive';
 
 export async function generateStaticParams() {
   return templates.map((t) => ({
@@ -131,35 +132,60 @@ export default async function TemplateDetailPage({ params }) {
           <span style={{ fontWeight: 600 }}>{template.title}</span>
         </nav>
 
+        {/* Interactive Hero & Mobile Carousel */}
+        <TemplateDetailInteractive template={template} />
+
         {/* Hero Section */}
-        <div style={{ background: '#fff', borderRadius: '1.5rem', padding: '2.5rem 2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.06)' }}>
-          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>{template.icon}</div>
-          <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', marginBottom: '0.75rem', color: '#111' }}>
+        <div className="template-desktop-hero-card" style={{ background: '#fff', borderRadius: '1.5rem', padding: 'clamp(1.5rem, 4vw, 2.5rem)', boxShadow: '0 10px 30px rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.06)' }}>
+          <div style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', marginBottom: '0.75rem' }}>{template.icon}</div>
+          <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', marginBottom: '0.75rem', color: '#111', lineHeight: 1.2 }}>
             {template.title}
           </h1>
-          <p style={{ fontSize: '1.15rem', color: '#555', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+          <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', color: '#555', lineHeight: 1.6, marginBottom: '1.5rem' }}>
             {template.description}
           </p>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '2rem' }}>
-            {template.bestFor.map((tag) => (
-              <span key={tag} className="template-tag" style={{ fontSize: '0.85rem', padding: '0.3rem 0.75rem', background: '#ffe4e6', color: '#a64036' }}>
-                ✨ {tag}
-              </span>
-            ))}
-            <span className="template-tag" style={{ fontSize: '0.85rem', padding: '0.3rem 0.75rem', background: '#f3f4f6', color: '#43332b' }}>
-              ⏱ {template.time} setup time
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link href={`/create?template=${template.id}`} className="btn-primary" style={{ padding: '0.8rem 1.8rem', fontSize: '1.05rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link
+              href={`/create?template=${template.id}`}
+              className="btn-primary"
+              style={{
+                minHeight: '48px',
+                padding: '0.75rem 1.8rem',
+                fontSize: '1rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                touchAction: 'manipulation',
+              }}
+            >
               ✨ Create {template.title} Now
             </Link>
-            <PreviewDemoButton templateId={template.id} className="btn-secondary" style={{ padding: '0.8rem 1.5rem', fontSize: '1rem' }}>
+            <PreviewDemoButton
+              templateId={template.id}
+              className="btn-secondary"
+              style={{
+                minHeight: '48px',
+                padding: '0.75rem 1.5rem',
+                fontSize: '0.95rem',
+                touchAction: 'manipulation',
+              }}
+            >
               👁️ Play Live Interactive Demo
             </PreviewDemoButton>
-            <Link href="/templates" className="btn-secondary" style={{ padding: '0.8rem 1.5rem', fontSize: '1rem' }}>
+            <Link
+              href="/templates"
+              className="btn-secondary"
+              style={{
+                minHeight: '48px',
+                padding: '0.75rem 1.5rem',
+                fontSize: '0.95rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                touchAction: 'manipulation',
+              }}
+            >
               ← View All Templates
             </Link>
           </div>

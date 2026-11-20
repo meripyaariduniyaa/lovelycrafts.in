@@ -114,14 +114,33 @@ export default function Home() {
             </div>
             <Link href="/templates" data-analytics-event="view_gift_templates" className="lc-text-link">Explore all gifts <span aria-hidden="true">→</span></Link>
           </div>
-          <nav className="lc-occasion-list" aria-label="Browse gifts by occasion">
+          <nav
+            className="lc-occasion-list"
+            aria-label="Browse gifts by occasion"
+            style={{
+              touchAction: 'pan-y',
+              scrollSnapType: 'x mandatory',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
             {categories.map((category) => (
-              <Link key={category} href={`/templates?occasion=${encodeURIComponent(category)}`} className="lc-occasion-chip">
+              <Link
+                key={category}
+                href={`/templates?occasion=${encodeURIComponent(category)}`}
+                className="lc-occasion-chip"
+                style={{ scrollSnapAlign: 'start' }}
+              >
                 <span aria-hidden="true">{category === 'Romance' ? '♡' : category === 'Celebration' ? '✹' : category === 'Heartfelt' ? '✉' : '✦'}</span>
                 {category}
               </Link>
             ))}
-            <Link href="/templates" className="lc-occasion-chip lc-occasion-chip-all">All experiences <span aria-hidden="true">→</span></Link>
+            <Link
+              href="/templates"
+              className="lc-occasion-chip lc-occasion-chip-all"
+              style={{ scrollSnapAlign: 'start' }}
+            >
+              All experiences <span aria-hidden="true">→</span>
+            </Link>
           </nav>
         </section>
 

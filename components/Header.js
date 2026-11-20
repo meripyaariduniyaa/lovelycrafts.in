@@ -22,6 +22,7 @@ const NAV_ITEMS = [
 export default function Header() {
   const pathname = usePathname();
   const { user } = useAuth();
+  // Desktop drawer (kept for desktop fallback if needed, but hidden on mobile)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Close mobile drawer on route change
@@ -29,7 +30,7 @@ export default function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Prevent background scroll when mobile drawer is open
+  // Prevent background scroll when desktop drawer open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -70,7 +71,7 @@ export default function Header() {
         <div className="topbar-inner">
           <LovelyCraftsLogo size={38} />
 
-          {/* Primary public-site navigation */}
+          {/* ── Desktop nav — only visible at ≥768px ── */}
           <div className="nav-links desktop-nav">
             {NAV_ITEMS.map((item) => {
               const active = item.isActive(pathname);
@@ -142,25 +143,32 @@ export default function Header() {
             </MotionLink>
           </div>
 
-          {/* Mobile Hamburger Toggle Button */}
-          <motion.button
-            type="button"
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-label={mobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-navigation"
-            whileTap={{ scale: 0.92 }}
-            transition={springs.snappy}
-          >
-            <span className={`burger-bar ${mobileMenuOpen ? 'open' : ''}`} />
-            <span className={`burger-bar ${mobileMenuOpen ? 'open' : ''}`} />
-            <span className={`burger-bar ${mobileMenuOpen ? 'open' : ''}`} />
-          </motion.button>
+          {/* ── Mobile top bar actions (<768px) — logo left, CTA right ── */}
+          <div className="mobile-header-actions">
+            <MotionLink
+              href="/templates"
+              className="btn-primary mobile-header-cta"
+              whileTap={{ scale: 0.96 }}
+              transition={springs.snappy}
+              aria-label="Craft a surprise"
+            >
+              ✨ Create
+            </MotionLink>
+
+            {user && (
+              <Link
+                href="/profile"
+                aria-label="My dashboard"
+                className="mobile-header-avatar"
+              >
+                <span className="user-dot" style={{ width: 8, height: 8 }} />
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
 
-      {/* Mobile Drawer & Backdrop wrapped in AnimatePresence */}
+      {/* Desktop drawer — hidden on mobile (MobileTabBar + MobileMoreSheet handle mobile) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -205,95 +213,56 @@ export default function Header() {
               </div>
 
               <div className="mobile-drawer-links">
-                <Link
-                  href="/templates"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/templates" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">🎁</span>
                   <div>
                     <strong>All Gift Experiences</strong>
                     <small>Explore all interactive templates</small>
                   </div>
                 </Link>
-
-                <Link
-                  href="/tools"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/tools" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">🧰</span>
                   <div>
                     <strong>Free Tools</strong>
                     <small>Love calculators, countdowns &amp; quizzes</small>
                   </div>
                 </Link>
-
-                <Link
-                  href="/arcade"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/arcade" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">🎮</span>
                   <div>
                     <strong>Couple &amp; Bestie Arcade</strong>
                     <small>Play 30s mini-games &amp; send duels</small>
                   </div>
                 </Link>
-
-                <Link
-                  href="/blog"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/blog" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">📝</span>
                   <div>
                     <strong>Blog &amp; Gift Guides</strong>
                     <small>Creative surprise ideas &amp; inspiration</small>
                   </div>
                 </Link>
-
-                <Link
-                  href="/business"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/business" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">💼</span>
                   <div>
                     <strong>LovelyCrafts for Business</strong>
                     <small>Automate employee birthdays &amp; milestones</small>
                   </div>
                 </Link>
-
-                <Link
-                  href="/faq"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/faq" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">❓</span>
                   <div>
                     <strong>Help &amp; FAQ</strong>
                     <small>Common questions, photo privacy &amp; guide</small>
                   </div>
                 </Link>
-
-                <Link
-                  href="/creators"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/creators" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>Creator Club</strong>
                     <small>Share LovelyCrafts with your audience</small>
                   </div>
                 </Link>
-
-                <Link
-                  href="/profile"
-                  className="mobile-nav-item"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/profile" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
                   <span className="mobile-nav-icon">👤</span>
                   <div>
                     <strong>{user ? 'My Dashboard' : 'Sign In / Dashboard'}</strong>
@@ -321,3 +290,4 @@ export default function Header() {
     </>
   );
 }
+

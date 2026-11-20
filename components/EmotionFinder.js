@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { springs } from '@/lib/motion';
 import { templates } from '@/lib/templates';
+import { triggerHaptic } from '@/lib/haptics';
 
 const MOODS = [
   {
@@ -85,14 +86,22 @@ export default function EmotionFinder() {
         Pick a feeling. We’ll curate the most unforgettable digital surprise for you.
       </p>
 
-      {/* Mood Choice Buttons */}
+      {/* Mobile-Friendly Mood Choice Buttons (Smooth horizontal scroll & zero-shift tabs) */}
       <div
+        role="tablist"
+        aria-label="Filter experiences by emotional mood"
+        className="no-scrollbar"
         style={{
           display: 'flex',
           gap: '8px',
-          flexWrap: 'wrap',
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          padding: '4px 2px 10px',
           justifyContent: 'center',
-          marginBottom: '1.75rem',
+          flexWrap: 'wrap',
+          marginBottom: '1rem',
+          touchAction: 'manipulation',
         }}
       >
         {MOODS.map((mood) => {
@@ -100,12 +109,18 @@ export default function EmotionFinder() {
           return (
             <motion.button
               key={mood.id}
+              role="tab"
+              aria-selected={isSelected}
               type="button"
-              onClick={() => setSelectedMoodId(mood.id)}
+              onClick={() => {
+                triggerHaptic('selection');
+                setSelectedMoodId(mood.id);
+              }}
               whileTap={{ scale: 0.95 }}
               transition={springs.snappy}
               style={{
                 position: 'relative',
+                minHeight: '44px',
                 border: isSelected ? '2px solid transparent' : '1px solid #fecdd3',
                 borderRadius: '999px',
                 padding: '8px 18px',
@@ -118,6 +133,9 @@ export default function EmotionFinder() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent',
+                flexShrink: 0,
               }}
             >
               {isSelected && (
@@ -145,116 +163,129 @@ export default function EmotionFinder() {
       </div>
 
       {/* Active Mood Subtitle */}
-      <div style={{ marginBottom: '1.5rem', color: '#be185d', fontSize: '0.92rem', fontWeight: 700, fontStyle: 'italic' }}>
+      <div style={{ marginBottom: '1.5rem', color: '#be185d', fontSize: '0.92rem', fontWeight: 700, fontStyle: 'italic', minHeight: '1.5rem' }}>
         &ldquo;{activeMood.subtitle}&rdquo;
       </div>
 
-      {/* Responsive Cards Grid */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={selectedMoodId}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={springs.smooth}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '16px',
-            textAlign: 'left',
-          }}
-        >
-          {recommendedTemplates.map((template) => (
-            <div
-              key={template.id}
-              style={{
-                background: '#ffffff',
-                borderRadius: '20px',
-                border: '1.5px solid #fce7f3',
-                boxShadow: '0 8px 24px -4px rgba(244, 63, 94, 0.08)',
-                padding: '1.25rem',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '2rem' }}>{template.icon}</span>
-                  <span
-                    style={{
-                      fontSize: '0.7rem',
-                      fontWeight: 800,
-                      background: '#fff1f2',
-                      color: '#be185d',
-                      border: '1px solid #fecdd3',
-                      padding: '3px 8px',
-                      borderRadius: '999px',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    {template.badge}
-                  </span>
-                </div>
-
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a', margin: '0 0 6px' }}>
-                  {template.title}
-                </h3>
-
-                <p style={{ color: '#64748b', fontSize: '0.84rem', margin: '0 0 12px', lineHeight: 1.5 }}>
-                  {template.description}
-                </p>
-
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
-                  {template.features.slice(0, 3).map((feat, i) => (
+      {/* Responsive Cards Grid with Instant Smooth Crossfade and Zero Layout Shift */}
+      <div style={{ position: 'relative', minHeight: '280px' }}>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={selectedMoodId}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, position: 'absolute', inset: 0, pointerEvents: 'none' }}
+            transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '16px',
+              textAlign: 'left',
+              width: '100%',
+            }}
+          >
+            {recommendedTemplates.map((template) => (
+              <div
+                key={template.id}
+                style={{
+                  background: '#ffffff',
+                  borderRadius: '20px',
+                  border: '1.5px solid #fce7f3',
+                  boxShadow: '0 8px 24px -4px rgba(244, 63, 94, 0.08)',
+                  padding: '1.25rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '2rem' }}>{template.icon}</span>
                     <span
-                      key={i}
                       style={{
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        color: '#475569',
-                        background: '#f8fafc',
-                        border: '1px solid #e2e8f0',
-                        padding: '2px 7px',
-                        borderRadius: '6px',
+                        fontSize: '0.7rem',
+                        fontWeight: 800,
+                        background: '#fff1f2',
+                        color: '#be185d',
+                        border: '1px solid #fecdd3',
+                        padding: '3px 8px',
+                        borderRadius: '999px',
+                        textTransform: 'uppercase',
                       }}
                     >
-                      ✨ {feat}
+                      {template.badge}
                     </span>
-                  ))}
+                  </div>
+
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#0f172a', margin: '0 0 6px' }}>
+                    {template.title}
+                  </h3>
+
+                  <p style={{ color: '#64748b', fontSize: '0.84rem', margin: '0 0 12px', lineHeight: 1.5 }}>
+                    {template.description}
+                  </p>
+
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
+                    {template.features.slice(0, 3).map((feat, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          color: '#475569',
+                          background: '#f8fafc',
+                          border: '1px solid #e2e8f0',
+                          padding: '2px 7px',
+                          borderRadius: '6px',
+                        }}
+                      >
+                        ✨ {feat}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
+                  <Link
+                    href={`/create?template=${template.id}`}
+                    onClick={() => triggerHaptic('light')}
+                    style={{
+                      width: '100%',
+                      minHeight: '44px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      textAlign: 'center',
+                      background: 'linear-gradient(135deg, #f43f5e 0%, #be185d 100%)',
+                      color: '#ffffff',
+                      fontWeight: 800,
+                      fontSize: '0.86rem',
+                      padding: '9px 16px',
+                      borderRadius: '999px',
+                      textDecoration: 'none',
+                      boxShadow: '0 3px 10px rgba(244, 63, 94, 0.25)',
+                      touchAction: 'manipulation',
+                    }}
+                  >
+                    ✨ Personalize This Experience ➔
+                  </Link>
                 </div>
               </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
-                <Link
-                  href={`/create?template=${template.id}`}
-                  style={{
-                    width: '100%',
-                    textAlign: 'center',
-                    background: 'linear-gradient(135deg, #f43f5e 0%, #be185d 100%)',
-                    color: '#ffffff',
-                    fontWeight: 800,
-                    fontSize: '0.86rem',
-                    padding: '9px 16px',
-                    borderRadius: '999px',
-                    textDecoration: 'none',
-                    boxShadow: '0 3px 10px rgba(244, 63, 94, 0.25)',
-                  }}
-                >
-                  ✨ Personalize This Experience ➔
-                </Link>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </AnimatePresence>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       <div style={{ marginTop: '2rem' }}>
         <Link
           href="/templates"
           className="btn-secondary"
+          onClick={() => triggerHaptic('light')}
           style={{
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center',
             padding: '0.65rem 1.5rem',
             fontSize: '0.88rem',
             borderRadius: '999px',
@@ -263,6 +294,7 @@ export default function EmotionFinder() {
             color: '#1e293b',
             fontWeight: 800,
             textDecoration: 'none',
+            touchAction: 'manipulation',
           }}
         >
           🎁 Explore All {templates.length} Gift Templates ➔

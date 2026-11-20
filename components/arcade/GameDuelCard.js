@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { WhatsAppIcon, LinkIcon } from '@/components/AppIcons';
+import { triggerHaptic } from '@/lib/haptics';
 
 export default function GameDuelCard({
   gameId,
@@ -17,6 +18,7 @@ export default function GameDuelCard({
 
   const createChallenge = async () => {
     if (!yourName.trim()) return;
+    triggerHaptic('medium');
     setBusy(true);
     try {
       const res = await fetch('/api/challenges', {
@@ -31,6 +33,7 @@ export default function GameDuelCard({
       });
       const data = await res.json();
       if (data.success && data.challenge) {
+        triggerHaptic('success');
         setCreatedChallenge(data.challenge);
         onChallengeCreated?.(data.challenge);
       }
@@ -48,6 +51,7 @@ export default function GameDuelCard({
   };
 
   const handleCopy = async () => {
+    triggerHaptic('success');
     const url = getChallengeUrl();
     try {
       await navigator.clipboard.writeText(url);
@@ -57,6 +61,7 @@ export default function GameDuelCard({
   };
 
   const handleWhatsAppShare = () => {
+    triggerHaptic('success');
     const url = getChallengeUrl();
     const text = `🔥 ${createdChallenge?.creatorName || 'Your partner'} just scored ${score} pts in ${gameTitle} on LovelyCrafts! 💖\n\nThink you can beat their score? Accept the couple duel here:\n${url}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
@@ -89,14 +94,14 @@ export default function GameDuelCard({
             onChange={(e) => setYourName(e.target.value)}
             placeholder="Enter your name / nickname"
             maxLength={40}
-            style={{ textAlign: 'center', fontWeight: 700 }}
+            style={{ textAlign: 'center', fontWeight: 700, fontSize: '16px', minHeight: '46px' }}
           />
           <button
             type="button"
             className="btn-primary"
             onClick={createChallenge}
             disabled={!yourName.trim() || busy}
-            style={{ padding: '0.75rem', fontSize: '0.95rem', background: 'linear-gradient(135deg, #f43f5e, #be185d)' }}
+            style={{ padding: '0.75rem', fontSize: '0.95rem', minHeight: '48px', touchAction: 'manipulation', background: 'linear-gradient(135deg, #f43f5e, #be185d)' }}
           >
             {busy ? 'Creating Challenge…' : '✨ Generate Challenge Link'}
           </button>
@@ -133,6 +138,8 @@ export default function GameDuelCard({
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
+                minHeight: '48px',
+                touchAction: 'manipulation',
                 boxShadow: '0 4px 12px rgba(37,211,102,0.3)'
               }}
             >
@@ -144,7 +151,7 @@ export default function GameDuelCard({
               type="button"
               onClick={handleCopy}
               className="btn-secondary"
-              style={{ padding: '0.75rem 1.2rem', fontSize: '0.9rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              style={{ padding: '0.75rem 1.2rem', fontSize: '0.9rem', fontWeight: 700, minHeight: '48px', touchAction: 'manipulation', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
               <LinkIcon size={16} />
               <span>{copied ? '✓ Link Copied!' : 'Copy Link'}</span>

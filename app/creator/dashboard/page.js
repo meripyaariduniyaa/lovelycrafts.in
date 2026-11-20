@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
 import CreatorTermsModal, { CREATOR_TERMS_VERSION } from '@/components/CreatorTermsModal';
+import { triggerHaptic } from '@/lib/haptics';
 
 export default function CreatorDashboardPage() {
   const router = useRouter();
@@ -955,44 +956,50 @@ export default function CreatorDashboardPage() {
           </div>
         )}
 
-        {/* METRICS OVERVIEW CARDS */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-          <div style={{ background: '#fff', borderRadius: '20px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700 }}>⏳ Pending Commission</span>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#e11d48', marginTop: '4px' }}>
+        {/* METRICS OVERVIEW CARDS — MOBILE RESPONSIVE GRID */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(145px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '16px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+            <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>💰 Total Earnings</span>
+            <div style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.7rem)', fontWeight: 900, color: '#059669', marginTop: '4px' }}>
+              ₹{((((summary?.paid || 0) + (summary?.pending || 0))) / 100).toFixed(2)}
+            </div>
+            <div style={{ marginTop: '6px', fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>
+              Paid: ₹{((summary?.paid || 0) / 100).toFixed(2)} • Pending: ₹{((summary?.pending || 0) / 100).toFixed(2)}
+            </div>
+          </div>
+
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '16px', border: '1px solid #fecdd3', boxShadow: '0 2px 10px rgba(225,29,72,0.03)' }}>
+            <span style={{ fontSize: '0.75rem', color: '#be123c', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>⏳ Pending Payout</span>
+            <div style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.7rem)', fontWeight: 900, color: '#e11d48', marginTop: '4px' }}>
               ₹{((summary?.pending || 0) / 100).toFixed(2)}
             </div>
-            <div style={{ marginTop: '6px', fontSize: '0.75rem', fontWeight: 600, color: (summary?.pending || 0) >= 50000 ? '#15803d' : '#64748b' }}>
+            <div style={{ marginTop: '6px', fontSize: '0.72rem', fontWeight: 700, color: (summary?.pending || 0) >= 50000 ? '#15803d' : '#854d0e' }}>
               {(summary?.pending || 0) >= 50000 ? (
                 '✓ Reached ₹500 payout threshold'
               ) : (
-                `Min payout: ₹500 (₹${(500 - (summary?.pending || 0) / 100).toFixed(2)} left)`
+                `Threshold: ₹500 (₹${Math.max(0, 500 - (summary?.pending || 0) / 100).toFixed(2)} left)`
               )}
             </div>
           </div>
 
-          <div style={{ background: '#fff', borderRadius: '20px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700 }}>💰 Paid Earnings</span>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#059669', marginTop: '4px' }}>
-              ₹{((summary?.paid || 0) / 100).toFixed(2)}
-            </div>
-            <small style={{ color: '#94a3b8', fontSize: '0.75rem' }}>Lifetime completed payouts</small>
-          </div>
-
-          <div style={{ background: '#fff', borderRadius: '20px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700 }}>🎁 Attributed Orders</span>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#0f172a', marginTop: '4px' }}>
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '16px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+            <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>🎁 Total Orders</span>
+            <div style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.7rem)', fontWeight: 900, color: '#0f172a', marginTop: '4px' }}>
               {summary?.totalOrders || 0}
             </div>
-            <small style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{summary?.monthOrders || 0} orders this month</small>
+            <small style={{ color: '#0284c7', fontSize: '0.72rem', fontWeight: 700, display: 'block', marginTop: '4px' }}>
+              {summary?.monthOrders || 0} orders this month
+            </small>
           </div>
 
-          <div style={{ background: '#fff', borderRadius: '20px', padding: '20px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700 }}>🔗 Referral Clicks</span>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#0f172a', marginTop: '4px' }}>
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '16px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+            <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>🔗 Referrals</span>
+            <div style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.7rem)', fontWeight: 900, color: '#0f172a', marginTop: '4px' }}>
               {summary?.clicks || 0}
             </div>
-            <small style={{ color: '#059669', fontSize: '0.75rem', fontWeight: 700 }}>{convRate}% conversion rate</small>
+            <small style={{ color: '#059669', fontSize: '0.72rem', fontWeight: 800, display: 'block', marginTop: '4px' }}>
+              {convRate}% conversion rate
+            </small>
           </div>
         </div>
 
@@ -1005,8 +1012,8 @@ export default function CreatorDashboardPage() {
                 {commissions.filter(c => c.status === 'pending').length} entries · ₹{(commissions.filter(c => c.status === 'pending').reduce((s,c) => s + (Number(c.commission_amount)||0),0)/100).toFixed(2)} total
               </span>
             </div>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', minWidth: '480px' }}>
+            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', minWidth: '460px' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid #f1f5f9' }}>
                     <th style={{ padding: '8px 12px', textAlign: 'left', color: '#64748b', fontWeight: 700 }}>Date</th>
@@ -1158,11 +1165,12 @@ export default function CreatorDashboardPage() {
               <button
                 type="button"
                 onClick={() => {
+                  triggerHaptic('success');
                   navigator.clipboard.writeText(referralUrl);
                   setCopiedLink(true);
                   setTimeout(() => setCopiedLink(false), 2000);
                 }}
-                style={{ background: copiedLink ? '#059669' : '#e11d48', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', minHeight: '42px' }}
+                style={{ background: copiedLink ? '#059669' : '#e11d48', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', minHeight: '44px', touchAction: 'manipulation', transition: 'all 0.15s ease' }}
               >
                 {copiedLink ? '✓ Copied' : 'Copy Link'}
               </button>
@@ -1189,11 +1197,12 @@ export default function CreatorDashboardPage() {
                 <button
                   type="button"
                   onClick={() => {
+                    triggerHaptic('success');
                     navigator.clipboard.writeText(primaryCouponCode);
                     setCopiedCoupon(true);
                     setTimeout(() => setCopiedCoupon(false), 2000);
                   }}
-                  style={{ background: copiedCoupon ? '#059669' : '#e11d48', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', minHeight: '42px' }}
+                  style={{ background: copiedCoupon ? '#059669' : '#e11d48', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', minHeight: '44px', touchAction: 'manipulation', transition: 'all 0.15s ease' }}
                 >
                   {copiedCoupon ? '✓ Copied' : 'Copy Code'}
                 </button>

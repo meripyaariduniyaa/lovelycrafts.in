@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import { useAuth } from '@/components/AuthProvider';
+import { triggerHaptic } from '@/lib/haptics';
 
 const GAMES = [
   {
@@ -225,15 +226,21 @@ export default function ArcadeLobby() {
                   <Link
                     href={`/arcade/${game.id}`}
                     className="btn-primary"
+                    onClick={() => triggerHaptic('selection')}
                     style={{
                       flex: 1,
                       textAlign: 'center',
-                      padding: '0.75rem',
-                      fontSize: '0.95rem',
+                      padding: '0.85rem',
+                      fontSize: '0.98rem',
                       fontWeight: 800,
                       background: `linear-gradient(135deg, ${game.color}, #a64036)`,
                       boxShadow: `0 6px 18px ${game.color}35`,
-                      borderRadius: '14px',
+                      borderRadius: '16px',
+                      minHeight: '48px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      touchAction: 'manipulation',
                     }}
                   >
                     🎮 Play &amp; Duel ➔
