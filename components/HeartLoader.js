@@ -3,13 +3,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './HeartLoader.module.css';
 
-// Continuous heart SVG path starting at bottom center tip
+// Continuous heart SVG path starting at bottom center tip (50, 90)
 const HEART_PATH =
   'M 50 90 C 50 90, 90 60, 90 35 C 90 20, 78 10, 65 10 ' +
   'C 55 10, 50 18, 50 25 C 50 18, 45 10, 35 10 ' +
   'C 22 10, 10 20, 10 35 C 10 60, 50 90, 50 90 Z';
 
-const DRAW_DURATION_MS = 1000;
+const DRAW_DURATION_MS = 1000; // 200ms initial dot pause + 800ms stroke draw
+const PULSE_DURATION_MS = 400; // Heartbeat pulse before exit
 const ANIMATION_MAX_MS = 8000; // Safety timeout — never block user indefinitely
 
 /**
@@ -25,12 +26,9 @@ export default function HeartLoader({
   onComplete,
 }) {
   const [phase, setPhase] = useState('drawing'); // 'drawing' | 'heartbeat' | 'waiting' | 'exiting' | 'done'
-  const [pathLength, setPathLength] = useState(0);
+  const [pathLength, setPathLength] = useState(268);
   const pathRef = useRef(null);
-  const loadingRef = useRef(loading);
   const completedRef = useRef(false);
-
-  loadingRef.current = loading;
 
   // Measure dynamic path length on mount for precise dash offset calculations
   useEffect(() => {
@@ -41,7 +39,7 @@ export default function HeartLoader({
           setPathLength(measured);
         }
       } catch (err) {
-        setPathLength(300);
+        setPathLength(268);
       }
     }
   }, []);
@@ -56,20 +54,15 @@ export default function HeartLoader({
     onComplete?.();
   }, [onComplete]);
 
-  // Main animation lifecycle timers
+  // Main animation lifecycle timers:
+  // Guarantees the drawing animation (1000ms) always plays on mobile & desktop
   useEffect(() => {
-    // If not actively loading, exit immediately without artificial blocking delay
-    if (!loadingRef.current) {
-      setPhase('exiting');
-      return;
-    }
-
     // 0ms - 1000ms: drawing phase
     const drawTimer = setTimeout(() => {
       setPhase((prev) => (prev === 'drawing' ? 'heartbeat' : prev));
     }, DRAW_DURATION_MS);
 
-    // 8000ms: maximum safety timeout
+    // 8000ms: maximum safety timeout to prevent stalling
     const safetyTimer = setTimeout(() => {
       setPhase((prev) => {
         if (prev !== 'done' && prev !== 'exiting') {
@@ -85,10 +78,24 @@ export default function HeartLoader({
     };
   }, []);
 
-  // When loading state resolves, exit immediately without artificial delay
+  // When heart finishes drawing and enters heartbeat:
+  // If loading is already false (e.g. entrance loader), allow a brief heartbeat pulse then exit
   useEffect(() => {
-    if (!loading && phase !== 'done' && phase !== 'exiting') {
-      setPhase('exiting');
+    if (phase === 'heartbeat' && !loading) {
+      const exitTimer = setTimeout(() => {
+        setPhase('exiting');
+      }, PULSE_DURATION_MS);
+      return () => clearTimeout(exitTimer);
+    }
+  }, [phase, loading]);
+
+  // When loading state resolves AFTER the drawing phase has completed
+  useEffect(() => {
+    if (!loading && (phase === 'heartbeat' || phase === 'waiting')) {
+      const exitTimer = setTimeout(() => {
+        setPhase('exiting');
+      }, 250);
+      return () => clearTimeout(exitTimer);
     }
   }, [loading, phase]);
 
@@ -151,7 +158,7 @@ export default function HeartLoader({
           ref={pathRef}
           className={styles.heartPath}
           d={HEART_PATH}
-          style={{ '--heart-length': pathLength > 0 ? pathLength : 268 }}
+          style={{ '--heart-length': pathLength }}
         />
       </svg>
 

@@ -33,8 +33,16 @@ export default function StickyCtaBar() {
     let footerVisible = false;
 
     const handleScroll = () => {
+      // NEVER show on mobile screens (< 768px) where bottom tab bar resides
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        setShow(false);
+        return;
+      }
       setShow(window.scrollY > 400 && !footerVisible);
     };
+
+    // Initial check
+    handleScroll();
 
     // Hide bar when footer comes into view
     const footer = document.getElementById('site-footer');
@@ -43,7 +51,7 @@ export default function StickyCtaBar() {
       observer = new IntersectionObserver(
         ([entry]) => {
           footerVisible = entry.isIntersecting;
-          setShow(window.scrollY > 400 && !footerVisible);
+          handleScroll();
         },
         { threshold: 0.01 }
       );
@@ -51,8 +59,10 @@ export default function StickyCtaBar() {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
       observer?.disconnect();
     };
   }, [pathname]);
@@ -61,6 +71,7 @@ export default function StickyCtaBar() {
     <AnimatePresence>
       {show && (
         <motion.div
+          className="sticky-cta-bar"
           initial={{ y: 50, opacity: 0, scale: 0.95, x: '-50%' }}
           animate={{ y: 0, opacity: 1, scale: 1, x: '-50%' }}
           exit={{ y: 50, opacity: 0, scale: 0.95, x: '-50%' }}

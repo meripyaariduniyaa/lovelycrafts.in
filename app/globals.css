@@ -3700,7 +3700,7 @@ a {
   .template-sort-mobile-trigger { display: inline-flex !important; }
   .template-sort-desktop { display: none !important; }
   .template-mobile-carousel-wrap { display: block !important; }
-  .template-sticky-bottom-bar { display: flex !important; }
+  .template-sticky-bottom-bar { display: none !important; }
   .template-sort { justify-content: space-between; }
   .template-sort select { max-width: none; flex: 1; }
   .templates-grid { grid-template-columns: 1fr; }
@@ -5288,6 +5288,12 @@ textarea {
   /* AnyaAssistant docked above tab bar */
   .anya-wrapper--above-tabbar .anya-widget-root {
     bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Remove all screen-attached bottom CTAs on mobile devices */
+  .sticky-cta-bar,
+  .template-sticky-bottom-bar {
+    display: none !important;
   }
 }
 

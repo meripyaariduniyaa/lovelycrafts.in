@@ -12,7 +12,9 @@
   /* Smooth fade-out exit transition */
   opacity: 1;
   transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: all;
+  touch-action: none;
 }
 
 .overlay.fadeOut {
@@ -27,6 +29,7 @@
   overflow: visible;
   display: block;
   transform-origin: center center;
+  -webkit-transform-origin: center center;
 }
 
 @media (min-width: 768px) {
@@ -42,12 +45,14 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 
-  /* Responsive stroke-dasharray & dashoffset */
+  /* Responsive stroke-dasharray & dashoffset with literal fallbacks for mobile WebKit */
   stroke-dasharray: var(--heart-length, 268);
   stroke-dashoffset: var(--heart-length, 268);
 
   /* Drawing animation: 800ms duration with 200ms initial pause -> 1000ms total */
   animation: drawHeart 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+  -webkit-animation: drawHeart 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+  will-change: stroke-dashoffset;
 }
 
 /* ─── Initial Dot at Bottom Center Tip (50, 90) ─── */
@@ -55,7 +60,9 @@
   fill: #a83d46;
   transform-box: fill-box;
   transform-origin: center;
+  -webkit-transform-origin: center;
   animation: dotAppear 0.22s ease-out forwards;
+  -webkit-animation: dotAppear 0.22s ease-out forwards;
 }
 
 @keyframes dotAppear {
@@ -69,10 +76,32 @@
   }
 }
 
+@-webkit-keyframes dotAppear {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
 /* ─── Animation Keyframes ─── */
 @keyframes drawHeart {
   0% {
     stroke-dashoffset: var(--heart-length, 268);
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@-webkit-keyframes drawHeart {
+  0% {
+    stroke-dashoffset: 268;
   }
   100% {
     stroke-dashoffset: 0;
@@ -97,6 +126,29 @@
   }
 }
 
+@-webkit-keyframes heartbeat {
+  0%, 100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  15% {
+    -webkit-transform: scale(1.08);
+    transform: scale(1.08);
+  }
+  30% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  45% {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+  }
+  60% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
 @keyframes glowPulse {
   0% {
     filter: drop-shadow(0 0 0px rgba(168, 61, 70, 0));
@@ -109,16 +161,32 @@
   }
 }
 
+@-webkit-keyframes glowPulse {
+  0% {
+    -webkit-filter: drop-shadow(0 0 0px rgba(168, 61, 70, 0));
+  }
+  50% {
+    -webkit-filter: drop-shadow(0 0 12px rgba(168, 61, 70, 0.3));
+  }
+  100% {
+    -webkit-filter: drop-shadow(0 0 6px rgba(168, 61, 70, 0.1));
+  }
+}
+
 /* ─── Heartbeat Phase (1000ms - 1550ms) ─── */
 .heartComplete {
   animation: heartbeat 0.8s ease-in-out 0s 1,
              glowPulse 0.55s ease-out 0s 1;
+  -webkit-animation: heartbeat 0.8s ease-in-out 0s 1,
+                     glowPulse 0.55s ease-out 0s 1;
 }
 
 /* ─── Waiting State (Continuous gentle breathing if loading persists) ─── */
 .heartWaiting {
   animation: heartbeat 2.2s ease-in-out infinite,
              glowPulse 2.2s ease-in-out infinite;
+  -webkit-animation: heartbeat 2.2s ease-in-out infinite,
+                     glowPulse 2.2s ease-in-out infinite;
 }
 
 /* ─── Loading Message ─── */
@@ -131,6 +199,7 @@
   letter-spacing: 0.02em;
   opacity: 0;
   animation: fadeInText 0.4s ease-out 0.6s forwards;
+  -webkit-animation: fadeInText 0.4s ease-out 0.6s forwards;
   text-align: center;
 }
 
@@ -141,6 +210,19 @@
   }
   to {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes fadeInText {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0);
     transform: translateY(0);
   }
 }
