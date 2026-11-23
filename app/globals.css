@@ -5244,12 +5244,12 @@ textarea {
 
 /* Tab bar: hidden on desktop, shown on mobile */
 .mobile-tab-bar {
-  display: none;
+  display: none !important;
 }
 
 /* Mobile header actions: hidden on desktop */
 .mobile-header-actions {
-  display: none;
+  display: none !important;
 }
 
 /* More sheet tap target */

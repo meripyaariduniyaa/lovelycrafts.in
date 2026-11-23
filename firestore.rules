@@ -62,6 +62,20 @@ service cloud.firestore {
     match /payouts/{id} { allow read, write: if false; }
     match /crm/{id} { allow read, write: if false; }
     match /analytics/{id} { allow read, write: if false; }
+    match /wedding_settings/{id} { allow read, write: if false; }
+    match /wedding_templates/{id} { allow read, write: if false; }
+    match /wedding_invitations/{id} { allow read, write: if false; }
+    match /wedding_families/{id} { allow read, write: if false; }
+    match /wedding_events/{id} { allow read, write: if false; }
+    match /wedding_media/{id} { allow read, write: if false; }
+    match /wedding_revisions/{id} { allow read, write: if false; }
+    match /wedding_guests/{id} { allow read, write: if false; }
+    match /wedding_rsvps/{id} { allow read, write: if false; }
+    match /wedding_orders/{id} { allow read, write: if false; }
+    match /wedding_payment_settlements/{id} { allow read, write: if false; }
+    match /wedding_analytics/{id} { allow read, write: if false; }
+    match /wedding_rsvp_rate_limits/{id} { allow read, write: if false; }
+    match /wedding_audit_logs/{id} { allow read, write: if false; }
 
     // ── Corporate Business Ecosystem (Server / Firebase Admin SDK Only) ──
     match /business_applications/{id} { allow read, write: if false; }

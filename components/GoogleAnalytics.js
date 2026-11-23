@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 
-const PRIVATE_PATH = /^\/(?:p|invoice|profile|creator|preview|success)(?:\/|$)/i;
+const PRIVATE_PATH = /^\/(?:p|invoice|profile|creator|preview|success|w|dashboard\/weddings|wedding-invitations\/(?:editor|preview|checkout))(?:\/|$)/i;
 
 export default function GoogleAnalytics({ measurementId }) {
   const pathname = usePathname();

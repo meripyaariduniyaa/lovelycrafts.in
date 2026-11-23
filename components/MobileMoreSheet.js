@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { triggerHaptic } from '@/lib/haptics';
 
 const MORE_LINKS = [
+  { href: '/wedding-invitations', label: 'Shaadi', icon: '💍', desc: 'Traditional digital wedding invitations' },
   { href: '/creators', label: 'Creator Club', icon: '✦', desc: 'Earn by sharing LovelyCrafts' },
   { href: '/arcade', label: 'Arcade', icon: '🎮', desc: 'Couple & bestie mini-games' },
   { href: '/business', label: 'For Business', icon: '💼', desc: 'Automate team milestones' },

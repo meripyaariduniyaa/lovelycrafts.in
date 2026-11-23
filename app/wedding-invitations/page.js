@@ -1,0 +1,12 @@
+import Link from 'next/link';
+import { getWeddingTemplates } from '@/lib/weddings';
+
+export const metadata = { title: 'LovelyCrafts Shaadi | A Celebration Begins With An Invitation', description: 'Create a beautiful Indian digital wedding invitation with family details, all your ceremonies, sharing, and guest RSVPs.' };
+
+export default async function WeddingLandingPage() {
+  const WEDDING_TEMPLATES = await getWeddingTemplates();
+  return <main className="shaadi-shell"><section className="shaadi-hero"><div className="shaadi-eyebrow">LovelyCrafts presents</div><h1 className="shaadi-title">A celebration begins<br /><em>with an invitation.</em></h1><p className="shaadi-copy">A beautiful digital welcome for your families, your traditions and every celebration along the way.</p><div className="shaadi-hero-actions"><Link className="shaadi-button" href="/wedding-invitations/templates">Explore invitation designs</Link><Link className="shaadi-secondary-button" href="/dashboard/weddings">My invitations</Link></div><div className="shaadi-hero-seal">ॐ</div></section>
+    <section className="shaadi-collections"><div className="shaadi-section-heading"><div><div className="shaadi-eyebrow">Made for your traditions</div><h2>Six ways to welcome everyone</h2></div><Link className="shaadi-text-link" href="/wedding-invitations/templates">View all designs →</Link></div><div className="shaadi-template-grid">{WEDDING_TEMPLATES.map((template) => <Link key={template.id} href={`/wedding-invitations/templates/${template.slug}`} className="shaadi-template-card" style={{ '--template-primary': template.colors[0], '--template-gold': template.colors[1], '--template-paper': template.colors[2] }}><div className="shaadi-template-art"><span>{template.motif}</span><small>{template.tradition}</small></div><div><h3>{template.name}</h3><p>{template.description}</p><span className="shaadi-text-link">Explore design →</span></div></Link>)}</div></section>
+    <section className="shaadi-feature-band"><span className="shaadi-feature-motif">❋</span><div><div className="shaadi-eyebrow">Made to be shared with love</div><h2>More than the date and venue.</h2><p>Bring together family welcomes, every ceremony, directions, photographs and guest responses in one thoughtful invitation link.</p></div><Link className="shaadi-button" href="/wedding-invitations/templates">Find your invitation</Link></section>
+  </main>;
+}

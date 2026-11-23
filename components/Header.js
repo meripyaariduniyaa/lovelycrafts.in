@@ -11,6 +11,7 @@ import LovelyCraftsLogo from '@/components/Logo';
 const MotionLink = motion.create(Link);
 
 const NAV_ITEMS = [
+  { href: '/wedding-invitations', label: '💍 Shaadi', isActive: (p) => p?.startsWith('/wedding-invitations') || p?.startsWith('/dashboard/weddings') },
   { href: '/templates', label: '🎁 Gifts', isActive: (p) => p === '/templates' },
   { href: '/tools', label: '🧰 Tools', isActive: (p) => p?.startsWith('/tools') },
   { href: '/arcade', label: '🎮 Arcade', isActive: (p) => p?.startsWith('/arcade') },

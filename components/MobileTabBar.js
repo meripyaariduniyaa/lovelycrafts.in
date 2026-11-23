@@ -106,7 +106,6 @@ export default function MobileTabBar({ onMoreClick }) {
         borderRadius: '999px',
         border: '0.5px solid rgba(92, 72, 52, 0.14)',
         boxShadow: '0 8px 32px rgba(47, 34, 21, 0.14), 0 2px 8px rgba(47, 34, 21, 0.06)',
-        display: 'flex',
         alignItems: 'center',
         padding: '6px 4px',
         gap: 0,

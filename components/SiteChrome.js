@@ -12,7 +12,7 @@ import InitialPageLoader from '@/components/InitialPageLoader';
 import MobileTabBar from '@/components/MobileTabBar';
 import MobileMoreSheet from '@/components/MobileMoreSheet';
 
-const immersiveFlowRoutes = ['/create', '/preview', '/checkout', '/success', '/invoice'];
+const immersiveFlowRoutes = ['/create', '/preview', '/checkout', '/success', '/invoice', '/wedding-invitations/editor', '/wedding-invitations/preview', '/wedding-invitations/checkout', '/w/'];
 const privateOrAccountRoutes = ['/p', '/creator', '/profile', '/business'];
 
 /** Routes where we also hide the floating mobile tab bar */

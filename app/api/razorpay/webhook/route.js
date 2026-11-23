@@ -3,6 +3,7 @@ import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { calculateEffectiveTierAndRate, commissionForAmount, normalizeCode } from '@/lib/creator-club';
 import { disableOrganicRetentionCoupon } from '@/lib/coupons';
+import { settleWeddingPayment } from '@/lib/wedding-payments';
 import { createSettlementOrderId, verifyHmacSha256Signature } from '@/lib/razorpay-security';
 
 export async function POST(request) {
@@ -27,6 +28,42 @@ export async function POST(request) {
 
     const event = payload.event;
     const adminDb = getAdminDb();
+
+    // Wedding settlements are isolated from note orders and Creator Club attribution.
+    if (event === 'payment.captured' || event === 'order.paid') {
+      const weddingPayment = payload.payload?.payment?.entity || {};
+      const weddingNotes = weddingPayment.notes || payload.payload?.order?.entity?.notes || {};
+      if (weddingNotes.productType === 'wedding_invitation') {
+        if (!webhookSecret || !signature) return NextResponse.json({ error: 'Signed wedding payment webhooks are required.' }, { status: 503 });
+        const orderId = weddingPayment.order_id || payload.payload?.order?.entity?.id;
+        const paymentId = weddingPayment.id || payload.payload?.order?.entity?.payments?.[0]?.id;
+        const amount = weddingPayment.amount || payload.payload?.order?.entity?.amount;
+        await settleWeddingPayment({ orderId, paymentId, amountPaise: Number(amount), paymentStatus: weddingPayment.status || 'captured' });
+        return NextResponse.json({ status: 'ok', handled: true, product: 'wedding_invitation' });
+      }
+    }
+
+    if (event === 'refund.processed' || event === 'payment.refunded') {
+      const payment = payload.payload?.payment?.entity || {};
+      const refund = payload.payload?.refund?.entity || {};
+      const refundedPaymentId = payment.id || refund.payment_id;
+      let refundOrder = refundedPaymentId ? await adminDb.collection('wedding_orders').where('razorpay_payment_id', '==', refundedPaymentId).limit(1).get() : { empty: true };
+      if (refundOrder.empty && (payment.order_id || refund.order_id)) refundOrder = await adminDb.collection('wedding_orders').where('razorpay_order_id', '==', payment.order_id || refund.order_id).limit(1).get();
+      if (!refundOrder.empty) {
+        if (!webhookSecret || !signature) return NextResponse.json({ error: 'Signed wedding refund webhooks are required.' }, { status: 503 });
+        const orderDoc = refundOrder.docs[0];
+        const invitationRef = adminDb.collection('wedding_invitations').doc(orderDoc.data().invitation_id);
+        const settlement = refundedPaymentId ? await adminDb.collection('wedding_payment_settlements').where('razorpay_payment_id', '==', refundedPaymentId).limit(1).get() : { empty: true };
+        await adminDb.runTransaction(async (tx) => {
+          const [orderSnap, invitationSnap] = await Promise.all([tx.get(orderDoc.ref), tx.get(invitationRef)]);
+          if (orderSnap.exists && orderSnap.data().payment_status !== 'refunded') tx.update(orderDoc.ref, { payment_status: 'refunded', refund_status: 'processed', refunded_at: FieldValue.serverTimestamp(), updated_at: FieldValue.serverTimestamp() });
+          if (invitationSnap.exists) tx.update(invitationRef, { paymentStatus: 'refunded', status: 'draft', updatedAt: FieldValue.serverTimestamp() });
+          if (!settlement.empty) tx.update(settlement.docs[0].ref, { payment_status: 'refunded', refund_status: 'processed', refunded_at: FieldValue.serverTimestamp() });
+        });
+        if (!settlement.empty) await adminDb.collection('admin_payment_ledger').doc(settlement.docs[0].id).set({ payment_status: 'refunded', refund_status: 'processed', refund_id: refund.id || payment.refund_id || null, refunded_at: FieldValue.serverTimestamp() }, { merge: true });
+        return NextResponse.json({ status: 'ok', handled: true, product: 'wedding_invitation', refunded: true });
+      }
+    }
 
     // 1. Payment Captured / Order Paid Event (Idempotent)
     if (event === 'payment.captured' || event === 'order.paid') {
