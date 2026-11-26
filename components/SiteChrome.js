@@ -66,8 +66,8 @@ export default function SiteChrome({ children }) {
 
       {!hideSiteChrome && <PetalOverlay />}
 
-      {/* Floating mobile tab bar — hidden on desktop via CSS */}
-      {!hideTabBar && (
+      {/* Floating mobile tab bar — hidden on desktop via CSS, on immersive/create routes, and while More sheet is open */}
+      {!hideTabBar && !moreSheetOpen && (
         <MobileTabBar onMoreClick={() => setMoreSheetOpen(true)} />
       )}
 

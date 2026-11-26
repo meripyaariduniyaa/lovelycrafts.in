@@ -10,7 +10,18 @@ import { triggerHaptic } from '@/lib/haptics';
  * Routes where the tab bar is hidden to give full immersive canvas.
  * Matches exact path or any sub-route.
  */
-const IMMERSIVE_ROUTES = ['/create', '/preview', '/checkout', '/p/'];
+const IMMERSIVE_ROUTES = [
+  '/create',
+  '/preview',
+  '/checkout',
+  '/success',
+  '/invoice',
+  '/wedding-invitations/editor',
+  '/wedding-invitations/preview',
+  '/wedding-invitations/checkout',
+  '/w/',
+  '/p/',
+];
 
 /** Primary tab entries */
 const TABS = [
