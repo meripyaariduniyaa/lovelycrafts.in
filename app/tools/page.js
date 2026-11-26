@@ -97,8 +97,7 @@ export default function ToolsHubPage() {
       {/* HERO SECTION */}
       <section className="tools-hero text-center">
         <div className="tools-hero-badge">
-          <span className="live-pulse-dot" aria-hidden="true" />
-          <span>FREE • INSTANT • SHAREABLE</span>
+          <span>Free, instant &amp; shareable</span>
         </div>
 
         <h1 className="tools-hero-title">
@@ -113,10 +112,10 @@ export default function ToolsHubPage() {
 
         {/* TRUST PILLS */}
         <div className="tools-trust-strip">
-          <span className="tools-trust-pill">✨ 12+ Free Tools</span>
-          <span className="tools-trust-pill">⚡ Instant 3-Second Results</span>
-          <span className="tools-trust-pill">📲 WhatsApp &amp; Instagram Shareable</span>
-          <span className="tools-trust-pill">🎁 Turn Any Result Into a Gift</span>
+          <span className="tools-trust-pill">12+ free tools</span>
+          <span className="tools-trust-pill">Instant 3-second results</span>
+          <span className="tools-trust-pill">WhatsApp &amp; Instagram shareable</span>
+          <span className="tools-trust-pill">Turn any result into a gift</span>
         </div>
       </section>
 

@@ -70,17 +70,19 @@ export default function GameDuelCard({
   return (
     <div style={{
       background: 'linear-gradient(135deg, #fff1f2, #ffe4e6)',
-      border: '2px solid #f43f5e',
-      borderRadius: '24px',
+      border: '1px solid #fecdd3',
+      borderRadius: '16px',
       padding: '1.5rem',
       maxWidth: '480px',
       margin: '1.5rem auto 0',
-      boxShadow: '0 8px 24px rgba(244,63,94,0.12)',
+      boxShadow: '0 4px 16px rgba(168,61,70,0.08)',
       textAlign: 'center'
     }}>
-      <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '0.25rem' }}>⚔️👑</span>
-      <h3 style={{ fontSize: '1.3rem', color: '#881337', fontWeight: 800, margin: '0 0 0.4rem' }}>
-        Challenge Your Partner or Bestie!
+      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.25rem 0.75rem', borderRadius: '6px', background: 'rgba(168,61,70,0.1)', color: 'var(--accent-primary, #a83d46)', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.75rem' }}>
+        <span>✦ Couple Duel</span>
+      </div>
+      <h3 style={{ fontSize: '1.25rem', color: '#881337', fontWeight: 600, margin: '0 0 0.4rem' }}>
+        Challenge Your Partner or Bestie
       </h3>
       <p style={{ fontSize: '0.9rem', color: '#9f1239', margin: '0 0 1.25rem', lineHeight: 1.5 }}>
         Send them a custom link to see if they can beat your score of <strong>{score} pts</strong>!

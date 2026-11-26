@@ -79,12 +79,6 @@ export default function TemplatesPage() {
 
       <div className="main-content">
         <section className="hero-section hero-enhanced text-center mt-6 mb-8" style={{ borderRadius: 'clamp(20px, 4vw, 28px)', padding: 'clamp(1.75rem, 3.5vw, 2.75rem) clamp(1rem, 3vw, 2rem)' }}>
-          <div className="hero-glow-orb" aria-hidden="true" />
-          <span className="hero-floating-decor d1" aria-hidden="true">🎁</span>
-          <span className="hero-floating-decor d2" aria-hidden="true">💖</span>
-          <span className="hero-floating-decor d3" aria-hidden="true">✨</span>
-          <span className="hero-floating-decor d4" aria-hidden="true">💌</span>
-
           <div
             style={{
               display: 'inline-flex',
@@ -96,16 +90,14 @@ export default function TemplatesPage() {
               borderRadius: '99px',
               fontSize: 'clamp(0.72rem, 1.6vw, 0.78rem)',
               color: '#be185d',
-              fontWeight: 800,
+              fontWeight: 600,
               marginBottom: '0.85rem',
-              boxShadow: '0 2px 8px rgba(244,63,94,0.08)',
             }}
           >
-            <span className="live-pulse-dot" aria-hidden="true" />
-            <span>🎁 EXPLORE ALL {templates.length} INTERACTIVE TEMPLATES</span>
+            <span>Explore all {templates.length} interactive experiences</span>
           </div>
 
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.15, fontWeight: 900, color: '#1c1917', margin: '0 auto 0.75rem', letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.15, fontWeight: 600, color: '#1c1917', margin: '0 auto 0.75rem', letterSpacing: '-0.02em' }}>
             Choose the Perfect <br />
             <span className="cursive" style={{ color: 'var(--accent-primary)', fontSize: '1.05em' }}>Digital Gift Experience</span>
           </h1>
@@ -115,18 +107,15 @@ export default function TemplatesPage() {
 
           <div className="hero-social-proof" style={{ marginTop: '0.5rem', paddingTop: '0.85rem' }}>
             <span className="hero-social-proof-item">
-              <span>📱</span>
               <span>Opens in any phone browser</span>
             </span>
             <span>•</span>
             <span className="hero-social-proof-item">
-              <span>🔒</span>
               <span>Private 1-click WhatsApp link</span>
             </span>
             <span>•</span>
             <span className="hero-social-proof-item">
-              <span>✨</span>
-              <span>100% Free interactive demo preview</span>
+              <span>Interactive live demo</span>
             </span>
           </div>
         </section>

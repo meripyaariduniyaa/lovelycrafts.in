@@ -11,13 +11,13 @@ import LovelyCraftsLogo from '@/components/Logo';
 const MotionLink = motion.create(Link);
 
 const NAV_ITEMS = [
-  { href: '/wedding-invitations', label: '💍 Shaadi', isActive: (p) => p?.startsWith('/wedding-invitations') || p?.startsWith('/dashboard/weddings') },
-  { href: '/templates', label: '🎁 Gifts', isActive: (p) => p === '/templates' },
-  { href: '/tools', label: '🧰 Tools', isActive: (p) => p?.startsWith('/tools') },
-  { href: '/arcade', label: '🎮 Arcade', isActive: (p) => p?.startsWith('/arcade') },
-  { href: '/blog', label: '📝 Blog', isActive: (p) => p?.startsWith('/blog') },
-  { href: '/business', label: '💼 For Business', isActive: (p) => p === '/business' },
-  { href: '/creators', label: '❤️ Creator Club', isActive: (p) => p?.startsWith('/creators') },
+  { href: '/wedding-invitations', label: 'Shaadi', isActive: (p) => p?.startsWith('/wedding-invitations') || p?.startsWith('/dashboard/weddings') },
+  { href: '/templates', label: 'Gifts', isActive: (p) => p === '/templates' },
+  { href: '/tools', label: 'Tools', isActive: (p) => p?.startsWith('/tools') },
+  { href: '/arcade', label: 'Arcade', isActive: (p) => p?.startsWith('/arcade') },
+  { href: '/blog', label: 'Blog', isActive: (p) => p?.startsWith('/blog') },
+  { href: '/business', label: 'Business', isActive: (p) => p === '/business' },
+  { href: '/creators', label: 'Creators', isActive: (p) => p?.startsWith('/creators') },
 ];
 
 export default function Header() {
@@ -140,7 +140,7 @@ export default function Header() {
               whileTap={{ scale: 0.96 }}
               transition={springs.snappy}
             >
-              ✨ Craft a Surprise
+              Craft a Surprise
             </MotionLink>
           </div>
 
@@ -153,7 +153,7 @@ export default function Header() {
               transition={springs.snappy}
               aria-label="Craft a surprise"
             >
-              ✨ Create
+              Create
             </MotionLink>
 
             {user && (
@@ -215,42 +215,42 @@ export default function Header() {
 
               <div className="mobile-drawer-links">
                 <Link href="/templates" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="mobile-nav-icon">🎁</span>
+                  <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>All Gift Experiences</strong>
                     <small>Explore all interactive templates</small>
                   </div>
                 </Link>
                 <Link href="/tools" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="mobile-nav-icon">🧰</span>
+                  <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>Free Tools</strong>
                     <small>Love calculators, countdowns &amp; quizzes</small>
                   </div>
                 </Link>
                 <Link href="/arcade" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="mobile-nav-icon">🎮</span>
+                  <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>Couple &amp; Bestie Arcade</strong>
                     <small>Play 30s mini-games &amp; send duels</small>
                   </div>
                 </Link>
                 <Link href="/blog" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="mobile-nav-icon">📝</span>
+                  <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>Blog &amp; Gift Guides</strong>
                     <small>Creative surprise ideas &amp; inspiration</small>
                   </div>
                 </Link>
                 <Link href="/business" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="mobile-nav-icon">💼</span>
+                  <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>LovelyCrafts for Business</strong>
                     <small>Automate employee birthdays &amp; milestones</small>
                   </div>
                 </Link>
                 <Link href="/faq" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="mobile-nav-icon">❓</span>
+                  <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>Help &amp; FAQ</strong>
                     <small>Common questions, photo privacy &amp; guide</small>
@@ -264,7 +264,7 @@ export default function Header() {
                   </div>
                 </Link>
                 <Link href="/profile" className="mobile-nav-item" onClick={() => setMobileMenuOpen(false)}>
-                  <span className="mobile-nav-icon">👤</span>
+                  <span className="mobile-nav-icon">✦</span>
                   <div>
                     <strong>{user ? 'My Dashboard' : 'Sign In / Dashboard'}</strong>
                     <small>{user ? 'Track your created notes & reactions' : 'Save your notes & high scores'}</small>
@@ -280,9 +280,9 @@ export default function Header() {
                   whileTap={{ scale: 0.96 }}
                   transition={springs.snappy}
                 >
-                  ✨ Craft a Surprise Now
+                  Craft a Surprise Now
                 </MotionLink>
-                <p className="mobile-drawer-subtext">Made for the people who matter most ❤️</p>
+                <p className="mobile-drawer-subtext">Made for the people who matter most</p>
               </div>
             </motion.nav>
           </>

@@ -74,11 +74,11 @@ export default function EmotionFinder() {
         boxShadow: '0 18px 45px -12px rgba(225, 29, 72, 0.08)',
       }}
     >
-      <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 text-xs font-black uppercase tracking-wider mb-3">
-        <span>✨ Emotion-First Gift Engine</span>
+      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-800 text-xs font-semibold tracking-wide mb-3">
+        <span>Curated for your moment</span>
       </div>
 
-      <h2 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.3rem)', margin: '4px 0 8px', color: '#0f172a', fontWeight: 900, lineHeight: 1.2 }}>
+      <h2 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.3rem)', margin: '4px 0 8px', color: '#0f172a', fontWeight: 600, lineHeight: 1.2 }}>
         What do you want them to feel?
       </h2>
 

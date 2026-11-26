@@ -106,11 +106,11 @@ export default function TemplatesCatalog({ templates }) {
   }, [activeCategory, dynamicPricing, normalizedQuery, sortBy, templates]);
 
   const categoryIcons = {
-    'All experiences': '✨',
-    'Romance': '💖',
-    'Celebration': '🎂',
-    'Heartfelt': '🥺',
-    'Long Distance': '🌌',
+    'All experiences': '✦',
+    'Romance': '♡',
+    'Celebration': '✹',
+    'Heartfelt': '✉',
+    'Long Distance': '✧',
   };
 
   return (

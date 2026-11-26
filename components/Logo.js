@@ -41,15 +41,10 @@ export function LovelyCraftsIcon({ size = 36, className = '' }) {
           <stop offset="50%" stopColor="#facc15" />
           <stop offset="100%" stopColor="#fb923c" />
         </linearGradient>
-
-        {/* Soft Drop Shadow Filter */}
-        <filter id={glowFilter} x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse">
-          <feDropShadow dx="0" dy="2.5" stdDeviation="2.5" floodColor="#f43f5e" floodOpacity="0.35" />
-        </filter>
       </defs>
 
       {/* Main Dimensional Heart Shape */}
-      <g filter={`url(#${glowFilter})`}>
+      <g>
         <path
           d="M24 41.5C24 41.5 6 30.5 6 18C6 11.5 11 6.5 17.5 6.5C21 6.5 23.5 8.5 24 9.5C24.5 8.5 27 6.5 30.5 6.5C37 6.5 42 11.5 42 18C42 30.5 24 41.5 24 41.5Z"
           fill={`url(#${gradHeart})`}

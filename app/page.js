@@ -79,9 +79,8 @@ export default function Home() {
 
           {featuredTemplate && (
             <div className="lc-hero-showcase" aria-label={`Preview ${featuredTemplate.title}`}>
-              <div className="lc-showcase-glow" aria-hidden="true" />
               <div className="lc-gift-card">
-                <div className="lc-gift-card-topline"><span> A LITTLE SOMETHING FOR YOU </span><span aria-hidden="true">✦</span></div>
+                <div className="lc-gift-card-topline"><span>A little something for you</span><span aria-hidden="true">✦</span></div>
                 <div className="lc-gift-art" style={{ background: featuredTemplate.gradient }}>
                   <span className="lc-gift-art-orbit" aria-hidden="true" />
                   <span className="lc-gift-emoji" aria-hidden="true">{featuredTemplate.emoji}</span>
@@ -97,10 +96,10 @@ export default function Home() {
                   className="lc-preview-button"
                   style={{}}
                 >
-                  Open a live preview <span aria-hidden="true">↗</span>
+                  Open live preview <span aria-hidden="true">↗</span>
                 </PreviewDemoButton>
               </div>
-              <div className="lc-floating-note lc-floating-note-top"><span aria-hidden="true">✉</span> Your words, your way</div>
+              <div className="lc-floating-note lc-floating-note-top"><span aria-hidden="true">✦</span> Your words, your way</div>
               <div className="lc-floating-note lc-floating-note-bottom"><span aria-hidden="true">♡</span> A story they can open</div>
             </div>
           )}

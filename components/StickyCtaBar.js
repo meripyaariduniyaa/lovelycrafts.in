@@ -90,24 +90,24 @@ export default function StickyCtaBar() {
               background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-              border: '1.5px solid #fecdd3',
+              border: '1px solid rgba(92, 72, 52, 0.12)',
               borderRadius: '999px',
               padding: '0.5rem 0.65rem 0.5rem 1.1rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: '0.75rem',
-              boxShadow: '0 12px 36px rgba(190, 24, 93, 0.2)',
+              boxShadow: '0 8px 24px rgba(47, 34, 21, 0.08)',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-              <span style={{ fontSize: '1.25rem' }}>🎁</span>
+              <span style={{ fontSize: '1rem', color: 'var(--accent-primary, #a83d46)' }}>✦</span>
               <div style={{ minWidth: 0 }}>
-                <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 800, color: '#1f2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-dark, #292521)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   Craft an Interactive Surprise
                 </p>
-                <p style={{ margin: 0, fontSize: '0.7rem', color: '#be185d', fontWeight: 700 }}>
-                  ⚡ Ready in 2 mins • Instant WhatsApp Share
+                <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--text-muted, #635d56)', fontWeight: 500 }}>
+                  Ready in 2 mins · Instant WhatsApp share
                 </p>
               </div>
             </div>
@@ -115,21 +115,21 @@ export default function StickyCtaBar() {
             <MotionLink
               href="/templates"
               className="btn-primary"
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               transition={springs.snappy}
               style={{
                 padding: '0.5rem 1.1rem',
                 fontSize: '0.82rem',
-                fontWeight: 800,
+                fontWeight: 600,
                 whiteSpace: 'nowrap',
-                borderRadius: '999px',
-                background: 'linear-gradient(135deg, #f43f5e, #be185d)',
-                boxShadow: '0 4px 14px rgba(244, 63, 94, 0.3)',
+                borderRadius: '8px',
+                background: 'var(--accent-primary, #a83d46)',
+                boxShadow: '0 2px 8px rgba(168, 61, 70, 0.16)',
                 textDecoration: 'none',
               }}
             >
-              Start Now ➔
+              Start now →
             </MotionLink>
           </div>
         </motion.div>

@@ -49,46 +49,11 @@ export default function HomeScrollChoreography() {
         }
       );
 
-      // 2. Subtle interactive tilt and ambient float on .lc-gift-card
+      // 2. Interactive 3D tilt on .lc-gift-card on fine pointer hover
       const giftCard = document.querySelector('.lc-gift-card');
       showcaseEl = document.querySelector('.lc-hero-showcase');
 
       if (giftCard) {
-        // Subtle ambient vertical floating motion
-        gsap.to(giftCard, {
-          y: -8,
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-        });
-
-        // Ambient floating notes
-        const noteTop = document.querySelector('.lc-floating-note-top');
-        const noteBottom = document.querySelector('.lc-floating-note-bottom');
-
-        if (noteTop) {
-          gsap.to(noteTop, {
-            y: -5,
-            duration: 2.6,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            delay: 0.2,
-          });
-        }
-
-        if (noteBottom) {
-          gsap.to(noteBottom, {
-            y: 5,
-            duration: 3.2,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            delay: 0.5,
-          });
-        }
-
         // Interactive 3D tilt on mousemove (gated to fine pointer with hover to avoid touch scroll jitter)
         const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         if (showcaseEl && supportsHover) {

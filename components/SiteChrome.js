@@ -7,7 +7,6 @@ import Footer from '@/components/Footer';
 import StickyCtaBar from '@/components/StickyCtaBar';
 import AnyaAssistant from '@/components/AnyaAssistant';
 import PetalOverlay from '@/components/PetalOverlay';
-import ScrollReveal from '@/components/ScrollReveal';
 import InitialPageLoader from '@/components/InitialPageLoader';
 import MobileTabBar from '@/components/MobileTabBar';
 import MobileMoreSheet from '@/components/MobileMoreSheet';
@@ -66,7 +65,6 @@ export default function SiteChrome({ children }) {
       )}
 
       {!hideSiteChrome && <PetalOverlay />}
-      <ScrollReveal />
 
       {/* Floating mobile tab bar — hidden on desktop via CSS */}
       {!hideTabBar && (

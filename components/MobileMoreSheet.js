@@ -5,15 +5,15 @@ import { motion, AnimatePresence } from 'motion/react';
 import { triggerHaptic } from '@/lib/haptics';
 
 const MORE_LINKS = [
-  { href: '/wedding-invitations', label: 'Shaadi', icon: '💍', desc: 'Traditional digital wedding invitations' },
+  { href: '/wedding-invitations', label: 'Shaadi', icon: '✦', desc: 'Traditional digital wedding invitations' },
   { href: '/creators', label: 'Creator Club', icon: '✦', desc: 'Earn by sharing LovelyCrafts' },
-  { href: '/arcade', label: 'Arcade', icon: '🎮', desc: 'Couple & bestie mini-games' },
-  { href: '/business', label: 'For Business', icon: '💼', desc: 'Automate team milestones' },
-  { href: '/blog', label: 'Blog', icon: '📝', desc: 'Gift ideas & inspiration' },
-  { href: '/faq', label: 'FAQs', icon: '❓', desc: 'Help & common questions' },
-  { href: '/terms', label: 'Policies', icon: '📋', desc: 'Terms, privacy & refunds' },
-  { href: '/about', label: 'About', icon: 'ℹ️', desc: 'Our story' },
-  { href: '/contact', label: 'Contact', icon: '✉️', desc: 'Get in touch' },
+  { href: '/arcade', label: 'Arcade', icon: '✦', desc: 'Couple & bestie mini-games' },
+  { href: '/business', label: 'For Business', icon: '✦', desc: 'Automate team milestones' },
+  { href: '/blog', label: 'Blog', icon: '✦', desc: 'Gift ideas & inspiration' },
+  { href: '/faq', label: 'FAQs', icon: '✦', desc: 'Help & common questions' },
+  { href: '/terms', label: 'Policies', icon: '✦', desc: 'Terms, privacy & refunds' },
+  { href: '/about', label: 'About', icon: '✦', desc: 'Our story' },
+  { href: '/contact', label: 'Contact', icon: '✦', desc: 'Get in touch' },
 ];
 
 export default function MobileMoreSheet({ isOpen, onClose }) {

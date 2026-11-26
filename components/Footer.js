@@ -27,12 +27,12 @@ export default function Footer() {
         {/* Top Mini Promo Ribbon */}
         <div className="footer-promo-card">
           <div className="footer-promo-left">
-            <span className="footer-promo-badge">🎁 CRAFT A SURPRISE</span>
+            <span className="footer-promo-badge">CRAFT A SURPRISE</span>
             <h3 className="footer-promo-title">Send an unforgettable interactive surprise today</h3>
             <p className="footer-promo-desc">Personalize with photos, secret messages &amp; music in just 2 minutes.</p>
           </div>
           <Link href="/templates" className="btn-primary footer-promo-btn">
-            ✨ Craft a Surprise →
+            Craft a Surprise →
           </Link>
         </div>
 
@@ -49,9 +49,9 @@ export default function Footer() {
             </p>
 
             <div className="footer-trust-chips">
-              <span className="footer-trust-chip">⚡ Instant 2-Min Link</span>
-              <span className="footer-trust-chip">🔒 100% Private</span>
-              <span className="footer-trust-chip">🎵 Custom Music</span>
+              <span className="footer-trust-chip">Instant 2-Min Link</span>
+              <span className="footer-trust-chip">100% Private</span>
+              <span className="footer-trust-chip">Custom Music</span>
             </div>
 
             <div className="footer-social-wrapper">
@@ -80,11 +80,11 @@ export default function Footer() {
           <div className="footer-col">
             <h4 className="footer-heading">Top Experiences</h4>
             <ul className="footer-list">
-              <li><Link href="/templates/birthday">🎂 Virtual Birthday Bash</Link></li>
-              <li><Link href="/templates/proposal">💍 The Perfect Proposal</Link></li>
-              <li><Link href="/templates/anniversary">🥂 Romantic Anniversary</Link></li>
-              <li><Link href="/templates/emotional-apology">🥺 I&apos;m Sorry</Link></li>
-              <li><Link href="/arcade">🎮 Couple Mini Arcade</Link></li>
+              <li><Link href="/templates/birthday">Virtual Birthday Bash</Link></li>
+              <li><Link href="/templates/proposal">The Perfect Proposal</Link></li>
+              <li><Link href="/templates/anniversary">Romantic Anniversary</Link></li>
+              <li><Link href="/templates/emotional-apology">I&apos;m Sorry</Link></li>
+              <li><Link href="/arcade">Couple Mini Arcade</Link></li>
             </ul>
           </div>
 
@@ -92,10 +92,10 @@ export default function Footer() {
           <div className="footer-col">
             <h4 className="footer-heading">By Feeling</h4>
             <ul className="footer-list">
-              <li><Link href="/templates/emotional-apology">🥺 Heartfelt Apology</Link></li>
-              <li><Link href="/templates/proposal">💕 Love &amp; Romance</Link></li>
-              <li><Link href="/templates/birthday">🎂 Celebration &amp; Joy</Link></li>
-              <li><Link href="/templates/anniversary">🥂 Forever Together</Link></li>
+              <li><Link href="/templates/emotional-apology">Heartfelt Apology</Link></li>
+              <li><Link href="/templates/proposal">Love &amp; Romance</Link></li>
+              <li><Link href="/templates/birthday">Celebration &amp; Joy</Link></li>
+              <li><Link href="/templates/anniversary">Forever Together</Link></li>
             </ul>
           </div>
 
@@ -103,11 +103,11 @@ export default function Footer() {
           <div className="footer-col">
             <h4 className="footer-heading">Quick Links</h4>
             <ul className="footer-list">
-              <li><Link href="/tools">🧰 Free Tools Hub</Link></li>
-              <li><Link href="/blog">📝 Blog &amp; Gift Guides</Link></li>
+              <li><Link href="/tools">Free Tools Hub</Link></li>
+              <li><Link href="/blog">Blog &amp; Gift Guides</Link></li>
               <li><Link href="/templates">All Gift Templates</Link></li>
-              <li><Link href="/arcade/heart-rush">⚡ Heart Rush Game</Link></li>
-              <li><Link href="/arcade/memory-match">🃏 Memory Match Duel</Link></li>
+              <li><Link href="/arcade/heart-rush">Heart Rush Game</Link></li>
+              <li><Link href="/arcade/memory-match">Memory Match Duel</Link></li>
               <li><Link href="/profile">My Sent Surprises</Link></li>
             </ul>
           </div>
@@ -116,10 +116,10 @@ export default function Footer() {
           <div className="footer-col">
             <h4 className="footer-heading">Company &amp; Support</h4>
             <ul className="footer-list">
-              <li><Link href="/about">💡 About LovelyCrafts</Link></li>
-              <li><Link href="/contact">💌 Contact &amp; Help Desk</Link></li>
-              <li><Link href="/faq">❓ FAQs &amp; Help Guide</Link></li>
-              <li><Link href="/creators">👑 Join Creator Club</Link></li>
+              <li><Link href="/about">About LovelyCrafts</Link></li>
+              <li><Link href="/contact">Contact &amp; Help Desk</Link></li>
+              <li><Link href="/faq">FAQs &amp; Help Guide</Link></li>
+              <li><Link href="/creators">Join Creator Club</Link></li>
               <li><Link href="/privacy">Privacy Policy</Link></li>
               <li><Link href="/terms">Terms of Service</Link></li>
               <li><Link href="/refund">Refund Policy</Link></li>
@@ -127,7 +127,7 @@ export default function Footer() {
               <li><Link href="/cookies">Cookie Policy</Link></li>
             </ul>
             <div className="footer-badge-payment">
-              <span>🔒 256-Bit SSL Encrypted</span>
+              <span>256-Bit SSL Encrypted</span>
             </div>
           </div>
 

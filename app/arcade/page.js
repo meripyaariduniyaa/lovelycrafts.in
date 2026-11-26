@@ -10,50 +10,50 @@ const GAMES = [
   {
     id: 'heart-rush',
     title: 'Heart Rush!',
-    icon: '💖⚡',
+    icon: '✦',
     tagline: '30s Falling Sparks Catcher',
     description: 'Catch falling hearts, letters, and roses while dodging heartbreak bombs. High reflex couple duel!',
-    badge: '🔥 MOST POPULAR',
+    badge: 'Popular',
     color: '#ec4899',
     bg: 'linear-gradient(135deg, #fdf2f8, #fce7f3)'
   },
   {
     id: 'memory-match',
     title: 'Memory Match',
-    icon: '🧩🃏',
+    icon: '✦',
     tagline: 'Couple Emoji Card Flip',
     description: 'Flip and match 8 cute couple pairs in the fewest moves and fastest time possible.',
-    badge: '✨ BRAIN DUEL',
+    badge: 'Brain duel',
     color: '#8b5cf6',
     bg: 'linear-gradient(135deg, #f5f3ff, #ede9fe)'
   },
   {
     id: 'speed-tap',
     title: '10s Hug Frenzy',
-    icon: '⚡🫂',
+    icon: '✦',
     tagline: '10-Second Speed Tap Duel',
     description: 'Tap the beating heart as fast as you can in 10 seconds. Who has the highest hug power?',
-    badge: '⚡ SPEED TEST',
+    badge: 'Speed test',
     color: '#f59e0b',
     bg: 'linear-gradient(135deg, #fffbeb, #fef3c7)'
   },
   {
     id: 'love-quiz',
     title: 'Couple Chemistry Quiz',
-    icon: '🧠❓',
+    icon: '✦',
     tagline: '6 Romance Questions in 30s',
     description: 'Answer rapid-fire romantic questions as a couple. Speed bonuses and streaks boost your chemistry score!',
-    badge: '🧪 NEW GAME',
+    badge: 'New game',
     color: '#059669',
     bg: 'linear-gradient(135deg, #ecfdf5, #d1fae5)'
   },
   {
     id: 'word-scramble',
     title: 'Love Word Scramble',
-    icon: '🔡💌',
+    icon: '✦',
     tagline: '6 Romantic Words in 60s',
     description: 'Unscramble secret love words before the clock runs out. How many can you and your partner solve?',
-    badge: '🔡 WORD GAME',
+    badge: 'Word game',
     color: '#7c3aed',
     bg: 'linear-gradient(135deg, #f5f3ff, #ede9fe)'
   }
@@ -83,12 +83,6 @@ export default function ArcadeLobby() {
             marginBottom: '2.5rem',
           }}
         >
-          <div className="hero-glow-orb" aria-hidden="true" />
-          <span className="hero-floating-decor d1" aria-hidden="true">🎮</span>
-          <span className="hero-floating-decor d2" aria-hidden="true">💖</span>
-          <span className="hero-floating-decor d3" aria-hidden="true">⚡</span>
-          <span className="hero-floating-decor d4" aria-hidden="true">🏆</span>
-
           <div
             style={{
               display: 'inline-flex',
@@ -100,36 +94,31 @@ export default function ArcadeLobby() {
               borderRadius: '99px',
               fontSize: 'clamp(0.72rem, 1.6vw, 0.78rem)',
               color: '#be185d',
-              fontWeight: 800,
+              fontWeight: 600,
               marginBottom: '0.85rem',
-              boxShadow: '0 2px 8px rgba(244,63,94,0.08)',
             }}
           >
-            <span className="live-pulse-dot" aria-hidden="true" />
-            <span>🎮 COUPLES &amp; BESTIES ARCADE DUEL</span>
+            <span>Couples and besties arcade</span>
           </div>
 
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.15, marginTop: '0.5rem', marginBottom: '0.75rem', color: '#1f2937', fontWeight: 900, letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.15, marginTop: '0.5rem', marginBottom: '0.75rem', color: '#1f2937', fontWeight: 600, letterSpacing: '-0.02em' }}>
             Play, Compete &amp; <br />
             <span className="cursive" style={{ color: 'var(--accent-primary)', fontSize: '1.05em' }}>Challenge Your Favorite Person</span>
           </h1>
           <p style={{ color: '#64748b', fontSize: 'clamp(0.95rem, 2vw, 1.05rem)', maxWidth: '620px', margin: '0 auto 1rem', lineHeight: 1.6 }}>
-            Set a new high score in our romantic &amp; fun mini-games, then send a 1-click WhatsApp challenge link to see who takes the crown!
+            Set a new high score in our mini-games, then send a 1-click WhatsApp challenge link to see who takes the crown.
           </p>
 
           <div className="hero-social-proof" style={{ marginTop: '0.5rem', paddingTop: '0.85rem' }}>
             <span className="hero-social-proof-item">
-              <span>⚡</span>
               <span>30-Second quick rounds</span>
             </span>
             <span>•</span>
             <span className="hero-social-proof-item">
-              <span>📱</span>
               <span>1-Click WhatsApp duel share</span>
             </span>
             <span>•</span>
             <span className="hero-social-proof-item">
-              <span>👑</span>
               <span>Zero download required</span>
             </span>
           </div>
