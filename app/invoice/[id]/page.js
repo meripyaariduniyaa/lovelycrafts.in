@@ -202,7 +202,11 @@ export default async function InvoicePage({ params, searchParams }) {
   const id = resolvedParams?.id || '';
   const autoPrint = resolvedSearchParams?.download === 'true' || resolvedSearchParams?.print === 'true';
 
-  const invoice = await fetchInvoiceData(id);
+  const [invoice, profileSnap] = await Promise.all([
+    fetchInvoiceData(id),
+    getAdminDb().doc('platform_settings/company_profile').get().catch(() => null),
+  ]);
+  const companyProfile = profileSnap?.exists ? profileSnap.data() : {};
 
   if (!invoice) {
     return (
@@ -267,5 +271,5 @@ export default async function InvoicePage({ params, searchParams }) {
     );
   }
 
-  return <InvoiceView invoice={invoice} autoPrint={autoPrint} />;
+  return <InvoiceView invoice={invoice} companyProfile={companyProfile} autoPrint={autoPrint} />;
 }

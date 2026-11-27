@@ -3,6 +3,45 @@
 import Script from 'next/script';
 import { useState, useEffect, useRef } from 'react';
 
+const INDIAN_GST_STATES = [
+  { code: '01', name: 'Jammu & Kashmir' },
+  { code: '02', name: 'Himachal Pradesh' },
+  { code: '03', name: 'Punjab' },
+  { code: '04', name: 'Chandigarh' },
+  { code: '05', name: 'Uttarakhand' },
+  { code: '06', name: 'Haryana' },
+  { code: '07', name: 'Delhi' },
+  { code: '08', name: 'Rajasthan' },
+  { code: '09', name: 'Uttar Pradesh' },
+  { code: '10', name: 'Bihar' },
+  { code: '11', name: 'Sikkim' },
+  { code: '12', name: 'Arunachal Pradesh' },
+  { code: '13', name: 'Nagaland' },
+  { code: '14', name: 'Manipur' },
+  { code: '15', name: 'Mizoram' },
+  { code: '16', name: 'Tripura' },
+  { code: '17', name: 'Meghalaya' },
+  { code: '18', name: 'Assam' },
+  { code: '19', name: 'West Bengal' },
+  { code: '20', name: 'Jharkhand' },
+  { code: '21', name: 'Odisha' },
+  { code: '22', name: 'Chhattisgarh' },
+  { code: '23', name: 'Madhya Pradesh' },
+  { code: '24', name: 'Gujarat' },
+  { code: '26', name: 'Dadra & Nagar Haveli and Daman & Diu' },
+  { code: '27', name: 'Maharashtra' },
+  { code: '29', name: 'Karnataka' },
+  { code: '30', name: 'Goa' },
+  { code: '31', name: 'Lakshadweep' },
+  { code: '32', name: 'Kerala' },
+  { code: '33', name: 'Tamil Nadu' },
+  { code: '34', name: 'Puducherry' },
+  { code: '35', name: 'Andaman & Nicobar Islands' },
+  { code: '36', name: 'Telangana' },
+  { code: '37', name: 'Andhra Pradesh' },
+  { code: '38', name: 'Ladakh' },
+];
+
 export default function PayButton({
   apologyId,
   onPaid,
@@ -18,6 +57,24 @@ export default function PayButton({
   const [showCouponModal, setShowCouponModal] = useState(false);
   const [buyerName, setBuyerName] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
+  const [buyerStateCode, setBuyerStateCode] = useState('');
+
+  const buyerStateName = INDIAN_GST_STATES.find((s) => s.code === buyerStateCode)?.name || '';
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/geo')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!active || !data?.stateCode) return;
+        const code = String(data.stateCode).padStart(2, '0');
+        if (INDIAN_GST_STATES.some((s) => s.code === code)) {
+          setBuyerStateCode(code);
+        }
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
 
   // Resolved order from Razorpay order creation endpoint
   const [resolvedOrder, setResolvedOrder] = useState(null);
@@ -149,7 +206,7 @@ export default function PayButton({
       const res = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apologyId, couponCode: code, buyerName, buyerEmail }),
+        body: JSON.stringify({ apologyId, couponCode: code, buyerName, buyerEmail, buyerStateCode, buyerStateName }),
       });
       const order = await res.json();
 
@@ -194,6 +251,10 @@ export default function PayButton({
   /* ── Step 2: Proceed to payment with the resolved order ── */
   async function proceedToPay() {
     if (!resolvedOrder) return;
+    if (!buyerStateCode) {
+      setError('Please select your Billing State before paying.');
+      return;
+    }
     setBusy(true);
     setError('');
 
@@ -215,6 +276,8 @@ export default function PayButton({
             amount: 0,
             buyerName,
             buyerEmail,
+            buyerStateCode,
+            buyerStateName,
           }),
         });
         if (!verify.ok) {
@@ -273,6 +336,8 @@ export default function PayButton({
               amountPaid: order.amount,
               buyerName,
               buyerEmail,
+              buyerStateCode,
+              buyerStateName,
               ...response,
             }),
           });
@@ -297,6 +362,10 @@ export default function PayButton({
 
   /* ── Direct pay (no coupon entered) ── */
   async function directPay() {
+    if (!buyerStateCode) {
+      setError('Please select your Billing State before paying.');
+      return;
+    }
     setBusy(true);
     setError('');
 
@@ -304,7 +373,7 @@ export default function PayButton({
       const res = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apologyId, couponCode: '', buyerName, buyerEmail }),
+        body: JSON.stringify({ apologyId, couponCode: '', buyerName, buyerEmail, buyerStateCode, buyerStateName }),
       });
       const order = await res.json();
       if (!res.ok) throw new Error(order.error || 'Could not start payment.');
@@ -354,6 +423,8 @@ export default function PayButton({
               amountPaid: order.amount,
               buyerName,
               buyerEmail,
+              buyerStateCode,
+              buyerStateName,
               ...response,
             }),
           });
@@ -377,6 +448,10 @@ export default function PayButton({
   }
 
   const handleCheckoutClick = () => {
+    if (!buyerStateCode) {
+      setError('Please select your Billing State before paying.');
+      return;
+    }
     if (resolvedOrder) {
       proceedToPay();
     } else {
@@ -519,6 +594,43 @@ export default function PayButton({
               <span>🎟️</span>
               <span>{couponCode ? `${couponCode.toUpperCase()}` : 'Have a coupon?'}</span>
             </button>
+          </div>
+
+          {/* Compact Billing State Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+            <label
+              htmlFor="lc-billing-state"
+              style={{ fontSize: '0.74rem', fontWeight: 700, color: '#334155', whiteSpace: 'nowrap' }}
+            >
+              Billing State
+            </label>
+            <select
+              id="lc-billing-state"
+              value={buyerStateCode}
+              onChange={(e) => {
+                setBuyerStateCode(e.target.value);
+                if (error) setError('');
+              }}
+              style={{
+                flex: 1,
+                maxWidth: '240px',
+                padding: '5px 8px',
+                borderRadius: '8px',
+                border: '1px solid rgba(15, 23, 42, 0.2)',
+                background: '#ffffff',
+                color: '#0f172a',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                outline: 'none',
+              }}
+            >
+              <option value="">Select state / UT</option>
+              {INDIAN_GST_STATES.map((s) => (
+                <option key={s.code} value={s.code}>
+                  {s.code} - {s.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Primary CTA Button */}

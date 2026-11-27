@@ -3,6 +3,7 @@ import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { getAdminDb } from '@/lib/firebase-admin';
 import { calculateEffectiveTierAndRate, commissionForAmount, normalizeCode } from '@/lib/creator-club';
 import { disableOrganicRetentionCoupon } from '@/lib/coupons';
+import { createAutoInvoice } from '@/lib/finance';
 import { settleWeddingPayment } from '@/lib/wedding-payments';
 import { createSettlementOrderId, verifyHmacSha256Signature } from '@/lib/razorpay-security';
 
@@ -68,7 +69,8 @@ export async function POST(request) {
     // 1. Payment Captured / Order Paid Event (Idempotent)
     if (event === 'payment.captured' || event === 'order.paid') {
       const payment = payload.payload?.payment?.entity || {};
-      const notes = payment.notes || payload.payload?.order?.entity?.notes || {};
+      const orderNotes = payload.payload?.order?.entity?.notes || {};
+      const notes = { ...orderNotes, ...(payment.notes || {}) };
       const apologyId = notes.apologyId || payment.receipt;
       const razorpay_order_id = payment.order_id || payload.payload?.order?.entity?.id;
       const razorpay_payment_id = payment.id;
@@ -78,6 +80,8 @@ export async function POST(request) {
       const creatorId = notes.creatorId || null;
       const attributionSource = notes.attributionSource || null;
       const discountPercent = Number(notes.discountPercent) || 0;
+      const buyerStateCode = notes.buyerStateCode ? String(notes.buyerStateCode).trim() : null;
+      const buyerStateName = notes.buyerStateName ? String(notes.buyerStateName).trim() : null;
 
       if (!apologyId) {
         return NextResponse.json({ status: 'ignored', message: 'No apologyId in notes' });
@@ -137,6 +141,8 @@ export async function POST(request) {
           razorpay_order_id: razorpay_order_id || null,
           razorpay_payment_id: razorpay_payment_id || null,
           attribution_source: attributionSource || (creatorId ? (couponCode ? 'coupon' : 'referral_link') : null),
+          buyer_state_code: buyerStateCode,
+          buyer_state_name: buyerStateName,
           created_at: FieldValue.serverTimestamp(),
           paid_at: FieldValue.serverTimestamp(),
         };
@@ -180,6 +186,52 @@ export async function POST(request) {
           });
         } catch (vaultErr) {
           console.error('Failed to write to admin_payment_ledger vault from webhook:', vaultErr);
+        }
+
+        // Auto-generate inclusive GST invoice if not yet created
+        try {
+          await createAutoInvoice({
+            db: adminDb,
+            orderId,
+            noteData: { ...noteData, id: apologyId },
+            amountInRupees: Number(((amountPaid || 0) / 100).toFixed(2)),
+            couponCode: couponCode || '',
+            discountPercent,
+            paymentMethod: 'UPI / Razorpay',
+            customerName: notes.buyerName || '',
+            customerEmail: notes.buyerEmail || '',
+            customerPhone: notes.buyerPhone || '',
+            buyerStateCode,
+            buyerStateName,
+          });
+        } catch (invErr) {
+          console.error('Failed to auto-generate finance invoice from webhook:', invErr);
+        }
+
+        // Auto-generate internal invoice in finance_invoices
+        try {
+          const autoInvoice = await createAutoInvoice({
+            db: adminDb,
+            orderId,
+            noteData: { ...noteData, id: apologyId },
+            amountInRupees: Number(((amountPaid || 0) / 100).toFixed(2)),
+            couponCode: couponCode || '',
+            discountPercent,
+            paymentMethod: 'UPI / Razorpay',
+            customerName: notes.buyerName || '',
+            customerEmail: notes.buyerEmail || payment.email || '',
+            customerPhone: notes.buyerPhone || payment.contact || '',
+            buyerStateCode: buyerStateCode || '',
+            buyerStateName: buyerStateName || '',
+          });
+          if (autoInvoice?.id) {
+            await newOrderRef.update({
+              invoice_id: autoInvoice.id,
+              invoice_number: autoInvoice.invoiceNumber || null,
+            }).catch(() => {});
+          }
+        } catch (invoiceErr) {
+          console.error('Failed to auto-generate finance invoice from webhook:', invoiceErr);
         }
 
         // Increment coupon usage & deactivate single-use/retention coupons
@@ -332,11 +384,28 @@ export async function POST(request) {
           console.error('Failed to update admin_payment_ledger refund status:', vaultRefundErr);
         }
 
-        // Find pending commissions associated with this order and reverse them
-        const commSnap = await adminDb.collection('commissions')
-          .where('order_id', '==', orderDoc.id)
-          .where('status', '==', 'pending')
-          .get();
+        // Mark matching finance_invoices as refunded so GST summary excludes them
+        try {
+          const invSnap = await adminDb.collection('finance_invoices').where('orderId', '==', orderDoc.id).get();
+          if (!invSnap.empty) {
+            const invBatch = adminDb.batch();
+            invSnap.docs.forEach((d) => invBatch.update(d.ref, { status: 'refunded', updatedAt: new Date().toISOString() }));
+            await invBatch.commit();
+          }
+        } catch (invRefundErr) {
+          console.error('Failed to mark finance_invoices refunded:', invRefundErr);
+        }
+
+        // Find pending commissions and finance_invoices associated with this order
+        const [commSnap, invoiceSnap] = await Promise.all([
+          adminDb.collection('commissions')
+            .where('order_id', '==', orderDoc.id)
+            .where('status', '==', 'pending')
+            .get(),
+          adminDb.collection('finance_invoices')
+            .where('orderId', '==', orderDoc.id)
+            .get(),
+        ]);
 
         const batch = adminDb.batch();
         commSnap.docs.forEach((commDoc) => {
@@ -344,6 +413,12 @@ export async function POST(request) {
             status: 'reversed',
             reversed_reason: 'order_refunded',
             updated_at: FieldValue.serverTimestamp(),
+          });
+        });
+        invoiceSnap.docs.forEach((invDoc) => {
+          batch.update(invDoc.ref, {
+            status: 'refunded',
+            updatedAt: new Date().toISOString(),
           });
         });
 

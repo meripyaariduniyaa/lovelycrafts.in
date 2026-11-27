@@ -14,7 +14,7 @@ export async function POST(request) {
   try {
     const adminDb = getAdminDb();
     const body = await request.json();
-    const { apologyId, razorpay_order_id, razorpay_payment_id, razorpay_signature, buyerName: bodyBuyerName, buyerEmail: bodyBuyerEmail, buyerPhone: bodyBuyerPhone } = body;
+    const { apologyId, razorpay_order_id, razorpay_payment_id, razorpay_signature, buyerName: bodyBuyerName, buyerEmail: bodyBuyerEmail, buyerPhone: bodyBuyerPhone, buyerStateCode: bodyBuyerStateCode, buyerStateName: bodyBuyerStateName } = body;
     const provider = body.provider === 'cashfree' ? 'cashfree' : 'razorpay';
     if (typeof apologyId !== 'string' || !apologyId.trim()) {
       return NextResponse.json({ error: 'Gift identifier is required.' }, { status: 400 });
@@ -236,6 +236,8 @@ export async function POST(request) {
       buyer_name: buyerName || null,
       buyer_email: buyerEmail || null,
       buyer_phone: buyerPhone || null,
+      buyer_state_code: bodyBuyerStateCode || null,
+      buyer_state_name: bodyBuyerStateName || null,
       created_at: FieldValue.serverTimestamp(),
       paid_at: FieldValue.serverTimestamp(),
     };
@@ -308,6 +310,8 @@ export async function POST(request) {
         customerName: buyerName,
         customerEmail: buyerEmail,
         customerPhone: buyerPhone,
+        buyerStateCode: bodyBuyerStateCode || '',
+        buyerStateName: bodyBuyerStateName || '',
       });
 
       if (autoInvoice?.id) {

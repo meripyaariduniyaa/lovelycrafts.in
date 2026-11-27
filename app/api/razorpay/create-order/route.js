@@ -8,7 +8,7 @@ import { getTemplatePrice } from '@/lib/pricing';
 export async function POST(request) {
   try {
     const adminDb = getAdminDb();
-    const { apologyId, couponCode, buyerName, buyerEmail, buyerPhone } = await request.json();
+    const { apologyId, couponCode, buyerName, buyerEmail, buyerPhone, buyerStateCode, buyerStateName } = await request.json();
     if (typeof apologyId !== 'string' || !apologyId.trim()) {
       return NextResponse.json({ error: 'Gift identifier is required.' }, { status: 400 });
     }
@@ -103,6 +103,8 @@ export async function POST(request) {
           buyerName: buyerName || '',
           buyerEmail: buyerEmail || '',
           buyerPhone: buyerPhone || '',
+          buyerStateCode: buyerStateCode || '',
+          buyerStateName: buyerStateName || '',
         }
       });
 
@@ -144,6 +146,8 @@ export async function POST(request) {
         buyerName: buyerName || '',
         buyerEmail: buyerEmail || '',
         buyerPhone: buyerPhone || '',
+        buyerStateCode: buyerStateCode || '',
+        buyerStateName: buyerStateName || '',
       }
     });
 
